@@ -15,7 +15,7 @@ Public Class GetClaimInfo
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimInfoDs)
+    Public Sub New(ds As GetClaimInfoDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -28,7 +28,7 @@ Public Class GetClaimInfo
 #Region "Private Members"
     Private _claimId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetClaimInfoDs)
+    Private Sub MapDataSet(ds As GetClaimInfoDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -50,7 +50,7 @@ Public Class GetClaimInfo
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimInfoDs)
+    Private Sub Load(ds As GetClaimInfoDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -68,7 +68,7 @@ Public Class GetClaimInfo
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimInfoDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimInfoDs)
         Try
             If ds.GetClaimInfo.Count = 0 Then Exit Sub
             With ds.GetClaimInfo.Item(0)

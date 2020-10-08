@@ -6,7 +6,7 @@ Public Class VSCPlan
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -20,20 +20,20 @@ Public Class VSCPlan
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class VSCPlan
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCPlanDAL
             If _isDSCreator Then
@@ -243,7 +243,7 @@ Public Class VSCPlan
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As VSCPlan)
+    Public Sub Copy(original As VSCPlan)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing plan object")
         End If
@@ -253,7 +253,7 @@ Public Class VSCPlan
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetVSCPlan(ByVal dealerID As Guid, ByVal VSCPlanDate As Date) As VSCPlan
+    Public Shared Function GetVSCPlan(dealerID As Guid, VSCPlanDate As Date) As VSCPlan
 
         'Dim ProductCodeID As Guid
         'Dim dv As DataView = getList(dealerID)
@@ -275,7 +275,7 @@ Public Class VSCPlan
         Return Nothing
     End Function
 
-    Public Shared Function getList(ByVal companyGroup As ArrayList) As VSCPlanSearchDV
+    Public Shared Function getList(companyGroup As ArrayList) As VSCPlanSearchDV
         Try
             Dim dal As New VSCPlanDAL
             Return New VSCPlanSearchDV(dal.LoadList(companyGroup).Tables(0))
@@ -285,7 +285,7 @@ Public Class VSCPlan
         End Try
     End Function
 
-    Public Shared Function getPlan(ByVal companyGroup As ArrayList, ByVal planId As Guid) As VSCPlanSearchDV
+    Public Shared Function getPlan(companyGroup As ArrayList, planId As Guid) As VSCPlanSearchDV
         Try
             Dim dal As New VSCPlanDAL
             Return New VSCPlanSearchDV(dal.LoadPlan(companyGroup, planId).Tables(0))
@@ -315,7 +315,7 @@ Public Class VSCPlan
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

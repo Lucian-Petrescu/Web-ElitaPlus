@@ -37,7 +37,7 @@ Public Class TranslationBase
 #Region "DATA ACCESS ROUTINES"
 
 
-    Public Shared Function GetTranslationsFromCache(ByRef TranslationList As String, ByVal LanguageID As Guid) As DataTable
+    Public Shared Function GetTranslationsFromCache(ByRef TranslationList As String, LanguageID As Guid) As DataTable
 
         Try
 
@@ -72,7 +72,7 @@ Public Class TranslationBase
         End Try
     End Function
 
-    Public Shared Sub PutTranslationsIntoCache(ByVal ds As DataSet, ByVal LanguageId As Guid)
+    Public Shared Sub PutTranslationsIntoCache(ds As DataSet, LanguageId As Guid)
 
         Try
 
@@ -91,7 +91,7 @@ Public Class TranslationBase
         End Try
     End Sub
 
-    Public Shared Sub UpdateTranslationInCache(ByVal ds As DataSet, Optional ByVal LanguageId As String = "")
+    Public Shared Sub UpdateTranslationInCache(ds As DataSet, Optional ByVal LanguageId As String = "")
 
         Try
 
@@ -135,7 +135,7 @@ Public Class TranslationBase
 
     End Sub
 
-    Public Shared Function GetTranslations(ByVal InClause As String, ByVal oLanguageID As Guid) As DataSet
+    Public Shared Function GetTranslations(InClause As String, oLanguageID As Guid) As DataSet
 
         Dim oDs As DataSet
         Dim dt As DataTable
@@ -194,7 +194,7 @@ Public Class TranslationBase
     'Input Values:
     'Uses:
     '-------------------------------------
-    Protected Function Translate(ByVal sUIProgCode As String, ByVal oView As DataView) As String
+    Protected Function Translate(sUIProgCode As String, oView As DataView) As String
 
         Dim oCurrentMissingTranslations As ArrayList
 
@@ -223,7 +223,7 @@ Public Class TranslationBase
 
     End Function
 
-    Private Function BuildStringFromTranslationArray(ByVal aryList As TranslationItemArray, Optional ByVal sCharToJoin As String = ", ") As String
+    Private Function BuildStringFromTranslationArray(aryList As TranslationItemArray, Optional ByVal sCharToJoin As String = ", ") As String
 
         Dim sItem As String
         Dim oWorkingArray(aryList.CurrentCount - 1) As String
@@ -245,7 +245,7 @@ Public Class TranslationBase
 
     End Function
 
-    Protected Shared Function BuildStringFromArray(ByVal aryList As ArrayList, Optional ByVal sCharToJoin As String = ", ") As String
+    Protected Shared Function BuildStringFromArray(aryList As ArrayList, Optional ByVal sCharToJoin As String = ", ") As String
 
         Dim sItem As String
         Dim oWorkingArray(aryList.Count - 1) As String
@@ -261,7 +261,7 @@ Public Class TranslationBase
         Return sResult
     End Function
 
-    Public Function TranslateList(ByVal aryItemsToTranslate As TranslationItemArray, ByVal CurrentLanguageID As Guid) As ArrayList
+    Public Function TranslateList(aryItemsToTranslate As TranslationItemArray, CurrentLanguageID As Guid) As ArrayList
 
 
         Dim oDS As DataSet
@@ -290,7 +290,7 @@ Public Class TranslationBase
 
     End Function
 
-    Public Function TranslateList(ByVal aryItemsToTranslate As ArrayList) As ArrayList
+    Public Function TranslateList(aryItemsToTranslate As ArrayList) As ArrayList
 
         '  Dim oDB As New DbStruct
         Dim oDS As DataSet
@@ -335,11 +335,11 @@ Public Class TranslationBase
 
 #Region "Shared Translate Messages"
 
-    Public Shared Function TranslateLabelOrMessage(ByVal UIProgCode As String) As String
+    Public Shared Function TranslateLabelOrMessage(UIProgCode As String) As String
         Return TranslateLabelOrMessage(UIProgCode, Authentication.LangId)
     End Function
 
-    Public Shared Function TranslateLabelOrMessage(ByVal UIProgCode As String, ByVal LangId As Guid) As String
+    Public Shared Function TranslateLabelOrMessage(UIProgCode As String, LangId As Guid) As String
         ' Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         Dim TransProcObj As New TranslationBase
         Dim oTranslationItem As New TranslationItem
@@ -353,11 +353,11 @@ Public Class TranslationBase
         Return oTranslationItem.Translation
     End Function
 
-    Public Shared Function TranslateLabelOrMessageList(ByVal UIProgCodes() As String) As String()
+    Public Shared Function TranslateLabelOrMessageList(UIProgCodes() As String) As String()
         Return TranslateLabelOrMessageList(UIProgCodes, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Function
 
-    Public Shared Function TranslateLabelOrMessageList(ByVal UIProgCodes() As String, ByVal LangId As Guid) As String()
+    Public Shared Function TranslateLabelOrMessageList(UIProgCodes() As String, LangId As Guid) As String()
         '  Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         Dim TransProcObj As New TranslationBase
         Dim Coll As New TranslationItemArray
@@ -379,14 +379,14 @@ Public Class TranslationBase
         Return Result
     End Function
 
-    Public Shared Sub TranslateMessageList(ByVal aryItemsToTranslate As ArrayList)
+    Public Shared Sub TranslateMessageList(aryItemsToTranslate As ArrayList)
         Dim TransProcObj As New TranslationBase
 
         TransProcObj.TranslateList(aryItemsToTranslate)
         
     End Sub
 
-    Public Shared Function TranslateParameterizedMsg(ByVal strMSGText As String, ByVal intParamCnt As Integer, ByVal strParamList As String, Optional ByVal strParamListSeperator As Char = "¦") As String
+    Public Shared Function TranslateParameterizedMsg(strMSGText As String, intParamCnt As Integer, strParamList As String, Optional ByVal strParamListSeperator As Char = "¦") As String
         Dim strMsgTranslated As String = "", strPattern As String, blnReadyForParam As Boolean = True
         If strMSGText <> "" AndAlso strParamList <> "" AndAlso intParamCnt > 0 Then
             strMsgTranslated = strMSGText
@@ -424,7 +424,7 @@ Public Class TranslationBase
         Return strMsgTranslated
     End Function
 
-    Public Shared Function GetFormatedParameterString(ByVal strParam As String) As String
+    Public Shared Function GetFormatedParameterString(strParam As String) As String
         Dim intParam As Integer, dblParam As Double, dtParam As DateTime, strParamType As String
         Dim strFormatedParam As String = String.Empty
         If strParam.Length > 1 Then

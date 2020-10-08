@@ -28,7 +28,7 @@ Public Class GetExpectedGWP
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetExpectedGWPDs)
+    Public Sub New(ds As GetExpectedGWPDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -41,7 +41,7 @@ Public Class GetExpectedGWP
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetExpectedGWPDs)
+    Private Sub MapDataSet(ds As GetExpectedGWPDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -63,7 +63,7 @@ Public Class GetExpectedGWP
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetExpectedGWPDs)
+    Private Sub Load(ds As GetExpectedGWPDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -82,7 +82,7 @@ Public Class GetExpectedGWP
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetExpectedGWPDs)
+    Private Sub PopulateBOFromWebService(ds As GetExpectedGWPDs)
         Try
             If ds.GetExpectedGWP.Count = 0 Then Exit Sub
             With ds.GetExpectedGWP.Item(0)
@@ -298,7 +298,7 @@ Public Class GetExpectedGWP
 
     End Function
 
-    Private Function PercentageOfRetail(ByVal oProductCodeID As Guid) As DecimalType
+    Private Function PercentageOfRetail(oProductCodeID As Guid) As DecimalType
 
         Dim percentOfRetail As DecimalType
 

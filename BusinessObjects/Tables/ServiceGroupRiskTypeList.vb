@@ -1,16 +1,16 @@
 Public Class ServiceGroupRiskTypeList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceGroup)
+    Public Sub New(parent As ServiceGroup)
         MyBase.New(LoadTable(parent), GetType(ServiceGroupRiskType), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ServiceGroupRiskType).ServiceGroupId.Equals(CType(Parent, ServiceGroup).Id)
     End Function
 
-    Public Function Find(ByVal riskTypeId As Guid) As ServiceGroupRiskType
+    Public Function Find(riskTypeId As Guid) As ServiceGroupRiskType
         Dim bo As ServiceGroupRiskType
         For Each bo In Me
             If bo.RiskTypeId.Equals(riskTypeId) Then Return bo
@@ -20,7 +20,7 @@ Public Class ServiceGroupRiskTypeList
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ServiceGroup) As DataTable
+    Private Shared Function LoadTable(parent As ServiceGroup) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ServiceGroupRiskTypeList)) Then
                 Dim dal As New ServiceGroupRiskTypeDAL

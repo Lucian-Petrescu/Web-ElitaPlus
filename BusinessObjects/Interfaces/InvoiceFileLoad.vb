@@ -11,11 +11,11 @@ Public NotInheritable Class InvoiceFileLoad
 
     Protected invoice As Invoice
 
-    Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
+    Protected Overrides Function CreateFileLoadHeader(fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
         Return New ClaimloadFileProcessed(fileLoadHeaderId)
     End Function
 
-    Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As InvoiceReconWrk
+    Protected Overrides Function CreateFileLoadDetail(fileLoadDetailId As System.Guid, headerRecord As ClaimloadFileProcessed) As InvoiceReconWrk
         Dim returnValue As InvoiceReconWrk
         returnValue = New InvoiceReconWrk(fileLoadDetailId, headerRecord.Dataset)
         Return returnValue
@@ -25,7 +25,7 @@ Public NotInheritable Class InvoiceFileLoad
         MyBase.AfterCreateFileLoadHeader()
     End Sub
 
-    Public Overrides Function BeforeSave(ByVal familyDataSet As DataSet) As Object
+    Public Overrides Function BeforeSave(familyDataSet As DataSet) As Object
         Dim invoiceList As New List(Of Guid)
         MyBase.BeforeSave(familyDataSet)
 
@@ -39,7 +39,7 @@ Public NotInheritable Class InvoiceFileLoad
         Return invoiceList
     End Function
 
-    Public Overrides Sub AfterSave(ByVal argument As Object, ByVal familyDataSet As DataSet)
+    Public Overrides Sub AfterSave(argument As Object, familyDataSet As DataSet)
         MyBase.AfterSave(argument, familyDataSet)
         Dim invoiceList As List(Of Guid) = DirectCast(argument, List(Of Guid))
         For Each invoiceId As Guid In invoiceList
@@ -48,7 +48,7 @@ Public NotInheritable Class InvoiceFileLoad
         Next
     End Sub
 
-    Protected Overrides Function IsKeyChanged(ByVal beforeReconRecord As InvoiceReconWrk, ByVal afterReconRecord As InvoiceReconWrk, ByVal familyDataSet As DataSet) As KeyChangeReturnType
+    Protected Overrides Function IsKeyChanged(beforeReconRecord As InvoiceReconWrk, afterReconRecord As InvoiceReconWrk, familyDataSet As DataSet) As KeyChangeReturnType
         Dim returnValue As KeyChangeReturnType
         returnValue.IsChanged = False
         If (beforeReconRecord Is Nothing) Then
@@ -70,7 +70,7 @@ Public NotInheritable Class InvoiceFileLoad
         Return returnValue
     End Function
 
-    Protected Overrides Sub KeyChanged(ByVal key As String, ByVal beforeReconRecord As InvoiceReconWrk, ByVal afterReconRecord As InvoiceReconWrk, ByVal familyDataSet As DataSet)
+    Protected Overrides Sub KeyChanged(key As String, beforeReconRecord As InvoiceReconWrk, afterReconRecord As InvoiceReconWrk, familyDataSet As DataSet)
         ' Invoice Changed
         If (key = KEY_CHANGED__INVOICE) Then
             If (afterReconRecord.InvoiceId.Equals(Guid.Empty)) Then
@@ -112,7 +112,7 @@ Public NotInheritable Class InvoiceFileLoad
         MyBase.KeyChanged(key, beforeReconRecord, afterReconRecord, familyDataSet)
     End Sub
 
-    Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As InvoiceReconWrk, ByVal familyDataSet As DataSet) As ProcessResult
+    Protected Overrides Function ProcessDetailRecord(reconRecord As InvoiceReconWrk, familyDataSet As DataSet) As ProcessResult
         Dim invoiceItem As InvoiceItem
         Try
             Dim oClaimAuthorization As ClaimAuthorization

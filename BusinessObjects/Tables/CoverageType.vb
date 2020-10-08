@@ -5,7 +5,7 @@ Public Class CoverageType
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,20 +19,20 @@ Public Class CoverageType
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -54,7 +54,7 @@ Public Class CoverageType
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageTypeDAL
             If _isDSCreator Then
@@ -207,7 +207,7 @@ Public Class CoverageType
         End Get
     End Property
 
-    Public ReadOnly Property AssociatedCoveragesLoss(ByVal coverageLossId As Guid) As CoverageLoss.CovLossList
+    Public ReadOnly Property AssociatedCoveragesLoss(coverageLossId As Guid) As CoverageLoss.CovLossList
         Get
             Return New CoverageLoss.CovLossList(Me, coverageLossId)
         End Get
@@ -254,12 +254,12 @@ Public Class CoverageType
     Public NotInheritable Class CheckDefaultValue
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, " Value Is Required : " + fieldDisplayName)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageType = CType(objectToValidate, CoverageType)
             If (obj.AvailableDefaultValue = Guid.Empty.ToString) Then
                 Return False
@@ -271,7 +271,7 @@ Public Class CoverageType
 #End Region
 
 #Region "Children Related"
-    Public Shared Function GetAvailableCausesOfLoss(ByVal coverageTypeId As Guid) As DataView
+    Public Shared Function GetAvailableCausesOfLoss(coverageTypeId As Guid) As DataView
         Dim dal As New CoverageLossDAL
         Dim ds As DataSet
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -281,7 +281,7 @@ Public Class CoverageType
         Return ds.Tables(CoverageLossDAL.TABLE_NAME).DefaultView
     End Function
 
-    Public Shared Function GetSelectedCausesOfLoss(ByVal coverageTypeId As Guid) As DataView
+    Public Shared Function GetSelectedCausesOfLoss(coverageTypeId As Guid) As DataView
         Dim dal As New CoverageLossDAL
         Dim ds As DataSet
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -292,7 +292,7 @@ Public Class CoverageType
     End Function
 
 
-    Public Sub AttachCoverageLoss(ByVal selectedCoverageLossGuidStrCollection As ArrayList)
+    Public Sub AttachCoverageLoss(selectedCoverageLossGuidStrCollection As ArrayList)
         Dim ctCovLossIdStr As String
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         For Each ctCovLossIdStr In selectedCoverageLossGuidStrCollection
@@ -313,7 +313,7 @@ Public Class CoverageType
         Next
     End Sub
 
-    Public Sub DetachCoverageLoss(ByVal selectedCoverageLossGuidStrCollection As ArrayList)
+    Public Sub DetachCoverageLoss(selectedCoverageLossGuidStrCollection As ArrayList)
         Dim ctCovLossIdStr As String
         For Each ctCovLossIdStr In selectedCoverageLossGuidStrCollection
             Dim ctCovLoss As CoverageLoss = AssociatedCoveragesLoss.FindById(New Guid(ctCovLossIdStr))
@@ -331,7 +331,7 @@ Public Class CoverageType
     '    Return CovLoss
     'End Function
 
-    Function CreateDataSource(ByVal selectedCoverageLossGuidStrCollection As ArrayList) As ICollection
+    Function CreateDataSource(selectedCoverageLossGuidStrCollection As ArrayList) As ICollection
 
         ' Create a table to store data for the DropDownList control.
         Dim ctCovLossIdStr As String
@@ -354,7 +354,7 @@ Public Class CoverageType
 
     End Function
 
-    Function CreateRow(ByVal Text As String, ByVal Value As String, ByVal dt As DataTable) As DataRow
+    Function CreateRow(Text As String, Value As String, dt As DataTable) As DataRow
 
         ' Create a DataRow using the DataTable defined in the 
         ' CreateDataSource method.
@@ -377,7 +377,7 @@ Public Class CoverageType
 
 #Region "DataView Retrieveing Methods"
 
-    Public ReadOnly Property GetCoverageTypeDescription(ByVal coveragetypeID As Guid) As String
+    Public ReadOnly Property GetCoverageTypeDescription(coveragetypeID As Guid) As String
         Get
             'Dim moCoverage As New CertItemCoverage
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId

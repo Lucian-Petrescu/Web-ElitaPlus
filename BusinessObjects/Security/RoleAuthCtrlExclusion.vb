@@ -4,14 +4,14 @@ Public Class RoleAuthCtrlExclusion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal oFormId As Guid, ByVal oRoleId As Guid, ByVal sControlName As String)
+    Public Sub New(oFormId As Guid, oRoleId As Guid, sControlName As String)
         MyBase.New()
         Dataset = New Dataset
         Load(oFormId, oRoleId, sControlName)
@@ -25,20 +25,20 @@ Public Class RoleAuthCtrlExclusion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -60,7 +60,7 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RoleAuthCtrlExclusionDAL
             If _isDSCreator Then
@@ -84,7 +84,7 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal oFormId As Guid, ByVal oRoleId As Guid, ByVal sControlName As String)
+    Protected Sub Load(oFormId As Guid, oRoleId As Guid, sControlName As String)
         Try
             Dim dal As New RoleAuthCtrlExclusionDAL
             If _isDSCreator Then
@@ -223,7 +223,7 @@ Public Class RoleAuthCtrlExclusion
 
 #Region "DATA ACCESS ROUTINES"
 
-    Public Shared Function PopulateList(ByVal oLanguageID As Guid) As DataView
+    Public Shared Function PopulateList(oLanguageID As Guid) As DataView
         Dim oDs As Dataset
 
         Try
@@ -236,7 +236,7 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Function
 
-    Public Shared Function ObtainControlPermissions(ByVal sFormId As String, ByVal oControlNames As ArrayList) As DataView
+    Public Shared Function ObtainControlPermissions(sFormId As String, oControlNames As ArrayList) As DataView
         Dim oDv As DataView
 
         Try
@@ -249,7 +249,7 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Function
 
-    Public Shared Function GetControlPermissionList(ByVal sFormCode As String, ByVal oControlName As String) As DataView
+    Public Shared Function GetControlPermissionList(sFormCode As String, oControlName As String) As DataView
         Try
             Dim dal As New RoleAuthCtrlExclusionDAL
             Return dal.GetControlPermissionAllRoles(sFormCode, oControlName).Tables(0).DefaultView

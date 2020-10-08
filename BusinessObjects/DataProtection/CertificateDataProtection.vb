@@ -4,9 +4,9 @@ Public Class CertificateDataProtection
     Inherits BusinessObjectBase
 
 #Region "Save Data for Data Protection"
-    Public Shared Sub SaveNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, ByVal certId As Guid,
-                           ByVal restricred As String, ByVal comment As String,
-                           ByVal requestId As String)
+    Public Shared Sub SaveNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, certId As Guid,
+                           restricred As String, comment As String,
+                           requestId As String)
         Dim dal As New CertificateDataProtectionDAL
         dal.SaveForm(intErrCode, strErrMsg, certId, restricred, comment, requestId)
     End Sub
@@ -14,7 +14,7 @@ Public Class CertificateDataProtection
 
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal certId As Guid) As DataProtectionSearchDV
+    Public Shared Function GetList(certId As Guid) As DataProtectionSearchDV
         Try
             Dim dal As New CertificateDataProtectionDAL
             Return New DataProtectionSearchDV(dal.LoadList(certId).Tables(0))
@@ -25,7 +25,7 @@ Public Class CertificateDataProtection
 
     Public Class DataProtectionSearchDV
         Inherits DataView
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

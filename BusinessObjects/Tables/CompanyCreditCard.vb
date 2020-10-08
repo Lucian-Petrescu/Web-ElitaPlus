@@ -6,14 +6,14 @@ Public Class CompanyCreditCard
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO by CreditCardFormatId and companyId
-    Public Sub New(ByVal CreditCardFormatId As Guid, ByVal CompanyId As Guid)
+    Public Sub New(CreditCardFormatId As Guid, CompanyId As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(CreditCardFormatId, CompanyId)
@@ -27,20 +27,20 @@ Public Class CompanyCreditCard
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@ Public Class CompanyCreditCard
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CompanyCreditCardDAL
             If _isDSCreator Then
@@ -86,7 +86,7 @@ Public Class CompanyCreditCard
         End Try
     End Sub
 
-    Protected Sub Load(ByVal CreditCardFormatId As Guid, ByVal CompanyId As Guid)
+    Protected Sub Load(CreditCardFormatId As Guid, CompanyId As Guid)
         Try
             Dim dal As New CompanyCreditCardDAL
             If _isDSCreator Then
@@ -225,7 +225,7 @@ Public Class CompanyCreditCard
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -259,7 +259,7 @@ Public Class CompanyCreditCard
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CompanyCreditCardSearchDV, ByVal NewCompanyCreditCardBO As CompanyCreditCard)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CompanyCreditCardSearchDV, NewCompanyCreditCardBO As CompanyCreditCard)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -286,7 +286,7 @@ Public Class CompanyCreditCard
         End If
     End Sub
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As CompanyCreditCard) As CompanyCreditCardSearchDV
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As CompanyCreditCard) As CompanyCreditCardSearchDV
 
         Dim dt As DataTable
         dt = dv.Table

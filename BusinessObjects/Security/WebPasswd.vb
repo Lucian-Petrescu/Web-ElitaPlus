@@ -7,14 +7,14 @@ Public Class WebPasswd
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal isEnvCmpGp As Boolean)
+    Public Sub New(isEnvCmpGp As Boolean)
         MyBase.New()
 
         Dim env As String = EnvironmentContext.Current.EnvironmentName
@@ -26,7 +26,7 @@ Public Class WebPasswd
         Load(env, cmpGpId, hub)
     End Sub
 
-    Public Sub New(ByVal companyGroupId As Guid, ByVal serviceTypeId As Guid, ByVal isExternal As Boolean)
+    Public Sub New(companyGroupId As Guid, serviceTypeId As Guid, isExternal As Boolean)
         MyBase.New()
 
         Dim env As String = EnvironmentContext.Current.EnvironmentName
@@ -44,20 +44,20 @@ Public Class WebPasswd
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -79,7 +79,7 @@ Public Class WebPasswd
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New WebPasswdDAL
             If _isDSCreator Then
@@ -103,7 +103,7 @@ Public Class WebPasswd
         End Try
     End Sub
     'Fix for Def-2229
-    Protected Sub Load(ByVal env As String, ByVal cmpGpId As Guid, Optional ByVal hub As String = Nothing)
+    Protected Sub Load(env As String, cmpGpId As Guid, Optional ByVal hub As String = Nothing)
         Try
             Dim dal As New WebPasswdDAL
             If _isDSCreator Then
@@ -129,8 +129,8 @@ Public Class WebPasswd
         End Try
     End Sub
 
-    Protected Sub Load(ByVal companyGroupId As Guid, ByVal serviceTypeId As Guid, ByVal env As String, _
-                    ByVal isExternal As Boolean, ByVal hub As String)
+    Protected Sub Load(companyGroupId As Guid, serviceTypeId As Guid, env As String, _
+                    isExternal As Boolean, hub As String)
         Try
             Dim dal As New WebPasswdDAL
             Dim keyValueList As New List(Of KeyValuePair(Of String, Object))

@@ -19,7 +19,7 @@ Public Class SuspendedReasons
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -32,7 +32,7 @@ Public Class SuspendedReasons
         Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal inDv As DataSet)
+    Public Sub New(id As Guid, inDv As DataSet)
         MyBase.New(False)
         Dataset = New DataSet
         Load(id, inDv)
@@ -54,7 +54,7 @@ Public Class SuspendedReasons
 
 
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -78,7 +78,7 @@ Public Class SuspendedReasons
     '    Next
 
     'End Sub
-    Protected Sub Load(ByVal Id As System.Guid, ByVal inDv As DataSet)
+    Protected Sub Load(Id As System.Guid, inDv As DataSet)
 
         If Dataset Is Nothing OrElse Dataset.Tables.Count() = 0 Then
             Dim dal As New SuspendedReasonsDAL
@@ -125,7 +125,7 @@ Public Class SuspendedReasons
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SuspendedReasonsDAL
 
@@ -292,7 +292,7 @@ Public Class SuspendedReasons
 #End Region
 
 #Region "Public Members"
-    Public Sub Save(ByVal LanguageId As Guid, ByVal NewRec As Boolean)
+    Public Sub Save(LanguageId As Guid, NewRec As Boolean)
         Try
             MyBase.Save()
 
@@ -318,7 +318,7 @@ Public Class SuspendedReasons
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef inDV As SuspendedReasons.SearchDV, ByVal NewBO As SuspendedReasons)
+    Public Shared Sub AddNewRowToSearchDV(ByRef inDV As SuspendedReasons.SearchDV, NewBO As SuspendedReasons)
         Dim newDS As DataSet, dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -349,7 +349,7 @@ Public Class SuspendedReasons
         End If
     End Sub
 
-    Public Shared Function LoadSearchData(ByVal SearchValues As SuspendedReasons.SearchDV.Values) As SuspendedReasons.SearchDV
+    Public Shared Function LoadSearchData(SearchValues As SuspendedReasons.SearchDV.Values) As SuspendedReasons.SearchDV
 
         Dim dal As New SuspendedReasonsDAL
         Try
@@ -386,49 +386,49 @@ Public Class SuspendedReasons
         End Structure
 
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
-        Public Shared ReadOnly Property Suspended_reason_Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Suspended_reason_Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Dealer_Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Dealer_Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_DEALER_ID), Byte()))
             End Get
         End Property
-        Public Shared ReadOnly Property Dealer_Name(ByVal row) As String
+        Public Shared ReadOnly Property Dealer_Name(row) As String
             Get
                 Return row(COL_NAME_DEALER_NAME).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property routeId(ByVal row) As Guid
+        Public Shared ReadOnly Property routeId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ID), Byte()))
             End Get
         End Property
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CLAIM_ALLOWED(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CLAIM_ALLOWED(row As DataRow) As String
             Get
                 Return row(COL_NAME_CLAIM_ALLOWED).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CLAIM_ALLOWED_STR(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CLAIM_ALLOWED_STR(row As DataRow) As String
             Get
                 Return row(COL_NAME_CLAIM_ALLOWED_STR).ToString
             End Get

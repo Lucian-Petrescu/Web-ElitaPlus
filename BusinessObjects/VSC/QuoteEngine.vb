@@ -30,7 +30,7 @@ Public Class QuoteEngine
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As VSCQuoteDs)
+    Public Sub New(ds As VSCQuoteDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -48,7 +48,7 @@ Public Class QuoteEngine
     Private _dealerPlansIDs As ArrayList
     Private _coveragesIDs As ArrayList
 
-    Private Sub MapDataSet(ByVal ds As VSCQuoteDs)
+    Private Sub MapDataSet(ds As VSCQuoteDs)
 
         Dim schema As String = ds.GetXmlSchema.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -70,7 +70,7 @@ Public Class QuoteEngine
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As VSCQuoteDs)
+    Private Sub Load(ds As VSCQuoteDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -89,7 +89,7 @@ Public Class QuoteEngine
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As VSCQuoteDs)
+    Private Sub PopulateBOFromWebService(ds As VSCQuoteDs)
         Try
             If ds.VSCQuote.Count = 0 Then Exit Sub
             With ds.VSCQuote.Item(0)
@@ -127,7 +127,7 @@ Public Class QuoteEngine
         End Try
     End Sub
 
-    Private Sub NewOptional(ByVal code As String)
+    Private Sub NewOptional(code As String)
 
         Dim newRow As DataRow = Dataset.Tables(TABLE_NAME_OPTIONS).NewRow
         newRow(0) = code
@@ -138,7 +138,7 @@ Public Class QuoteEngine
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub BuildRelatedTables(ByVal ds As Dataset)
+    Private Sub BuildRelatedTables(ds As Dataset)
         Dim dr As DataRow
         ds.Tables(1).Columns.Add(New DataColumn("Quote_Item_id_String"))
 
@@ -474,7 +474,7 @@ Public Class QuoteEngine
 
     End Function
 
-    Private Function RemoveExcessData(ByVal xmlStringOutput As String) As String
+    Private Function RemoveExcessData(xmlStringOutput As String) As String
         xmlStringOutput = Regex.Replace(xmlStringOutput, "<QUOTE_ITEM_ID>[^>]+</QUOTE_ITEM_ID>|<QUOTE_ITEM_PARENT_ID>[^>]+</QUOTE_ITEM_PARENT_ID>|<Quote_Item_id_String>[^>]+</Quote_Item_id_String>|<QUOTE_ID>[^>]+</QUOTE_ID>", String.Empty)
         Return xmlStringOutput
     End Function

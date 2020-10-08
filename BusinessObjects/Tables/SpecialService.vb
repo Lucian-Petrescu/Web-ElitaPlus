@@ -7,7 +7,7 @@ Public Class SpecialService
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class SpecialService
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class SpecialService
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SpecialServiceDAL
             If _isDSCreator Then
@@ -345,8 +345,8 @@ Public Class SpecialService
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal LanguageId As Guid, ByVal compIds As ArrayList, _
-                           ByVal dealerId As Guid, ByVal CoverageTypeId As Guid) As SpecialServiceSearchDV
+    Public Shared Function getList(LanguageId As Guid, compIds As ArrayList, _
+                           dealerId As Guid, CoverageTypeId As Guid) As SpecialServiceSearchDV
         Try
             Dim dal As New SpecialServiceDAL
             Return New SpecialServiceSearchDV(dal.LoadList(LanguageId, compIds, dealerId, _
@@ -357,7 +357,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function ValidateCoverageLoss(ByVal DealerId As Guid, ByVal CoverageLossId As Guid) As DataSet
+    Public Shared Function ValidateCoverageLoss(DealerId As Guid, CoverageLossId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             'Dim ds As DataSet
@@ -368,7 +368,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function ChkIfSplSvcConfigured(ByVal CompanyGroupId As Guid, ByVal CoverageTypeId As Guid, ByVal DealerId As Guid, ByVal language_id As Guid, ByVal ProductCode As String, Optional ByVal LoadNoneActive As Boolean = False) As Boolean
+    Public Shared Function ChkIfSplSvcConfigured(CompanyGroupId As Guid, CoverageTypeId As Guid, DealerId As Guid, language_id As Guid, ProductCode As String, Optional ByVal LoadNoneActive As Boolean = False) As Boolean
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -384,7 +384,7 @@ Public Class SpecialService
     End Function
 
     'Req-603 For Web Service Request Process
-    Public Shared Function getSpecialServices(ByVal ClaimNumber As String, ByVal CertificateNumber As String, ByVal CoverageTypeId As Guid) As DataSet
+    Public Shared Function getSpecialServices(ClaimNumber As String, CertificateNumber As String, CoverageTypeId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -403,7 +403,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function getServiceTypesForServiceClass(ByVal ServiceClassId As Guid, ByVal LanguageId As Guid) As DataSet
+    Public Shared Function getServiceTypesForServiceClass(ServiceClassId As Guid, LanguageId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -415,7 +415,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function getPriceGroupsList(ByVal LanguageId As Guid) As DataSet
+    Public Shared Function getPriceGroupsList(LanguageId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -449,7 +449,7 @@ Public Class SpecialService
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -468,7 +468,7 @@ Public Class SpecialService
         End Get
     End Property
 
-    Public Sub UpdateProductCodes(ByVal selectedProductCodeGuidStrCollection As Hashtable)
+    Public Sub UpdateProductCodes(selectedProductCodeGuidStrCollection As Hashtable)
         If selectedProductCodeGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -494,7 +494,7 @@ Public Class SpecialService
             Next
         End If
     End Sub
-    Public Sub AttachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
+    Public Sub AttachProductCodes(selectedProductCodeGuidStrCollection As ArrayList)
         Dim PSplSvcIdStr As String
         For Each PSplSvcIdStr In selectedProductCodeGuidStrCollection
             Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.GetNewChild
@@ -504,7 +504,7 @@ Public Class SpecialService
         Next
     End Sub
 
-    Public Sub DetachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
+    Public Sub DetachProductCodes(selectedProductCodeGuidStrCollection As ArrayList)
         Dim PSplSvcIdStr As String
         For Each PSplSvcIdStr In selectedProductCodeGuidStrCollection
             Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.Find(New Guid(PSplSvcIdStr))
@@ -513,7 +513,7 @@ Public Class SpecialService
         Next
     End Sub
 
-    Public Function GetAvailableProductCodes(ByVal dealerid As Guid) As DataView
+    Public Function GetAvailableProductCodes(dealerid As Guid) As DataView
         'Dim dv As DataView = LookupListNew.GetProductCodeByCompanyLookupList(ElitaPlusIdentity.Current.'ActiveUser.Companies)
         '       Dim sequenceCondition As String = GetProductCodesLookupListSelectedSequenceFilter(dv, False)
         Dim dv As DataView                
@@ -534,7 +534,7 @@ Public Class SpecialService
         Return dv
     End Function
 
-    Public Function GetSelectedProductCodes(ByVal dealerid As Guid) As DataView
+    Public Function GetSelectedProductCodes(dealerid As Guid) As DataView
 
         Dim dv As DataView
         Dim sequenceCondition As String
@@ -552,7 +552,7 @@ Public Class SpecialService
         Return dv
     End Function
 
-    Protected Function GetProductCodesLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetProductCodesLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim PSplSvcBO As ProductSpecialService
         Dim inClause As String = "(-1"
@@ -581,11 +581,11 @@ Public Class SpecialService
         Public NotInheritable Class ValueMandatoryCovergeLoss
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_COV_LOSSCAUSE_COMB_IS_NOT_VALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
 
             If obj.CoverageLossId = Guid.Empty Then
@@ -601,11 +601,11 @@ Public Class SpecialService
      Public NotInheritable Class ValidCovergeLoss
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_COV_LOSSCAUSE_COMB_EXISTS_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
             Dim ds As DataSet
 
@@ -628,11 +628,11 @@ Public Class SpecialService
     Public NotInheritable Class ValidateAvailableSvcCenter
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_AVAILABLE_SVC_CNTR_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
             Dim ds As DataSet, strAvailableServiceCenter As String
             strAvailableServiceCenter = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(valueToCheck.ToString))
@@ -651,11 +651,11 @@ Public Class SpecialService
     Public NotInheritable Class ValidateAuthorizedAmountFrom
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_AUTHORIZED_AMOUNT_FROM_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
             Dim ds As DataSet, strAvailableServiceCenter As String
 

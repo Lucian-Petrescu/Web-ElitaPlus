@@ -16,7 +16,7 @@
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetListsDs)
+    Public Sub New(ds As GetListsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -29,7 +29,7 @@
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetListsDs)
+    Private Sub MapDataSet(ds As GetListsDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -51,7 +51,7 @@
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetListsDs)
+    Private Sub Load(ds As GetListsDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -70,7 +70,7 @@
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetListsDs)
+    Private Sub PopulateBOFromWebService(ds As GetListsDs)
         Try
             If ds.GetLists.Count = 0 Then Exit Sub
             With ds.GetLists.Item(0)

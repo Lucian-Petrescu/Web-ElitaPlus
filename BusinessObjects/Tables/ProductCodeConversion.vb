@@ -6,7 +6,7 @@ Public Class ProductCodeConversion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class ProductCodeConversion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -49,7 +49,7 @@ Public Class ProductCodeConversion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductCodeConversionDAL
             If _isDSCreator Then
@@ -308,7 +308,7 @@ Public Class ProductCodeConversion
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As ProductCodeConversion)
+    Public Sub Copy(original As ProductCodeConversion)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product")
         End If
@@ -320,7 +320,7 @@ Public Class ProductCodeConversion
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function ProductConversionList(ByVal oData As Object) As DataView
+    Public Shared Function ProductConversionList(oData As Object) As DataView
         Try
             Dim oProductConversionData As ProductConversionData = CType(oData, ProductConversionData)
             Dim dal As New ProductCodeConversionDAL
@@ -335,7 +335,7 @@ Public Class ProductCodeConversion
         End Try
     End Function
 
-    Public Shared Function GetExternalProdCodeListWithDesc(ByVal DealerID As Guid) As ExternalProdCodeWithDescDV
+    Public Shared Function GetExternalProdCodeListWithDesc(DealerID As Guid) As ExternalProdCodeWithDescDV
         Try
             Dim dal As New ProductCodeConversionDAL
             Dim ds As DataSet
@@ -365,7 +365,7 @@ Public Class ProductCodeConversion
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
@@ -377,11 +377,11 @@ Public Class ProductCodeConversion
     Public NotInheritable Class Valid_DealerProdCodeMfgCombination
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_INVALID_MFG_DEALER_EXTPRODCODE_COMBINATION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCodeConversion = CType(objectToValidate, ProductCodeConversion)
 
             Dim dal As New ProductCodeConversionDAL
@@ -405,11 +405,11 @@ Public Class ProductCodeConversion
     Public NotInheritable Class Valid_DealerProdCodeCombination
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_INVALID_DEALER_EXTPRODCODE_COMBINATION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCodeConversion = CType(objectToValidate, ProductCodeConversion)
 
             Dim dal As New ProductCodeConversionDAL
@@ -435,7 +435,7 @@ Public Class ProductCodeConversion
     public NotInheritable Class NonOverlappingProductCodeConversion 
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_OVERLAPPING_PRODUCT_CODE_CONVERSION)
         End Sub
         Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean

@@ -4,14 +4,14 @@ Public Class CompanyFormExclusion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal oFormId As Guid, ByVal oCompanyId As Guid)
+    Public Sub New(oFormId As Guid, oCompanyId As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(oFormId, oCompanyId)
@@ -25,20 +25,20 @@ Public Class CompanyFormExclusion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -60,7 +60,7 @@ Public Class CompanyFormExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CompanyFormExclusionDAL
             If _isDSCreator Then
@@ -84,7 +84,7 @@ Public Class CompanyFormExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal oFormId As Guid, ByVal oCompanyId As Guid)
+    Protected Sub Load(oFormId As Guid, oCompanyId As Guid)
         Try
             Dim dal As New CompanyFormExclusionDAL
             If _isDSCreator Then
@@ -189,7 +189,7 @@ Public Class CompanyFormExclusion
 
 #Region "DATA ACCESS ROUTINES"
 
-    Public Shared Function PopulateList(ByVal oLanguageID As Guid) As DataView
+    Public Shared Function PopulateList(oLanguageID As Guid) As DataView
         Dim oDs As DataSet
         Try
             Dim dal As New CompanyFormExclusionDAL
@@ -200,7 +200,7 @@ Public Class CompanyFormExclusion
         End Try
     End Function
 
-    Public Shared Function GetFormListByTabID(ByVal TabID As Guid, ByVal oLanguageID As Guid) As DataView
+    Public Shared Function GetFormListByTabID(TabID As Guid, oLanguageID As Guid) As DataView
         Dim oDs As DataSet
         Try
             Dim dal As New CompanyFormExclusionDAL
@@ -211,7 +211,7 @@ Public Class CompanyFormExclusion
         End Try
     End Function
 
-    Public Shared Function GetCompanyPermissionByFormID(ByVal FormID As Guid) As DataView
+    Public Shared Function GetCompanyPermissionByFormID(FormID As Guid) As DataView
         Dim oDs As DataSet
         Try
             Dim dal As New CompanyFormExclusionDAL

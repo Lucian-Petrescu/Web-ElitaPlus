@@ -6,7 +6,7 @@ Public Class Notification
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Notification
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Notification
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New NotificationDAL
             If _isDSCreator Then
@@ -314,15 +314,15 @@ Public Class Notification
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal NotificationNameMask As String, _
-                                   ByVal NotificationDetailMask As String, _
-                                   ByVal NotificationTypeId As Guid, _
-                                   ByVal AudianceTypeId As Guid, _
-                                   ByVal BeginDate As String, _
-                                   ByVal EndDate As String, _
-                                   ByVal BeginDateOutage As String, _
-                                   ByVal EndDateOutage As String, _
-                                   ByVal IncludeDisabled As Boolean, _
+    Public Shared Function GetList(NotificationNameMask As String, _
+                                   NotificationDetailMask As String, _
+                                   NotificationTypeId As Guid, _
+                                   AudianceTypeId As Guid, _
+                                   BeginDate As String, _
+                                   EndDate As String, _
+                                   BeginDateOutage As String, _
+                                   EndDateOutage As String, _
+                                   IncludeDisabled As Boolean, _
                                    Optional ByVal sortOrder As String = NotificationDAL.SORT_ORDER_DESC, _
                                    Optional ByVal sortBy As String = NotificationDAL.SORT_BY_NOTIFICATION_TYPE, _
                                    Optional ByVal userType As String = "ADMIN", _
@@ -400,7 +400,7 @@ Public Class Notification
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

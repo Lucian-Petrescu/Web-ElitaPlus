@@ -13,7 +13,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -27,20 +27,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductRewardsDAL
             If _isDSCreator Then
@@ -91,7 +91,7 @@
         Dataset.Tables(ProductRewardsDAL.TABLE_NAME).Rows.Clear()
     End Sub
 
-    Public Sub AddRowsToTable(ByVal rowval As DataRow, Optional ByVal updateRowVal As Boolean = False)
+    Public Sub AddRowsToTable(rowval As DataRow, Optional ByVal updateRowVal As Boolean = False)
         Dim dal As New ProductRewardsDAL
         Row = FindRow(Id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
         Row(1) = rowval(1)
@@ -309,7 +309,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -356,7 +356,7 @@
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal ProductCodeId As Guid) As ProductRewardsSearchDV
+    Public Shared Function LoadList(ProductCodeId As Guid) As ProductRewardsSearchDV
         Try
             Dim dal As New ProductRewardsDAL
             Dim BOProd As ProductCode
@@ -367,7 +367,7 @@
         End Try
     End Function
 
-    Private Function ValidateUniqueCombination(ByVal ProductId As Guid, ByVal RewardType As String, ByVal EffectiveDate As Date, ByVal ExpirationDate As Date) As DataView
+    Private Function ValidateUniqueCombination(ProductId As Guid, RewardType As String, EffectiveDate As Date, ExpirationDate As Date) As DataView
         Try
             Dim dal As New ProductRewardsDAL
             Return New DataView(dal.ValidateUniqueCombination(ProductId, RewardType, EffectiveDate, ExpirationDate).Tables(0))
@@ -376,7 +376,7 @@
         End Try
     End Function
 
-    Private Function ValidateOverlap(ByVal ProductId As Guid, ByVal RewardType As String, ByVal EffectiveDate As Date, ByVal ExpirationDate As Date) As DataView
+    Private Function ValidateOverlap(ProductId As Guid, RewardType As String, EffectiveDate As Date, ExpirationDate As Date) As DataView
         Try
             Dim dal As New ProductRewardsDAL
             Return New DataView(dal.ValidateOverlap(ProductId, RewardType, EffectiveDate, ExpirationDate).Tables(0))
@@ -385,7 +385,7 @@
         End Try
     End Function
 
-    Private Function ValidateRenewalOverlap(ByVal ProductId As Guid, ByVal ProductRewardId As Guid) As DataView
+    Private Function ValidateRenewalOverlap(ProductId As Guid, ProductRewardId As Guid) As DataView
         Try
             Dim dal As New ProductRewardsDAL
             Return New DataView(dal.ValidateRenewalOverlap(ProductId, ProductRewardId).Tables(0))
@@ -398,15 +398,15 @@
     Public Class ProductRewardsDetailList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ProductCode)
+        Public Sub New(parent As ProductCode)
             MyBase.New(LoadTable(parent), GetType(ProductRewards), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ProductRewards).ProductCodeId.Equals(CType(Parent, ProductCode).Id)
         End Function
 
-        Public Function Find(ByVal ProductRewardsId As Guid) As ProductRewards
+        Public Function Find(ProductRewardsId As Guid) As ProductRewards
             Dim bo As ProductRewards
             For Each bo In Me
                 If bo.Id.Equals(ProductRewardsId) Then Return bo
@@ -414,7 +414,7 @@
             Return Nothing
         End Function
 
-        Public Function Delete(ByVal ProductRewardsId As Guid)
+        Public Function Delete(ProductRewardsId As Guid)
             Dim bo As ProductRewards
             Dim dr As DataRow
 
@@ -427,7 +427,7 @@
 
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ProductCode) As DataTable
+        Private Shared Function LoadTable(parent As ProductCode) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ProductRewardsDetailList)) Then
                     Dim dal As New ProductRewardsDAL
@@ -448,11 +448,11 @@
     Public NotInheritable Class ValidExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True
@@ -474,11 +474,11 @@
     Public NotInheritable Class ValidEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM003)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True
@@ -501,11 +501,11 @@
     Public NotInheritable Class ValidUniqueCombination
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM002)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
             Dim bValid As Boolean = True
 
@@ -532,11 +532,11 @@
     Public NotInheritable Class ValidateOverlapping
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM004)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
             Dim bValid As Boolean = True
 
@@ -565,11 +565,11 @@
     Public NotInheritable Class ValidateToRenewal
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True
@@ -591,11 +591,11 @@
     Public NotInheritable Class ValidateFromRenewal
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM006)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True

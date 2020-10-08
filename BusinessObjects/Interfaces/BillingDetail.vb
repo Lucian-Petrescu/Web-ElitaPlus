@@ -6,7 +6,7 @@ Public Class BillingDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class BillingDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, Optional ByVal useCertId As Boolean = False)
+    Public Sub New(id As Guid, familyDS As DataSet, Optional ByVal useCertId As Boolean = False)
         MyBase.New(False)
         Dataset = familyDS
         Load(id, useCertId)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class BillingDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, Optional ByVal useCertId As Boolean = False)
+    Protected Sub Load(id As Guid, Optional ByVal useCertId As Boolean = False)
         Try
             Dim dal As New BillingDetailDAL
             If _isDSCreator Then
@@ -389,7 +389,7 @@ Public Class BillingDetail
     End Sub
 
 
-    Public Shared Function CreateBillingHistForRejOrAct(ByVal NewStatusId As Guid, ByVal CertId As Guid, ByVal InstalNo As Integer, ByVal RejectCodeId As Guid, ByVal SelectBillHistId As Guid) As Integer
+    Public Shared Function CreateBillingHistForRejOrAct(NewStatusId As Guid, CertId As Guid, InstalNo As Integer, RejectCodeId As Guid, SelectBillHistId As Guid) As Integer
         Dim dal As New BillingDetailDAL, RetVal As Integer
 
         RetVal = dal.CreateBillingHistForRejOrAct(NewStatusId, CertId, InstalNo, RejectCodeId, SelectBillHistId)
@@ -398,7 +398,7 @@ Public Class BillingDetail
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal BillingHeaderId As Guid) As DataView
+    Public Shared Function getList(BillingHeaderId As Guid) As DataView
         Dim dal As New BillingDetailDAL
         Dim ds As DataSet
         Try
@@ -413,7 +413,7 @@ Public Class BillingDetail
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getListForNonBillingByDealer(ByVal BillingHeaderId As Guid) As DataView
+    Public Shared Function getListForNonBillingByDealer(BillingHeaderId As Guid) As DataView
         Dim dal As New BillingDetailDAL
         Dim ds As DataSet
         Try
@@ -430,7 +430,7 @@ Public Class BillingDetail
     End Function
 
 
-    Public Shared Function getHistoryList(ByVal certId As Guid) As BillingHistorySearchDV
+    Public Shared Function getHistoryList(certId As Guid) As BillingHistorySearchDV
         Try
             Dim dal As New BillingDetailDAL
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -440,7 +440,7 @@ Public Class BillingDetail
         End Try
     End Function
 
-    Public Shared Function getBillingTotals(ByVal certId As Guid) As BillingTotals
+    Public Shared Function getBillingTotals(certId As Guid) As BillingTotals
         Try
             Dim dal As New BillingDetailDAL
             Return New BillingTotals(dal.LoadBillingTotals(certId).Tables(0))
@@ -449,7 +449,7 @@ Public Class BillingDetail
         End Try
     End Function
 
-    Public Shared Function getBillingTotalsNew(ByVal certId As Guid) As BillingTotals
+    Public Shared Function getBillingTotalsNew(certId As Guid) As BillingTotals
         Try
             Dim dal As New BillingDetailDAL
             Return New BillingTotals(dal.LoadBillingTotalsNew(certId).Tables(0))
@@ -458,7 +458,7 @@ Public Class BillingDetail
         End Try
     End Function
 
-    Public Shared Function getBillingLaterRow(ByVal certId As Guid) As BillingLaterRow
+    Public Shared Function getBillingLaterRow(certId As Guid) As BillingLaterRow
         Dim dv As DataView
         Try
             Dim dal As New BillingDetailDAL
@@ -468,7 +468,7 @@ Public Class BillingDetail
         End Try
     End Function
 
-    Public Shared Function GetMaxActiveInstNoForCert(ByVal CertId As Guid) As Integer
+    Public Shared Function GetMaxActiveInstNoForCert(CertId As Guid) As Integer
         Dim dal As New BillingDetailDAL
         Dim dv As New DataView
         Try
@@ -484,7 +484,7 @@ Public Class BillingDetail
 
     End Function
 
-    Public Shared Function GetLatestRejInstNoForCert(ByVal CertId As Guid) As Integer
+    Public Shared Function GetLatestRejInstNoForCert(CertId As Guid) As Integer
         Dim dal As New BillingDetailDAL
         Dim dv As New DataView
         Try
@@ -500,7 +500,7 @@ Public Class BillingDetail
 
     End Function
 
-    Public Shared Function GetAllRejInstNoForCert(ByVal CertId As Guid) As DataView
+    Public Shared Function GetAllRejInstNoForCert(CertId As Guid) As DataView
         Dim dal As New BillingDetailDAL
         Dim ds As DataSet
         Try
@@ -540,35 +540,35 @@ Public Class BillingDetail
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property BillingDetailId(ByVal row) As Guid
+        Public Shared ReadOnly Property BillingDetailId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_BILLING_DETAIL_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property InstallmentNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property InstallmentNumber(row As DataRow) As String
             Get
                 Return row(COL_NAME_INSTALLMENT_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property BilledAmount(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property BilledAmount(row As DataRow) As String
             Get
                 Return row(COL_NAME_BILLED_AMOUNT).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property PaymentRunDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property PaymentRunDate(row As DataRow) As DateType
             Get
                 Return row(COL_NAME_PAYMENT_RUN_DATE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CreatedDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property CreatedDate(row As DataRow) As DateType
             Get
                 Return row(COL_NAME_CREATED_DATE).ToString
             End Get
@@ -590,7 +590,7 @@ Public Class BillingDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -616,7 +616,7 @@ Public Class BillingDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

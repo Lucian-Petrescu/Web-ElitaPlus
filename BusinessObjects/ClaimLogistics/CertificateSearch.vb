@@ -16,7 +16,7 @@ Public Class CertificateSearch
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CertificateSearchDs)
+    Public Sub New(ds As CertificateSearchDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -29,7 +29,7 @@ Public Class CertificateSearch
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As CertificateSearchDs)
+    Private Sub MapDataSet(ds As CertificateSearchDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -51,7 +51,7 @@ Public Class CertificateSearch
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As CertificateSearchDs)
+    Private Sub Load(ds As CertificateSearchDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -69,7 +69,7 @@ Public Class CertificateSearch
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CertificateSearchDs)
+    Private Sub PopulateBOFromWebService(ds As CertificateSearchDs)
         Try
             If ds.CertificateSearch.Count = 0 Then Exit Sub
             With ds.CertificateSearch.Item(0)
@@ -197,12 +197,12 @@ Public Class CertificateSearch
     Public NotInheritable Class ValidateParameters
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             'fields can not simultaneously be set at zero
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertificateSearch = CType(objectToValidate, CertificateSearch)
 
 

@@ -15,7 +15,7 @@ Public Class CaseBase
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -29,24 +29,24 @@ Public Class CaseBase
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
     End Sub
-    Public Sub New(ByVal caseNumber As String, ByVal companyCode As String)
+    Public Sub New(caseNumber As String, companyCode As String)
         MyBase.New()
         Dataset = New DataSet
         Load(caseNumber, companyCode)
@@ -67,7 +67,7 @@ Public Class CaseBase
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             If _isDSCreator Then
                 If Not Row Is Nothing Then
@@ -90,7 +90,7 @@ Public Class CaseBase
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Overridable Sub Load(ByVal caseNumber As String, ByVal companyCode As String)
+    Protected Overridable Sub Load(caseNumber As String, companyCode As String)
         Try
             If _isDSCreator Then
                 If Not Row Is Nothing Then
@@ -403,8 +403,8 @@ Public Class CaseBase
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String,
-                                       ByVal languageId As Guid, ByVal networkId As String) As CaseSearchDv
+    Public Shared Function GetCaseList(companyId As Guid, caseNumber As String, caseStatus As String, callerFirstName As String, callerLastName As String, caseOpenDateFrom As String, caseOpenDateTo As String, casePurpose As String, certificateNumber As String, caseClosedReason As String,
+                                       languageId As Guid, networkId As String) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
             Dim fromdate As Date?
@@ -469,13 +469,13 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-   Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
-                                        ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
-                                        ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
-                                        ByVal certificateStatus As String, ByVal email As String,
-                                        ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
-                                        ByVal globalCustomerNumber As String, ByVal dateofbirth As String,
-                                        ByVal languageId As Guid,ByVal branchCode As String,ByVal branchName As String) As AgentSearchDv
+   Public Shared Function GetAgentList(companyId As Guid, dealerId As Guid, customerFirstName As String, customerLastName As String,
+                                        caseNumber As String, claimNumber As String, certificateNumber As String,
+                                        serialNumber As String, invoiceNumber As String, phoneNumber As String, zipcode As String,
+                                        certificateStatus As String, email As String,
+                                        taxId As String, serviceLineNumber As String, accountNumber As String,
+                                        globalCustomerNumber As String, dateofbirth As String,
+                                        languageId As Guid,branchCode As String,branchName As String) As AgentSearchDv
 
         If (customerFirstName.Equals(String.Empty) AndAlso
             customerLastName.Equals(String.Empty) AndAlso
@@ -529,7 +529,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal searchType As String) As DataSet
+    Public Shared Function GetAgentSearchConfigList(companyId As Guid, dealerId As Guid, searchType As String) As DataSet
         Try
             Dim dal As New CaseDAL
             Return (dal.LoadAgentSearchConfigList(companyId, dealerId, searchType))
@@ -574,7 +574,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Shared Function GetExclSecFieldsList(companyId As Guid, dealerId As Guid) As DataSet
         Try
             Dim dal As New CaseDAL
             Return dal.LoadExclSecFieldsList(companyId, dealerId)
@@ -582,8 +582,8 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function DisplaySecField(ByVal exclSecFieldsDt As DataTable, ByVal callerAuthenticationNeeded As Boolean,
-                                           ByVal secFieldTableName As String, ByVal secField As String, ByVal isCallerAuthenticated As Boolean) As Boolean
+    Public Shared Function DisplaySecField(exclSecFieldsDt As DataTable, callerAuthenticationNeeded As Boolean,
+                                           secFieldTableName As String, secField As String, isCallerAuthenticated As Boolean) As Boolean
 
         If Not exclSecFieldsDt Is Nothing AndAlso callerAuthenticationNeeded AndAlso Not isCallerAuthenticated Then
             If secField Is String.Empty OrElse (exclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = secFieldTableName And p.Field(Of String)("column_name") = secField).Count > 0) Then
@@ -594,7 +594,7 @@ Public Class CaseBase
         Return True
 
     End Function
-    Public Shared Function LoadExclSecFieldsConfig(ByVal companyId As Guid, ByVal dealerId As Guid) As List(Of ExclSecFields)
+    Public Shared Function LoadExclSecFieldsConfig(companyId As Guid, dealerId As Guid) As List(Of ExclSecFields)
         Try
 
             Dim exclSecFieildsDv As DataSet
@@ -626,7 +626,7 @@ Public Class CaseBase
 
 
 
-    Public Shared Function GetClaimCaseList(ByVal claimId As Guid, ByVal languageId As Guid) As CaseSearchDv
+    Public Shared Function GetClaimCaseList(claimId As Guid, languageId As Guid) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
             Return New CaseSearchDv(dal.LoadClaimCaseList(claimId, languageId).Tables(0))
@@ -635,7 +635,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetCaseDeniedReasonsList(ByVal caseId As Guid, ByVal languageId As Guid) As CaseDeniedReasonsDv
+    Public Shared Function GetCaseDeniedReasonsList(caseId As Guid, languageId As Guid) As CaseDeniedReasonsDv
         Try
             Dim dal As New CaseDAL
 
@@ -671,7 +671,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetCaseFieldsList(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
+    Public Shared Function GetCaseFieldsList(claimId As Guid, languageId As Guid) As DataSet
         Try
             Dim dal As New CaseDAL
             Return dal.LoadCaseFieldsList(claimId, languageId)
@@ -680,7 +680,7 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetCaseNotesList(ByVal caseId As Guid) As CaseNotesDv
+    Public Shared Function GetCaseNotesList(caseId As Guid) As CaseNotesDv
         Try
             Dim dal As New CaseDAL
             Return New CaseNotesDv(dal.LoadCaseNotesList(caseId).Tables(0))
@@ -689,7 +689,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Sub UpdateCaseFieldValues(ByVal caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
+    Public Shared Sub UpdateCaseFieldValues(caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
         Try
             Dim dal As New CaseDAL
             dal.UpdateCaseFieldValues(caseId, caseFieldXcds, caseFieldValues)
@@ -716,7 +716,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -735,7 +735,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -756,7 +756,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -776,7 +776,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

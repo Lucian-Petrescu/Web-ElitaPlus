@@ -28,7 +28,7 @@ Public Class ContractValidation
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ContractValidationDs)
+    Public Sub New(ds As ContractValidationDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -37,7 +37,7 @@ Public Class ContractValidation
         dsMyContractValidation = ds
     End Sub
 
-    Public Sub New(ByVal ds As ContractValidationDs, ByVal xml As String)
+    Public Sub New(ds As ContractValidationDs, xml As String)
         MyBase.New()
 
         MapDataSet(ds)
@@ -58,7 +58,7 @@ Public Class ContractValidation
     Dim claimBO As Claim
     Dim claimFamilyBO As Claim
 
-    Private Sub MapDataSet(ByVal ds As ContractValidationDs)
+    Private Sub MapDataSet(ds As ContractValidationDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -80,7 +80,7 @@ Public Class ContractValidation
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ContractValidationDs)
+    Private Sub Load(ds As ContractValidationDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -99,7 +99,7 @@ Public Class ContractValidation
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ContractValidationDs)
+    Private Sub PopulateBOFromWebService(ds As ContractValidationDs)
         Try
             If ds.ContractValidation.Count = 0 Then Exit Sub
             With ds.ContractValidation.Item(0)
@@ -185,7 +185,7 @@ Public Class ContractValidation
 
     End Function
 
-    Public Function CheckDBNull(ByVal obj As Object) As Object
+    Public Function CheckDBNull(obj As Object) As Object
         If DBNull.Value.Equals(obj) Then
             If obj.GetType Is GetType(DecimalType) Then
                 Return 0
@@ -197,7 +197,7 @@ Public Class ContractValidation
         End If
     End Function
 
-    Private Sub ComposeResult(ByRef outputXml As XElement, ByVal parentItemNumber As String, ByVal itemNumber As String, ByVal claimNumber As String, Optional ByVal errorCode As String = "", Optional ByVal propertyName As String = "")
+    Private Sub ComposeResult(ByRef outputXml As XElement, parentItemNumber As String, itemNumber As String, claimNumber As String, Optional ByVal errorCode As String = "", Optional ByVal propertyName As String = "")
         Dim result As String = ""
         Dim errXml As XElement
         Dim userInfo As String
@@ -241,7 +241,7 @@ Public Class ContractValidation
         outputXml.Add(tranDataRecXml)
     End Sub
 
-    Public Sub BuildContract(ByRef objContract As Contract, ByVal objContractUpload As ContractUpload)
+    Public Sub BuildContract(ByRef objContract As Contract, objContractUpload As ContractUpload)
 
         If Not objContractUpload Is Nothing Then
             objContract = New Contract

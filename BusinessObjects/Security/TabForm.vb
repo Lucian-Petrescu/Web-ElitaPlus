@@ -49,7 +49,7 @@ Public Class TabForm
 
 #Region "StoreProcedures Control"
 
-    Public Sub LoadTabs(ByVal userId As String)
+    Public Sub LoadTabs(userId As String)
         Try
             Dim dal As New TabFormDAL
 
@@ -60,7 +60,7 @@ Public Class TabForm
         End Try
     End Sub
 
-    Public Sub LoadForms(ByVal userId As String)
+    Public Sub LoadForms(userId As String)
         Try
             Dim dal As New TabFormDAL
 
@@ -122,18 +122,18 @@ Public Class TabForm
 #End Region
 
 #Region "New form table maintenance"
-    Public Shared Sub SaveNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, ByVal New_Form_Id As Guid, _
-                           ByVal strTab As String, ByVal strCode As String, _
-                           ByVal strEnglish As String, ByVal strRelativeURL As String, _
-                           ByVal strNavAllowed As String, ByVal strApproved As String, _
-                           ByVal strFormCategory As String, ByVal strQueryString As String)
+    Public Shared Sub SaveNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, New_Form_Id As Guid, _
+                           strTab As String, strCode As String, _
+                           strEnglish As String, strRelativeURL As String, _
+                           strNavAllowed As String, strApproved As String, _
+                           strFormCategory As String, strQueryString As String)
 
         Dim dal As New TabFormDAL
         dal.SaveNewForm(intErrCode, strErrMsg, Authentication.CurrentUser.UserName, New_Form_Id, strTab, strCode, _
                         strEnglish, strRelativeURL, strNavAllowed, strApproved, strFormCategory, strQueryString)
     End Sub
 
-    Public Shared Sub DeleteNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, ByVal New_Form_Id As Guid)
+    Public Shared Sub DeleteNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, New_Form_Id As Guid)
 
         Dim dal As New TabFormDAL
         dal.DeleteNewForm(intErrCode, strErrMsg, New_Form_Id)

@@ -21,7 +21,7 @@ Public Class GetMarkupAndCommission
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetMarkupAndCommissionDs)
+    Public Sub New(ds As GetMarkupAndCommissionDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -34,7 +34,7 @@ Public Class GetMarkupAndCommission
 #Region "Private Members"
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetMarkupAndCommissionDs)
+    Private Sub MapDataSet(ds As GetMarkupAndCommissionDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -56,7 +56,7 @@ Public Class GetMarkupAndCommission
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetMarkupAndCommissionDs)
+    Private Sub Load(ds As GetMarkupAndCommissionDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -74,7 +74,7 @@ Public Class GetMarkupAndCommission
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetMarkupAndCommissionDs)
+    Private Sub PopulateBOFromWebService(ds As GetMarkupAndCommissionDs)
         Try
             If ds.GetMarkupAndCommission.Count = 0 Then Exit Sub
             With ds.GetMarkupAndCommission.Item(0)

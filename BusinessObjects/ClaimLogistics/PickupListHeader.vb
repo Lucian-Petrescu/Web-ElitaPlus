@@ -6,7 +6,7 @@ Public Class PickupListHeader
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class PickupListHeader
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class PickupListHeader
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PickupListHeaderDAL
             If _isDSCreator Then
@@ -195,7 +195,7 @@ Public Class PickupListHeader
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetNewOpenClaims(ByVal RouteId As Guid) As DataSet
+    Public Shared Function GetNewOpenClaims(RouteId As Guid) As DataSet
 
         Try
             Dim companies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -207,7 +207,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimsReadyFromSC(ByVal RouteId As Guid) As DataSet
+    Public Shared Function GetClaimsReadyFromSC(RouteId As Guid) As DataSet
 
         Try
             Dim companies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -220,7 +220,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimIDByCode(ByVal claimNumber As String, ByVal certItemCoverageCode As String) As Guid
+    Public Shared Function GetClaimIDByCode(claimNumber As String, certItemCoverageCode As String) As Guid
         Dim claimID As Guid = Guid.Empty
         Dim dal As New PickupListHeaderDAL
         Dim ds As DataSet = dal.GetClaimIDByCode(ElitaPlusIdentity.Current.ActiveUser.Companies, claimNumber, certItemCoverageCode)
@@ -234,7 +234,7 @@ Public Class PickupListHeader
 
     End Function
 
-    Public Shared Function UpdatePickListStatus(ByVal PickListNumber As String, ByVal pickupBy As String) As DataSet
+    Public Shared Function UpdatePickListStatus(PickListNumber As String, pickupBy As String) As DataSet
 
         Try
             Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
@@ -247,7 +247,7 @@ Public Class PickupListHeader
 
     End Function
 
-    Public Shared Function UpdatePickListStatus_Received(ByVal PickListNumber As String, ByVal ServiceCenterID As Guid, ByVal claimStr As String) As DataSet
+    Public Shared Function UpdatePickListStatus_Received(PickListNumber As String, ServiceCenterID As Guid, claimStr As String) As DataSet
 
         Try
             Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
@@ -261,7 +261,7 @@ Public Class PickupListHeader
 
     End Function
 
-    Public Shared Function GetActiveClaimsForSvc(ByVal serviceNetworkID As Guid, ByVal sortOrder As Integer, ByVal claimStatusCodeId As Guid) As DataSet
+    Public Shared Function GetActiveClaimsForSvc(serviceNetworkID As Guid, sortOrder As Integer, claimStatusCodeId As Guid) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -272,7 +272,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimInfo(ByVal claimId As Guid, ByVal includeStatusHistory As String, ByVal customerName As String, ByVal customerPhone As String, ByVal AuthorizationNumber As String) As DataSet
+    Public Shared Function GetClaimInfo(claimId As Guid, includeStatusHistory As String, customerName As String, customerPhone As String, AuthorizationNumber As String) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -283,7 +283,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimStatusHistory(ByVal claimId As Guid) As DataSet
+    Public Shared Function GetClaimStatusHistory(claimId As Guid) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -294,7 +294,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimsByPickList(ByVal HeaderID As Guid, ByVal StoreServiceCenterID As Guid, ByVal ServiceCenterID As Guid) As DataSet
+    Public Shared Function GetClaimsByPickList(HeaderID As Guid, StoreServiceCenterID As Guid, ServiceCenterID As Guid) As DataSet
 
         Try
             Dim companies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -306,7 +306,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetPicklistByDateRange(ByVal startDate As DateTime, ByVal endDate As DateTime) As DataSet
+    Public Shared Function GetPicklistByDateRange(startDate As DateTime, endDate As DateTime) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -320,7 +320,7 @@ Public Class PickupListHeader
     End Function
 
 
-    Public Shared Function GetClaimsByDateRange(ByVal startDate As DateTime, ByVal endDate As DateTime, ByVal serviceCenterId As Guid) As DataSet
+    Public Shared Function GetClaimsByDateRange(startDate As DateTime, endDate As DateTime, serviceCenterId As Guid) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL

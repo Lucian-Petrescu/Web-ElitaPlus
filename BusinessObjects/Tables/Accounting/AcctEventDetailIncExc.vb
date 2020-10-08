@@ -7,7 +7,7 @@ Public Class AcctEventDetailIncExc
     Private _DealerDescription As String = String.Empty
     Private _CoverageTypeDescription As String = String.Empty
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class AcctEventDetailIncExc
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class AcctEventDetailIncExc
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctEventDetailIncexcDAL
             If _isDSCreator Then
@@ -222,7 +222,7 @@ Public Class AcctEventDetailIncExc
         End If
     End Function
 
-    Public Function DuplicateExists(ByVal ListToCheck As Collections.Generic.List(Of AcctEventDetailIncExc)) As Boolean
+    Public Function DuplicateExists(ListToCheck As Collections.Generic.List(Of AcctEventDetailIncExc)) As Boolean
         Dim blnDup As Boolean = False
         If DealerId <> Guid.Empty AndAlso CoverageTypeId = Guid.Empty Then 'only dealer configured
             If ListToCheck.Exists(Function(r) r.DealerId = DealerId AndAlso r.Id <> Id) Then
@@ -242,7 +242,7 @@ Public Class AcctEventDetailIncExc
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetInclusionExclusionConfigByAcctEventDetail(ByVal AcctEventDetailID As Guid) As Collections.Generic.List(Of AcctEventDetailIncexc)
+    Public Shared Function GetInclusionExclusionConfigByAcctEventDetail(AcctEventDetailID As Guid) As Collections.Generic.List(Of AcctEventDetailIncexc)
         Dim dal As New AcctEventDetailIncexcDAL
         Dim ds As DataSet = dal.LoadListByAcctEventDetailID(AcctEventDetailID)
         Dim IEList As New Collections.Generic.List(Of AcctEventDetailIncexc)
@@ -252,7 +252,7 @@ Public Class AcctEventDetailIncExc
         Return IEList
     End Function
 
-    Public Shared Function GetDealerList(ByVal AcctEventID As Guid) As DataView
+    Public Shared Function GetDealerList(AcctEventID As Guid) As DataView
         Dim dal As New AcctEventDetailIncexcDAL
         Dim ds As DataSet = dal.LoadDealerListByAcctEventDetailID(AcctEventID, Authentication.CurrentUser.Id)
         Return ds.Tables(0).DefaultView
@@ -264,11 +264,11 @@ Public Class AcctEventDetailIncExc
     Public NotInheritable Class Config_Criteria_Valid
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "AT_LEAST_ONE_FIELD_REQUIRED")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AcctEventDetailIncExc = CType(objectToValidate, AcctEventDetailIncExc)
             Return obj.AtLeastOneFieldHasValue
         End Function
@@ -278,11 +278,11 @@ Public Class AcctEventDetailIncExc
     Public NotInheritable Class Duplicate_Config_Exists
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "DUPLICATE_RECORD")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AcctEventDetailIncExc = CType(objectToValidate, AcctEventDetailIncExc)
             Dim mylist As Collections.Generic.List(Of AcctEventDetailIncExc) = obj.GetInclusionExclusionConfigByAcctEventDetail(obj.AcctEventDetailId)
             Return (Not obj.DuplicateExists(mylist))

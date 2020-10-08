@@ -6,7 +6,7 @@ Public Class ClaimCloseRules
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ClaimCloseRules
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ClaimCloseRules
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimCloseRulesDAL
             If _isDSCreator Then
@@ -280,25 +280,25 @@ Public Class ClaimCloseRules
 
     End Function
 
-    Public Shared Function UpdateClaimCloseRuleInActive(ByVal claimCloseRuleId As Guid) As Integer
+    Public Shared Function UpdateClaimCloseRuleInActive(claimCloseRuleId As Guid) As Integer
         Dim claimcloseRulesDAL As New ClaimCloseRulesDAL
         Return claimcloseRulesDAL.UpdateClaimRuleInactive(claimCloseRuleId)
 
     End Function
 
     'Def-25716: Added function to validate if the claim close rules is already exists.
-    Public Shared Function ValidateClaimCloseRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String, ByVal claimIssueId As Guid) As Integer
+    Public Shared Function ValidateClaimCloseRule(companyId As Guid, dealerId As Guid, closeRuleBasedOnId As Guid, claimStatusByGroupId As Guid, entityType As String, claimIssueId As Guid) As Integer
         Dim claimcloseRulesDAL As New ClaimCloseRulesDAL
         Return claimcloseRulesDAL.ValidateClaimRule(companyId, dealerId, closeRuleBasedOnId, claimStatusByGroupId, entityType, claimIssueId)
 
     End Function
-    Public Shared Function CopyClaimCloseRulesToNewCompany(ByVal OldcompanyId As Guid, ByVal NewCompanyId As Guid) As Integer
+    Public Shared Function CopyClaimCloseRulesToNewCompany(OldcompanyId As Guid, NewCompanyId As Guid) As Integer
         Dim claimcloseRulesDAL As New ClaimCloseRulesDAL
         claimcloseRulesDAL.CopyClaimCloseRulesToNewCompany(OldcompanyId, NewCompanyId)
 
     End Function
 
-    Public Shared Function CopyClaimCloseRulesToNewDealer(ByVal companyId As Guid, ByVal OlddealerId As Guid, ByVal NewDealerId As Guid) As Integer
+    Public Shared Function CopyClaimCloseRulesToNewDealer(companyId As Guid, OlddealerId As Guid, NewDealerId As Guid) As Integer
         Dim claimcloseRulesDAL As New ClaimCloseRulesDAL
         claimcloseRulesDAL.CopyClaimCloseRulesToNewDealer(companyId, OlddealerId, NewDealerId)
 
@@ -333,13 +333,13 @@ Public Class ClaimCloseRules
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CloseClaimRulesDV, ByVal NewBO As ClaimCloseRules)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CloseClaimRulesDV, NewBO As ClaimCloseRules)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -383,7 +383,7 @@ Public Class ClaimCloseRules
         End If
     End Sub
 
-    Public Shared Function getEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function getEmptyList(dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -426,11 +426,11 @@ End Class
 Public NotInheritable Class ValidClaimIssue
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CLAIM_STATUS_ISSUE_COMBINATION_ERR)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As ClaimCloseRules = CType(objectToValidate, ClaimCloseRules)
 
         Return ClaimCloseRulesHelper.IsValidClaimStatusIssueCombination(obj.ClaimStatusByGroupId, obj.ClaimIssueId)
@@ -441,11 +441,11 @@ End Class
 Public NotInheritable Class ValidClaimStatusByGroup
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CLAIM_STATUS_ISSUE_COMBINATION_ERR)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As ClaimCloseRules = CType(objectToValidate, ClaimCloseRules)
 
         Return ClaimCloseRulesHelper.IsValidClaimStatusIssueCombination(obj.ClaimStatusByGroupId, obj.ClaimIssueId)
@@ -453,7 +453,7 @@ Public NotInheritable Class ValidClaimStatusByGroup
 End Class
 
 Friend Class ClaimCloseRulesHelper
-    Friend Shared Function IsValidClaimStatusIssueCombination(ByVal ClaimStatusByGroupId As Guid, ByVal ClaimIssueId As Guid) As Boolean
+    Friend Shared Function IsValidClaimStatusIssueCombination(ClaimStatusByGroupId As Guid, ClaimIssueId As Guid) As Boolean
         Return _
             (ClaimStatusByGroupId = Guid.Empty And Not ClaimIssueId = Guid.Empty) Or
             (ClaimIssueId = Guid.Empty And Not ClaimStatusByGroupId = Guid.Empty)

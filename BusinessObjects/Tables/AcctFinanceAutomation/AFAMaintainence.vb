@@ -23,7 +23,7 @@ Public Class AFAMaintainence
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -130,7 +130,7 @@ Public Class AFAMaintainence
 
 #Region "Public Members"
 
-    Public Shared Function GetProcessStatus(ByVal dealerId As Guid, ByVal languageId As Guid, ByVal firstDayOfMonth As Date, ByVal lastDayOfMonth As Date) As AFAProcessStatusDV
+    Public Shared Function GetProcessStatus(dealerId As Guid, languageId As Guid, firstDayOfMonth As Date, lastDayOfMonth As Date) As AFAProcessStatusDV
         Try
 
             Dim dal As New AFAMaintainenceDAL
@@ -142,7 +142,7 @@ Public Class AFAMaintainence
 
     End Function
 
-    Public Shared Function ReRunReconciliation(ByVal dealerId As Guid, ByVal firstDayOfMonth As Date, ByVal lastDayOfMonth As Date, ByVal userName As String) As Boolean
+    Public Shared Function ReRunReconciliation(dealerId As Guid, firstDayOfMonth As Date, lastDayOfMonth As Date, userName As String) As Boolean
         Try
 
             Dim dal As New AFAMaintainenceDAL
@@ -153,7 +153,7 @@ Public Class AFAMaintainence
         End Try
     End Function
 
-    Public Shared Function ReRunInvoice(ByVal dealerId As Guid, ByVal firstDayOfMonth As Date, ByVal lastDayOfMonth As Date, ByVal userName As String) As Boolean
+    Public Shared Function ReRunInvoice(dealerId As Guid, firstDayOfMonth As Date, lastDayOfMonth As Date, userName As String) As Boolean
         Try
 
             Dim dal As New AFAMaintainenceDAL

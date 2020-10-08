@@ -6,7 +6,7 @@ Public Class ProductGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ProductGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ProductGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductGroupDAL
             If _isDSCreator Then
@@ -172,7 +172,7 @@ Public Class ProductGroup
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ProductGroup)
+    Public Sub Copy(original As ProductGroup)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product Group")
         End If
@@ -185,7 +185,7 @@ Public Class ProductGroup
 
 #Region "Children Related"
 
-    Public Sub AttachProductcodes(ByVal selectedProductCodeStrCollection As ArrayList)
+    Public Sub AttachProductcodes(selectedProductCodeStrCollection As ArrayList)
         Dim pgPcIdStr As String
         For Each pgPcIdStr In selectedProductCodeStrCollection
             Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Dataset)
@@ -197,7 +197,7 @@ Public Class ProductGroup
         Next
     End Sub
 
-    Public Sub DetachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
+    Public Sub DetachProductCodes(selectedProductCodeGuidStrCollection As ArrayList)
         Dim pgPcIdStr As String
         For Each pgPcIdStr In selectedProductCodeGuidStrCollection
             Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Dataset, Id, New Guid(pgPcIdStr))
@@ -208,7 +208,7 @@ Public Class ProductGroup
         Next
     End Sub
 
-    Public Shared Function GetAvailableProductCodes(ByVal dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetAvailableProductCodes(dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -218,7 +218,7 @@ Public Class ProductGroup
     End Function
 
 
-    Public Shared Function GetSelectedProductCodes(ByVal dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetSelectedProductCodes(dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -243,7 +243,7 @@ Public Class ProductGroup
 
 #Region "DataView Retrieving Methods"
 
-    Public Shared Function getList(ByVal groupName As String, ByVal dealerID As Guid, ByVal productCodeId As String, ByVal riskTypeId As String) As ProductGroupSearchDV
+    Public Shared Function getList(groupName As String, dealerID As Guid, productCodeId As String, riskTypeId As String) As ProductGroupSearchDV
         Try
             Dim dal As New ProductGroupDAL
             Return New ProductGroupSearchDV(dal.LoadList(Authentication.CompIds, dealerID, groupName, productCodeId, riskTypeId).Tables(0))
@@ -263,23 +263,23 @@ Public Class ProductGroup
         Public Const COL_NAME_PRODUCT_GROUP_ID As String = ProductGroupDAL.COL_NAME_PRODUCT_GROUP_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ProductGroupId(ByVal row) As Guid
+        Public Shared ReadOnly Property ProductGroupId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PRODUCT_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerCodeAndName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property DealerCodeAndName(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER).ToString + "-" + row(COL_NAME_DEALER_NAME)
             End Get

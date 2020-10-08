@@ -7,7 +7,7 @@ Public Class IssueComment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class IssueComment
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class IssueComment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New IssueCommentDAL
             If _isDSCreator Then
@@ -226,14 +226,14 @@ Public Class IssueComment
 
 #Region "Public Methods"
 
-    Public Sub Copy(ByVal original As IssueComment)
+    Public Sub Copy(original As IssueComment)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Issue Comment.")
         End If
         MyBase.CopyFrom(original)
     End Sub
 
-    Public Shared Function IsChild(ByVal IssueId As Guid, ByVal IssueCommentId As Guid) As Byte()
+    Public Shared Function IsChild(IssueId As Guid, IssueCommentId As Guid) As Byte()
 
         Try
             Dim dal As New IssueCommentDAL
@@ -282,7 +282,7 @@ Public Class IssueComment
         Public Const COL_NAME_CODE As String = IssueCommentDAL.COL_NAME_CODE
         Public Const COL_NAME_TEXT As String = IssueCommentDAL.COL_NAME_TEXT
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -296,7 +296,7 @@ Public Class IssueComment
         End Function
     End Class
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As IssueComment) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As IssueComment) As DataView
         Dim dt As DataTable
         dt = dv.Table
         Dim row As DataRow = dt.NewRow
@@ -307,7 +307,7 @@ Public Class IssueComment
         Return (dv)
     End Function
 
-    Public Shared Function GetList(ByVal IssueId As Guid) As IssueComment.IssueCommentGridDV
+    Public Shared Function GetList(IssueId As Guid) As IssueComment.IssueCommentGridDV
 
         Try
             Dim dal As New IssueCommentDAL
@@ -335,7 +335,7 @@ Public Class IssueComment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -352,11 +352,11 @@ Public Class IssueComment
     Public NotInheritable Class DuplicateNoteTypeValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "ONLY_ONE_NOTE_TYPE_ALLOWED")
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As IssueComment = CType(objectToValidate, IssueComment)
             Return obj.CheckDuplicateNoteType()
         End Function

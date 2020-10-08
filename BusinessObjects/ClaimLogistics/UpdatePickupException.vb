@@ -22,7 +22,7 @@ Public Class UpdatePickupException
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdatePickupExceptionDs)
+    Public Sub New(ds As UpdatePickupExceptionDs)
         MyBase.New()
         'Me._dsExceptions = ds
         'MapDataSet(ds)
@@ -37,7 +37,7 @@ Public Class UpdatePickupException
     Private _serviceNetworkID As Guid = Guid.Empty
     Private _dsExceptions As DataSet
 
-    Private Sub MapDataSet(ByVal ds As UpdatePickupExceptionDs)
+    Private Sub MapDataSet(ds As UpdatePickupExceptionDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -59,7 +59,7 @@ Public Class UpdatePickupException
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As UpdatePickupExceptionDs)
+    Private Sub Load(ds As UpdatePickupExceptionDs)
         Try
             _dsExceptions = New DataSet
             _dsExceptions.DataSetName = DATASET_NAME

@@ -7,14 +7,14 @@ Public Class DealerPmtReconWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -29,20 +29,20 @@ Public Class DealerPmtReconWrk
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -64,7 +64,7 @@ Public Class DealerPmtReconWrk
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerPmtReconWrkDAL
             If _isDSCreator Then
@@ -459,7 +459,7 @@ Public Class DealerPmtReconWrk
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerfileProcessedID As Guid, ByVal recordMode As String, ByVal parentFile As String) As DataView
+    Public Shared Function LoadList(dealerfileProcessedID As Guid, recordMode As String, parentFile As String) As DataView
         Try
             Dim dal As New DealerPmtReconWrkDAL
             Dim ds As DataSet
@@ -473,7 +473,7 @@ Public Class DealerPmtReconWrk
 
     End Function
 
-    Public Shared Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataView
+    Public Shared Function LoadRejectList(dealerfileProcessedID As Guid) As DataView
         Try
             Dim dal As New DealerPmtReconWrkDAL
             Dim ds As DataSet

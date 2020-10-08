@@ -4,15 +4,15 @@
 Public Class EquipmentListDetailList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As EquipmentList)
+    Public Sub New(parent As EquipmentList)
         MyBase.New(LoadTable(parent), GetType(EquipmentListDetail), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, EquipmentListDetail).EquipmentListId.Equals(CType(Parent, Equipmentlist).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As EquipmentList) As DataTable
+    Private Shared Function LoadTable(parent As EquipmentList) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(EquipmentListDetailList)) Then
                 Dim dal As New EquipmentListDetailDAL

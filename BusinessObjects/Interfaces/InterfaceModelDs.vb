@@ -37,7 +37,7 @@ Public Class InterfaceModelDs
         AddHandler Me.Relations.CollectionChanged, schemaChangedHandler
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New()
         Dim strSchema As String = CType(info.GetValue("XmlSchema", GetType(System.String)), String)
         If (Not (strSchema) Is Nothing) Then
@@ -85,7 +85,7 @@ Public Class InterfaceModelDs
         Return False
     End Function
 
-    Protected Overrides Sub ReadXmlSerializable(ByVal reader As XmlReader)
+    Protected Overrides Sub ReadXmlSerializable(reader As XmlReader)
         Me.Reset()
         Dim ds As DataSet = New DataSet
         ds.ReadXml(reader)
@@ -131,13 +131,13 @@ Public Class InterfaceModelDs
         Return False
     End Function
 
-    Private Sub SchemaChanged(ByVal sender As Object, ByVal e As System.ComponentModel.CollectionChangeEventArgs)
+    Private Sub SchemaChanged(sender As Object, e As System.ComponentModel.CollectionChangeEventArgs)
         If (e.Action = System.ComponentModel.CollectionChangeAction.Remove) Then
             Me.InitVars()
         End If
     End Sub
 
-    Public Delegate Sub InterfaceModelRowChangeEventHandler(ByVal sender As Object, ByVal e As InterfaceModelRowChangeEvent)
+    Public Delegate Sub InterfaceModelRowChangeEventHandler(sender As Object, e As InterfaceModelRowChangeEvent)
 
     <System.Diagnostics.DebuggerStepThrough> _
     Public Class InterfaceModelDataTable
@@ -167,7 +167,7 @@ Public Class InterfaceModelDs
             Me.InitClass()
         End Sub
 
-        Friend Sub New(ByVal table As DataTable)
+        Friend Sub New(table As DataTable)
             MyBase.New(table.TableName)
             If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
                 Me.CaseSensitive = table.CaseSensitive
@@ -244,7 +244,7 @@ Public Class InterfaceModelDs
             End Get
         End Property
 
-        Default Public ReadOnly Property Item(ByVal index As Integer) As InterfaceModelRow
+        Default Public ReadOnly Property Item(index As Integer) As InterfaceModelRow
             Get
                 Return CType(Me.Rows(index), InterfaceModelRow)
             End Get
@@ -258,11 +258,11 @@ Public Class InterfaceModelDs
 
         Public Event InterfaceModelRowDeleting As InterfaceModelRowChangeEventHandler
 
-        Public Overloads Sub AddInterfaceModelRow(ByVal row As InterfaceModelRow)
+        Public Overloads Sub AddInterfaceModelRow(row As InterfaceModelRow)
             Me.Rows.Add(row)
         End Sub
 
-        Public Overloads Function AddInterfaceModelRow(ByVal Make As String, ByVal Model As String, ByVal Version_Engine As String, ByVal Model_Year As Integer, ByVal New_Class_Code As String, ByVal Used_Class_Code As String, ByVal Car_Code As Long, ByVal Active_New As String, ByVal Active_Used As String) As InterfaceModelRow
+        Public Overloads Function AddInterfaceModelRow(Make As String, Model As String, Version_Engine As String, Model_Year As Integer, New_Class_Code As String, Used_Class_Code As String, Car_Code As Long, Active_New As String, Active_Used As String) As InterfaceModelRow
             Dim rowInterfaceModelRow As InterfaceModelRow = CType(Me.NewRow, InterfaceModelRow)
             rowInterfaceModelRow.ItemArray = New Object() {Make, Model, Version_Engine, Model_Year, New_Class_Code, Used_Class_Code, Car_Code, Active_New, Active_Used}
             Me.Rows.Add(rowInterfaceModelRow)
@@ -329,7 +329,7 @@ Public Class InterfaceModelDs
             Return CType(Me.NewRow, InterfaceModelRow)
         End Function
 
-        Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow
+        Protected Overrides Function NewRowFromBuilder(builder As DataRowBuilder) As DataRow
             Return New InterfaceModelRow(builder)
         End Function
 
@@ -337,35 +337,35 @@ Public Class InterfaceModelDs
             Return GetType(InterfaceModelRow)
         End Function
 
-        Protected Overrides Sub OnRowChanged(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowChanged(e As DataRowChangeEventArgs)
             MyBase.OnRowChanged(e)
             If (Not (Me.InterfaceModelRowChangedEvent) Is Nothing) Then
                 RaiseEvent InterfaceModelRowChanged(Me, New InterfaceModelRowChangeEvent(CType(e.Row, InterfaceModelRow), e.Action))
             End If
         End Sub
 
-        Protected Overrides Sub OnRowChanging(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowChanging(e As DataRowChangeEventArgs)
             MyBase.OnRowChanging(e)
             If (Not (Me.InterfaceModelRowChangingEvent) Is Nothing) Then
                 RaiseEvent InterfaceModelRowChanging(Me, New InterfaceModelRowChangeEvent(CType(e.Row, InterfaceModelRow), e.Action))
             End If
         End Sub
 
-        Protected Overrides Sub OnRowDeleted(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowDeleted(e As DataRowChangeEventArgs)
             MyBase.OnRowDeleted(e)
             If (Not (Me.InterfaceModelRowDeletedEvent) Is Nothing) Then
                 RaiseEvent InterfaceModelRowDeleted(Me, New InterfaceModelRowChangeEvent(CType(e.Row, InterfaceModelRow), e.Action))
             End If
         End Sub
 
-        Protected Overrides Sub OnRowDeleting(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowDeleting(e As DataRowChangeEventArgs)
             MyBase.OnRowDeleting(e)
             If (Not (Me.InterfaceModelRowDeletingEvent) Is Nothing) Then
                 RaiseEvent InterfaceModelRowDeleting(Me, New InterfaceModelRowChangeEvent(CType(e.Row, InterfaceModelRow), e.Action))
             End If
         End Sub
 
-        Public Sub RemoveInterfaceModelRow(ByVal row As InterfaceModelRow)
+        Public Sub RemoveInterfaceModelRow(row As InterfaceModelRow)
             Me.Rows.Remove(row)
         End Sub
     End Class
@@ -376,7 +376,7 @@ Public Class InterfaceModelDs
 
         Private tableInterfaceModel As InterfaceModelDataTable
 
-        Friend Sub New(ByVal rb As DataRowBuilder)
+        Friend Sub New(rb As DataRowBuilder)
             MyBase.New(rb)
             Me.tableInterfaceModel = CType(Me.Table, InterfaceModelDataTable)
         End Sub
@@ -471,7 +471,7 @@ Public Class InterfaceModelDs
 
         Private eventAction As DataRowAction
 
-        Public Sub New(ByVal row As InterfaceModelRow, ByVal action As DataRowAction)
+        Public Sub New(row As InterfaceModelRow, action As DataRowAction)
             MyBase.New()
             Me.eventRow = row
             Me.eventAction = action

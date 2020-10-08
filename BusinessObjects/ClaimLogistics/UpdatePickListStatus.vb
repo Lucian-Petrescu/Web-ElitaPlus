@@ -16,7 +16,7 @@ Public Class UpdatePickListStatus
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdatePickListStatusDs)
+    Public Sub New(ds As UpdatePickListStatusDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -31,7 +31,7 @@ Public Class UpdatePickListStatus
     Private _serviceNetworkID As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As UpdatePickListStatusDs)
+    Private Sub MapDataSet(ds As UpdatePickListStatusDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -53,7 +53,7 @@ Public Class UpdatePickListStatus
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As UpdatePickListStatusDs)
+    Private Sub Load(ds As UpdatePickListStatusDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -72,7 +72,7 @@ Public Class UpdatePickListStatus
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As UpdatePickListStatusDs)
+    Private Sub PopulateBOFromWebService(ds As UpdatePickListStatusDs)
         Try
             If ds.UpdatePickListStatus.Count = 0 Then Exit Sub
             With ds.UpdatePickListStatus.Item(0)

@@ -6,7 +6,7 @@ Public Class OcTemplateGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class OcTemplateGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class OcTemplateGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New OcTemplateGroupDAL
             If _isDSCreator Then
@@ -201,7 +201,7 @@ Public Class OcTemplateGroup
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As OcTemplateGroup)
+    Public Sub Copy(original As OcTemplateGroup)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Template Group")
         End If
@@ -253,12 +253,12 @@ Public Class OcTemplateGroup
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
 
-    Shared Function GetList(ByVal code As String) As OcTemplateGroupSearchDV
+    Shared Function GetList(code As String) As OcTemplateGroupSearchDV
         Try
             Dim dal As New OcTemplateGroupDAL
             Return New OcTemplateGroupSearchDV(dal.LoadList(code).Tables(0))
@@ -267,7 +267,7 @@ Public Class OcTemplateGroup
         End Try
     End Function
 
-    Public Shared Function GetAssociatedTemplateCount(ByVal templateGroupId As Guid) As Integer
+    Public Shared Function GetAssociatedTemplateCount(templateGroupId As Guid) As Integer
         Try
             Dim dal As New OcTemplateGroupDAL
             Dim dataSet As DataSet = dal.GetAssociatedTemplateCount(templateGroupId)
@@ -292,11 +292,11 @@ Public Class OcTemplateGroup
         Inherits ValidBaseAttribute
         Private Const DUPLICATE_TEMPLATE_GROUP_CODE As String = "DUPLICATE_TEMPLATE_GROUP_CODE"
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_TEMPLATE_GROUP_CODE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateGroup = CType(objectToValidate, OcTemplateGroup)
             If (obj.CheckDuplicateCode()) Then
                 Return False
@@ -307,11 +307,11 @@ Public Class OcTemplateGroup
     End Class
 #End Region
 
-    Private Function GetDealers(ByVal companies As ArrayList) As DataView
+    Private Function GetDealers(companies As ArrayList) As DataView
         Return New DataView(LookupListNew.GetDealerLookupList(companies).ToTable)
     End Function
 
-    Public Function GetAvailableDealers(ByVal companies As ArrayList) As DataView
+    Public Function GetAvailableDealers(companies As ArrayList) As DataView
         Dim dv As DataView
         Dim sequenceCondition As String
 
@@ -327,7 +327,7 @@ Public Class OcTemplateGroup
         Return dv
     End Function
 
-    Public Function GetSelectedDealers(ByVal companies As ArrayList) As DataView
+    Public Function GetSelectedDealers(companies As ArrayList) As DataView
         Dim dv As DataView
         Dim sequenceCondition As String
 
@@ -343,7 +343,7 @@ Public Class OcTemplateGroup
         Return dv
     End Function
 
-    Protected Function GetDealersLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetDealersLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
         Dim templateGroupDealer As OcTemplateGroupDealer
         Dim inClause As String = "(-1"
 

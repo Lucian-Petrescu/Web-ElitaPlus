@@ -30,7 +30,7 @@ Public Class CancellationQuery
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CancellationQueryDs)
+    Public Sub New(ds As CancellationQueryDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -44,7 +44,7 @@ Public Class CancellationQuery
     Private _certId As Guid = Guid.Empty
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As CancellationQueryDs)
+    Private Sub MapDataSet(ds As CancellationQueryDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -66,7 +66,7 @@ Public Class CancellationQuery
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As CancellationQueryDs)
+    Private Sub Load(ds As CancellationQueryDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -84,7 +84,7 @@ Public Class CancellationQuery
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CancellationQueryDs)
+    Private Sub PopulateBOFromWebService(ds As CancellationQueryDs)
         Try
             If ds.CancellationQuery.Count = 0 Then Exit Sub
             With ds.CancellationQuery.Item(0)

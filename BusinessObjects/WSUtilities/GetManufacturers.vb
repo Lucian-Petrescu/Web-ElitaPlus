@@ -11,7 +11,7 @@ Public Class GetManufacturers
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetManufacturersDs)
+    Public Sub New(ds As GetManufacturersDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -24,7 +24,7 @@ Public Class GetManufacturers
 #Region "Private Members"
 
     Private _companyGroupId As Guid = Guid.Empty
-    Private Sub MapDataSet(ByVal ds As GetManufacturersDs)
+    Private Sub MapDataSet(ds As GetManufacturersDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -46,7 +46,7 @@ Public Class GetManufacturers
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetManufacturersDs)
+    Private Sub Load(ds As GetManufacturersDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -65,7 +65,7 @@ Public Class GetManufacturers
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetManufacturersDs)
+    Private Sub PopulateBOFromWebService(ds As GetManufacturersDs)
         Try
             If ds.GetManufacturers.Count = 0 Then Exit Sub
             With ds.GetManufacturers.Item(0)
@@ -87,7 +87,7 @@ Public Class GetManufacturers
 
     Protected Shadows Sub CheckDeleted()
     End Sub
-    Private Sub getCompanyGroupId(ByVal Code As String)
+    Private Sub getCompanyGroupId(Code As String)
         Dim dvCompanyGroups As DataView = LookupListNew.GetCompanyGroupLookupList()
         If Not dvCompanyGroups Is Nothing AndAlso dvCompanyGroups.Count > 0 Then
             _companyGroupId = LookupListNew.GetIdFromCode(dvCompanyGroups, Code)

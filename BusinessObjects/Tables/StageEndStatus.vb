@@ -8,7 +8,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,20 +22,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New StageEndStatusDAL
             If _isDSCreator Then
@@ -154,7 +154,7 @@
 #End Region
 
 #Region "List Methods"
-    Public Shared Sub LoadList(ByVal ds As DataSet, ByVal stageid As Guid, ByVal reloadData As Boolean, ByVal languageid As Guid)
+    Public Shared Sub LoadList(ds As DataSet, stageid As Guid, reloadData As Boolean, languageid As Guid)
         Try
             If reloadData Then
                 Dim tableIdx As Integer = ds.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME)
@@ -171,7 +171,7 @@
         End Try
     End Sub
 
-    Public Shared Function Find(ByVal ds As DataSet, ByVal stageid As Guid, ByVal endStatusId As Guid) As StageEndStatus
+    Public Shared Function Find(ds As DataSet, stageid As Guid, endStatusId As Guid) As StageEndStatus
         Dim i As Integer
         For i = 0 To ds.Tables(StageEndStatusDAL.TABLE_NAME).Rows.Count - 1
             Dim row As DataRow = ds.Tables(StageEndStatusDAL.TABLE_NAME).Rows(i)
@@ -185,7 +185,7 @@
         Return Nothing
     End Function
 
-    Public Shared Function Find(ByVal ds As DataSet, ByVal stageid As Guid) As StageEndStatus
+    Public Shared Function Find(ds As DataSet, stageid As Guid) As StageEndStatus
         Dim row As DataRow = FindRow(stageid, StageEndStatusDAL.COL_NAME_STAGE_ID, ds.Tables(StageEndStatusDAL.TABLE_NAME))
         If row Is Nothing Then
             Return Nothing
@@ -194,7 +194,7 @@
         End If
     End Function
 
-    Public Shared Function GetSelectedStageEndStatus(ByVal ds As DataSet, ByVal stageid As Guid, ByVal languageid As Guid) As DataView
+    Public Shared Function GetSelectedStageEndStatus(ds As DataSet, stageid As Guid, languageid As Guid) As DataView
         Dim _stageendstatusDAL As New StageEndStatusDAL
         Return _stageendstatusDAL.GetSelectedStageEndStatus(ds, stageid, languageid)
     End Function

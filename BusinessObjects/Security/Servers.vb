@@ -14,13 +14,13 @@ Public Class Servers
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
-    Public Sub New(ByVal sHubRegion As String, ByVal sMachinePrefix As String, Optional ByVal webServiceName As String = Nothing, _
+    Public Sub New(sHubRegion As String, sMachinePrefix As String, Optional ByVal webServiceName As String = Nothing, _
                     Optional ByVal webServiceFunctionName As String = Nothing)
         MyBase.New()
         Dim sEnvironment As String = EnvironmentContext.Current.EnvironmentName
@@ -37,20 +37,20 @@ Public Class Servers
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -72,7 +72,7 @@ Public Class Servers
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServersDAL
             If _isDSCreator Then
@@ -96,7 +96,7 @@ Public Class Servers
         End Try
     End Sub
 
-    Protected Sub Load(ByVal sHubRegion As String, ByVal sMachinePrefix As String, ByVal sEnvironment As String, _
+    Protected Sub Load(sHubRegion As String, sMachinePrefix As String, sEnvironment As String, _
                        Optional ByVal webServiceName As String = Nothing, Optional ByVal webServiceFunctionName As String = Nothing)
         Try
             Dim dal As New ServersDAL
@@ -570,7 +570,7 @@ Public Class Servers
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As Servers)
+    Public Sub Copy(original As Servers)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing server")
         End If
@@ -581,7 +581,7 @@ Public Class Servers
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetServersList(ByVal environmentMask As String, ByVal descriptionMask As String) As SearchDV
+    Public Shared Function GetServersList(environmentMask As String, descriptionMask As String) As SearchDV
         Try
             Dim dal As New ServersDAL
             Dim ds As DataSet
@@ -607,7 +607,7 @@ Public Class Servers
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
         Public Function AddNewRowToEmptyDV() As SearchDV
@@ -623,7 +623,7 @@ Public Class Servers
 
 #Region "Additional Logic"
 
-    Public Shared Function TestCurrentBatchService(ByVal UserName As String, ByVal Password As String, ByVal Group As String) As String
+    Public Shared Function TestCurrentBatchService(UserName As String, Password As String, Group As String) As String
 
         Try
             Dim _dal As New DALObjects.ServersDAL
@@ -635,7 +635,7 @@ Public Class Servers
 
     End Function
 
-    Public Shared Function TestBatchService(ByVal UserName As String, ByVal Password As String, ByVal Group As String, ByVal URL As String) As String
+    Public Shared Function TestBatchService(UserName As String, Password As String, Group As String, URL As String) As String
 
         Try
             Dim response As String

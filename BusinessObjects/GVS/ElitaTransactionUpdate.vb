@@ -21,7 +21,7 @@ Public Class ElitaTransactionUpdate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ElitaTransactionUpdateDs)
+    Public Sub New(ds As ElitaTransactionUpdateDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -40,7 +40,7 @@ Public Class ElitaTransactionUpdate
     Dim _functionTypeCode As String
     Dim _functionTypeId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As ElitaTransactionUpdateDs)
+    Private Sub MapDataSet(ds As ElitaTransactionUpdateDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -62,7 +62,7 @@ Public Class ElitaTransactionUpdate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ElitaTransactionUpdateDs)
+    Private Sub Load(ds As ElitaTransactionUpdateDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -81,7 +81,7 @@ Public Class ElitaTransactionUpdate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ElitaTransactionUpdateDs)
+    Private Sub PopulateBOFromWebService(ds As ElitaTransactionUpdateDs)
         Dim OriginalTransLogHdrIDExist As Boolean = True
 
         Try

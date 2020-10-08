@@ -6,7 +6,7 @@ Public Class GetCertInfoWEPPTMX
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetCertInfoWEPPTMXDs)
+    Public Sub New(ds As GetCertInfoWEPPTMXDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -31,7 +31,7 @@ Public Class GetCertInfoWEPPTMX
 
 #Region "Private Members"
     
-    Private Sub MapDataSet(ByVal ds As GetCertInfoWEPPTMXDs)
+    Private Sub MapDataSet(ds As GetCertInfoWEPPTMXDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -49,7 +49,7 @@ Public Class GetCertInfoWEPPTMX
 
     End Sub
 
-    Private Sub Load(ByVal ds As GetCertInfoWEPPTMXDs)
+    Private Sub Load(ds As GetCertInfoWEPPTMXDs)
         Try
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
             Row = newRow
@@ -66,7 +66,7 @@ Public Class GetCertInfoWEPPTMX
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetCertInfoWEPPTMXDs)
+    Private Sub PopulateBOFromWebService(ds As GetCertInfoWEPPTMXDs)
         Try
             If ds.GetCertInfoWEPPTMX.Count = 0 Then Exit Sub
 

@@ -8,7 +8,7 @@ Public Class CreditCardInfo
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,20 +22,20 @@ Public Class CreditCardInfo
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@ Public Class CreditCardInfo
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CreditCardInfoDAL
             If _isDSCreator Then
@@ -209,7 +209,7 @@ Public Class CreditCardInfo
         End Try
     End Sub
 
-    Public Shared Sub DeleteNewChildCreditCardInfo(ByVal parentCertInstallment As CertInstallment)
+    Public Shared Sub DeleteNewChildCreditCardInfo(parentCertInstallment As CertInstallment)
         Dim row As DataRow
         If parentCertInstallment.Dataset.Tables.IndexOf(CreditCardInfoDAL.TABLE_NAME) >= 0 Then
             Dim rowIndex As Integer
@@ -238,11 +238,11 @@ Public Class CreditCardInfo
     Public NotInheritable Class ValidCreditCardNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.WS_INVALID_CREDIT_CARD_NUMBER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CreditCardInfo = CType(objectToValidate, CreditCardInfo)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
@@ -262,11 +262,11 @@ Public Class CreditCardInfo
     Public NotInheritable Class ValueMandatoryConditional
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CreditCardInfo = CType(objectToValidate, CreditCardInfo)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False

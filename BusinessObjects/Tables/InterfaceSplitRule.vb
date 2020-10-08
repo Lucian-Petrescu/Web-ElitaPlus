@@ -4,7 +4,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,14 +18,14 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -47,7 +47,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InterfaceSplitRuleDAL
             If _isDSCreator Then
@@ -275,7 +275,7 @@
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal source As String, ByVal sourceCode As String) As InterfaceSplitRule.InterfaceSplitRuleSearchDV
+    Public Shared Function GetList(source As String, sourceCode As String) As InterfaceSplitRule.InterfaceSplitRuleSearchDV
         Try
             Dim dal As New InterfaceSplitRuleDAL
 
@@ -298,23 +298,23 @@
     Public Class InterfaceSplitRuleSearchDV
         Inherits DataView
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property InterfaceSplitRuleId(ByVal row) As Guid
+        Public Shared ReadOnly Property InterfaceSplitRuleId(row) As Guid
             Get
                 Return New Guid(CType(row(InterfaceSplitRuleDAL.COL_NAME_INTERFACE_SPLIT_RULE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Source(ByVal row) As String
+        Public Shared ReadOnly Property Source(row) As String
             Get
                 Return row(InterfaceSplitRuleDAL.COL_NAME_SOURCE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property SourceCode(ByVal row) As String
+        Public Shared ReadOnly Property SourceCode(row) As String
             Get
                 Return row(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE).ToString
             End Get
@@ -331,7 +331,7 @@
         Public Const COL_NAME_NEW_SOURCE_CODE As String = InterfaceSplitRuleDAL.COL_NAME_NEW_SOURCE_CODE
         Public Const COL_NAME_IS_NEW As String = "IS_NEW"
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -367,7 +367,7 @@
 
     End Function
 
-    Public Function GetRuleChild(ByVal SelectedChildId As Guid) As InterfaceSplitRule
+    Public Function GetRuleChild(SelectedChildId As Guid) As InterfaceSplitRule
         For Each dr As DataRow In Row.Table.Rows
             Dim interfaceSplitRuleId As Guid = New Guid(DirectCast(dr(InterfaceSplitRuleDAL.COL_NAME_INTERFACE_SPLIT_RULE_ID), Byte()))
             If (interfaceSplitRuleId = SelectedChildId) Then
@@ -378,7 +378,7 @@
         Throw New BOInvalidOperationException()
     End Function
 
-    Public Function GetNewRuleChild(ByVal Source As String, ByVal SourceCode As String) As InterfaceSplitRule
+    Public Function GetNewRuleChild(Source As String, SourceCode As String) As InterfaceSplitRule
         Dim returnValue = New InterfaceSplitRule(Row.Table.DataSet)
         returnValue.Source = UCase(Source)  'If(String.IsNullOrEmpty(Me.HeaderSource), "XXX", Me.HeaderSource)
         returnValue.SourceCode = UCase(SourceCode) 'If(String.IsNullOrEmpty(Me.HeaderSourceCode), "XXX", Me.HeaderSourceCode)

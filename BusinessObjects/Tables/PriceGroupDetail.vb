@@ -6,7 +6,7 @@ Public Class PriceGroupDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class PriceGroupDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class PriceGroupDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PriceGroupDetailDAL
             If _isDSCreator Then
@@ -407,7 +407,7 @@ Public Class PriceGroupDetail
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As PriceGroupDetail)
+    Public Sub Copy(original As PriceGroupDetail)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Group")
         End If
@@ -416,7 +416,7 @@ Public Class PriceGroupDetail
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal PriceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal EffectiveDate As Date) As DataView
+    Public Shared Function GetList(PriceGroupId As Guid, RiskTypeId As Guid, EffectiveDate As Date) As DataView
         Try
             Dim dal As New PriceGroupDetailDAL
             Dim ds As New DataSet, dv As DataView
@@ -436,11 +436,11 @@ Public Class PriceGroupDetail
     Public NotInheritable Class CheckDuplicateRecord
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PRICE_GROUP_DETAIL_DUPLICATE_RECORD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceGroupDetail = CType(objectToValidate, PriceGroupDetail)
             Return Not obj.CheckForDuplicateRiskTypeEffectiveDateRangeFromCombination
         End Function
@@ -463,11 +463,11 @@ Public Class PriceGroupDetail
     Public NotInheritable Class ValidPriceBandRange
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_RATE_FORM009)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceGroupDetail = CType(objectToValidate, PriceGroupDetail)
 
             Dim bValid As Boolean = True
@@ -487,7 +487,7 @@ Public Class PriceGroupDetail
         End Function
 
         ' It validates that the price range falls within the previous and next range +- THRESHOLD
-        Private Function ValidateRange(ByVal sNewLow As Assurant.Common.Types.DecimalType, ByVal sNewHigh As Assurant.Common.Types.DecimalType, ByVal oPriceGroupDetail As PriceGroupDetail) As Boolean
+        Private Function ValidateRange(sNewLow As Assurant.Common.Types.DecimalType, sNewHigh As Assurant.Common.Types.DecimalType, oPriceGroupDetail As PriceGroupDetail) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)
             Dim oNewHigh As Double = Math.Round(Convert.ToDouble(sNewHigh.Value), 2)

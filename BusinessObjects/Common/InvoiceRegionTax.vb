@@ -125,13 +125,13 @@
         Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal key As Guid)
+    Public Sub New(id As Guid, key As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id, key)
@@ -153,7 +153,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InvoiceRegionTaxDAL
             If _isDSCreator Then
@@ -176,7 +176,7 @@
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal searchid As Guid, ByVal key As Guid)
+    Protected Sub Load(searchid As Guid, key As Guid)
         Try
             Dim dal As New InvoiceRegionTaxDAL
             If _isDSCreator Then
@@ -262,7 +262,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -270,7 +270,7 @@
 #End Region
 
 #Region "Grid Data Related"
-    Public Shared Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function GetEmptyList(dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -290,7 +290,7 @@
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvoiceRegionTaxDV, ByVal NewBO As InvoiceRegionTax)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvoiceRegionTaxDV, NewBO As InvoiceRegionTax)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         'If NewBO.IsNew Then
@@ -329,11 +329,11 @@
     Public NotInheritable Class ValueMandatoryIIBBtaxAmount
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.VALUE_REQUIRED_IIBB_TAX_AMOUNT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As InvoiceRegionTax = CType(objectToValidate, InvoiceRegionTax)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False

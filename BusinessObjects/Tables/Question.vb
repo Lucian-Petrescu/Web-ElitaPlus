@@ -9,7 +9,7 @@ Public Class Question
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -23,20 +23,20 @@ Public Class Question
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -58,7 +58,7 @@ Public Class Question
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New QuestionDAL
             If _isDSCreator Then
@@ -383,7 +383,7 @@ Public Class Question
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As Question)
+    Public Sub Copy(original As Question)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Question")
         End If
@@ -419,7 +419,7 @@ Public Class Question
         End Get
     End Property
 
-    Public Shared Function getQuestionList(ByVal code As String, ByVal description As String, ByVal questionTypeID As Guid, ByVal searchTags As String, ByVal issue As String, ByVal activeOn As String) As QuestionSearchDV
+    Public Shared Function getQuestionList(code As String, description As String, questionTypeID As Guid, searchTags As String, issue As String, activeOn As String) As QuestionSearchDV
         'Purpose:                    Load QuestionList data into dataview
         'Author:                     Arnie Lugo
         'Date:                       03/14/2012
@@ -464,7 +464,7 @@ Public Class Question
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -485,40 +485,40 @@ Public Class Question
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property QuestionId(ByVal row) As Guid
+        Public Shared ReadOnly Property QuestionId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_SOFT_QUESTION_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row) As Guid
+        Public Shared ReadOnly Property Code(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_CODE), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property QuestionType(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property QuestionType(row As DataRow) As String
             Get
                 Return row(COL_NAME_QUESTION_TYPE).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property Effective(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Effective(row As DataRow) As String
             Get
                 Return row(COL_NAME_EFFECTIVE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Expiration(row As DataRow) As String
             Get
                 Return row(COL_NAME_EXPIRATION).ToString
             End Get
@@ -592,7 +592,7 @@ Public Class Question
         Public Const COL_NAME_EXPIRATION As String = AnswerDAL.COL_NAME_EXPIRATION
         Public Const COL_NAME_LIST_ITEM_ID As String = AnswerDAL.COL_NAME_LIST_ITEM_ID
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -612,7 +612,7 @@ Public Class Question
         End Function
     End Class
 
-    Public Function GetAnswerChild(ByVal childId As Guid) As Answer
+    Public Function GetAnswerChild(childId As Guid) As Answer
         Return CType(AnswerChildren.GetChild(childId), Answer)
     End Function
 
@@ -680,12 +680,12 @@ Public Class Question
         Private _fieldDisplayName As String
         Public Const QTYP_ISSUE As String = "ISSUE"
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.IMPACTS_CLAIM_IS_REQUIRED)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             Dim obj As Question = CType(context, Question)
             Dim language_id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim ImpactsClaimid As Guid = CType(objectToCheck, Guid)
@@ -703,12 +703,12 @@ Public Class Question
         Implements IValidatorAttribute
         Private _fieldDisplayName As String
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.MIN_ANSWER_REQUIRED)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             Dim obj As Question = CType(context, Question)
             'If there are no answers defined then validation fails
             If obj.AnswerChildren.Count < 1 Then

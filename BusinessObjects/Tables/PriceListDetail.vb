@@ -12,7 +12,7 @@ Public Class PriceListDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -26,20 +26,20 @@ Public Class PriceListDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class PriceListDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PriceListDetailDAL
             If _isDSCreator Then
@@ -847,7 +847,7 @@ Public Class PriceListDetail
         End Try
     End Sub
 
-    Public Sub viewhistory(ByVal pricelistdetailid As Guid)
+    Public Sub viewhistory(pricelistdetailid As Guid)
         Dim dal As New PriceListDetailDAL
         dal.ViewPriceListDetailHistory(pricelistdetailid, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -879,7 +879,7 @@ Public Class PriceListDetail
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As PriceListDetail)
+    Public Sub Copy(original As PriceListDetail)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Price List Code.")
         End If
@@ -887,7 +887,7 @@ Public Class PriceListDetail
     End Sub
 
     'US 224089 - Getting prices for parts
-    Public Function GetPriceListForParts(ByVal claimId As Guid, ByVal InForceDate As Date, ByVal listOfParts As IEnumerable(Of PartsInfo)) As DataSet
+    Public Function GetPriceListForParts(claimId As Guid, InForceDate As Date, listOfParts As IEnumerable(Of PartsInfo)) As DataSet
 
         Try
 
@@ -898,7 +898,7 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Function GetPriceListForParts(ByVal claimId As Guid, ByVal InForceDate As Date, ByVal partsInfoDV As PartsInfo.PartsInfoDV) As DataSet
+    Public Function GetPriceListForParts(claimId As Guid, InForceDate As Date, partsInfoDV As PartsInfo.PartsInfoDV) As DataSet
 
         Try
 
@@ -955,7 +955,7 @@ Public Class PriceListDetail
 
 #Region "Expiring Logic"
 
-    Public Function CheckUniqueSKU(ByVal dv As PriceList.PriceListDetailSelectionView, Optional ByVal action As Integer = 0) As Boolean
+    Public Function CheckUniqueSKU(dv As PriceList.PriceListDetailSelectionView, Optional ByVal action As Integer = 0) As Boolean
         Try
             'Dim obj As PriceListDetail = (New PriceList).GetPriceListDetailChild(Me.Id)
             'Dim ds As DataSet = (New PriceListDetailDAL).LoadList(PriceListId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -1022,7 +1022,7 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Function OverlapExists(ByVal CheckSelf As Boolean) As Boolean
+    Public Function OverlapExists(CheckSelf As Boolean) As Boolean
         Try
             Dim ds As New DataSet
             If CheckSelf Then
@@ -1141,11 +1141,11 @@ Public Class PriceListDetail
     Public NotInheritable Class ValidateConditionType
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_INVALID_CONDITION_SELECT_WHEN_EQUIPMENT_SELECTED))
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
             'US 255424 - Removing validation against RiskTypeId ... when submitting PatId and EquipmentID together then RiskTypeID <> Guid.Empty
 
@@ -1188,7 +1188,7 @@ Public Class PriceListDetail
     Public NotInheritable Class ValidateRiskTypeEquipClassEquipment
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             'MyBase.New(fieldDisplayName, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_INVALID_ONLY_RISKTYPE_OR_EQUIPMENTCLASS_OR_EQUIPMENT_SELECTION))
             'US 255424 - Updating Error message
 
@@ -1196,7 +1196,7 @@ Public Class PriceListDetail
 
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
             '''All values are empty general service class/type entry
             If (obj.RiskTypeId = Guid.Empty AndAlso
@@ -1281,11 +1281,11 @@ Public Class PriceListDetail
     Public NotInheritable Class ValidatePriceBandRangeTo
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MIN_VALUE_MUST_BE_LESS_THAN_MAX_VALUE))
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
             Dim rangeTo As Decimal
             Dim rangeFrom As Decimal
@@ -1307,10 +1307,10 @@ Public Class PriceListDetail
 
     Public NotInheritable Class ValidatePriceListSKU
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.UNIQUE_SKU_PER_PRICE_LIST))
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
             Dim retVal As Boolean = obj.PriceList.PriceListDetailChildren.Where(Function(i) (i.VendorSku.ToUpper() = obj.VendorSku.ToUpper() And ((i.Effective.Value >= obj.Effective.Value And i.Effective.Value <= obj.Expiration.Value) Or (i.Expiration.Value >= obj.Effective.Value And i.Expiration.Value <= obj.Expiration.Value)))).Count > 1
             Return Not retVal
@@ -1319,10 +1319,10 @@ Public Class PriceListDetail
 
     Public NotInheritable Class ValidatePartsServiceClassAndType
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.INVALID_PARTS_SERVICE_CLASS_AND_TYPE))
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
             If Not obj.PartId.Equals(Guid.Empty) Then
                 Dim retVal As Boolean = LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS, obj.ServiceClassId) <> Codes.SERVICE_CLASS__REPAIR Or
@@ -1339,15 +1339,15 @@ Public Class PriceListDetail
     Public Class PriceListDetailChildern
         Inherits BusinessObjectListEnumerableBase(Of PriceList, PriceListDetail)
 
-        Public Sub New(ByVal parent As PriceList)
+        Public Sub New(parent As PriceList)
             MyBase.New(LoadTable(parent), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, PriceListDetail).PriceListId.Equals(CType(Parent, PriceList).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As PriceList) As DataTable
+        Private Shared Function LoadTable(parent As PriceList) As DataTable
             Try
 
                 If Not parent.IsChildrenCollectionLoaded(GetType(PriceListDetailChildern)) Then
@@ -1372,7 +1372,7 @@ Public Class PriceListDetail
 
 #Region "DataView Retrieveing Methods"
 
-    Public Function GetMakeByModel(ByVal ModelId As Guid) As Guid
+    Public Function GetMakeByModel(ModelId As Guid) As Guid
         Try
             Return New Guid(CType((New PriceListDetailDAL).GetMakeByModel(ModelId).Tables(0).Rows(0).Item(0), Byte()))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1381,7 +1381,7 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Function GetManufactByEquipmentId(ByVal ModelId As Guid) As Guid
+    Public Function GetManufactByEquipmentId(ModelId As Guid) As Guid
         Try
             Return New Guid(CType((New PriceListDetailDAL).GetMakeByModel(ModelId).Tables(0).Rows(0).Item(0), Byte()))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1415,7 +1415,7 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Shared Function GetDetailRow(ByVal DetailId As Guid) As PriceListDetail.PriceListDetailSearchDV
+    Public Shared Function GetDetailRow(DetailId As Guid) As PriceListDetail.PriceListDetailSearchDV
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet, dv As DataView
@@ -1426,7 +1426,7 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal PriceListId As Guid, ByVal RiskTypeId As Guid, ByVal equipmentId As Guid, ByVal conditionId As Guid, ByVal equipmentclassId As Guid, ByVal EffectiveDate As DateTime, ByVal ServiceClassId As Guid, ByVal ServiceTypeId As Guid) As DataView
+    Public Shared Function GetList(PriceListId As Guid, RiskTypeId As Guid, equipmentId As Guid, conditionId As Guid, equipmentclassId As Guid, EffectiveDate As DateTime, ServiceClassId As Guid, ServiceTypeId As Guid) As DataView
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet, dv As DataView
@@ -1438,7 +1438,7 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal PriceListId As Guid) As PriceListDetail.PriceListDetailSearchDV
+    Public Shared Function GetList(PriceListId As Guid) As PriceListDetail.PriceListDetailSearchDV
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet, dv As DataView
@@ -1449,10 +1449,10 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Shared Function GetRepairPrices(ByVal companyId As Guid, ByVal ServiceCenterCode As String, ByVal EffectiveDate As Date,
-                                           ByVal RiskTypeId As Guid, ByVal SalesPrice As Double, ByVal equipClassId As Guid,
-                                           ByVal equipmentId As Guid, ByVal conditionId As Guid, ByVal dealerId As Guid,
-                                           ByVal serviceLevelCode As String) As PriceListDetail.PriceListResultsDV
+    Public Shared Function GetRepairPrices(companyId As Guid, ServiceCenterCode As String, EffectiveDate As Date,
+                                           RiskTypeId As Guid, SalesPrice As Double, equipClassId As Guid,
+                                           equipmentId As Guid, conditionId As Guid, dealerId As Guid,
+                                           serviceLevelCode As String) As PriceListDetail.PriceListResultsDV
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet
@@ -1465,10 +1465,10 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Shared Function GetRepairPricesforMethodofRepair(ByVal MethodofRepairId As Guid, ByVal companyId As Guid, ByVal ServiceCenterCode As String,
-                                                            ByVal RiskTypeId As Guid, ByVal EffectiveDate As Date, ByVal SalesPrice As Double,
-                                                            ByVal equipClassId As Guid, ByVal equipmentId As Guid, ByVal conditionId As Guid,
-                                                            ByVal dealerId As Guid, ByVal serviceLevelCode As String) As PriceListDetail.PriceListResultsDV
+    Public Shared Function GetRepairPricesforMethodofRepair(MethodofRepairId As Guid, companyId As Guid, ServiceCenterCode As String,
+                                                            RiskTypeId As Guid, EffectiveDate As Date, SalesPrice As Double,
+                                                            equipClassId As Guid, equipmentId As Guid, conditionId As Guid,
+                                                            dealerId As Guid, serviceLevelCode As String) As PriceListDetail.PriceListResultsDV
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet
@@ -1486,7 +1486,7 @@ Public Class PriceListDetail
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr)
         End Try
     End Function
-    Public Shared Function GetMakeModelByEquipmentId(ByVal EquipmentId As Guid, ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function GetMakeModelByEquipmentId(EquipmentId As Guid, CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet
@@ -1500,7 +1500,7 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Shared Function GetModelsByMake(ByVal ManufacturerId As Guid) As DataSet
+    Public Shared Function GetModelsByMake(ManufacturerId As Guid) As DataSet
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet
@@ -1514,10 +1514,10 @@ Public Class PriceListDetail
         End Try
     End Function
 
-    Public Shared Function GetPricesForServiceType(ByVal companyId As Guid, ByVal ServiceCenterCode As String, ByVal RiskTypeId As Guid,
-                                                   ByVal EffectiveDate As Date, ByVal SalesPrice As Decimal, ByVal serviceClassId As Guid,
-                                                   ByVal serviceTypeId As Guid, ByVal equipClassId As Guid, ByVal equipmentId As Guid,
-                                                   ByVal conditionId As Guid, ByVal dealerId As Guid, ByVal serviceLevelCode As String) As PriceListDetail.PriceListResultsDV
+    Public Shared Function GetPricesForServiceType(companyId As Guid, ServiceCenterCode As String, RiskTypeId As Guid,
+                                                   EffectiveDate As Date, SalesPrice As Decimal, serviceClassId As Guid,
+                                                   serviceTypeId As Guid, equipClassId As Guid, equipmentId As Guid,
+                                                   conditionId As Guid, dealerId As Guid, serviceLevelCode As String) As PriceListDetail.PriceListResultsDV
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet
@@ -1546,11 +1546,11 @@ Public Class PriceListDetail
     Public NotInheritable Class ValidPriceBandRange
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_RATE_FORM009)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
 
             Dim bValid As Boolean = True
@@ -1572,7 +1572,7 @@ Public Class PriceListDetail
 
 
         ' It validates that the price range falls within the previous and next range +- THRESHOLD
-        Private Function ValidateRange(ByVal sNewLow As Assurant.Common.Types.DecimalType, ByVal sNewHigh As Assurant.Common.Types.DecimalType, ByVal oPriceListDetail As PriceListDetail) As Boolean
+        Private Function ValidateRange(sNewLow As Assurant.Common.Types.DecimalType, sNewHigh As Assurant.Common.Types.DecimalType, oPriceListDetail As PriceListDetail) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)
             Dim oNewHigh As Double = Math.Round(Convert.ToDouble(sNewHigh.Value), 2)
@@ -1685,7 +1685,7 @@ Public Class PriceListDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1716,7 +1716,7 @@ Public Class PriceListDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

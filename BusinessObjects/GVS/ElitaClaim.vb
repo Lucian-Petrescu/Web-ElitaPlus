@@ -27,7 +27,7 @@ Public Class ElitaClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ElitaClaimDs, ByVal xml As String)
+    Public Sub New(ds As ElitaClaimDs, xml As String)
         MyBase.New()
 
         'MapDataSet(ds)
@@ -47,7 +47,7 @@ Public Class ElitaClaim
     Dim _functionTypeId As Guid = Guid.Empty
     Dim myXml As String
 
-    Private Sub MapDataSet(ByVal ds As ElitaClaimDs)
+    Private Sub MapDataSet(ds As ElitaClaimDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -69,7 +69,7 @@ Public Class ElitaClaim
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ElitaClaimDs)
+    Private Sub Load(ds As ElitaClaimDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -88,7 +88,7 @@ Public Class ElitaClaim
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ElitaClaimDs)
+    Private Sub PopulateBOFromWebService(ds As ElitaClaimDs)
         Try
             If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)

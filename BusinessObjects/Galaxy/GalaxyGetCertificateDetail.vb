@@ -23,7 +23,7 @@ Public Class GalaxyGetCertificateDetail
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GalaxyGetCertificateDetailDs)
+    Public Sub New(ds As GalaxyGetCertificateDetailDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -36,7 +36,7 @@ Public Class GalaxyGetCertificateDetail
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GalaxyGetCertificateDetailDs)
+    Private Sub MapDataSet(ds As GalaxyGetCertificateDetailDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -58,7 +58,7 @@ Public Class GalaxyGetCertificateDetail
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GalaxyGetCertificateDetailDs)
+    Private Sub Load(ds As GalaxyGetCertificateDetailDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -76,7 +76,7 @@ Public Class GalaxyGetCertificateDetail
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GalaxyGetCertificateDetailDs)
+    Private Sub PopulateBOFromWebService(ds As GalaxyGetCertificateDetailDs)
         Try
             If ds.GalaxyGetCertificateDetail.Count = 0 Then Exit Sub
             With ds.GalaxyGetCertificateDetail.Item(0)

@@ -11,7 +11,7 @@ Public Class GetVSCMakes
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetVSCMakesDs)
+    Public Sub New(ds As GetVSCMakesDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -24,7 +24,7 @@ Public Class GetVSCMakes
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetVSCMakesDs)
+    Private Sub MapDataSet(ds As GetVSCMakesDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -46,7 +46,7 @@ Public Class GetVSCMakes
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetVSCMakesDs)
+    Private Sub Load(ds As GetVSCMakesDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -65,7 +65,7 @@ Public Class GetVSCMakes
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetVSCMakesDs)
+    Private Sub PopulateBOFromWebService(ds As GetVSCMakesDs)
         Try
             If ds.GetVSCMakes.Count = 0 Then Exit Sub
             With ds.GetVSCMakes.Item(0)

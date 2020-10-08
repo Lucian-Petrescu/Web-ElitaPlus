@@ -6,7 +6,7 @@ Public Class PostalCodeFormat
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class PostalCodeFormat
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -49,7 +49,7 @@ Public Class PostalCodeFormat
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PostalCodeFormatDAL
             If _isDSCreator Then
@@ -78,7 +78,7 @@ Public Class PostalCodeFormat
 #Region "Private Members"
     Private _regularExpression As RegularExpression
     'Initialization code for new objects
-    Private Sub Initialize(ByVal blnNew As Boolean)
+    Private Sub Initialize(blnNew As Boolean)
         If _regularExpression Is Nothing Then
             If blnNew Then
                 _regularExpression = New RegularExpression(Dataset)
@@ -225,7 +225,7 @@ Public Class PostalCodeFormat
 #End Region
 
 #Region "Custom Validation"
-    Private Shared Function GetRegExLength(ByVal regexformat As String) As Integer
+    Private Shared Function GetRegExLength(regexformat As String) As Integer
         Dim tempLen As String = ""
         Dim totalLen As Integer = 0
         Dim startPos As Integer = 0
@@ -254,11 +254,11 @@ Public Class PostalCodeFormat
     Public NotInheritable Class ValidLocatorStartAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_LOCATORSTARTPOSITION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PostalCodeFormat = CType(objectToValidate, PostalCodeFormat)
 
             If obj.RegularExpressionBO.Format Is Nothing Then
@@ -281,11 +281,11 @@ Public Class PostalCodeFormat
       Public NotInheritable Class ValidLocatorLengthAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_LOCATORLENGTH_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PostalCodeFormat = CType(objectToValidate, PostalCodeFormat)
             If obj.ComunaEnabled Then
                 Return True
@@ -330,7 +330,7 @@ Public Class PostalCodeFormat
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal descriptionMask As String) As PostalCodeFormatDV
+    Public Shared Function LoadList(descriptionMask As String) As PostalCodeFormatDV
         Try
             Dim dal As New PostalCodeFormatDAL
             Return New PostalCodeFormatDV(dal.LoadList(descriptionMask).Tables(0))
@@ -355,7 +355,7 @@ Public Class PostalCodeFormat
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

@@ -6,14 +6,14 @@ Public Class AcctTransmission
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal OmitText As Boolean)
+    Public Sub New(id As Guid, OmitText As Boolean)
         MyBase.New()
         Dataset = New DataSet
         Load(id, OmitText)
@@ -27,20 +27,20 @@ Public Class AcctTransmission
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -66,7 +66,7 @@ Public Class AcctTransmission
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, Optional ByVal OmitText As Boolean = True)
+    Protected Sub Load(id As Guid, Optional ByVal OmitText As Boolean = True)
         Try
             Dim dal As New AcctTransmissionDAL
 
@@ -624,13 +624,13 @@ Public Class AcctTransmission
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Function GetFailures(ByVal CompanyId As Guid) As AcctTransmissionSearchDV
+    Public Shared Function GetFailures(CompanyId As Guid) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
@@ -646,7 +646,7 @@ Public Class AcctTransmission
 
     End Function
 
-    Public Shared Function GetAssociatedFailures(ByVal ParentFileName As String, ByVal ParentBatchNumber As String) As AcctTransmissionSearchDV
+    Public Shared Function GetAssociatedFailures(ParentFileName As String, ParentBatchNumber As String) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
@@ -657,7 +657,7 @@ Public Class AcctTransmission
 
     End Function
 
-    Public Shared Function GetFilesForReversal(ByVal CompanyId As Guid, ByRef StartDate As Date, ByRef EndDate As Date) As AcctTransmissionSearchDV
+    Public Shared Function GetFilesForReversal(CompanyId As Guid, ByRef StartDate As Date, ByRef EndDate As Date) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
@@ -668,7 +668,7 @@ Public Class AcctTransmission
 
     End Function
 
-    Public Shared Function GetFilesForReversal(ByVal CompanyId As Guid, _
+    Public Shared Function GetFilesForReversal(CompanyId As Guid, _
                                                 ByRef BatchNumber As String) As AcctTransmissionSearchDV
 
         Try
@@ -680,9 +680,9 @@ Public Class AcctTransmission
 
     End Function
 
-    Public Shared Function GetTransmissionsForReport(ByVal CompanyId As Guid, _
-                                                     ByVal FileName As String, _
-                                                     ByVal AcctTransmissionId As Guid) As AcctTransmissionSearchDV
+    Public Shared Function GetTransmissionsForReport(CompanyId As Guid, _
+                                                     FileName As String, _
+                                                     AcctTransmissionId As Guid) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
@@ -697,7 +697,7 @@ Public Class AcctTransmission
 
 #Region "XML Migration Methods"
 
-    Public Shared Sub MigrateTransmissions(ByVal rowcount As Integer, ByVal modified_by As String)
+    Public Shared Sub MigrateTransmissions(rowcount As Integer, modified_by As String)
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
             _acctTransDAL.MigrateXML(rowcount, modified_by)

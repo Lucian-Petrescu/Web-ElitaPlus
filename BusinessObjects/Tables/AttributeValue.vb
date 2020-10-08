@@ -10,7 +10,7 @@ Public Class AttributeValue
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -24,20 +24,20 @@ Public Class AttributeValue
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -59,7 +59,7 @@ Public Class AttributeValue
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AttributeValueDAL
             If _isDSCreator Then
@@ -237,7 +237,7 @@ Public Class AttributeValue
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As AttributeValue)
+    Public Sub Copy(original As AttributeValue)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Object.")
         End If
@@ -254,11 +254,11 @@ Public Class AttributeValue
     Public NotInheritable Class EffectiveDateMandatoryAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AttributeValue = CType(objectToValidate, AttributeValue)
             Dim oAttribute As ElitaAttribute = obj.Attribute
             If (oAttribute Is Nothing) Then Return True
@@ -274,11 +274,11 @@ Public Class AttributeValue
     Public NotInheritable Class ExpirationDateMandatoryAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AttributeValue = CType(objectToValidate, AttributeValue)
             Dim oAttribute As ElitaAttribute = obj.Attribute
             If (oAttribute Is Nothing) Then Return True
@@ -294,11 +294,11 @@ Public Class AttributeValue
     Public NotInheritable Class EffectiveExpirationDateAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.INVALID_EXP_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AttributeValue = CType(objectToValidate, AttributeValue)
             Dim oAttribute As ElitaAttribute = obj.Attribute
             If (oAttribute Is Nothing) Then Return True
@@ -316,11 +316,11 @@ Public Class AttributeValue
     Public NotInheritable Class CheckDuplicateAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_ELITA_ATTRIBUTE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AttributeValue = CType(objectToValidate, AttributeValue)
             Dim oAttribute As ElitaAttribute = obj.Attribute
             If (oAttribute Is Nothing) Then Return True
@@ -371,7 +371,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
     Private ReadOnly _DataSet As DataSet
     Private ReadOnly _Parent As TParent
 
-    Public Sub New(ByVal pDataSet As DataSet, ByVal pParent As TParent)
+    Public Sub New(pDataSet As DataSet, pParent As TParent)
         _DataSet = pDataSet
         _Parent = pParent
     End Sub
@@ -460,7 +460,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
 
 #End Region
 
-    Public Property Value(ByVal uiProgCode As String) As String
+    Public Property Value(uiProgCode As String) As String
         Get
             Dim oAttribute As ElitaAttribute = Attribues.Where(Function(a) a.UiProgCode = uiProgCode).FirstOrDefault()
             If (oAttribute Is Nothing) Then
@@ -506,7 +506,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
         End Set
     End Property
 
-    Public ReadOnly Property Values(ByVal uiProgCode As String) As IEnumerable(Of String)
+    Public ReadOnly Property Values(uiProgCode As String) As IEnumerable(Of String)
         Get
             Dim oAttribute As ElitaAttribute = Attribues.Where(Function(a) a.UiProgCode = uiProgCode).FirstOrDefault()
             If (oAttribute Is Nothing) Then
@@ -521,7 +521,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
         End Get
     End Property
 
-    Public ReadOnly Property Values(ByVal uiProgCode As String, ByVal activeOn As Date) As IEnumerable(Of String)
+    Public ReadOnly Property Values(uiProgCode As String, activeOn As Date) As IEnumerable(Of String)
         Get
             Dim oAttribute As ElitaAttribute = Attribues.Where(Function(a) a.UiProgCode = uiProgCode).FirstOrDefault()
             If (oAttribute Is Nothing) Then
@@ -536,7 +536,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
         End Get
     End Property
 
-    Public ReadOnly Property Value(ByVal uiProgCode As String, ByVal activeOn As Date) As String
+    Public ReadOnly Property Value(uiProgCode As String, activeOn As Date) As String
         Get
             Dim oAttribute As ElitaAttribute = Attribues.Where(Function(a) a.UiProgCode = uiProgCode).FirstOrDefault()
             If (oAttribute Is Nothing) Then
@@ -551,13 +551,13 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
         End Get
     End Property
 
-    Public Function Contains(ByVal attributeCode As String) As Boolean
+    Public Function Contains(attributeCode As String) As Boolean
         Dim oAttributeValue As AttributeValue
         oAttributeValue = (From oItem As AttributeValue In Me Where oItem.Attribute.UiProgCode.ToUpperInvariant().Equals(attributeCode.ToUpperInvariant()) Select oItem).FirstOrDefault()
         Return Not (oAttributeValue Is Nothing)
     End Function
 
-    Public Function Contains(ByVal attributeId As Guid) As Boolean
+    Public Function Contains(attributeId As Guid) As Boolean
         Dim oAttributeValue As AttributeValue
         oAttributeValue = (From oItem As AttributeValue In Me Where oItem.AttributeId.Equals(attributeId) Select oItem).FirstOrDefault()
         Return Not (oAttributeValue Is Nothing)

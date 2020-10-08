@@ -6,7 +6,7 @@ Public Class Comment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Comment
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -74,7 +74,7 @@ Public Class Comment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommentDAL
             If _isDSCreator Then
@@ -310,11 +310,11 @@ Public Class Comment
     Public NotInheritable Class MandatryCertOrForgetRequest
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.MSG_CERT_Or_FORGOT_REQUEST_MANDATORY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Comment = CType(objectToValidate, Comment)
 
             If Not obj.ForgotRequestId = Guid.Empty AndAlso obj.CertId = Guid.Empty Then
@@ -352,7 +352,7 @@ Public Class Comment
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-   Public Sub PopulateWithDefaultValues(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing)
+   Public Sub PopulateWithDefaultValues(certId As Guid, Optional ByVal claimId As Object = Nothing)
         Dim cert As New Certificate(certId)
         Me.CertId = certId
         CallerName = cert.CustomerName
@@ -362,13 +362,13 @@ Public Class Comment
         End If
     End Sub
 
-    Public Shared Function GetNewComment(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing) As Comment
+    Public Shared Function GetNewComment(certId As Guid, Optional ByVal claimId As Object = Nothing) As Comment
         Dim c As New Comment
         c.PopulateWithDefaultValues(certId, claimId)
         Return c
     End Function
 
-    Public Shared Function GetNewComment(ByVal original As Comment) As Comment
+    Public Shared Function GetNewComment(original As Comment) As Comment
         Dim c As New Comment
         c.CopyFrom(original)
         c.SetValue(DALBase.COL_NAME_CREATED_BY, original.CreatedById)
@@ -376,7 +376,7 @@ Public Class Comment
         Return c
     End Function
 
-    Public Shared Function GetLatestComment(ByVal parentClaim As ClaimBase) As Comment
+    Public Shared Function GetLatestComment(parentClaim As ClaimBase) As Comment
         Dim dal As New CommentDAL
         Dim ds As DataSet = dal.LoadListForClaim(parentClaim.Id)
         If Not ds.Tables(dal.TABLE_NAME) Is Nothing AndAlso ds.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
@@ -388,12 +388,12 @@ Public Class Comment
         End If
     End Function
 
-    Public Shared Function GetCommentsForClaim(ByVal ClaimId As Guid) As DataSet
+    Public Shared Function GetCommentsForClaim(ClaimId As Guid) As DataSet
         Dim dal As New CommentDAL
         Return dal.LoadListForClaim(ClaimId)
     End Function
 
-    Public Shared Sub DeleteNewChildComment(ByVal parentClaim As ClaimBase)
+    Public Shared Sub DeleteNewChildComment(parentClaim As ClaimBase)
         Dim row As DataRow
         If parentClaim.Dataset.Tables.IndexOf(CommentDAL.TABLE_NAME) >= 0 Then
             Dim rowIndex As Integer
@@ -419,8 +419,8 @@ Public Class Comment
 
 #Region "Shared Methods"
 
-    Public Shared Sub SetProcessCancellationData(ByVal oCertCancelCommentInfoData As CommentData, _
-                                              ByVal oCommentInfo As Comment)
+    Public Shared Sub SetProcessCancellationData(oCertCancelCommentInfoData As CommentData, _
+                                              oCommentInfo As Comment)
         With oCertCancelCommentInfoData
             .CommentId = oCommentInfo.Id
             .Callername = oCommentInfo.CallerName
@@ -434,7 +434,7 @@ Public Class Comment
 #Region "DataView Retrieveing Methods"
     'Manually added method
 
-    Public Shared Function getList(ByVal certId As Guid) As CommentSearchDV
+    Public Shared Function getList(certId As Guid) As CommentSearchDV
 
         Try
             Dim dal As New CommentDAL
@@ -447,7 +447,7 @@ Public Class Comment
 
     End Function
 
-    Public Shared Function getExtList(ByVal claimId As Guid) As ExtCommentSearchDV
+    Public Shared Function getExtList(claimId As Guid) As ExtCommentSearchDV
 
         Try
             Dim dal As New CommentDAL
@@ -471,7 +471,7 @@ Public Class Comment
         Public Const COL_COMMENTS As String = CommentDAL.COL_NAME_COMMENTS
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -486,7 +486,7 @@ Public Class Comment
         Public Const COL_EXT_CALLER_NAME As String = CommentDAL.COL_NAME_CALLER_NAME
         Public Const COL_EXT_COMMENTS As String = CommentDAL.COL_NAME_COMMENTS
 #End Region
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -498,15 +498,15 @@ Public Class Comment
     Public Class ClaimCommentList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ClaimBase)
+        Public Sub New(parent As ClaimBase)
             MyBase.New(LoadTable(parent), GetType(Comment), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, Comment).ClaimId.Equals(CType(Parent, ClaimBase).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ClaimBase) As DataTable
+        Private Shared Function LoadTable(parent As ClaimBase) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ClaimCommentList)) Then
                     Dim dal As New CommentDAL

@@ -6,7 +6,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TDataAccessType
             If _isDSCreator Then
@@ -155,7 +155,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As TPermission)
+    Public Sub Copy(original As TPermission)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
@@ -174,7 +174,7 @@ Public MustInherit Class PermissionList(Of _
 
     Private ReadOnly dvPermissions As DataView
 
-    Public Sub New(ByVal parent As TParentType)
+    Public Sub New(parent As TParentType)
         MyBase.New(LoadTable(Of TPermissionList)(parent), parent)
         If (ElitaPlusIdentity.Current Is Nothing) OrElse (ElitaPlusIdentity.Current.ActiveUser Is Nothing) Then
             dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, CType(CType(parent, Object), User).LanguageId)
@@ -185,19 +185,19 @@ Public MustInherit Class PermissionList(Of _
 
     End Sub
 
-    Public Overrides Function GetChild(ByVal childId As System.Guid) As BusinessObjectBase
+    Public Overrides Function GetChild(childId As System.Guid) As BusinessObjectBase
         Return (From permission As TPermission In Me
                 Where permission.PermissionId = childId
                 Select permission).FirstOrDefault()
     End Function
 
-    Public MustOverride Function GetNewChild(ByVal parentId As System.Guid) As BusinessObjectBase
+    Public MustOverride Function GetNewChild(parentId As System.Guid) As BusinessObjectBase
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, TPermission).EntityId.Equals(CType(Parent, TParentType).Id)
     End Function
 
-    Private Shared Function LoadTable(Of TPermissionList)(ByVal parent As TParentType) As DataTable
+    Private Shared Function LoadTable(Of TPermissionList)(parent As TParentType) As DataTable
         Try
             Dim dal As New TDataAccessType
             If Not parent.IsChildrenCollectionLoaded(GetType(TPermissionList)) Then
@@ -210,13 +210,13 @@ Public MustInherit Class PermissionList(Of _
         End Try
     End Function
 
-    Public Sub Grant(ByVal permissionId As Guid)
+    Public Sub Grant(permissionId As Guid)
         Dim permission As TPermission = GetNewChild(DirectCast(MyBase.Parent, TParentType).Id)
         permission.PermissionId = permissionId
         permission.Save()
     End Sub
 
-    Public Function HasPermission(ByVal permissionCode As String) As Boolean
+    Public Function HasPermission(permissionCode As String) As Boolean
         Dim result As DataTable = dvPermissions.Table.Copy()
         Dim permissionId As Nullable(Of Guid) = Nothing
         permissionCode = permissionCode.ToUpperInvariant()
@@ -239,7 +239,7 @@ Public MustInherit Class PermissionList(Of _
 
     End Function
 
-    Public Sub Revoke(ByVal permissionId As Guid)
+    Public Sub Revoke(permissionId As Guid)
         Dim permission As TPermission = (From p As TPermission In Me
                                          Where p.PermissionId = permissionId
                                          Select p).FirstOrDefault()

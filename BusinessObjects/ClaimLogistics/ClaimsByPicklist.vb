@@ -18,7 +18,7 @@ Public Class ClaimsByPicklist
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ClaimsByPicklistDs)
+    Public Sub New(ds As ClaimsByPicklistDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -33,7 +33,7 @@ Public Class ClaimsByPicklist
     Private _storeServiceCenterId As Guid = Guid.Empty
     Private _headerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As ClaimsByPicklistDs)
+    Private Sub MapDataSet(ds As ClaimsByPicklistDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -55,7 +55,7 @@ Public Class ClaimsByPicklist
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ClaimsByPicklistDs)
+    Private Sub Load(ds As ClaimsByPicklistDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -73,7 +73,7 @@ Public Class ClaimsByPicklist
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ClaimsByPicklistDs)
+    Private Sub PopulateBOFromWebService(ds As ClaimsByPicklistDs)
         Try
             If ds.ClaimsByPicklist.Count = 0 Then Exit Sub
             With ds.ClaimsByPicklist.Item(0)

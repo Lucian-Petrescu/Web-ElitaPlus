@@ -4,7 +4,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,7 +53,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EquipmentCommentDAL
             If _isDSCreator Then
@@ -150,7 +150,7 @@
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As EquipmentComment)
+    Public Sub Copy(original As EquipmentComment)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
@@ -161,15 +161,15 @@
     Public Class EquipmentCommentList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Equipment)
+        Public Sub New(parent As Equipment)
             MyBase.New(LoadTable(parent), GetType(EquipmentComment), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, EquipmentComment).EquipmentId.Equals(CType(Parent, Equipment).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Equipment) As DataTable
+        Private Shared Function LoadTable(parent As Equipment) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(EquipmentCommentList)) Then
                     Dim dal As New EquipmentCommentDAL

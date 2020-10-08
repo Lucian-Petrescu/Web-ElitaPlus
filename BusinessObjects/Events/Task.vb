@@ -6,7 +6,7 @@ Public Class Task
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Task
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Task
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TaskDAL
             If _isDSCreator Then
@@ -188,7 +188,7 @@ Public Class Task
         End Set
     End Property
 
-    Default Public ReadOnly Property TaskParameter(ByVal key As String) As String
+    Default Public ReadOnly Property TaskParameter(key As String) As String
         Get
             Dim returnValue As String = String.Empty
             If (_arguments Is Nothing) Then
@@ -248,7 +248,7 @@ Public Class Task
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal strCode As String, ByVal strDesc As String) As TaskSearchDV
+    Public Shared Function getList(strCode As String, strDesc As String) As TaskSearchDV
         Try
             Dim dal As New TaskDAL
             Return New TaskSearchDV(dal.LoadList(strCode, strDesc).Tables(0))
@@ -275,13 +275,13 @@ Public Class Task
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As TaskSearchDV, ByVal NewBO As Task)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As TaskSearchDV, NewBO As Task)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then

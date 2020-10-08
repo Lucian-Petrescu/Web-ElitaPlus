@@ -7,7 +7,7 @@ Public Class RuleProcess
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class RuleProcess
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class RuleProcess
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RuleProcessDAL
             If _isDSCreator Then
@@ -244,15 +244,15 @@ Public Class RuleProcess
     Public Class ProcessRuleDetailView
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Rule)
+        Public Sub New(parent As Rule)
             MyBase.New(LoadTable(parent), GetType(RuleProcess), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, RuleProcess).RuleId.Equals(CType(Parent, Rule).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Rule) As DataTable
+        Private Shared Function LoadTable(parent As Rule) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ProcessRuleDetailView)) Then
                     Dim dal As New RuleProcessDAL
@@ -272,14 +272,14 @@ Public Class RuleProcess
 
 #Region "Public Methods"
 
-    Public Sub Copy(ByVal original As RuleProcess)
+    Public Sub Copy(original As RuleProcess)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Rule Process.")
         End If
         MyBase.CopyFrom(original)
     End Sub
 
-    Public Shared Function IsChild(ByVal ProcessId As Guid, ByVal RuleProcessId As Guid) As Byte()
+    Public Shared Function IsChild(ProcessId As Guid, RuleProcessId As Guid) As Byte()
 
         Try
             Dim dal As New RuleProcessDAL

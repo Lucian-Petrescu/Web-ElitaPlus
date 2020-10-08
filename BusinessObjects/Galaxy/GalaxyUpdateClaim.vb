@@ -87,7 +87,7 @@ Public Class GalaxyUpdateClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GalaxyUpdateClaimDs)
+    Public Sub New(ds As GalaxyUpdateClaimDs)
         MyBase.New()
 
         dsCoverageInfo = New DataSet
@@ -107,7 +107,7 @@ Public Class GalaxyUpdateClaim
 
 #Region "Member Methods"
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GalaxyUpdateClaimDs)
+    Private Sub PopulateBOFromWebService(ds As GalaxyUpdateClaimDs)
         Try
             If ds.GalaxyUpdateClaim.Count = 0 Then Exit Sub
             With ds.GalaxyUpdateClaim.Item(0)
@@ -494,7 +494,7 @@ Public Class GalaxyUpdateClaim
         End Try
     End Function
 
-    Private Sub MapDataSet(ByVal ds As GalaxyUpdateClaimDs)
+    Private Sub MapDataSet(ds As GalaxyUpdateClaimDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -512,7 +512,7 @@ Public Class GalaxyUpdateClaim
 
     End Sub
 
-    Private Sub Load(ByVal ds As GalaxyUpdateClaimDs)
+    Private Sub Load(ds As GalaxyUpdateClaimDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -538,7 +538,7 @@ Public Class GalaxyUpdateClaim
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Public Function IsValidFollowupDate(ByVal claimBO As Claim) As Boolean
+    Public Function IsValidFollowupDate(claimBO As Claim) As Boolean
         Dim obj As Claim = claimBO
 
         If ((obj.FollowupDate Is Nothing) OrElse _

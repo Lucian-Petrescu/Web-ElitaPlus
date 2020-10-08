@@ -13,7 +13,7 @@ Public Class GetParts
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetPartsDs)
+    Public Sub New(ds As GetPartsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -29,7 +29,7 @@ Public Class GetParts
     Private _ClaimId As Guid = Guid.Empty
     Private _company_id As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetPartsDs)
+    Private Sub MapDataSet(ds As GetPartsDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -51,7 +51,7 @@ Public Class GetParts
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetPartsDs)
+    Private Sub Load(ds As GetPartsDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -70,7 +70,7 @@ Public Class GetParts
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetPartsDs)
+    Private Sub PopulateBOFromWebService(ds As GetPartsDs)
         Try
             If ds.GetParts.Count = 0 Then Exit Sub
             With ds.GetParts.Item(0)
@@ -111,7 +111,7 @@ Public Class GetParts
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub getRiskGroupId(ByVal Code As String)
+    Private Sub getRiskGroupId(Code As String)
         Dim dvRiskGroups As DataView = LookupListNew.GetRiskGroupsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         If Not dvRiskGroups Is Nothing AndAlso dvRiskGroups.Count > 0 Then
             _Risk_Group_id = LookupListNew.GetIdFromCode(dvRiskGroups, Code)

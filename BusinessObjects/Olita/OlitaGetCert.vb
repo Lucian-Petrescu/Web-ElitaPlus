@@ -14,7 +14,7 @@ Public Class OlitaGetCert
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As OlitaGetCertDs)
+    Public Sub New(ds As OlitaGetCertDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -27,7 +27,7 @@ Public Class OlitaGetCert
 #Region "Private Members"
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As OlitaGetCertDs)
+    Private Sub MapDataSet(ds As OlitaGetCertDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -49,7 +49,7 @@ Public Class OlitaGetCert
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As OlitaGetCertDs)
+    Private Sub Load(ds As OlitaGetCertDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -68,7 +68,7 @@ Public Class OlitaGetCert
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As OlitaGetCertDs)
+    Private Sub PopulateBOFromWebService(ds As OlitaGetCertDs)
         Try
             If ds.OlitaGetCert.Count = 0 Then Exit Sub
             With ds.OlitaGetCert.Item(0)

@@ -34,23 +34,23 @@ Public Class RepairLogisticAuthorizationFileLoad
     End Property
 #End Region
 
-    Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
+    Protected Overrides Function CreateFileLoadHeader(fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
         ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
         Return ClaimLoadFileProcessed
     End Function
 
-    Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
+    Protected Overrides Function CreateFileLoadDetail(fileLoadDetailId As System.Guid, headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
         Dim returnValue As ClaimloadReconWrk
         returnValue = New ClaimloadReconWrk(fileLoadDetailId, headerRecord.Dataset)
         Return returnValue
     End Function
 
-    Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
+    Protected Overrides Sub CustomSave(headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
         headerRecord.Save(Claim)
     End Sub
 
-    Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As ClaimloadReconWrk, ByVal familyDataSet As DataSet) As ProcessResult
+    Protected Overrides Function ProcessDetailRecord(reconRecord As ClaimloadReconWrk, familyDataSet As DataSet) As ProcessResult
         Try
             Dim claim As MultiAuthClaim
             Dim claimAuthorization As ClaimAuthorization

@@ -6,7 +6,7 @@ Public Class VendorloadInvReconWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,26 +20,26 @@ Public Class VendorloadInvReconWrk
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -63,7 +63,7 @@ Public Class VendorloadInvReconWrk
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
 
             If _isDSCreator Then
@@ -302,7 +302,7 @@ Public Class VendorloadInvReconWrk
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Shared Function ValidateFile(ByVal fileProcessedId As Guid) As Guid
+    Public Shared Function ValidateFile(fileProcessedId As Guid) As Guid
         Dim interfaceStatusId As Guid
         Dim dal As New VendorloadInvReconWrkDal
         Try
@@ -314,7 +314,7 @@ Public Class VendorloadInvReconWrk
         End Try
     End Function
 
-    Public Shared Function ProcessFile(ByVal fileProcessedId As Guid) As Guid
+    Public Shared Function ProcessFile(fileProcessedId As Guid) As Guid
         Dim interfaceStatusId As Guid
         Dim dal As New VendorloadInvReconWrkDal
         Try
@@ -326,7 +326,7 @@ Public Class VendorloadInvReconWrk
         End Try
     End Function
 
-    Public Shared Function DeleteFile(ByVal fileProcessedId As Guid) As Guid
+    Public Shared Function DeleteFile(fileProcessedId As Guid) As Guid
         Dim interfaceStatusId As Guid
         Dim dal As New VendorloadInvReconWrkDal
         Try
@@ -340,9 +340,9 @@ Public Class VendorloadInvReconWrk
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal fileProcessedId As Guid, ByVal recMode As Integer,
-                             ByVal recordType As String, ByVal rejectCode As String, ByVal rejectReason As String,
-                             ByVal pageindex As Integer, ByVal pagesize As Integer, ByVal sortExpression As String) As DataView
+    Public Shared Function LoadList(fileProcessedId As Guid, recMode As Integer,
+                             recordType As String, rejectCode As String, rejectReason As String,
+                             pageindex As Integer, pagesize As Integer, sortExpression As String) As DataView
         Try
             Dim dal As New VendorloadInvReconWrkDal
             Dim ds As DataSet

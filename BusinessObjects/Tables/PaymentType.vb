@@ -6,7 +6,7 @@ Public Class PaymentType
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class PaymentType
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class PaymentType
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PaymentTypeDAL
             If _isDSCreator Then
@@ -210,7 +210,7 @@ Public Class PaymentType
 #Region "DataView Retrieveing Methods"
 
 
-    Public Shared Function getList(ByVal CompGrpId As Guid, ByVal LanguageId As Guid) As PaymentTypeSearchDV
+    Public Shared Function getList(CompGrpId As Guid, LanguageId As Guid) As PaymentTypeSearchDV
 
         Try
             Dim dal As New PaymentTypeDAL
@@ -223,7 +223,7 @@ Public Class PaymentType
         End Try
     End Function
 
-    Public Shared Function getListForQuoteEngine(ByVal CompGrpId As Guid, ByVal LanguageId As Guid) As System.Data.DataView
+    Public Shared Function getListForQuoteEngine(CompGrpId As Guid, LanguageId As Guid) As System.Data.DataView
 
         Try
             Dim dal As New PaymentTypeDAL
@@ -235,7 +235,7 @@ Public Class PaymentType
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getCollectionMethodsList(ByRef ds As DataSet, ByVal CompGrpId As Guid, ByVal LanguageId As Guid) As DataSet
+    Public Shared Function getCollectionMethodsList(ByRef ds As DataSet, CompGrpId As Guid, LanguageId As Guid) As DataSet
 
         Try
             Dim dal As New PaymentTypeDAL
@@ -247,7 +247,7 @@ Public Class PaymentType
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getPaymentInstrumentsList(ByRef ds As DataSet, ByVal CompGrpId As Guid, ByVal LanguageId As Guid) As DataSet
+    Public Shared Function getPaymentInstrumentsList(ByRef ds As DataSet, CompGrpId As Guid, LanguageId As Guid) As DataSet
 
         Try
             Dim dal As New PaymentTypeDAL
@@ -260,7 +260,7 @@ Public Class PaymentType
         End Try
     End Function
 
-    Public Shared Function getPaymentTypesList(ByRef ds As DataSet, ByVal CompGrpId As Guid, ByVal LanguageId As Guid) As DataSet
+    Public Shared Function getPaymentTypesList(ByRef ds As DataSet, CompGrpId As Guid, LanguageId As Guid) As DataSet
 
         Try
             Dim dal As New PaymentTypeDAL
@@ -291,7 +291,7 @@ Public Class PaymentType
     '    Return (dv)
 
     'End Function
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As PaymentTypeSearchDV, ByVal NewBO As PaymentType)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As PaymentTypeSearchDV, NewBO As PaymentType)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -336,7 +336,7 @@ Public Class PaymentType
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -346,11 +346,11 @@ Public Class PaymentType
     Public NotInheritable Class PayPalPaymentInstruValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PAY_PAL_VALIDATOR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PaymentType = CType(objectToValidate, PaymentType)
 
             If Not obj.CollectionMethodId = Guid.Empty Then

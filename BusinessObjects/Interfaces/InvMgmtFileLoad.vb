@@ -6,7 +6,7 @@ Public Class InvMgmtFileLoad
     Inherits FileLoadBase(Of ClaimloadFileProcessed, ClaimloadReconWrk)
 
 #Region "Constructor"
-    Public Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer)
+    Public Sub New(threadCount As Integer, transactionSize As Integer)
         MyBase.New(True) '' Custom Save Constructor
     End Sub
 
@@ -46,12 +46,12 @@ Public Class InvMgmtFileLoad
     End Property
 #End Region
 
-    Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
+    Protected Overrides Function CreateFileLoadHeader(fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
         ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
         Return ClaimLoadFileProcessed
     End Function
 
-    Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
+    Protected Overrides Function CreateFileLoadDetail(fileLoadDetailId As System.Guid, headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
         Dim returnValue As ClaimloadReconWrk
         returnValue = New ClaimloadReconWrk(fileLoadDetailId, headerRecord.Dataset)
         Return returnValue
@@ -61,7 +61,7 @@ Public Class InvMgmtFileLoad
         MyBase.AfterCreateFileLoadHeader()
     End Sub
 
-    Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As ClaimloadReconWrk, ByVal familyDataSet As System.Data.DataSet) As ProcessResult
+    Protected Overrides Function ProcessDetailRecord(reconRecord As ClaimloadReconWrk, familyDataSet As System.Data.DataSet) As ProcessResult
         Try
             Dim Claim As Claim
             Dim claimShipping As ClaimShipping
@@ -182,7 +182,7 @@ Public Class InvMgmtFileLoad
         End Try
     End Function
 
-    Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
+    Protected Overrides Sub CustomSave(headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
         headerRecord.Save()
     End Sub

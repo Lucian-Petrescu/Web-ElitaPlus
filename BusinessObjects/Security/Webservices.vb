@@ -11,7 +11,7 @@ Public Class Webservices
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -25,20 +25,20 @@ Public Class Webservices
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class Webservices
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New WebservicesDAL
             If _isDSCreator Then
@@ -194,7 +194,7 @@ Public Class Webservices
         End Try
     End Sub
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -214,7 +214,7 @@ Public Class Webservices
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetWebServices(ByVal web_service_name As String, ByVal on_line_id As Guid) As WebServicesSearchDV
+    Public Shared Function GetWebServices(web_service_name As String, on_line_id As Guid) As WebServicesSearchDV
 
         Try
             Dim dal As New WebservicesDAL
@@ -227,9 +227,9 @@ Public Class Webservices
     End Function
 
 
-    Public Shared Sub WebUserLog(ByVal Web_UserLog_id As Guid, ByVal Url As String, ByVal functionToProcess As String,
-                                          ByVal networkId As String, ByVal Environment As String, ByVal Hub As String,
-                                          ByVal _xml As String, ByVal Created_date As Date)
+    Public Shared Sub WebUserLog(Web_UserLog_id As Guid, Url As String, functionToProcess As String,
+                                          networkId As String, Environment As String, Hub As String,
+                                          _xml As String, Created_date As Date)
         Try
             Dim Dal As New WebServicesDAL
             Dal.WebUserLog(Web_UserLog_id, Url, functionToProcess, networkId, Environment, Hub, _xml, Created_date)
@@ -258,7 +258,7 @@ Public Class Webservices
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

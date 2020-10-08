@@ -6,7 +6,7 @@ Public Class AfaAcctAmtSrcMapping
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class AfaAcctAmtSrcMapping
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class AfaAcctAmtSrcMapping
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AfaAcctAmtSrcMappingDAL
             If _isDSCreator Then
@@ -251,13 +251,13 @@ Public Class AfaAcctAmtSrcMapping
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getFormularByProdLossType(ByVal AcctAmtSrcID As Guid, ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As DataView
+    Public Shared Function getFormularByProdLossType(AcctAmtSrcID As Guid, prodID As Guid, LossType As String, CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As DataView
         Dim dal As New AfaAcctAmtSrcMappingDAL
         Dim ds As DataSet = dal.LoadFormularByProdLossType(AcctAmtSrcID, ElitaPlusIdentity.Current.ActiveUser.LanguageId, prodID, LossType, CntToUse, blnGetMatchedOnly)
         Return ds.Tables(0).DefaultView
     End Function
 
-    Public Shared Function getList(ByVal AcctAmtSrcID As Guid, ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As Collections.Generic.List(Of AfaAcctAmtSrcMapping)
+    Public Shared Function getList(AcctAmtSrcID As Guid, prodID As Guid, LossType As String, CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As Collections.Generic.List(Of AfaAcctAmtSrcMapping)
         Dim dal As New AfaAcctAmtSrcMappingDAL
         Dim ds As DataSet = dal.LoadList(AcctAmtSrcID, prodID, LossType, CntToUse, blnGetMatchedOnly)
         Dim mappingList As New Collections.Generic.List(Of AfaAcctAmtSrcMapping)
@@ -268,7 +268,7 @@ Public Class AfaAcctAmtSrcMapping
 
     End Function
 
-    Public Shared Function getProductByDealer(ByVal dealerId As Guid, ByVal productCode As String) As DataView
+    Public Shared Function getProductByDealer(dealerId As Guid, productCode As String) As DataView
         Try
             Dim dal As New AfaAcctAmtSrcMappingDAL
             Return dal.LoadProductByDealer(dealerId, productCode).Tables(0).DefaultView

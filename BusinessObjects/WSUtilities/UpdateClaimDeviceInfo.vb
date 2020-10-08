@@ -38,7 +38,7 @@
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdateClaimDeviceInfoDs)
+    Public Sub New(ds As UpdateClaimDeviceInfoDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -188,7 +188,7 @@
 
 #Region "Private Members"
 
-    Private Sub MapDataSet(ByVal ds As UpdateClaimDeviceInfoDs)
+    Private Sub MapDataSet(ds As UpdateClaimDeviceInfoDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -210,7 +210,7 @@
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As UpdateClaimDeviceInfoDs)
+    Private Sub Load(ds As UpdateClaimDeviceInfoDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -228,7 +228,7 @@
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As UpdateClaimDeviceInfoDs)
+    Private Sub PopulateBOFromWebService(ds As UpdateClaimDeviceInfoDs)
         Try
             If ds.UpdateClaimDeviceInfo.Count = 0 Then Exit Sub
             With ds.UpdateClaimDeviceInfo.Item(0)

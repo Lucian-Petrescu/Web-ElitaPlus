@@ -6,7 +6,7 @@ Public Class OcTemplateGroupDealer
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class OcTemplateGroupDealer
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class OcTemplateGroupDealer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New OcTemplateGroupDealerDAL
             If _isDSCreator Then
@@ -160,7 +160,7 @@ Public Class OcTemplateGroupDealer
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal templateGroupId As Guid) As DataView
+    Public Shared Function GetList(templateGroupId As Guid) As DataView
         Try
             Dim dal As New OcTemplateGroupDealerDAL
             Return New DataView(dal.LoadList(templateGroupId).Tables(0))
@@ -169,7 +169,7 @@ Public Class OcTemplateGroupDealer
         End Try
     End Function
 
-    Public Shared Function GetAssociatedTemplateGroupCount(ByVal dealerId As Guid, ByVal templateGroupIdToExcludeFromCount As Guid) As Integer
+    Public Shared Function GetAssociatedTemplateGroupCount(dealerId As Guid, templateGroupIdToExcludeFromCount As Guid) As Integer
         Try
             Dim dal As New OcTemplateGroupDealerDAL
             Dim dataSet As DataSet = dal.GetAssociatedTemplateGroupCount(dealerId, templateGroupIdToExcludeFromCount)

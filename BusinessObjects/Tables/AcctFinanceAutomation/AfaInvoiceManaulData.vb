@@ -6,7 +6,7 @@ Public Class AfaInvoiceManaulData
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class AfaInvoiceManaulData
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class AfaInvoiceManaulData
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AfaInvoiceManaulDataDAL
             If _isDSCreator Then
@@ -289,7 +289,7 @@ Public Class AfaInvoiceManaulData
         End Try
     End Sub
 
-    Public Shared Function StartInvoiceProcess(ByVal dealerId As Guid, ByVal BillingMonth As String) As Boolean
+    Public Shared Function StartInvoiceProcess(dealerId As Guid, BillingMonth As String) As Boolean
         Try
             Dim dal As New AfaInvoiceManaulDataDAL
             Return dal.StartInvoiceProcess(dealerId, BillingMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
@@ -298,7 +298,7 @@ Public Class AfaInvoiceManaulData
         End Try
     End Function
 
-    Public Shared Sub UpdateInvoicewithManualDates(ByVal dealerId As Guid, ByVal BillingMonth As String, ByRef strMsg As String)
+    Public Shared Sub UpdateInvoicewithManualDates(dealerId As Guid, BillingMonth As String, ByRef strMsg As String)
         Try
             Dim dal As New AfaInvoiceManaulDataDAL
             dal.UpdateInvoiceWithManualDates(dealerId, BillingMonth, strMsg)
@@ -309,17 +309,17 @@ Public Class AfaInvoiceManaulData
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getListByDealer(ByVal dealerID As Guid, ByVal PeriodYear As String, ByVal PeriodMonth As String) As DataView
+    Public Shared Function getListByDealer(dealerID As Guid, PeriodYear As String, PeriodMonth As String) As DataView
         Dim dal As New AfaInvoiceManaulDataDAL
         Return dal.LoadListByDealer(dealerID, PeriodYear, PeriodMonth).Tables(0).DefaultView
     End Function
 
-    Public Shared Function getPONumberListByDealer(ByVal dealerID As Guid, ByVal PeriodGreaterThan As String) As DataView
+    Public Shared Function getPONumberListByDealer(dealerID As Guid, PeriodGreaterThan As String) As DataView
         Dim dal As New AfaInvoiceManaulDataDAL
         Return dal.LoadPONumberListByDealer(dealerID, PeriodGreaterThan).Tables(0).DefaultView
     End Function
 
-    Public Shared Sub AddEmptyRowToSearchDV(ByRef dv As DataView, ByVal NewBO As AfaInvoiceManaulData)
+    Public Shared Sub AddEmptyRowToSearchDV(ByRef dv As DataView, NewBO As AfaInvoiceManaulData)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -346,7 +346,7 @@ Public Class AfaInvoiceManaulData
         End If
     End Sub
 
-    Public Shared Sub AddEmptyRowToPONumSearchDV(ByRef dv As DataView, ByVal NewBO As AfaInvoiceManaulData)
+    Public Shared Sub AddEmptyRowToPONumSearchDV(ByRef dv As DataView, NewBO As AfaInvoiceManaulData)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -376,7 +376,7 @@ Public Class AfaInvoiceManaulData
         End If
     End Sub
 
-    Public Shared Function getDealerMonthlyRecords(ByVal dealerID As Guid, ByVal AccountingMonth As String) As Collections.Generic.List(Of AfaInvoiceManaulData)
+    Public Shared Function getDealerMonthlyRecords(dealerID As Guid, AccountingMonth As String) As Collections.Generic.List(Of AfaInvoiceManaulData)
         Dim dal As New AfaInvoiceManaulDataDAL
         Dim ds As DataSet = dal.LoadDealerMonthlyRecords(dealerID, AccountingMonth)
         Dim objList As New Collections.Generic.List(Of AfaInvoiceManaulData)
@@ -387,11 +387,11 @@ Public Class AfaInvoiceManaulData
     End Function
 
 
-    Public Shared Function GetListByType(ByVal DealerID As Guid, ByVal InvoiceMonth As String, ByVal ManualDataType As String) As Collections.Generic.List(Of AfaInvoiceManaulData)        
+    Public Shared Function GetListByType(DealerID As Guid, InvoiceMonth As String, ManualDataType As String) As Collections.Generic.List(Of AfaInvoiceManaulData)        
         Return GetListByTypeByPeriod(DealerID, ManualDataType, InvoiceMonth, InvoiceMonth)
     End Function
 
-    Public Shared Function GetListByTypeByPeriod(ByVal DealerID As Guid, ByVal ManualDataType As String, ByVal InvoiceMonthStart As String, ByVal InvoiceMonthEnd As String) As Collections.Generic.List(Of AfaInvoiceManaulData)
+    Public Shared Function GetListByTypeByPeriod(DealerID As Guid, ManualDataType As String, InvoiceMonthStart As String, InvoiceMonthEnd As String) As Collections.Generic.List(Of AfaInvoiceManaulData)
         Dim dal As New AfaInvoiceManaulDataDAL
         Dim ds As DataSet = dal.LoadListByTypeForPeriod(DealerID, ManualDataType, InvoiceMonthStart, InvoiceMonthEnd)
         Dim objList As New Collections.Generic.List(Of AfaInvoiceManaulData)
@@ -401,7 +401,7 @@ Public Class AfaInvoiceManaulData
         Return objList
     End Function
 
-    Public Shared Function GetDealerInvoiceDates(ByVal dealerID As Guid, ByVal AccountingMonth As String) As DataView
+    Public Shared Function GetDealerInvoiceDates(dealerID As Guid, AccountingMonth As String) As DataView
         Dim dal As New AfaInvoiceManaulDataDAL
         Return dal.LoadDealerInvoiceDates(dealerID, AccountingMonth).Tables(0).DefaultView
     End Function

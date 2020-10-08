@@ -6,7 +6,7 @@ Public Class AfaAcctAmtSrc
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class AfaAcctAmtSrc
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class AfaAcctAmtSrc
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AfaAcctAmtSrcDAL
             If _isDSCreator Then
@@ -235,7 +235,7 @@ Public Class AfaAcctAmtSrc
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Sub getList(ByVal dealerID As Guid, ByRef dvMapped As DataView, ByRef dvNotMapped As DataView)
+    Public Shared Sub getList(dealerID As Guid, ByRef dvMapped As DataView, ByRef dvNotMapped As DataView)
         Dim dal As New AfaAcctAmtSrcDAL
         Dim ds As DataSet = dal.LoadList(dealerID, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         dvMapped = ds.Tables(AfaAcctAmtSrcDAL.TABLE_NAME_LIST_MAPPED).DefaultView
@@ -249,11 +249,11 @@ Public Class AfaAcctAmtSrc
         Inherits ValidBaseAttribute
         Private Const DUPLICATE_CLIP_FORNULA As String = "DUPLICATE_CLIP_FORMULA"
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_CLIP_FORNULA)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AfaAcctAmtSrc = CType(objectToValidate, AfaAcctAmtSrc)
 
             If (obj.UseFormulaForClip = "Y" AndAlso obj.IsDuplicateCLIPFormula()) Then

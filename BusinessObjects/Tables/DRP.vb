@@ -29,7 +29,7 @@ Partial Public Class DRP
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function Get_DoesAcceptedOfferExist(ByVal IMEI As String) As Boolean
+    Public Shared Function Get_DoesAcceptedOfferExist(IMEI As String) As Boolean
         Dim Result As Boolean
         Dim Auth As DRPSystem.AuthenticationHeader
         Try

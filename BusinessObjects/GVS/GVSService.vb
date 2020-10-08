@@ -10,7 +10,7 @@ Public Class GVSService
 
 #End Region
 
-    Public Shared Function SendToGvs(ByVal xmlIn As String, ByVal functionToProcess As String) As String
+    Public Shared Function SendToGvs(xmlIn As String, functionToProcess As String) As String
         Dim wsGvs As WebDeClaimsServiceReference.WSElitaServiceOrder
         Dim gvsToken As String
         Dim sLoginMsg As String

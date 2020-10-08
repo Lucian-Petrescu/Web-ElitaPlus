@@ -6,7 +6,7 @@ Public Class Label_Extended
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Label_Extended
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, Optional ByVal useFamilyId As Boolean = False)
+    Public Sub New(id As Guid, familyDS As DataSet, Optional ByVal useFamilyId As Boolean = False)
         MyBase.New(False)
         Dataset = familyDS
         Load(id, useFamilyId)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Label_Extended
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, Optional ByVal useFamilyId As Boolean = False)
+    Protected Sub Load(id As Guid, Optional ByVal useFamilyId As Boolean = False)
         Try
             Dim dal As New LabelDAL
             If _isDSCreator Then
@@ -186,7 +186,7 @@ Public Class Label_Extended
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal SearchMask As String, Optional ByVal OrderByTrans As Boolean = False) As LabelSearchDV
+    Public Shared Function LoadList(SearchMask As String, Optional ByVal OrderByTrans As Boolean = False) As LabelSearchDV
         Try
             Dim dal As New LabelDAL
             Dim ds As DataSet
@@ -214,11 +214,11 @@ Public Class Label_Extended
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Function FindById(ByVal Id As Guid) As DictItemTranslation
+        Public Function FindById(Id As Guid) As DictItemTranslation
             Dim bo As DictItemTranslation
             For Each bo In Me
                 If bo.Id.Equals(Id) Then Return bo

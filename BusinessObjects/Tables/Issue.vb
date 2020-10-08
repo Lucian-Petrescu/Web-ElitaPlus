@@ -8,7 +8,7 @@ Public Class Issue
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,20 +22,20 @@ Public Class Issue
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -59,7 +59,7 @@ Public Class Issue
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New IssueDAL
             If _isDSCreator Then
@@ -383,8 +383,8 @@ Public Class Issue
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal code As String,
-                                    ByVal description As String, ByVal issueType As Guid, ByVal activeOn As String) As Issue.IssueSearchDV
+    Public Shared Function GetList(code As String,
+                                    description As String, issueType As Guid, activeOn As String) As Issue.IssueSearchDV
         Try
             Dim dal As New IssueDAL
             Dim oCompanyGroupIds As ArrayList
@@ -407,8 +407,8 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal code As String,
-                                    ByVal description As String, ByVal activeOn As String) As Issue.IssueSearchDV
+    Public Shared Function GetList(code As String,
+                                    description As String, activeOn As String) As Issue.IssueSearchDV
         Try
             Dim dal As New IssueDAL
             Dim oCompanyGroupIds As ArrayList
@@ -431,7 +431,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetQuestionExpiration(ByVal IssueId As Guid, ByVal IssueQuestionId As Guid) As DateTime
+    Public Shared Function GetQuestionExpiration(IssueId As Guid, IssueQuestionId As Guid) As DateTime
 
         Try
             Dim dal As New IssueDAL
@@ -453,7 +453,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetRuleExpiration(ByVal IssueId As Guid, ByVal RuleId As Guid) As DateTime
+    Public Shared Function GetRuleExpiration(IssueId As Guid, RuleId As Guid) As DateTime
 
         Try
             Dim dal As New IssueDAL
@@ -474,7 +474,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetSoftQuestionID(ByVal IssueId As Guid, ByVal IssueQuestionId As Guid) As Byte()
+    Public Shared Function GetSoftQuestionID(IssueId As Guid, IssueQuestionId As Guid) As Byte()
 
         Try
             Dim dal As New IssueDAL
@@ -496,7 +496,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetRuleID(ByVal IssueId As Guid, ByVal RuleIssueId As Guid) As Guid
+    Public Shared Function GetRuleID(IssueId As Guid, RuleIssueId As Guid) As Guid
 
         Try
             Dim dal As New IssueDAL
@@ -530,35 +530,35 @@ Public Class Issue
         Public Const COL_NAME_EXPIRATION As String = IssueDAL.COL_NAME_EXPIRATION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property IssueId(ByVal row) As Guid
+        Public Shared ReadOnly Property IssueId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ISSUE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row) As Guid
+        Public Shared ReadOnly Property Effective(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EFFECTIVE), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row) As Guid
+        Public Shared ReadOnly Property Expiration(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EXPIRATION), Byte()))
             End Get
@@ -566,7 +566,7 @@ Public Class Issue
 
     End Class
 
-    Public Shared Function GetIssuesListByDealer(ByVal dealerId As Guid) As DataView
+    Public Shared Function GetIssuesListByDealer(dealerId As Guid) As DataView
         Try
             Dim dal As New IssueDAL
             Return dal.LoadIssuesByDealer(dealerId)
@@ -598,7 +598,7 @@ Public Class Issue
             Return New IssueQuestionsChildrenList(Me)
         End Get
     End Property
-    Public ReadOnly Property IssueQuestionsChildrenByIssueDealer(ByVal issueId, ByVal dealerId) As IssueQuestionsChildrenList
+    Public ReadOnly Property IssueQuestionsChildrenByIssueDealer(issueId, dealerId) As IssueQuestionsChildrenList
         Get
             Return New IssueQuestionsChildrenList(Me, issueId, dealerId)
         End Get
@@ -611,7 +611,7 @@ Public Class Issue
     End Property
 
     '' ---
-    Public Function GetNotesChild(ByVal childId As Guid) As IssueComment
+    Public Function GetNotesChild(childId As Guid) As IssueComment
         Return CType(IssueNotesChildren.GetChild(childId), IssueComment)
     End Function
 
@@ -637,7 +637,7 @@ Public Class Issue
         Public Const COL_NAME_CODE As String = IssueCommentDAL.COL_NAME_CODE
         Public Const COL_NAME_TEXT As String = IssueCommentDAL.COL_NAME_TEXT
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -651,11 +651,11 @@ Public Class Issue
         End Function
     End Class
 
-    Public Function GetQuestionsChild(ByVal childId As Guid) As IssueQuestion
+    Public Function GetQuestionsChild(childId As Guid) As IssueQuestion
         Return CType(IssueQuestionsChildren.GetChild(childId), IssueQuestion)
     End Function
 
-    Public Function GetRulesChild(ByVal childId As Guid) As RuleIssue
+    Public Function GetRulesChild(childId As Guid) As RuleIssue
         Return CType(IssueRulesChildren.GetChild(childId), RuleIssue)
     End Function
 
@@ -725,7 +725,7 @@ Public Class Issue
         Public Const COL_NAME_COMPANY_ID As String = CompanyWorkQueueIssueDAL.COL_NAME_COMPANY_ID
         Public Const COL_NAME_ISSUE_ID As String = CompanyWorkQueueIssueDAL.COL_NAME_ISSUE_ID
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -823,7 +823,7 @@ Public Class Issue
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As Issue)
+    Public Sub Copy(original As Issue)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
@@ -873,11 +873,11 @@ Public Class Issue
     Public NotInheritable Class CheckDuplicate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM004)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Issue = CType(objectToValidate, Issue)
             If (obj.CheckDuplicateIssueListCode()) Then
                 Return False
@@ -891,11 +891,11 @@ Public Class Issue
     Public NotInheritable Class CheckListCodeDatesOverlaped
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Issue = CType(objectToValidate, Issue)
             If (obj.CheckListCodeDatesForOverlap()) Then
                 Return False
@@ -949,7 +949,7 @@ Public Class Issue
         Return False
     End Function
 
-    Public Shared Function CheckDuplicateEquipmentListCode(ByVal vCode As String, ByVal vEffective As String, ByVal vId As Guid) As Boolean
+    Public Shared Function CheckDuplicateEquipmentListCode(vCode As String, vEffective As String, vId As Guid) As Boolean
         Dim IssueDal As New IssueDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
@@ -996,8 +996,8 @@ Public Class Issue
         End If
     End Function
 
-    Public Shared Function CheckListCodeForOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeForOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New IssueDAL
@@ -1023,8 +1023,8 @@ Public Class Issue
     End Function
 
 
-    Public Shared Function CheckListCodeDurationOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeDurationOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New IssueDAL
@@ -1050,8 +1050,8 @@ Public Class Issue
     End Function
 
 
-    Public Shared Function ExpirePreviousList(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function ExpirePreviousList(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New IssueDAL
@@ -1071,7 +1071,7 @@ Public Class Issue
     End Function
 
 
-    Public Shared Function CheckIfIssueIsAssignedToQuestionNoteOrRule(ByVal vId As Guid) As Boolean
+    Public Shared Function CheckIfIssueIsAssignedToQuestionNoteOrRule(vId As Guid) As Boolean
         Dim IssueDAL As New IssueDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
@@ -1082,32 +1082,32 @@ Public Class Issue
         Return False
     End Function
 
-    Public Shared Function GetSelectedIssueList(ByVal IssueID As Guid) As DataView
+    Public Shared Function GetSelectedIssueList(IssueID As Guid) As DataView
         Dim eqListDal As New IssueDAL
         Return eqListDal.GetSelectedIssuesList(IssueID).Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetSelectedQuestionsList(ByVal IssueID As Guid) As DataView
+    Public Shared Function GetSelectedQuestionsList(IssueID As Guid) As DataView
         Dim issueDal As New IssueDAL
         Return issueDal.GetSelectedQuestionsList(IssueID).Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetSelectedRulesList(ByVal IssueID As Guid) As DataView
+    Public Shared Function GetSelectedRulesList(IssueID As Guid) As DataView
         Dim issueDal As New IssueDAL
         Return issueDal.GetSelectedRulesList(IssueID).Tables(0).DefaultView
     End Function
 
-    Public Function ExecuteQuestionsListFilter(ByVal Issue As Guid, ByVal QuestionList As String, ByVal SearchTags As String, ByVal ActiveOn As String) As DataView
+    Public Function ExecuteQuestionsListFilter(Issue As Guid, QuestionList As String, SearchTags As String, ActiveOn As String) As DataView
         Dim issueDal As New IssueQuestionDAL
         Return issueDal.AvailableQuestionListFilter(Issue, QuestionList, SearchTags, ActiveOn, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0).DefaultView
     End Function
 
-    Public Function ExecuteRulesListFilter(ByVal Issue As Guid) As DataView
+    Public Function ExecuteRulesListFilter(Issue As Guid) As DataView
         Dim issueDal As New IssueDAL
         Return issueDal.ExecuteRulesFilter(Issue).Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetDropdownCodeToUpdate(ByVal IssueCommentId As Byte()) As String
+    Public Shared Function GetDropdownCodeToUpdate(IssueCommentId As Byte()) As String
         Dim IssueCommentDal As New IssueCommentDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList

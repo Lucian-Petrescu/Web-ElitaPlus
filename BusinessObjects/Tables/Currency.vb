@@ -6,7 +6,7 @@ Public Class Currency
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Currency
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Currency
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CurrencyDAL
             If _isDSCreator Then
@@ -194,7 +194,7 @@ Public Class Currency
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Sub AddNewRowToCurrencySearchDV(ByRef dv As CurrencySearchDV, ByVal NewCurrencyBO As Currency)
+    Public Shared Sub AddNewRowToCurrencySearchDV(ByRef dv As CurrencySearchDV, NewCurrencyBO As Currency)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewCurrencyBO.IsNew Then
@@ -222,7 +222,7 @@ Public Class Currency
         End If
     End Sub
 
-    Public Shared Function getList(ByVal strCode As String, ByVal strDescription As String, ByVal strNotation As String, ByVal strISOCode As String) As CurrencySearchDV
+    Public Shared Function getList(strCode As String, strDescription As String, strNotation As String, strISOCode As String) As CurrencySearchDV
         Try
             Dim dal As New CurrencyDAL
             Return New CurrencySearchDV(dal.LoadList(strCode, strDescription, strNotation, strISOCode).Tables(0))
@@ -247,36 +247,36 @@ Public Class Currency
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CurrencyId(ByVal row) As Guid
+        Public Shared ReadOnly Property CurrencyId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_CURRENCY_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
 
-        Public Shared ReadOnly Property Notation(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Notation(row As DataRow) As String
             Get
                 Return row(COL_NAME_NOTATION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ISOCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ISOCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_ISO_CODE).ToString
             End Get

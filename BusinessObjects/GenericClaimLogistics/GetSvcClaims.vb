@@ -45,7 +45,7 @@ Public Class GetSvcClaims
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetSvcClaimsDs)
+    Public Sub New(ds As GetSvcClaimsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -59,7 +59,7 @@ Public Class GetSvcClaims
     Dim _ClaimExtendedStatusIds As ArrayList
     Dim _ClaimExtendedStatusOwnerIds As ArrayList
     Dim _claimTypeIds As ArrayList
-    Private Sub MapDataSet(ByVal ds As GetSvcClaimsDs)
+    Private Sub MapDataSet(ds As GetSvcClaimsDs)
         Dim schema As String = ds.GetXmlSchema
         Dim t As Integer
         Dim i As Integer
@@ -78,7 +78,7 @@ Public Class GetSvcClaims
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetSvcClaimsDs)
+    Private Sub Load(ds As GetSvcClaimsDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -172,7 +172,7 @@ Public Class GetSvcClaims
         Next
 
     End Sub
-    Private Sub PopulateBOFromWebService(ByVal ds As GetSvcClaimsDs)
+    Private Sub PopulateBOFromWebService(ds As GetSvcClaimsDs)
         Try
             If ds.GetSvcClaims.Count = 0 Then Exit Sub
             With ds.GetSvcClaims.Item(0)
@@ -336,7 +336,7 @@ Public Class GetSvcClaims
 
     End Function
 
-    Public Shared Function GetCompanyId(ByVal Companycode As String) As Guid
+    Public Shared Function GetCompanyId(Companycode As String) As Guid
         Dim oUser As New User(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Dim userAssignedCompaniesDv As DataView = oUser.GetSelectedAssignedCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
         Dim companyId As System.Guid = Guid.Empty

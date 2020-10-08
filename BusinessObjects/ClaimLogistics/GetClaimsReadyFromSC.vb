@@ -18,7 +18,7 @@ Public Class GetClaimsReadyFromSC
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimsReadyFromSCDs)
+    Public Sub New(ds As GetClaimsReadyFromSCDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -29,7 +29,7 @@ Public Class GetClaimsReadyFromSC
 
 #Region "Private Members"
 
-    Private Sub MapDataSet(ByVal ds As GetClaimsReadyFromSCDs)
+    Private Sub MapDataSet(ds As GetClaimsReadyFromSCDs)
         Dim schema As String = ds.GetXmlSchema
         Dim t As Integer
         Dim i As Integer
@@ -48,7 +48,7 @@ Public Class GetClaimsReadyFromSC
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimsReadyFromSCDs)
+    Private Sub Load(ds As GetClaimsReadyFromSCDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -66,7 +66,7 @@ Public Class GetClaimsReadyFromSC
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimsReadyFromSCDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimsReadyFromSCDs)
         Try
             If ds.GetClaimsReadyFromSC.Count = 0 Then Exit Sub
             With ds.GetClaimsReadyFromSC.Item(0)

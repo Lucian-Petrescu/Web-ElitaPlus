@@ -28,7 +28,7 @@ Public Class DateCompareValidatorAttribute
         [Nothing]
     End Enum
 
-    Public Sub New(ByVal fieldDisplayName As String, ByVal message As String, ByVal pCompareToPropertyName As String, ByVal pComparisionType As CompareType)
+    Public Sub New(fieldDisplayName As String, message As String, pCompareToPropertyName As String, pComparisionType As CompareType)
         MyBase.New(fieldDisplayName, message)
         CompareToPropertyName = pCompareToPropertyName
         ComparisionType = pComparisionType
@@ -136,7 +136,7 @@ Public Class DateCompareValidatorAttribute
         End Set
     End Property
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
         Dim value As DateTime
         Dim valueToCompare As DateTime
         Dim propInfo As PropertyInfo
@@ -183,7 +183,7 @@ Public Class DateCompareValidatorAttribute
         End Select
     End Function
 
-    Private Function GetDate(ByVal value As Object, ByVal pDefaultType As DefaultType) As DateTime
+    Private Function GetDate(value As Object, pDefaultType As DefaultType) As DateTime
         Dim returnValue As DateTime
         If (value Is Nothing) Then
             returnValue = GetDefaultDate(pDefaultType)
@@ -212,7 +212,7 @@ Public Class DateCompareValidatorAttribute
         Return New DateTime(returnValue.Year, returnValue.Month, returnValue.Day, returnValue.Hour, returnValue.Minute, returnValue.Second)
     End Function
 
-    Private Function GetDefaultDate(ByVal pDefaultType As DefaultType) As DateTime
+    Private Function GetDefaultDate(pDefaultType As DefaultType) As DateTime
         Select Case pDefaultType
             Case DefaultType.Today
                 Return DateTime.Today

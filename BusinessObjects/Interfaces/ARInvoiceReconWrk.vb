@@ -47,14 +47,14 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
             MyBase.New()
             Dataset = New DataSet
             Load(id)
         End Sub
 
         'Exiting BO
-        Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+        Public Sub New(id As Guid, sModifiedDate As String)
             MyBase.New()
             Dataset = New DataSet
             Load(id)
@@ -69,14 +69,14 @@
         End Sub
 
         'Exiting BO attaching to a BO family
-        Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+        Public Sub New(id As Guid, familyDS As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load(id)
         End Sub
 
         'New BO attaching to a BO family
-        Public Sub New(ByVal familyDS As DataSet)
+        Public Sub New(familyDS As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load()
@@ -98,7 +98,7 @@
             End Try
         End Sub
 
-        Protected Sub Load(ByVal id As Guid)
+        Protected Sub Load(id As Guid)
             Try
             Dim dal As New ARInvoiceReconWrkDAL
             If _isDSCreator Then
@@ -605,7 +605,7 @@
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal DealerfileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(DealerfileProcessedId As Guid) As Guid
             Get
                 Dim oDealerfileProcessed As New DealerFileProcessed(DealerfileProcessedId)
                 Dim oDealer As New Dealer(oDealerfileProcessed.DealerId)
@@ -645,15 +645,15 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerfileProcessedID As Guid,
-                                    ByVal recordMode As String,
-                                    ByVal recordType As String,
-                                    ByVal rejectCode As String,
-                                    ByVal rejectReason As String,
-                                    ByVal parentFile As String,
-                                    ByVal PageIndex As Integer,
-                                    ByVal Pagesize As Integer,
-                                    ByVal SortExpression As String) As DataView
+    Public Shared Function LoadList(dealerfileProcessedID As Guid,
+                                    recordMode As String,
+                                    recordType As String,
+                                    rejectCode As String,
+                                    rejectReason As String,
+                                    parentFile As String,
+                                    PageIndex As Integer,
+                                    Pagesize As Integer,
+                                    SortExpression As String) As DataView
         Try
             Dim dal As New ARInvoiceReconWrkDAL
             Dim ds As DataSet
@@ -669,7 +669,7 @@
 
     End Function
 
-    Public Shared Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataView
+    Public Shared Function LoadRejectList(dealerfileProcessedID As Guid) As DataView
         Try
             Dim dal As New ARInvoiceReconWrkDAL
             Dim ds As DataSet

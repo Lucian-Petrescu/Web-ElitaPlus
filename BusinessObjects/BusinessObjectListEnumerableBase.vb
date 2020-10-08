@@ -4,7 +4,7 @@ Public MustInherit Class BusinessObjectListEnumerableBase(Of TParent As Business
     Inherits BusinessObjectListBase
     Implements IEnumerable(Of TChild)
 
-    Public Sub New(ByVal table As DataTable, ByVal parent As TParent)
+    Public Sub New(table As DataTable, parent As TParent)
         MyBase.New(table, GetType(TChild), parent)
     End Sub
 

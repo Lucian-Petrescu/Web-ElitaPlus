@@ -6,7 +6,7 @@ Public Class ListItemByEntity
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ListItemByEntity
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ListItemByEntity
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New ListItemByEntityDAL            
             If _isDSCreator Then
@@ -235,20 +235,20 @@ Public Class ListItemByEntity
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetSelectedListItem(ByVal oLanguageCode As String, ByVal entityRefId As Guid, ByVal listCode As String) As DataView
+    Public Shared Function GetSelectedListItem(oLanguageCode As String, entityRefId As Guid, listCode As String) As DataView
         Dim dal As New ListItemByEntityDAL
         Dim ds As DataSet
         ds = dal.LoadSelectedListItem(oLanguageCode, entityRefId, listCode)
         Return ds.Tables(ListItemByEntityDAL.TABLE_LIST_ITEM).DefaultView
     End Function
 
-    Public Shared Function GetAvailableListItem(ByVal oLanguageCode As String, ByVal entityRefId As Guid, ByVal listCode As String) As DataView
+    Public Shared Function GetAvailableListItem(oLanguageCode As String, entityRefId As Guid, listCode As String) As DataView
         Dim dal As New ListItemByEntityDAL
         Dim ds As DataSet
         ds = dal.LoadAvailableListItem(oLanguageCode, entityRefId, listCode)
         Return ds.Tables(ListItemByEntityDAL.TABLE_LIST_ITEM).DefaultView
     End Function
-    Public Function UpdateListItem(ByVal oEntityitem As ArrayList) As ArrayList
+    Public Function UpdateListItem(oEntityitem As ArrayList) As ArrayList
         Dim oItemId As Guid
         Dim oListItemByEntity As ListItemByEntity
         Dim oDataset As DataSet = New DataSet
@@ -269,7 +269,7 @@ Public Class ListItemByEntity
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Function
-    Public Shared Function LoadEntityList(ByVal oLanguageCode As String, ByVal oEntityRefId As Guid, ByVal listCode As String, ByVal entityType As String, ByVal shortByExpression As String) As System.Data.DataView
+    Public Shared Function LoadEntityList(oLanguageCode As String, oEntityRefId As Guid, listCode As String, entityType As String, shortByExpression As String) As System.Data.DataView
         Try
             Dim dal As New ListItemByEntityDAL
             Dim ds As New DataSet
@@ -278,7 +278,7 @@ Public Class ListItemByEntity
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Function DeleteDropdown(ByVal listCode As String, ByVal listId As Guid) As Integer
+    Public Function DeleteDropdown(listCode As String, listId As Guid) As Integer
         Dim dal As New ListItemByEntityDAL
         dal.DeleteDropdown(listCode, listId)
     End Function

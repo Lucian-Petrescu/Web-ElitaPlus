@@ -653,15 +653,21 @@ Namespace Tables
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
-                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
-                        e.Row.Cells(GRID_COL_ITEM_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_ID), Byte()))
-                        e.Row.Cells(GRID_COL_DEALER_NAME).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_DEALER_NAME).ToString
-                        e.Row.Cells(GRID_COL_PRODUCT_CODE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_PRODUCT_CODE).ToString
-                        e.Row.Cells(GRID_COL_ITEM_NUMBER).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_NUMBER).ToString
-                        e.Row.Cells(GRID_COL_RISK_TYPE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_RISK_TYPE).ToString
-
-                    End If
+                If _
+                    dvRow IsNot Nothing AndAlso Not State.bnoRow AndAlso
+                    (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse
+                     itemType = ListItemType.SelectedItem) Then
+                    e.Row.Cells(GRID_COL_ITEM_IDX).Text =
+                        GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_ID),
+                                                         Byte()))
+                    e.Row.Cells(GRID_COL_DEALER_NAME).Text =
+                        dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_DEALER_NAME).ToString
+                    e.Row.Cells(GRID_COL_PRODUCT_CODE).Text =
+                        dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_PRODUCT_CODE).ToString
+                    e.Row.Cells(GRID_COL_ITEM_NUMBER).Text =
+                        dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_NUMBER).ToString
+                    e.Row.Cells(GRID_COL_RISK_TYPE).Text =
+                        dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_RISK_TYPE).ToString
                 End If
             Catch ex As Exception
                 HandleErrors(ex, moErrorController)

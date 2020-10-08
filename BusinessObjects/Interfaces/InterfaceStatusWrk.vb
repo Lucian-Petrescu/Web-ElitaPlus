@@ -30,7 +30,7 @@ Public Class InterfaceStatusWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -44,20 +44,20 @@ Public Class InterfaceStatusWrk
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -79,7 +79,7 @@ Public Class InterfaceStatusWrk
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InterfaceStatusWrkDAL
             If _isDSCreator Then
@@ -102,7 +102,7 @@ Public Class InterfaceStatusWrk
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Shared Function IsfileBeingProcessed(ByVal filename As String, Optional ByVal parentFile As Boolean = False) As Boolean
+    Public Shared Function IsfileBeingProcessed(filename As String, Optional ByVal parentFile As Boolean = False) As Boolean
 
         Try
             Dim dal As New InterfaceStatusWrkDAL
@@ -125,7 +125,7 @@ Public Class InterfaceStatusWrk
         End Try
 
     End Function
-    Public Shared Function IsStatus_Running(ByVal id As Guid) As Boolean
+    Public Shared Function IsStatus_Running(id As Guid) As Boolean
         Try
             Dim dal As New InterfaceStatusWrkDAL
             Dim ds As New DataSet
@@ -140,7 +140,7 @@ Public Class InterfaceStatusWrk
 
         End Try
     End Function
-    Public Shared Function CreateInterfaceStatus(ByVal desc As String) As Guid
+    Public Shared Function CreateInterfaceStatus(desc As String) As Guid
         Dim intStatus = New InterfaceStatusWrk
 
         intStatus.Description = desc
@@ -150,7 +150,7 @@ Public Class InterfaceStatusWrk
         Return intStatus.id
     End Function
 
-    Public Sub ReLoad(ByVal id As Guid)
+    Public Sub ReLoad(id As Guid)
         '  Me.Dataset = New Dataset
         Load(id)
     End Sub
@@ -342,7 +342,7 @@ Public Class InterfaceStatusWrk
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -351,7 +351,7 @@ Public Class InterfaceStatusWrk
 
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal activefilename As String) As InterfaceStatusSearchDV
+    Public Shared Function getList(activefilename As String) As InterfaceStatusSearchDV
         Try
             Dim dal As New InterfaceStatusWrkDAL
             Return New InterfaceStatusSearchDV(dal.LoadList(activefilename).Tables(0))

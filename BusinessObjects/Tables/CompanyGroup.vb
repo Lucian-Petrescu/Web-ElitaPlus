@@ -6,7 +6,7 @@ Public Class CompanyGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CompanyGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CompanyGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CompanyGroupDAL
             If _isDSCreator Then
@@ -392,7 +392,7 @@ Public Property AccountingByCompany As String
 
     'METHODS ADDED MANUALLY. BEGIN
 #Region "CoverageType"
-    Public Shared Function GetAvailableCoverageType(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetAvailableCoverageType(companyGroupId As Guid) As DataView
         Dim dal As New CoverageByCompanyGroupDAL
         Dim ds As DataSet
 
@@ -402,7 +402,7 @@ Public Property AccountingByCompany As String
         Return ds.Tables(dal.TABLE_NAME).DefaultView
     End Function
 
-    Public Shared Function GetSelectedCoverageType(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetSelectedCoverageType(companyGroupId As Guid) As DataView
         Dim dal As New CoverageByCompanyGroupDAL
         Dim ds As DataSet
         Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -412,7 +412,7 @@ Public Property AccountingByCompany As String
     End Function
 
 
-    Public Sub AttachCoverageType(ByVal selectedCoverageCompGrpGuidStrCollection As ArrayList)
+    Public Sub AttachCoverageType(selectedCoverageCompGrpGuidStrCollection As ArrayList)
         Dim covTypeIdStr As String
         For Each covTypeIdStr In selectedCoverageCompGrpGuidStrCollection
             Dim ctCompGrp As CoverageByCompanyGroup = AssociatedCoveragesType.GetNewChild
@@ -422,7 +422,7 @@ Public Property AccountingByCompany As String
         Next
     End Sub
 
-    Public Sub DetachCoverageType(ByVal selectedCoverageCompGrpGuidStrCollection As ArrayList)
+    Public Sub DetachCoverageType(selectedCoverageCompGrpGuidStrCollection As ArrayList)
         Dim ctCovTypeIdStr As String
         For Each ctCovTypeIdStr In selectedCoverageCompGrpGuidStrCollection
             Dim ctCovCompGrp As CoverageByCompanyGroup = AssociatedCoveragesType.FindById(New Guid(ctCovTypeIdStr))
@@ -435,7 +435,7 @@ Public Property AccountingByCompany As String
 
 #Region "RiskType"
 
-    Public Sub AttachCompanyes(ByVal selectedCompanyGuidStrCollection As ArrayList)
+    Public Sub AttachCompanyes(selectedCompanyGuidStrCollection As ArrayList)
         Dim companyID As String
         For Each companyID In selectedCompanyGuidStrCollection
             'update to new soft question GUID
@@ -447,7 +447,7 @@ Public Property AccountingByCompany As String
         Next
     End Sub
 
-    Public Sub DetachRiskTypes(ByVal selectedCompanyGuidStrCollection As ArrayList)
+    Public Sub DetachRiskTypes(selectedCompanyGuidStrCollection As ArrayList)
         Dim companyID As String
         For Each companyID In selectedCompanyGuidStrCollection
             'update to new soft question GUID
@@ -459,14 +459,14 @@ Public Property AccountingByCompany As String
         Next
     End Sub
 
-    Public Shared Function GetAvailableCompanies(ByVal CountryId As Guid) As DataSet
+    Public Shared Function GetAvailableCompanies(CountryId As Guid) As DataSet
         Dim ds As DataSet = New DataSet
         Dim oDAL As CompanyDAL = New CompanyDAL
         'oDAL.LoadAvailableCompanyForCountry(ds, CountryId)
         Return ds
     End Function
 
-    Public Shared Function GetSelectedCompanies(ByVal companyGrpID As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetSelectedCompanies(companyGrpID As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -494,7 +494,7 @@ Public Property AccountingByCompany As String
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function LoadList(ByVal descriptionMask As String, ByVal codeMask As String, Optional ByVal getCovTypeChidrens As Boolean = False, Optional ByVal btnsearchclick As Boolean = False) As DataView
+    Public Shared Function LoadList(descriptionMask As String, codeMask As String, Optional ByVal getCovTypeChidrens As Boolean = False, Optional ByVal btnsearchclick As Boolean = False) As DataView
         Try
             Dim dal As New CompanyGroupDAL
             Dim ds As DataSet
@@ -512,7 +512,7 @@ Public Property AccountingByCompany As String
         End Try
 
     End Function
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As CompanyGroup) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As CompanyGroup) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -532,7 +532,7 @@ Public Property AccountingByCompany As String
     End Function
 
 
-    Public ReadOnly Property GetCompanyGroupDescription(ByVal companyGroID As Guid) As String
+    Public ReadOnly Property GetCompanyGroupDescription(companyGroID As Guid) As String
         Get
             'Dim moCoverage As New CertItemCoverage
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -565,7 +565,7 @@ Public Property AccountingByCompany As String
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

@@ -64,7 +64,7 @@ Public Class GalaxyPayClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GalaxyPayClaimDs)
+    Public Sub New(ds As GalaxyPayClaimDs)
         MyBase.New()
 
         dsCoverageInfo = New DataSet
@@ -88,7 +88,7 @@ Public Class GalaxyPayClaim
 
 #Region "Member Methods"
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GalaxyPayClaimDs)
+    Private Sub PopulateBOFromWebService(ds As GalaxyPayClaimDs)
         Try
             If ds.GalaxyPayClaim.Count = 0 Then Exit Sub
             With ds.GalaxyPayClaim.Item(0)
@@ -230,7 +230,7 @@ Public Class GalaxyPayClaim
         End Try
     End Sub
 
-    Private Function GetClaimInvoiceBO(ByVal isFirstBO As Boolean) As ClaimInvoice
+    Private Function GetClaimInvoiceBO(isFirstBO As Boolean) As ClaimInvoice
         Dim ClaimInvoiceBO As ClaimInvoice
 
         If isFirstBO Then
@@ -342,7 +342,7 @@ Public Class GalaxyPayClaim
         End Try
     End Function
 
-    Private Sub SetMasterCenterInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
+    Private Sub SetMasterCenterInfo(ClaimInvoiceBO As ClaimInvoice, DisbursementBO As Disbursement)
         Dim claimServiceCenter As ServiceCenter = New ServiceCenter(ClaimInvoiceBO.Invoiceable.ServiceCenterId)
         If Not claimServiceCenter.MasterCenterId.Equals(Guid.Empty) Then
             Dim masterServiceCenter As ServiceCenter = New ServiceCenter(claimServiceCenter.MasterCenterId)
@@ -367,7 +367,7 @@ Public Class GalaxyPayClaim
         End If
     End Sub
 
-    Private Sub SetServiceCenterInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
+    Private Sub SetServiceCenterInfo(ClaimInvoiceBO As ClaimInvoice, DisbursementBO As Disbursement)
 
         Dim claimServiceCenter As ServiceCenter = New ServiceCenter(ClaimInvoiceBO.Invoiceable.ServiceCenterId)
         PayeeOtherName = claimServiceCenter.Description
@@ -389,7 +389,7 @@ Public Class GalaxyPayClaim
 
     End Sub
 
-    Private Sub SetLoanerCenterInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
+    Private Sub SetLoanerCenterInfo(ClaimInvoiceBO As ClaimInvoice, DisbursementBO As Disbursement)
         If Not ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty) Then
             Dim loanerServiceCenter As ServiceCenter = New ServiceCenter(ClaimInvoiceBO.Invoiceable.LoanerCenterId)
             PayeeOtherName = loanerServiceCenter.Description
@@ -414,7 +414,7 @@ Public Class GalaxyPayClaim
 
     End Sub
 
-    Private Sub SetCustomerInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
+    Private Sub SetCustomerInfo(ClaimInvoiceBO As ClaimInvoice, DisbursementBO As Disbursement)
         PayeeOtherName = ClaimInvoiceBO.CustomerName
         If ClaimInvoiceBO.IsInsuranceCompany Then
             Dim objCertificate As Certificate = New Certificate(ClaimInvoiceBO.Invoiceable.CertificateId)
@@ -429,7 +429,7 @@ Public Class GalaxyPayClaim
         SetInfoBasedOnPaymentMethod(ClaimInvoiceBO)
     End Sub
 
-    Private Sub SetOtherInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
+    Private Sub SetOtherInfo(ClaimInvoiceBO As ClaimInvoice, DisbursementBO As Disbursement)
 
         If PaymentMethod = "CHK" Then
             PayeeAddress = ClaimInvoiceBO.AddressChild()
@@ -448,7 +448,7 @@ Public Class GalaxyPayClaim
         SetInfoBasedOnPaymentMethod(ClaimInvoiceBO)
     End Sub
 
-    Private Sub SetInfoBasedOnPaymentMethod(ByVal ClaimInvoiceBO As ClaimInvoice)
+    Private Sub SetInfoBasedOnPaymentMethod(ClaimInvoiceBO As ClaimInvoice)
         Select Case PaymentMethod
             Case Codes.PAYMENT_METHOD__BANK_TRANSFER
                 If PayeeBankInfo Is Nothing Then
@@ -545,7 +545,7 @@ Public Class GalaxyPayClaim
 
     End Sub
 
-    Private Sub ValidateBankUserControl(ByVal payeeBankInfo As BankInfo)
+    Private Sub ValidateBankUserControl(payeeBankInfo As BankInfo)
         If Not payeeBankInfo Is Nothing Then
             If payeeBankInfo.DomesticTransfer = True Then
                 If payeeBankInfo.Account_Name Is Nothing Then
@@ -596,7 +596,7 @@ Public Class GalaxyPayClaim
         End If
     End Sub
 
-    Private Sub MapDataSet(ByVal ds As GalaxyPayClaimDs)
+    Private Sub MapDataSet(ds As GalaxyPayClaimDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -614,7 +614,7 @@ Public Class GalaxyPayClaim
 
     End Sub
 
-    Private Sub Load(ByVal ds As GalaxyPayClaimDs)
+    Private Sub Load(ds As GalaxyPayClaimDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -654,7 +654,7 @@ Public Class GalaxyPayClaim
         Return countryID
     End Function
 
-    Public Function GetRegionID(ByVal regionCode As String, ByVal countryID As Guid) As Guid
+    Public Function GetRegionID(regionCode As String, countryID As Guid) As Guid
         Dim regionID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetRegionLookupList(countryID)
 
@@ -663,7 +663,7 @@ Public Class GalaxyPayClaim
         Return regionID
     End Function
 
-    Public Function GetRegionCode(ByVal regionId As Guid, ByVal countryID As Guid) As String
+    Public Function GetRegionCode(regionId As Guid, countryID As Guid) As String
         Dim regionCode As String
         Dim list As DataView = LookupListNew.GetRegionLookupList(countryID)
 
@@ -672,7 +672,7 @@ Public Class GalaxyPayClaim
         Return regionCode
     End Function
 
-    Public Function GetAccountTypeID(ByVal AccountType As String) As Guid
+    Public Function GetAccountTypeID(AccountType As String) As Guid
         Dim accountTypeID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetAccountTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 

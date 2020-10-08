@@ -13,7 +13,7 @@ Public Class CommPCode
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -27,20 +27,20 @@ Public Class CommPCode
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@ Public Class CommPCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommPCodeDAL
             If _isDSCreator Then
@@ -164,7 +164,7 @@ Public Class CommPCode
 
 #Region "Properties-Expiration"
 
-    Public ReadOnly Property MaxExpiration(ByVal oData As Object) As Date
+    Public ReadOnly Property MaxExpiration(oData As Object) As Date
         Get
             Dim ds As Dataset
             Dim oExpiration As Date
@@ -184,7 +184,7 @@ Public Class CommPCode
         End Get
     End Property
 
-    Public ReadOnly Property ExpirationCount(ByVal oData As Object) As Integer
+    Public ReadOnly Property ExpirationCount(oData As Object) As Integer
         Get
             Dim ds As Dataset
             Dim nExpiration As Integer
@@ -218,7 +218,7 @@ Public Class CommPCode
 #Region "Child Entity"
 
     ' Look for Id in DataSet, If found, used; otherwise create one
-    Public Function AddCommPCodeEntity(ByVal commPCodeEntityId As Guid) As CommPCodeEntity
+    Public Function AddCommPCodeEntity(commPCodeEntityId As Guid) As CommPCodeEntity
         Dim oRow As DataRow
         Dim objCommPCodeEntity As CommPCodeEntity
         Dim oEntityDal As CommPCodeEntityDAL
@@ -259,7 +259,7 @@ Public Class CommPCode
         'GetEntityTotals(oTable, totalPComm, isPComm, totalPMarkup, isPMarkup)
     End Sub
 
-    Public Shared Sub GetEntityTotals(ByVal oTable As DataTable, ByRef totalPComm As Double, _
+    Public Shared Sub GetEntityTotals(oTable As DataTable, ByRef totalPComm As Double, _
                                       ByRef isPComm As Boolean, ByRef totalPMarkup As Double, _
                                       ByRef isPMarkup As Boolean)
         Dim rows As DataRowCollection
@@ -304,7 +304,7 @@ Public Class CommPCode
 
 #Region "Public Members"
 
-    Public Function Copy(ByVal original As CommPCode) As DataView
+    Public Function Copy(original As CommPCode) As DataView
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Comm Product Code")
         End If
@@ -363,7 +363,7 @@ Public Class CommPCode
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal oCommPCodeData As CommPCodeData) As CommPCodeSearchDV
+    Public Shared Function getList(oCommPCodeData As CommPCodeData) As CommPCodeSearchDV
         Try
             Dim dal As New CommPCodeDAL
             Return New CommPCodeSearchDV(dal.LoadList(oCommPCodeData).Tables(0))
@@ -392,7 +392,7 @@ Public Class CommPCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -401,7 +401,7 @@ Public Class CommPCode
 
 #Region "Validation"
 
-    Public Shared Sub ValidateEntityChildren(ByVal oTable As DataTable)
+    Public Shared Sub ValidateEntityChildren(oTable As DataTable)
         'Dim rows As DataRowCollection
         Dim entity As CommPCodeEntity
         Dim totalPComm As Double = 0

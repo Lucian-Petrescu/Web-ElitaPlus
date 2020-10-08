@@ -11,7 +11,7 @@ Public Class CommissionTolerance
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -25,20 +25,20 @@ Public Class CommissionTolerance
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -60,7 +60,7 @@ Public Class CommissionTolerance
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommissionToleranceDAL
             If _isDSCreator Then
@@ -84,7 +84,7 @@ Public Class CommissionTolerance
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, ByVal commMarkup As Decimal)
+    Protected Sub Load(id As Guid, commMarkup As Decimal)
         Try
             Dim dal As New CommissionToleranceDAL
             If _isDSCreator Then
@@ -184,7 +184,7 @@ Public Class CommissionTolerance
         End Get
     End Property
 
-    Public Sub AttachAsscComm(ByVal familyDS As DataSet, ByVal NewObject As AssociateCommissions)
+    Public Sub AttachAsscComm(familyDS As DataSet, NewObject As AssociateCommissions)
 
         Dim newBO As AssociateCommissions = New AssociateCommissions(familyDS)
 
@@ -201,7 +201,7 @@ Public Class CommissionTolerance
 #End Region
 
 #Region "Public Members"
-    Public Sub Copy(ByVal original As CommissionTolerance, ByVal familyDS As DataSet)
+    Public Sub Copy(original As CommissionTolerance, familyDS As DataSet)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Dealer")
         End If
@@ -257,7 +257,7 @@ Public Class CommissionTolerance
     'End Function
 
 
-    Public Shared Function getList(ByVal periodId As Guid) As DataView
+    Public Shared Function getList(periodId As Guid) As DataView
         Try
             Dim dal As New CommissionToleranceDAL
 
@@ -267,7 +267,7 @@ Public Class CommissionTolerance
         End Try
     End Function
 
-    Public Shared Function getList(ByVal periodId As Guid, ByVal AllowedMarkup As DecimalType) As DataView
+    Public Shared Function getList(periodId As Guid, AllowedMarkup As DecimalType) As DataView
         Try
             Dim dal As New CommissionToleranceDAL
 
@@ -277,7 +277,7 @@ Public Class CommissionTolerance
         End Try
     End Function
 
-    Private Shared Function GetToleranceList(ByVal parent As CommissionPeriod) As DataTable
+    Private Shared Function GetToleranceList(parent As CommissionPeriod) As DataTable
 
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ToleranceList)) Then
@@ -308,41 +308,41 @@ Public Class CommissionTolerance
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CommissionPeriodId(ByVal row) As Guid
+        Public Shared ReadOnly Property CommissionPeriodId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_TOLERANCE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CommissionPeriodId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CommissionPeriodId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_PERIOD_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property AllowedMarkupPct(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property AllowedMarkupPct(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_ALLOWED_MARKUP_PCT), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property Tolerance(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property Tolerance(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_TOLERANCE), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerMarkupPct(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property DealerMarkupPct(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_DEALER_MARKUP_PCT), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerCommPct(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property DealerCommPct(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_DEALER_COMM_PCT), LongType)
             End Get
@@ -354,15 +354,15 @@ Public Class CommissionTolerance
 #Region "List Methods"
     Public Class ToleranceList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As CommissionPeriod)
+        Public Sub New(parent As CommissionPeriod)
             MyBase.New(GetToleranceList(parent), GetType(CommissionTolerance), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal commToleranceId As Guid) As CommissionTolerance
+        Public Function FindById(commToleranceId As Guid) As CommissionTolerance
             Dim bo As CommissionTolerance
             For Each bo In Me
                 If bo.Id.Equals(commToleranceId) Then Return bo
@@ -378,11 +378,11 @@ Public Class CommissionTolerance
     Public NotInheritable Class ValidMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ONE_ENTRY_PER_MARKUP_ONLY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CommissionTolerance = CType(objectToValidate, CommissionTolerance)
 
             Dim commToleranceView As DataView = obj.getList(obj.CommissionPeriodId, obj.AllowedMarkupPct)

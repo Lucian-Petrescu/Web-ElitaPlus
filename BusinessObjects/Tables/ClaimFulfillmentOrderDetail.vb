@@ -5,7 +5,7 @@ Public Class ClaimFulfillmentOrderDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,20 +19,20 @@ Public Class ClaimFulfillmentOrderDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -54,7 +54,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimFulfillmentOrderDetailDAL
             If _isDSCreator Then
@@ -78,7 +78,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As ClaimFulfillmentOrderDetail)
+    Public Sub Copy(original As ClaimFulfillmentOrderDetail)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Claim Fullment Order Detail")
         End If
@@ -341,13 +341,13 @@ Public Class ClaimFulfillmentOrderDetail
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Shared Function GetList(ByVal Code As String, ByVal Description As String, ByVal PriceListSource As String) As CFOrderDetailSearchhDV
+    Shared Function GetList(Code As String, Description As String, PriceListSource As String) As CFOrderDetailSearchhDV
         Try
             Dim dal As New ClaimFulfillmentOrderDetailDAL
             Return New CFOrderDetailSearchhDV(dal.LoadList(Code, Description, PriceListSource, Authentication.LangId).Tables(0))
@@ -356,7 +356,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Try
     End Function
 
-    Public Function CFCodeExists(ByVal Code As String) As Boolean
+    Public Function CFCodeExists(Code As String) As Boolean
         Dim dal As New ClaimFulfillmentOrderDetailDAL
         Dim lngItemNum As Long = 0
         Return (dal.CFCodeExists(Code))

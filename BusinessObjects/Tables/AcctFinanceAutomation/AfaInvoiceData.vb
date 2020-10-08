@@ -6,13 +6,13 @@ Public Class AfaInvoiceData
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
-    Public Sub New(ByVal dealerID As Guid, ByVal invoiceMonth As String)
+    Public Sub New(dealerID As Guid, invoiceMonth As String)
         MyBase.New()
         Dataset = New DataSet
         Load(dealerID, invoiceMonth)
@@ -26,20 +26,20 @@ Public Class AfaInvoiceData
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class AfaInvoiceData
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AfaInvoiceDataDAL
             If _isDSCreator Then
@@ -85,7 +85,7 @@ Public Class AfaInvoiceData
         End Try
     End Sub
 
-    Protected Sub Load(ByVal dealerID As Guid, ByVal invoiceMonth As String)
+    Protected Sub Load(dealerID As Guid, invoiceMonth As String)
         Try
             Dim dal As New AfaInvoiceDataDAL
             If _isDSCreator Then
@@ -287,16 +287,16 @@ Public Class AfaInvoiceData
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetDealerInvoiceData(ByVal dealerID As Guid, ByVal invoiceMonth As String) As String
+    Public Shared Function GetDealerInvoiceData(dealerID As Guid, invoiceMonth As String) As String
         Dim dal As New AfaInvoiceDataDAL
         Return dal.LoadInvoiceData(dealerID, invoiceMonth)
     End Function
 
-    Public Shared Sub SaveInvoiceHTML(ByVal id As Guid, ByVal strHTML As String)
+    Public Shared Sub SaveInvoiceHTML(id As Guid, strHTML As String)
         Dim dal As New AfaInvoiceDataDAL
         dal.SaveInvoiceHTML(id, strHTML)
     End Sub
-    Public Shared Sub SaveInvoiceCSV(ByVal id As Guid, ByVal strCSV As String)
+    Public Shared Sub SaveInvoiceCSV(id As Guid, strCSV As String)
         Dim dal As New AfaInvoiceDataDAL
         dal.SaveInvoiceCSV(id, strCSV)
     End Sub

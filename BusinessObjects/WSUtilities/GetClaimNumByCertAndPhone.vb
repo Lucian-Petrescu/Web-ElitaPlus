@@ -13,7 +13,7 @@ Public Class GetClaimNumByCertAndPhone
 #End Region
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Public Sub New(ds As GetClaimNumByCertAndPhoneDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -23,7 +23,7 @@ Public Class GetClaimNumByCertAndPhone
 
 #End Region
 #Region "Private Members"
-    Private Sub MapDataSet(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Private Sub MapDataSet(ds As GetClaimNumByCertAndPhoneDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -41,7 +41,7 @@ Public Class GetClaimNumByCertAndPhone
 
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Private Sub Load(ds As GetClaimNumByCertAndPhoneDs)
         Try
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
             Row = newRow
@@ -58,7 +58,7 @@ Public Class GetClaimNumByCertAndPhone
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimNumByCertAndPhoneDs)
         Try
             If ds.GetClaimNumByCertAndPhone.Count = 0 Then Exit Sub
 

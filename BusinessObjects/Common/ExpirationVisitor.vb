@@ -7,12 +7,12 @@ Public Class ExpirationVisitor
     ''' Default way the expiration date will be current date and time
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub New(ByVal ExpirationDate As DateTimeType)
+    Public Sub New(ExpirationDate As DateTimeType)
         DateofExpiration = ExpirationDate.Value.AddSeconds(-1)
     End Sub
     Public Sub New()
     End Sub
-    Public Function Visit(ByVal element As IElement) As Boolean Implements IVisitor.Visit
+    Public Function Visit(element As IElement) As Boolean Implements IVisitor.Visit
         If Not element.GetType.GetInterface("IExpirable", True) Is Nothing Then
             Dim iface As IExpirable = DirectCast(element, IExpirable)
             If DateofExpiration Is Nothing Then

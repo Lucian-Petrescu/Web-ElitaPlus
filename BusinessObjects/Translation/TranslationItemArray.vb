@@ -17,7 +17,7 @@ Public Class TranslationItemArray
 
     Private mList As New Hashtable
 
-    Public Sub Add(ByVal oControlInfo As TranslationItem)
+    Public Sub Add(oControlInfo As TranslationItem)
 
         'ARF 9/13/04. Commented out to avoid duplicate keys. mList.Add(oControlInfo.TextToTranslate, oControlInfo)
         mList.Item(oControlInfo.TextToTranslate) = oControlInfo
@@ -43,7 +43,7 @@ Public Class TranslationItemArray
     End Property
 
 
-    Public Function Item(ByVal sUniqueID As String) As TranslationItem
+    Public Function Item(sUniqueID As String) As TranslationItem
 
 
         Return CType(mList.Item(sUniqueID), TranslationItem)
@@ -51,7 +51,7 @@ Public Class TranslationItemArray
 
     End Function
 
-    Public Function Contains(ByVal SearchCriteria As String) As Boolean
+    Public Function Contains(SearchCriteria As String) As Boolean
 
         If mList.ContainsKey(SearchCriteria) Then
 

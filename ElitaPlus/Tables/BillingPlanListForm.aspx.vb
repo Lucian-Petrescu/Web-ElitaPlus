@@ -307,26 +307,40 @@ Namespace Tables
                 Dim txt As TextBox
 
 
+                If _
+                    dvRow IsNot Nothing AndAlso Not State.bnoRow AndAlso
+                    (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse
+                     itemType = ListItemType.SelectedItem) Then
+                    CType(e.Row.Cells(GRID_COL_BILLING_PLAN_ID_IDX).FindControl("BillingPlanIdLabel"), Label).Text =
+                        GetGuidStringFromByteArray(CType(dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_ID),
+                                                         Byte()))
+                    If _
+                        (State.IsEditMode = True AndAlso
+                         State.BillingPlanId.ToString.Equals(
+                             GetGuidStringFromByteArray(CType(dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_ID),
+                                                              Byte())))) Then
 
+                        CType(e.Row.Cells(GRID_COL_BILLING_PLAN_CODE_IDX).FindControl("BillingPlanCodeTextBox"), TextBox) _
+                            .Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_BILLING_PLAN_IDX).FindControl("BillingPlanTextBox"), TextBox).Text =
+                            dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN).ToString
+                        Dim DealerGroupList As DropDownList =
+                                CType(e.Row.Cells(GRID_COL_DEALER_GROUP_CODE_IDX).FindControl("DealerGroupDropdown"),
+                                      DropDownList)
+                        Dim DealerList As DropDownList =
+                                CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl("DealerDropdown"), DropDownList)
+                        PopulateDropdown(DealerGroupList, DealerList)
 
-                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
-                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
-                        CType(e.Row.Cells(GRID_COL_BILLING_PLAN_ID_IDX).FindControl("BillingPlanIdLabel"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_ID), Byte()))
-                        If (State.IsEditMode = True AndAlso State.BillingPlanId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_ID), Byte())))) Then
+                    Else
+                        CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl("DealerCodeLabel"), Label).Text =
+                            dvRow(BillingPlan.BillingPlanSearchDV.COL_DEALER_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_DEALER_GROUP_CODE_IDX).FindControl("DealerGroupCodeLabel"), Label).
+                            Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_DEALER_GROUP_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_BILLING_PLAN_CODE_IDX).FindControl("BillingPlanCodeLabel"), Label).
+                            Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_BILLING_PLAN_IDX).FindControl("BillingPlanLabel"), Label).Text =
+                            dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN).ToString
 
-                            CType(e.Row.Cells(GRID_COL_BILLING_PLAN_CODE_IDX).FindControl("BillingPlanCodeTextBox"), TextBox).Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_CODE).ToString
-                            CType(e.Row.Cells(GRID_COL_BILLING_PLAN_IDX).FindControl("BillingPlanTextBox"), TextBox).Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN).ToString
-                            Dim DealerGroupList As DropDownList = CType(e.Row.Cells(GRID_COL_DEALER_GROUP_CODE_IDX).FindControl("DealerGroupDropdown"), DropDownList)
-                            Dim DealerList As DropDownList = CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl("DealerDropdown"), DropDownList)
-                            PopulateDropdown(DealerGroupList, DealerList)
-
-                        Else
-                            CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl("DealerCodeLabel"), Label).Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_DEALER_CODE).ToString
-                            CType(e.Row.Cells(GRID_COL_DEALER_GROUP_CODE_IDX).FindControl("DealerGroupCodeLabel"), Label).Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_DEALER_GROUP_CODE).ToString
-                            CType(e.Row.Cells(GRID_COL_BILLING_PLAN_CODE_IDX).FindControl("BillingPlanCodeLabel"), Label).Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_CODE).ToString
-                            CType(e.Row.Cells(GRID_COL_BILLING_PLAN_IDX).FindControl("BillingPlanLabel"), Label).Text = dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN).ToString
-
-                        End If
                     End If
                 End If
 

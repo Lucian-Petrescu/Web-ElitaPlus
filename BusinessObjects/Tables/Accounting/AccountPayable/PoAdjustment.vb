@@ -28,25 +28,25 @@ Namespace Tables.Accounting.AccountPayable
             Load()
 
         End Sub
-        Public Sub New(ByVal vendorCode As String , ByVal poNumber As string, ByVal poLineId As Guid,ByVal companyId As Guid)
+        Public Sub New(vendorCode As String , poNumber As string, poLineId As Guid,companyId As Guid)
 
             MyBase.New()
             Dataset = New DataSet
             Load(vendorCode,poNumber,poLineId,companyId)
 
         End Sub
-        Public Sub New(ByVal vendorCode As String , ByVal poNumber As string, ByVal poLineId As Guid, ByVal companyId As Guid, ByVal familyDs As DataSet)
+        Public Sub New(vendorCode As String , poNumber As string, poLineId As Guid, companyId As Guid, familyDs As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load(vendorCode,poNumber,poLineId,companyId)
         End Sub
         
-        Public Sub New(ByVal familyDs As DataSet)
+        Public Sub New(familyDs As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load()
         End Sub
-        Public Sub New(ByVal row As DataRow)
+        Public Sub New(row As DataRow)
             MyBase.New(False)
             Dataset = row.Table.DataSet
             Me.Row = row
@@ -64,7 +64,7 @@ Namespace Tables.Accounting.AccountPayable
             SetValue(PoAdjustmentDAL.PO_LINE_ID_COL, Guid.NewGuid)
         End Sub
 
-      Protected Sub Load(ByVal vendorCode As String , ByVal apPoNumber As string, ByVal apPoLineId As Guid,ByVal poCompany As Guid)
+      Protected Sub Load(vendorCode As String , apPoNumber As string, apPoLineId As Guid,poCompany As Guid)
 
             Try
                 Dim dal As New PoAdjustmentDAL
@@ -229,7 +229,7 @@ Namespace Tables.Accounting.AccountPayable
             End Try
         End Sub
 
-       Public Function GetApPoLines( ByVal vendorCode As String , ByVal apPoNumber As string,ByVal companyGroupId As Guid) As DataView
+       Public Function GetApPoLines( vendorCode As String , apPoNumber As string,companyGroupId As Guid) As DataView
            Try
                Dim dal As New PoAdjustmentDAL
                Dim ds As Dataset = new DataSet

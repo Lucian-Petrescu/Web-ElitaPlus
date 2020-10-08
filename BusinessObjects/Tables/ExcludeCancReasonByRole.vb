@@ -6,7 +6,7 @@ Public Class ExcludeCancReasonByRole
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ExcludeCancReasonByRole
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ExcludeCancReasonByRole
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ExcludeCancreasonByRoleDAL
             If _isDSCreator Then
@@ -167,16 +167,16 @@ Public Class ExcludeCancReasonByRole
     Public Class ExcludeCancReasonByRoleList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As CancellationReason)
+        Public Sub New(parent As CancellationReason)
             MyBase.New(LoadTable(parent), GetType(ExcludeCancReasonByRole), parent)
         End Sub
 
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ExcludeCancReasonByRole).CancellationReasonId.Equals(CType(Parent, CancellationReason).Id)
         End Function
 
-        Public Function Find(ByVal RoleId As Guid) As ExcludeCancReasonByRole
+        Public Function Find(RoleId As Guid) As ExcludeCancReasonByRole
             Dim bo As ExcludeCancReasonByRole
             For Each bo In Me
                 If bo.RoleId.Equals(RoleId) Then Return bo
@@ -186,7 +186,7 @@ Public Class ExcludeCancReasonByRole
 
 
 #Region "Class Methods"
-        Private Shared Function LoadTable(ByVal parent As CancellationReason) As DataTable
+        Private Shared Function LoadTable(parent As CancellationReason) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ExcludeCancReasonByRoleList)) Then
                     Dim dal As New ExcludeCancReasonByRoleDAL

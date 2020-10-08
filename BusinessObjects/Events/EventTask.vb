@@ -6,7 +6,7 @@ Public Class EventTask
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class EventTask
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class EventTask
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EventTaskDAL
             If _isDSCreator Then
@@ -423,13 +423,13 @@ Public Class EventTask
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As EventTaskSearchDV, ByVal NewBO As EventTask)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As EventTaskSearchDV, NewBO As EventTask)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -486,9 +486,9 @@ Public Class EventTask
         End If
     End Sub
 
-    Public Shared Function getList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal CountryID As Guid,
-                               ByVal DealerGrpID As Guid, ByVal DealerID As Guid, ByVal strProdCode As String, ByVal EventTypeID As Guid,
-                             ByVal TaskID As Guid, ByVal CoverageTypeID As Guid) As EventTaskSearchDV
+    Public Shared Function getList(CompGrpID As Guid, CompanyID As Guid, CountryID As Guid,
+                               DealerGrpID As Guid, DealerID As Guid, strProdCode As String, EventTypeID As Guid,
+                             TaskID As Guid, CoverageTypeID As Guid) As EventTaskSearchDV
         Try
             Dim dal As New EventTaskDAL
             Return New EventTaskSearchDV(dal.LoadList(CompGrpID, CompanyID, CountryID, DealerGrpID, DealerID, strProdCode, EventTypeID, TaskID, CoverageTypeID, ElitaPlusIdentity.Current.ActiveUser.LanguageId, ElitaPlusIdentity.Current.ActiveUser.NetworkId).Tables(0))
@@ -502,11 +502,11 @@ Public Class EventTask
     Public NotInheritable Class ValidProductCode
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "DEALER OR DEALER GROUP IS REQUIRED")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EventTask = CType(objectToValidate, EventTask)
 
             If Not String.IsNullOrEmpty(obj.ProductCode) Then
@@ -525,11 +525,11 @@ Public Class EventTask
     Public NotInheritable Class ValidCoverageType
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "PRODUCT CODE AND DEALER IS REQUIRED")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EventTask = CType(objectToValidate, EventTask)
 
             If Not obj.CoverageTypeId = Guid.Empty Then
@@ -548,11 +548,11 @@ Public Class EventTask
     Public NotInheritable Class ValidOnlyOneEntity
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "ONLY_ONE_ALLOWED_COMPGRP_COMANPY_COUNTRY_DEALERGRP_DEALER")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             If (Not valueToCheck Is Nothing) AndAlso valueToCheck <> Guid.Empty Then
                 Dim obj As EventTask = CType(objectToValidate, EventTask)
                 If obj.CompanyGroupId <> Guid.Empty Then
@@ -585,11 +585,11 @@ Public Class EventTask
     Public NotInheritable Class ValidOneEntitySelected
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "SELECT_ONE_COMPGRP_COMANPY_COUNTRY_DEALERGRP_DEALER")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EventTask = CType(objectToValidate, EventTask)
             If obj.CompanyGroupId = Guid.Empty AndAlso obj.CompanyId = Guid.Empty AndAlso obj.CountryId = Guid.Empty AndAlso obj.DealerGroupId = Guid.Empty AndAlso obj.DealerId = Guid.Empty Then
                 Return False

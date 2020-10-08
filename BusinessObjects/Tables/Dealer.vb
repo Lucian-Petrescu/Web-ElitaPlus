@@ -8,14 +8,14 @@ Public Class Dealer
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal Company_id As Guid, ByVal Dealer As String)
+    Public Sub New(Company_id As Guid, Dealer As String)
         MyBase.New()
         Dataset = New DataSet
         Load(Company_id, Dealer)
@@ -29,20 +29,20 @@ Public Class Dealer
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -66,7 +66,7 @@ Public Class Dealer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerDAL
             If _isDSCreator Then
@@ -90,7 +90,7 @@ Public Class Dealer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal Company_id As Guid, ByVal Dealer As String)
+    Protected Sub Load(Company_id As Guid, Dealer As String)
         Try
             Dim dal As New DealerDAL
             If _isDSCreator Then
@@ -2676,7 +2676,7 @@ Public Class Dealer
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As Dealer)
+    Public Sub Copy(original As Dealer)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Dealer")
         End If
@@ -2743,7 +2743,7 @@ Public Class Dealer
 #Region "DataView Retrieveing Methods"
 
     '8/2/06 - ALR Modified function to accept a user guid (as a string) rather than a company id
-    Public Shared Function GetDealersWithMonthlyBilling(ByVal userId As String, ByVal todayDate As String) As DataView
+    Public Shared Function GetDealersWithMonthlyBilling(userId As String, todayDate As String) As DataView
         Try
             Dim dal As New DealerDAL
             Dim ds As DataSet
@@ -2757,7 +2757,7 @@ Public Class Dealer
 
     End Function
 
-    Public Shared Function GetDealerTypeId(ByVal dealerID As Guid) As Guid
+    Public Shared Function GetDealerTypeId(dealerID As Guid) As Guid
         Dim dal As New DealerDAL
 
         Dim dealerTypeID As Guid
@@ -2774,13 +2774,13 @@ Public Class Dealer
         End If
     End Function
 
-    Public Shared Function GetDealerCertAddEnabled(ByVal companyIds As ArrayList) As DataView
+    Public Shared Function GetDealerCertAddEnabled(companyIds As ArrayList) As DataView
         Dim dal As New DealerDAL
         Dim dsDealer As DataSet
         Return dal.LoadDealerListCertAddEnabled(companyIds).Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetOlitaSearchType(ByVal companyIds As ArrayList, ByVal dealerCode As String) As String
+    Public Shared Function GetOlitaSearchType(companyIds As ArrayList, dealerCode As String) As String
         Dim dealerId As Guid
         Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(companyIds)
         If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
@@ -2799,13 +2799,13 @@ Public Class Dealer
 
     End Function
 
-    Public Shared Function GetOlitaSearchType(ByVal dealerId As Guid) As String
+    Public Shared Function GetOlitaSearchType(dealerId As Guid) As String
         Dim objDealer As New Dealer(dealerId)
         Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_OLITA_SEARCH, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         Return LookupListNew.GetCodeFromId(dv, objDealer.OlitaSearch)
     End Function
 
-    Public Shared Function GetDealerCountryId(ByVal dealerId As Guid) As Guid
+    Public Shared Function GetDealerCountryId(dealerId As Guid) As Guid
         Try
             Dim dal As New DealerDAL
             Dim ds As DataSet
@@ -2902,7 +2902,7 @@ Public Class Dealer
         Return False
 
     End Function
-    Public Function DealerHasSameRecurringPremiumSetting(ByVal objOtherDealer As Dealer) As Boolean
+    Public Function DealerHasSameRecurringPremiumSetting(objOtherDealer As Dealer) As Boolean
         Dim dealerContract As Contract = Contract.GetCurrentContract(Id)
         Dim otherDealerContract As Contract = Contract.GetCurrentContract(objOtherDealer.Id)
         Dim blnHasSameRecurringPremiumSetting As Boolean
@@ -2915,7 +2915,7 @@ Public Class Dealer
         Return blnHasSameRecurringPremiumSetting
     End Function
 
-    Public Function EnteredDateWithinContract(ByVal EnteredEffectiveDate As String, ByVal EnteredExpirationDate As String) As Boolean
+    Public Function EnteredDateWithinContract(EnteredEffectiveDate As String, EnteredExpirationDate As String) As Boolean
         ' to check the entered dates for coverage are within the date range of the contract which has highest expiration date for one dealer
         Dim oContract As Contract
         oContract = Contract.GetMaxExpirationContract(Id)
@@ -2944,7 +2944,7 @@ Public Class Dealer
         End Try
     End Function
 
-    Public Function GetDuplicateDealers(ByVal business_country As Guid, ByVal company_type_id As Guid) As Boolean
+    Public Function GetDuplicateDealers(business_country As Guid, company_type_id As Guid) As Boolean
         Try
             Dim dal As New DealerDAL
             Dim ds As DataSet
@@ -2988,7 +2988,7 @@ Public Class Dealer
         End Try
     End Function
 
-    Public Shared Function getFirstDealerByDealerGrp(ByVal Dealer_Group_Id As Guid) As DataView
+    Public Shared Function getFirstDealerByDealerGrp(Dealer_Group_Id As Guid) As DataView
         Try
             Dim dal As New DealerDAL
             Dim dsDealer As DataSet
@@ -2998,7 +2998,7 @@ Public Class Dealer
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetDealerIDbyCodeAndDealerGroup(ByVal Dealer_Group_Id As Guid, ByVal Dealer As String) As Guid
+    Public Shared Function GetDealerIDbyCodeAndDealerGroup(Dealer_Group_Id As Guid, Dealer As String) As Guid
         Try
             Dim dal As New DealerDAL
             Dim dV As DataView
@@ -3018,7 +3018,7 @@ Public Class Dealer
         End Try
     End Function
 
-    Public Shared Function GetCertAutoGenFlag(ByVal dealerId As Guid) As Boolean
+    Public Shared Function GetCertAutoGenFlag(dealerId As Guid) As Boolean
         Try
             Dim dal As New DealerDAL
             Dim ds As DataSet
@@ -3034,7 +3034,7 @@ Public Class Dealer
         End Try
     End Function
 
-    Public Shared Function GetRejRecReconFlag(ByVal dealerId As Guid) As Boolean
+    Public Shared Function GetRejRecReconFlag(dealerId As Guid) As Boolean
         Try
             Dim dal As New DealerDAL
             Dim ds As DataSet
@@ -3050,7 +3050,7 @@ Public Class Dealer
         End Try
     End Function
 
-    Public Shared Function RenewCoverage(ByVal fromDealerID As Guid, ByVal contractID As Guid, ByVal effdate As Date) As Integer
+    Public Shared Function RenewCoverage(fromDealerID As Guid, contractID As Guid, effdate As Date) As Integer
         Try
             Dim dal As New DealerDAL
             Return dal.RenewCoverage(fromDealerID, contractID, effdate)
@@ -3060,7 +3060,7 @@ Public Class Dealer
 
     End Function
 
-    Public Shared Function CopyDealerDefinitions(ByVal fromDealerID As Guid, ByVal toDealerID As Guid, ByVal intCopyLevel As Integer, ByVal effdate As Date, ByVal expdate As Date) As Integer
+    Public Shared Function CopyDealerDefinitions(fromDealerID As Guid, toDealerID As Guid, intCopyLevel As Integer, effdate As Date, expdate As Date) As Integer
         Try
             Dim dal As New DealerDAL
             Return dal.CopyDealerDefinitions(fromDealerID, toDealerID, intCopyLevel, effdate, expdate)
@@ -3070,7 +3070,7 @@ Public Class Dealer
 
     End Function
 
-    Public Shared Function DeleteDealerDefinitions(ByVal fromDealerID As Guid, ByVal intCopyLevel As Integer) As Integer
+    Public Shared Function DeleteDealerDefinitions(fromDealerID As Guid, intCopyLevel As Integer) As Integer
         Try
             Dim dal As New DealerDAL
             Return dal.DeleteDealerDefinitions(fromDealerID, intCopyLevel)
@@ -3120,7 +3120,7 @@ Public Class Dealer
     '    Return moServiceCenterIDs
     'End Function
 
-    Public Shared Function GetDuplicatePrefixCount(ByVal CompanyId As Guid, Optional ByVal countLevel As Integer = 1, Optional ByVal certificatesAutonumberPrefix As String = "") As Integer
+    Public Shared Function GetDuplicatePrefixCount(CompanyId As Guid, Optional ByVal countLevel As Integer = 1, Optional ByVal certificatesAutonumberPrefix As String = "") As Integer
         Try
             Dim dal As New DealerDAL
             Dim ds As DataSet
@@ -3134,7 +3134,7 @@ Public Class Dealer
 #End Region
 
 #Region "Memebers"
-    Public Function MyGetFormattedSearchStringForSQL(ByVal str As String) As String
+    Public Function MyGetFormattedSearchStringForSQL(str As String) As String
         If (Not IsNothing(str)) Then
             str = str.Trim
             str = str.ToUpper
@@ -3150,7 +3150,7 @@ Public Class Dealer
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal dealer_group_id As Guid, ByVal company_groupId As Guid) As DealerSearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String, dealer_group_id As Guid, company_groupId As Guid) As DealerSearchDV
         Try
             Dim dal As New DealerDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -3160,7 +3160,7 @@ Public Class Dealer
         End Try
     End Function
 
-    Public Shared Function getList(ByVal DealerId As Guid, ByVal dealer_group_id As Guid, ByVal company_groupId As Guid) As DealerSearchDV
+    Public Shared Function getList(DealerId As Guid, dealer_group_id As Guid, company_groupId As Guid) As DealerSearchDV
         Try
             Dim dal As New DealerDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -3188,7 +3188,7 @@ Public Class Dealer
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3199,12 +3199,12 @@ Public Class Dealer
 
 #Region "Children Related"
 
-    Public Shared Function IsSkipActiveClaim(ByVal dealerID As Guid) As Boolean
+    Public Shared Function IsSkipActiveClaim(dealerID As Guid) As Boolean
         Dim dal As New DealerDAL
         Return dal.IsSkipActiveClaim(dealerID)
     End Function
 
-    Public Shared Function GetAvailablClaimTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Shared Function GetAvailablClaimTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim dal As New DealerDAL
         Dim ds As DataSet
 
@@ -3212,7 +3212,7 @@ Public Class Dealer
         Return ds
     End Function
 
-    Public Shared Function GetAvailableCoverageTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Shared Function GetAvailableCoverageTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim dal As New DealerDAL
         Dim ds As DataSet
 
@@ -3220,7 +3220,7 @@ Public Class Dealer
         Return ds
     End Function
 
-    Public Shared Function GetSelectedClaimTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Shared Function GetSelectedClaimTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim dal As New DealerDAL
         Dim ds As DataSet
 
@@ -3228,7 +3228,7 @@ Public Class Dealer
         Return ds
     End Function
 
-    Public Shared Function GetSelectedCoverageTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Shared Function GetSelectedCoverageTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim dal As New DealerDAL
         Dim ds As DataSet
 
@@ -3236,7 +3236,7 @@ Public Class Dealer
         Return ds
     End Function
 
-    Public Sub AttachClaimType(ByVal selectedClaimTypeGuidStrCollection As ArrayList)
+    Public Sub AttachClaimType(selectedClaimTypeGuidStrCollection As ArrayList)
         Dim dealerClmApproveClmtypeIdStr As String
         For Each dealerClmApproveClmtypeIdStr In selectedClaimTypeGuidStrCollection
             'update to new DealerClmAproveClmtype GUID
@@ -3249,7 +3249,7 @@ Public Class Dealer
         Next
     End Sub
 
-    Public Sub DetachClaimType(ByVal selectedClaimTypeGuidStrCollection As ArrayList)
+    Public Sub DetachClaimType(selectedClaimTypeGuidStrCollection As ArrayList)
         Dim dealerClmApproveClmtypeIdStr As String
         For Each dealerClmApproveClmtypeIdStr In selectedClaimTypeGuidStrCollection
             'update to new DealerClmAproveClmtype GUID
@@ -3261,7 +3261,7 @@ Public Class Dealer
         Next
     End Sub
 
-    Public Sub AttachCoverageType(ByVal selectedCoverageTypeGuidStrCollection As ArrayList)
+    Public Sub AttachCoverageType(selectedCoverageTypeGuidStrCollection As ArrayList)
         Dim dealerClmAproveCovtypeIdStr As String
         For Each dealerClmAproveCovtypeIdStr In selectedCoverageTypeGuidStrCollection
             'update to new DealerClmAproveCovtype GUID
@@ -3274,7 +3274,7 @@ Public Class Dealer
         Next
     End Sub
 
-    Public Sub DetachCoverageType(ByVal selectedCoverageTypeGuidStrCollection As ArrayList)
+    Public Sub DetachCoverageType(selectedCoverageTypeGuidStrCollection As ArrayList)
         Dim dealerClmAproveCovtypeIdStr As String
         For Each dealerClmAproveCovtypeIdStr In selectedCoverageTypeGuidStrCollection
             'update to new DealerClmAproveCovtype GUID
@@ -3294,11 +3294,11 @@ Public Class Dealer
     Public NotInheritable Class Valid_IBNR_Factor
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_IBNR_FACTOR_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If obj.IBNRFactor Is Nothing Then Return True
             Dim str As String = obj.IBNRFactor.ToString
@@ -3313,11 +3313,11 @@ Public Class Dealer
     Public NotInheritable Class Valid_STAT_IBNR_Factor
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_IBNR_FACTOR_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If obj.STATIBNRFactor Is Nothing Then Return True
             Dim str As String = obj.STATIBNRFactor.ToString
@@ -3332,11 +3332,11 @@ Public Class Dealer
     Public NotInheritable Class Valid_LAE_IBNR_Factor
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_IBNR_FACTOR_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If obj.LAEIBNRFactor Is Nothing Then Return True
             Dim str As String = obj.LAEIBNRFactor.ToString
@@ -3351,11 +3351,11 @@ Public Class Dealer
     Public NotInheritable Class ExpectedPremiumIsWPValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.EXPECTED_PREMIUM_PRICE_MATRIX_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If obj.ExpectedPremiumIsWPId.Equals(Guid.Empty) Then Return True
             If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.ExpectedPremiumIsWPId) = Codes.YESNO_Y Then
@@ -3370,11 +3370,11 @@ Public Class Dealer
     Public NotInheritable Class CNPJ_TaxIdValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_INVALID_CNPJ_DOCUMENT_NUMBER_ERR) 'REQ 1012
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             Dim dal As New DealerDAL
             Dim oErrMess As String
@@ -3404,11 +3404,11 @@ Public Class Dealer
     Public NotInheritable Class MandatoryForVscAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
 
             If obj.DealerTypeDesc = obj.DEALER_TYPE_DESC Then
@@ -3424,11 +3424,11 @@ Public Class Dealer
     Public NotInheritable Class BranchIdValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_DEALER_BRANCH_VALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             Dim isclaimselected As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
 
@@ -3444,11 +3444,11 @@ Public Class Dealer
     Public NotInheritable Class MandatoryForRegistration
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             Dim sVal As String
 
@@ -3466,11 +3466,11 @@ Public Class Dealer
     Public NotInheritable Class EmailAddress
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
 
             If obj.RegistrationEmailFrom Is Nothing Then
@@ -3487,11 +3487,11 @@ Public Class Dealer
     Public NotInheritable Class MaxCertNumberLengthAlwdValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             Dim sVal As String
 
@@ -3512,11 +3512,11 @@ Public Class Dealer
     Public NotInheritable Class CheckDoublicatePREFIX
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_UNIQUE_CERTIFICATES_AUTO_NUMBER_PREFIX_IS_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
             If Not obj.CertificatesAutonumberId.Equals(Guid.Empty) AndAlso obj.CertificatesAutonumberId.Equals(yesGuid) Then
@@ -3538,11 +3538,11 @@ Public Class Dealer
     Public NotInheritable Class ValueMandatoryConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim DealerObject As Dealer = CType(objectToValidate, Dealer)
             If LookupListNew.GetCodeFromId(LookupListNew.LK_FLP, DealerObject.UseFullFileProcessId) <> Codes.FLP_NO Then
                 If DealerObject.MaxNCRecords Is Nothing Then
@@ -3557,11 +3557,11 @@ Public Class Dealer
     Public NotInheritable Class ValidClaimTypeSelection
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_AT_LEAST_ONE_CLAIM_TYPE_SELECTION_IS_REQUIRED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
 
             If Not obj.ClaimAutoApproveId.Equals(Guid.Empty) AndAlso obj.ClaimAutoApproveId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) AndAlso obj.DealerClaimTypeSelectionCount = 0 Then
@@ -3576,11 +3576,11 @@ Public Class Dealer
     Public NotInheritable Class ValidCoverageTypeSelection
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_AT_LEAST_ONE_COVERAGE_TYPE_SELECTION_IS_REQUIRED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If Not obj.ClaimAutoApproveId.Equals(Guid.Empty) AndAlso obj.ClaimAutoApproveId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) AndAlso obj.DealerCoverageTypeSelectionCount = 0 Then
                 Return False
@@ -3594,11 +3594,11 @@ Public Class Dealer
     Public NotInheritable Class LookupByMandatoryConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ERROR_DEALER__IF_AUTO_NUMBER_THEN_LOOKUP_BY_MANDATORY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.CertificatesAutonumberId) = Codes.YESNO_Y AndAlso obj.CertnumlookupbyId.Equals(Guid.Empty) AndAlso obj.Company.CertnumlookupbyId.Equals(Guid.Empty) Then
                 Return False
@@ -3612,11 +3612,11 @@ Public Class Dealer
     Public NotInheritable Class ValidateBasedOnCancelShipment
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.MSG_CANCEL_SHIPMENT_GRACE_PERIOD_MANDATORY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
 
             If Not obj.Is_Cancel_Shipment_Allowed Is Nothing AndAlso obj.Is_Cancel_Shipment_Allowed = "YESNO-Y" AndAlso String.IsNullOrEmpty(obj.Cancel_Shipment_Grace_Period) Then

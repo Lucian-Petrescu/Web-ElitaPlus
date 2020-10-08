@@ -50,7 +50,7 @@ Public Class AcselXService
         Return bind
     End Function
 
-    Private Shared Function Get_EndPoint(ByVal url As String) As EndpointAddress
+    Private Shared Function Get_EndPoint(url As String) As EndpointAddress
         Dim eab As EndpointAddressBuilder
 
         eab = New EndpointAddressBuilder
@@ -59,7 +59,7 @@ Public Class AcselXService
         Return eab.ToEndpointAddress
     End Function
 
-    Private Shared Function Get_ServiceClient(ByVal url As String) As AcselXWSRef.CancelamentoElita
+    Private Shared Function Get_ServiceClient(url As String) As AcselXWSRef.CancelamentoElita
         Dim bind As BasicHttpBinding
         Dim ea As EndpointAddress
         Dim sc As AcselXWSRef.CancelamentoElita
@@ -77,7 +77,7 @@ Public Class AcselXService
         Return sc
     End Function
 
-    Public Shared Function SendToAcselX(ByVal xmlIn As String, ByVal functionToProcess As String) As String
+    Public Shared Function SendToAcselX(xmlIn As String, functionToProcess As String) As String
         Dim wsAcselX As AcselXWSRef.CancelamentoElita
 
         Dim AcselXToken As String
@@ -161,7 +161,7 @@ Public Class AcselXService
 
     End Function
 
-    Private Shared Function CreateArrayFromXMLInpout(ByVal xmlinput As String) As ArrayList
+    Private Shared Function CreateArrayFromXMLInpout(xmlinput As String) As ArrayList
         Dim xmlDoc As XmlDocument
         Dim reader As XmlTextReader
         Dim Inputarray As New ArrayList
@@ -202,9 +202,9 @@ Public Class AcselXService
 
     End Function
 
-    Private Shared Function GetResponseXML(ByVal strcode As String, ByVal strMessage As String, _
-                                    ByVal struserNetworkID As String, ByVal strRefundAmt As String, _
-                                    ByVal strInstallmentsPaid As String) As String
+    Private Shared Function GetResponseXML(strcode As String, strMessage As String, _
+                                    struserNetworkID As String, strRefundAmt As String, _
+                                    strInstallmentsPaid As String) As String
 
         Dim objDoc As New Xml.XmlDocument
         Dim objRoot As Xml.XmlElement
@@ -269,7 +269,7 @@ Public Class AcselXService
         Return strRetorno
     End Function
 
-    Private Shared Function ConvertChartoAsc(ByVal x As String, ByVal inc As Integer)
+    Private Shared Function ConvertChartoAsc(x As String, inc As Integer)
         Dim vlrAsc As String = ""
         Dim i As Integer = 0
         For i = 0 To x.Length

@@ -6,7 +6,7 @@ Public Class CommPCodeEntity
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,27 +20,27 @@ Public Class CommPCodeEntity
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal isNew As Boolean, ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(isNew As Boolean, id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(isNew, id)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@ Public Class CommPCodeEntity
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommPCodeEntityDAL
             If _isDSCreator Then
@@ -86,7 +86,7 @@ Public Class CommPCodeEntity
         End Try
     End Sub
 
-    Protected Sub Load(ByVal isNew As Boolean, ByVal id As Guid)
+    Protected Sub Load(isNew As Boolean, id As Guid)
         Try
             Dim dal As New CommPCodeEntityDAL
             If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
@@ -305,7 +305,7 @@ Public Class CommPCodeEntity
         End Try
     End Sub
 
-    Public Sub Delete(ByVal singleEntry As Boolean)
+    Public Sub Delete(singleEntry As Boolean)
         Dim oDataView As DataView
         Dim oRow As DataRow
         Try
@@ -326,7 +326,7 @@ Public Class CommPCodeEntity
 #Region "DataView Retrieveing Methods"
 
     
-    Public Shared Function getList(ByVal commPCodeId As Guid) As DataView
+    Public Shared Function getList(commPCodeId As Guid) As DataView
         Try
             Dim dal As New CommPCodeEntityDAL
 
@@ -336,7 +336,7 @@ Public Class CommPCodeEntity
         End Try
     End Function
 
-    Public Shared Function getEntities(ByVal oDataSet As DataSet, ByVal commPCodeId As Guid) As DataTable
+    Public Shared Function getEntities(oDataSet As DataSet, commPCodeId As Guid) As DataTable
         Try
             Dim dal As New CommPCodeEntityDAL
 

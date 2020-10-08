@@ -7,7 +7,7 @@ Public Class AfaInvoiceRate
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class AfaInvoiceRate
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class AfaInvoiceRate
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AFAInvoiceRateDAL
             If _isDSCreator Then
@@ -348,7 +348,7 @@ Public Class AfaInvoiceRate
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal afaProdcutId As Guid) As InvRateSearchDV
+    Public Shared Function getList(afaProdcutId As Guid) As InvRateSearchDV
         Try
             Dim dal As New AFAInvoiceRateDAL
             Return New InvRateSearchDV(dal.LoadList(afaProdcutId).Tables(0))
@@ -383,13 +383,13 @@ Public Class AfaInvoiceRate
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvRateSearchDV, ByVal NewBO As AfaInvoiceRate)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvRateSearchDV, NewBO As AfaInvoiceRate)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -541,11 +541,11 @@ Public Class AfaInvoiceRate
     Public NotInheritable Class IsRateDefinitionUnique
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.RATE_DEFINITION_NOT_UNIQUE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AfaInvoiceRate = CType(objectToValidate, AfaInvoiceRate)
             Dim dal As New AFAInvoiceRateDAL
 
@@ -572,11 +572,11 @@ Public Class AfaInvoiceRate
     Public NotInheritable Class RejectOverlapsOrGaps
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_GAP_OR_OVERLAP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AfaInvoiceRate = CType(objectToValidate, AfaInvoiceRate)
             If obj.AfaProductId.Equals(Guid.Empty) Then Return True
             If obj.Effective Is Nothing OrElse obj.Expiration Is Nothing Then Return True
@@ -655,7 +655,7 @@ Public Class AfaInvoiceRate
         Public HasGap As Boolean = False
         Public HasOverlap As Boolean = False
 
-        Public Sub New(ByVal obj As AfaInvoiceRate)
+        Public Sub New(obj As AfaInvoiceRate)
             Dim tempEffective As Date
             Dim tempExpiration As Date
             Try

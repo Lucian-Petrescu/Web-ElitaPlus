@@ -6,7 +6,7 @@ Public Class ServiceGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,21 +20,21 @@ Public Class ServiceGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
     'Exiting BO 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@ Public Class ServiceGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceGroupDAL
             If _isDSCreator Then
@@ -182,7 +182,7 @@ Public Class ServiceGroup
         End Try
     End Sub
 
-    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String)
+    Public Sub sgrtmanusave(ServiceGroupId As Guid, risktypeid As Guid, sgrtmanu As String)
         MyBase.Save()
         If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
             Dim dal As New ServiceGroupDAL
@@ -191,7 +191,7 @@ Public Class ServiceGroup
 
     End Sub
 
-    Public Function countofrecords(ByVal servicegroupid As Guid) As Double
+    Public Function countofrecords(servicegroupid As Guid) As Double
         Dim ds As New DataSet
         Dim dal As New ServiceGroupDAL
         ds = dal.countofrecords(servicegroupid)
@@ -199,9 +199,9 @@ Public Class ServiceGroup
 
     End Function
 
-    Public Function LoadGrid(ByVal servicegroupID As Guid,
-                                        ByVal PageIndex As Integer,
-                                        ByVal SortExpression As String) As DataSet
+    Public Function LoadGrid(servicegroupID As Guid,
+                                        PageIndex As Integer,
+                                        SortExpression As String) As DataSet
         Try
             Dim dal As New ServiceGroupDAL
             Dim ds As DataSet
@@ -219,7 +219,7 @@ Public Class ServiceGroup
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ServiceGroup)
+    Public Sub Copy(original As ServiceGroup)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Group")
         End If
@@ -256,7 +256,7 @@ Public Class ServiceGroup
 
     'METHODS ADDED MANUALLY. BEGIN
 
-    Public Sub UpdateManufacturers(ByVal riskTypeId As Guid, ByVal selectedManufacturerGuidStrCollection As Hashtable)
+    Public Sub UpdateManufacturers(riskTypeId As Guid, selectedManufacturerGuidStrCollection As Hashtable)
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
         If sgRt Is Nothing AndAlso selectedManufacturerGuidStrCollection.Count > 0 Then 'add it
             sgRt = ServiceGroupRiskTypeChildren.GetNewChild()
@@ -269,7 +269,7 @@ Public Class ServiceGroup
         End If
     End Sub
 
-    Public Sub AttachManufacturers(ByVal riskTypeId As Guid, ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub AttachManufacturers(riskTypeId As Guid, selectedManufacturerGuidStrCollection As ArrayList)
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
         If sgRt Is Nothing AndAlso selectedManufacturerGuidStrCollection.Count > 0 Then 'add it
             sgRt = ServiceGroupRiskTypeChildren.GetNewChild()
@@ -282,7 +282,7 @@ Public Class ServiceGroup
         End If
     End Sub
 
-    Public Sub DetachManufacturers(ByVal riskTypeId As Guid, ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub DetachManufacturers(riskTypeId As Guid, selectedManufacturerGuidStrCollection As ArrayList)
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
         If Not sgRt Is Nothing Then
             sgRt.DetachManufaturers(selectedManufacturerGuidStrCollection)
@@ -295,7 +295,7 @@ Public Class ServiceGroup
 
 
     'For RiskTypes associated to "Any" Manufacturer will return nothing
-    Public Function GetAvailableManufacturers(ByVal riskTypeId As Guid) As DataView
+    Public Function GetAvailableManufacturers(riskTypeId As Guid) As DataView
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
         If sgRt Is Nothing Then
             'Return all
@@ -305,7 +305,7 @@ Public Class ServiceGroup
         End If
     End Function
 
-    Public Function GetSelectedManufacturers(ByVal riskTypeId As Guid) As DataView
+    Public Function GetSelectedManufacturers(riskTypeId As Guid) As DataView
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
         If sgRt Is Nothing Then
             Return Nothing
@@ -314,7 +314,7 @@ Public Class ServiceGroup
         End If
     End Function
 
-    Public Function IsRiskTypeAssociatedForAnyManufacturer(ByVal riskTypeId As Guid) As Boolean
+    Public Function IsRiskTypeAssociatedForAnyManufacturer(riskTypeId As Guid) As Boolean
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
         If sgRt Is Nothing Then
             Return False
@@ -323,7 +323,7 @@ Public Class ServiceGroup
         End If
     End Function
 
-    Public Sub DetachRiskType(ByVal riskTypeId As Guid)
+    Public Sub DetachRiskType(riskTypeId As Guid)
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
         If Not sgRt Is Nothing Then
             sgRt.Delete()
@@ -331,7 +331,7 @@ Public Class ServiceGroup
         End If
     End Sub
 
-    Public Sub AttachRiskTypeForAnyManufacturer(ByVal riskTypeId As Guid)
+    Public Sub AttachRiskTypeForAnyManufacturer(riskTypeId As Guid)
         DetachRiskType(riskTypeId)
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.GetNewChild()
         sgRt.RiskTypeId = riskTypeId
@@ -377,25 +377,25 @@ Public Class ServiceGroup
         Public Const SERVICE_GROUP_RISK_COL_ID As String = "ServiceGroupRiskColId"
         Public Const SERVICE_GROUP_RISK_MAN_COL_ID As String = "ServiceGroupRiskManColId"
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
-        Public ReadOnly Property RiskTypeDescription(ByVal row As DataRow) As String
+        Public ReadOnly Property RiskTypeDescription(row As DataRow) As String
             Get
                 Return CType(row(RISK_TYPE_COL_NAME), String)
             End Get
         End Property
-        Public ReadOnly Property ManufacturerDescription(ByVal row As DataRow) As String
+        Public ReadOnly Property ManufacturerDescription(row As DataRow) As String
             Get
                 Return CType(row(MANUFACTURER_COL_NAME), String)
             End Get
         End Property
-        Public ReadOnly Property ServiceGroupRiskColId(ByVal row As DataRow) As Guid
+        Public ReadOnly Property ServiceGroupRiskColId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(SERVICE_GROUP_RISK_COL_ID), String))
             End Get
         End Property
-        Public ReadOnly Property ServiceGroupRiskManColId(ByVal row As DataRow) As Guid
+        Public ReadOnly Property ServiceGroupRiskManColId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(SERVICE_GROUP_RISK_MAN_COL_ID), String))
             End Get
@@ -408,7 +408,7 @@ Public Class ServiceGroup
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal searchCode As String, ByVal searchDesc As String, ByVal oCountryId As Guid) As ServiceGroupSearchDV
+    Public Shared Function getList(searchCode As String, searchDesc As String, oCountryId As Guid) As ServiceGroupSearchDV
         Try
             Dim dal As New ServiceGroupDAL
             Dim oCountryIds As ArrayList
@@ -438,23 +438,23 @@ Public Class ServiceGroup
         Public Const COL_NAME_SERVICE_GROUP_ID As String = ServiceGroupDAL.COL_NAME_SERVICE_GROUP_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ServiceGroupId(ByVal row) As Guid
+        Public Shared ReadOnly Property ServiceGroupId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_SERVICE_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ShortDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ShortDescription(row As DataRow) As String
             Get
                 Return row(COL_NAME_SHORT_DESC).ToString
             End Get

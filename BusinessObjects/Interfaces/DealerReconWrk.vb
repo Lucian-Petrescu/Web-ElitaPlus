@@ -144,14 +144,14 @@ Public Class DealerReconWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -166,14 +166,14 @@ Public Class DealerReconWrk
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -195,7 +195,7 @@ Public Class DealerReconWrk
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerReconWrkDAL
             If _isDSCreator Then
@@ -2155,11 +2155,11 @@ Public Class DealerReconWrk
     Public NotInheritable Class ValidAcctNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_ACCOUNT_NUMBER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DealerReconWrk = CType(objectToValidate, DealerReconWrk)
             Dim i As Integer
 
@@ -2187,11 +2187,11 @@ Public Class DealerReconWrk
     Public NotInheritable Class CertNumberValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_INVALID_CERT_NUMBER_FORMAT_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DealerReconWrk = CType(objectToValidate, DealerReconWrk)
 
             If obj.Certificate Is String.Empty OrElse obj.Certificate Is Nothing Then
@@ -2214,7 +2214,7 @@ Public Class DealerReconWrk
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal DealerfileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(DealerfileProcessedId As Guid) As Guid
         Get
             Dim oDealerfileProcessed As New DealerFileProcessed(DealerfileProcessedId)
             Dim oDealer As New Dealer(oDealerfileProcessed.DealerId)
@@ -2226,7 +2226,7 @@ Public Class DealerReconWrk
 #End Region
 
 #Region "Public Members"
-    Public Shared Sub UpdateHeaderCount(ByVal dealerFileProcessedId As Guid)
+    Public Shared Sub UpdateHeaderCount(dealerFileProcessedId As Guid)
         Dim dal As New DealerReconWrkDAL
         dal.UpdateHeaderCount(dealerFileProcessedId)
     End Sub
@@ -2254,15 +2254,15 @@ Public Class DealerReconWrk
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerfileProcessedID As Guid,
-                                        ByVal recordMode As String,
-                                        ByVal recordType As String,
-                                        ByVal rejectCode As String,
-                                        ByVal rejectReason As String,
-                                        ByVal parentFile As String,
-                                        ByVal PageIndex As Integer,
-                                        ByVal Pagesize As Integer,
-                                        ByVal SortExpression As String) As DataView
+    Public Shared Function LoadList(dealerfileProcessedID As Guid,
+                                        recordMode As String,
+                                        recordType As String,
+                                        rejectCode As String,
+                                        rejectReason As String,
+                                        parentFile As String,
+                                        PageIndex As Integer,
+                                        Pagesize As Integer,
+                                        SortExpression As String) As DataView
         Try
             Dim dal As New DealerReconWrkDAL
             Dim ds As DataSet
@@ -2279,7 +2279,7 @@ Public Class DealerReconWrk
     End Function
 
 
-    Public Shared Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataView
+    Public Shared Function LoadRejectList(dealerfileProcessedID As Guid) As DataView
         Try
             Dim dal As New DealerReconWrkDAL
             Dim ds As DataSet

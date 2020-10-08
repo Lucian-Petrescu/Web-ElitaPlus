@@ -32,7 +32,7 @@ Public Class CoverageConseqDamage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -46,20 +46,20 @@ Public Class CoverageConseqDamage
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -81,7 +81,7 @@ Public Class CoverageConseqDamage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageConseqDamageDAL
             If _isDSCreator Then
@@ -305,7 +305,7 @@ Public Class CoverageConseqDamage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -330,7 +330,7 @@ Public Class CoverageConseqDamage
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal CoverageId As Guid, ByVal LanguageId As Guid) As DataView
+    Public Shared Function GetList(CoverageId As Guid, LanguageId As Guid) As DataView
         Try
             Dim dal As New CoverageConseqDamageDAL
             Return New DataView(dal.LoadList(CoverageId, LanguageId).Tables(0))
@@ -345,11 +345,11 @@ Public Class CoverageConseqDamage
     Public NotInheritable Class RequiredConditionally_Liability_Limit_Cumulative
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_CONSEQ_DAMAGE_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As CoverageConseqDamage = CType(objectToValidate, CoverageConseqDamage)
             If Not String.IsNullOrEmpty(obj.LiabilityLimitBaseXcd) AndAlso Not obj.LiabilityLimitBaseXcd.Equals(Codes.COVERAGE_CONSEQ_DAMAGE_LIABILITY_LIMIT_BASED_ON_NOTAPPL) Then
@@ -365,11 +365,11 @@ Public Class CoverageConseqDamage
     Public NotInheritable Class ValidExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_CONSEQ_DAMAGE_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageConseqDamage = CType(objectToValidate, CoverageConseqDamage)
 
             Dim bValid As Boolean = True
@@ -396,7 +396,7 @@ Public Class CoverageConseqDamage
             Return bValid
 
         End Function
-        Private Function CheckEffectiveDate(ByVal sNewEffective As Assurant.Common.Types.DateType, ByVal sNewExpiration As Assurant.Common.Types.DateType, ByVal sNewConseqDamageType As String, ByVal oCoverageConseqDamage As CoverageConseqDamage) As Boolean
+        Private Function CheckEffectiveDate(sNewEffective As Assurant.Common.Types.DateType, sNewExpiration As Assurant.Common.Types.DateType, sNewConseqDamageType As String, oCoverageConseqDamage As CoverageConseqDamage) As Boolean
             Dim bValid As Boolean = True
             Dim oNewEffective As DateTime = Convert.ToDateTime(sNewEffective.Value)
             Dim oNewExpiration As DateTime = Convert.ToDateTime(sNewExpiration.Value)
@@ -435,11 +435,11 @@ Public Class CoverageConseqDamage
     Public NotInheritable Class ValidateEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_CONSEQ_DAMAGE_FORM002)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageConseqDamage = CType(objectToValidate, CoverageConseqDamage)
             If obj IsNot Nothing AndAlso obj.Effective IsNot Nothing Then
                 If Convert.ToDateTime(obj.Effective.Value) > DateTime.Now Then

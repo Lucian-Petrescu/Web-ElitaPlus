@@ -4,7 +4,7 @@ Public Class ServiceOrderReportHandler
 #Region "Constructors"
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal oClaim As ClaimBase, Optional claimAuthId As Guid = Nothing)
+    Public Sub New(oClaim As ClaimBase, Optional claimAuthId As Guid = Nothing)
         soDS = New ServiceOrderReport
         ClaimBO = oClaim
         ClaimAuthorizationId = claimAuthId

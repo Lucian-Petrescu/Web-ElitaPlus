@@ -11,7 +11,7 @@ Public Class BenefitProductCode
         Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,13 +19,13 @@ Public Class BenefitProductCode
 
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
-    Public Sub New(ByVal dealerId As Guid, ByVal productCode As String, ByVal familyDS As DataSet)
+    Public Sub New(dealerId As Guid, productCode As String, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(dealerId, productCode)
@@ -48,7 +48,7 @@ Public Class BenefitProductCode
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal dealerId As Guid, ByVal productCode As String)
+    Protected Sub Load(dealerId As Guid, productCode As String)
         Try
             Dim dal As New BenefitProductCodeDAL
 
@@ -78,7 +78,7 @@ Public Class BenefitProductCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BenefitProductCodeDAL
             If _isDSCreator Then
@@ -486,10 +486,10 @@ Public Class BenefitProductCode
 
 #End Region
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal compIds As ArrayList,
-                                   ByVal dealerId As Guid,
-                                   ByVal benefitProductCodeMask As String,
-                                   ByVal LanguageId As Guid) As BenefitProductCodeSearchDV
+    Public Shared Function GetList(compIds As ArrayList,
+                                   dealerId As Guid,
+                                   benefitProductCodeMask As String,
+                                   LanguageId As Guid) As BenefitProductCodeSearchDV
         Try
             Dim dal As New BenefitProductCodeDAL
             Return New BenefitProductCodeSearchDV(dal.LoadList(compIds, dealerId, benefitProductCodeMask, LanguageId).Tables(0))
@@ -499,10 +499,10 @@ Public Class BenefitProductCode
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal dealerId As Guid,
-                                   ByVal benefitProductCodeMask As String,
-                                   ByVal vendorBillablePartNum As String,
-                                   ByVal ben_product_code_id As Guid) As BenefitProductCodeSearchDV
+    Public Shared Function GetList(dealerId As Guid,
+                                   benefitProductCodeMask As String,
+                                   vendorBillablePartNum As String,
+                                   ben_product_code_id As Guid) As BenefitProductCodeSearchDV
         Try
             Dim dal As New BenefitProductCodeDAL
             Return New BenefitProductCodeSearchDV(dal.LoadList(dealerId, benefitProductCodeMask, vendorBillablePartNum, ben_product_code_id).Tables(0))
@@ -544,7 +544,7 @@ Public Class BenefitProductCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
@@ -560,11 +560,11 @@ Public Class BenefitProductCode
     Public NotInheritable Class ValidExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, BENEFIT_PRODUCT_CODE_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As BenefitProductCode = CType(objectToValidate, BenefitProductCode)
 
             Dim bValid As Boolean = True
@@ -583,7 +583,7 @@ Public Class BenefitProductCode
 
         End Function
 
-        Private Function ValidateExpirationRange(ByVal NewEffectiveDate As Assurant.Common.Types.DateType, ByVal NewExpirationDate As Assurant.Common.Types.DateType, ByVal oBenefitProductCode As BenefitProductCode) As Boolean
+        Private Function ValidateExpirationRange(NewEffectiveDate As Assurant.Common.Types.DateType, NewExpirationDate As Assurant.Common.Types.DateType, oBenefitProductCode As BenefitProductCode) As Boolean
 
             Dim bValid As Boolean = True
             Dim bChangeRec As Boolean = False

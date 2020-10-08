@@ -6,7 +6,7 @@ Public Class CommissionPeriodEntity
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CommissionPeriodEntity
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CommissionPeriodEntity
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommissionToleranceDAL
             If _isDSCreator Then
@@ -224,7 +224,7 @@ Public Class CommissionPeriodEntity
 
 #Region "DataView Retrieveing Methods"
 
-    Private Shared Function GetCommPeriodEntityList(ByVal parent As CommissionPeriod) As DataTable
+    Private Shared Function GetCommPeriodEntityList(parent As CommissionPeriod) As DataTable
 
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(PeriodEntityList)) Then
@@ -239,7 +239,7 @@ Public Class CommissionPeriodEntity
         End Try
     End Function
 
-    Public Shared Function getList(ByVal commissionPeriodId As Guid) As SearchDV
+    Public Shared Function getList(commissionPeriodId As Guid) As SearchDV
         Try
             Dim dal As New CommissionPeriodEntityDAL
 
@@ -265,35 +265,35 @@ Public Class CommissionPeriodEntity
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CommissionPeriodEntityId(ByVal row) As Guid
+        Public Shared ReadOnly Property CommissionPeriodEntityId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_PERIOD_ENTITY_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CommissionPeriodId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CommissionPeriodId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_PERIOD_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property EntityId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property EntityId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ENTITY_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Position(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property Position(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_POSITION), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property EntityName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property EntityName(row As DataRow) As String
             Get
                 Return CType(row(COL_NAME_COMM_ENTITY_NAME), String)
             End Get
@@ -305,15 +305,15 @@ Public Class CommissionPeriodEntity
 #Region "List Methods"
     Public Class PeriodEntityList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As CommissionPeriod)
+        Public Sub New(parent As CommissionPeriod)
             MyBase.New(GetCommPeriodEntityList(parent), GetType(CommissionPeriodEntity), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal commPeriodEntityId As Guid) As CommissionPeriodEntity
+        Public Function FindById(commPeriodEntityId As Guid) As CommissionPeriodEntity
             Dim bo As CommissionPeriodEntity
             For Each bo In Me
                 If bo.Id.Equals(commPeriodEntityId) Then Return bo
@@ -321,7 +321,7 @@ Public Class CommissionPeriodEntity
             Return Nothing
         End Function
 
-        Public Function FindByPosition(ByVal position As LongType) As CommissionPeriodEntity
+        Public Function FindByPosition(position As LongType) As CommissionPeriodEntity
             Dim bo As CommissionPeriodEntity
             For Each bo In Me
                 If bo.Position.Equals(position) Then Return bo

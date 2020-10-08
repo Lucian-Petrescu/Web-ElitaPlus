@@ -6,7 +6,7 @@ Public Class NonbusinessCalendar
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,33 +19,33 @@ Public Class NonbusinessCalendar
         Load()
     End Sub
 
-    Public Sub New(ByVal companyGroupId As Guid, ByVal nonBusinessDate As String)
+    Public Sub New(companyGroupId As Guid, nonBusinessDate As String)
         MyBase.New()
         Dataset = New DataSet
         Load(companyGroupId, nonBusinessDate)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Protected Sub Load(ByVal companyGroupId As Guid, ByVal nonBusinessDate As String)
+    Protected Sub Load(companyGroupId As Guid, nonBusinessDate As String)
         Try
             Dim dal As New NonBusinessCalendarDAL
             If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
@@ -80,7 +80,7 @@ Public Class NonbusinessCalendar
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New NonbusinessCalendarDAL
             If _isDSCreator Then
@@ -188,7 +188,7 @@ Public Class NonbusinessCalendar
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal companyGroupID As Guid) As DataView
+    Public Shared Function LoadList(companyGroupID As Guid) As DataView
         Try
             Dim dal As New NonbusinessCalendarDAL
             Dim ds As DataSet
@@ -202,7 +202,7 @@ Public Class NonbusinessCalendar
 
     End Function
 
-    Public Shared Function GetNonBusinessDaysCount(ByVal defaultFollowUp As Integer, ByVal companyGroupID As Guid) As Integer
+    Public Shared Function GetNonBusinessDaysCount(defaultFollowUp As Integer, companyGroupID As Guid) As Integer
         Dim ds As DataSet
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
 
@@ -210,7 +210,7 @@ Public Class NonbusinessCalendar
         Return ds.Tables(nonBusinessCalendarDAL.TABLE_NAME).Rows(0).Item(nonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DAY_COUNT)
     End Function
 
-    Public Shared Function GetSameBusinessDaysCount(ByVal followupDate As Date, ByVal companyGroupID As Guid) As Integer
+    Public Shared Function GetSameBusinessDaysCount(followupDate As Date, companyGroupID As Guid) As Integer
         Dim ds As DataSet
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
 
@@ -218,13 +218,13 @@ Public Class NonbusinessCalendar
         Return ds.Tables(nonBusinessCalendarDAL.TABLE_NAME).Rows(0).Item(nonBusinessCalendarDAL.COL_NAME_SAMEBUSINESS_DAY_COUNT)
     End Function
 
-    Public Shared Function GetNextBusinessDate(ByVal defaultFollowUp As Integer, ByVal companyGroupID As Guid) As Date
+    Public Shared Function GetNextBusinessDate(defaultFollowUp As Integer, companyGroupID As Guid) As Date
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
 
         Return nonBusinessCalendarDAL.GetNextBusinessDate(defaultFollowUp, companyGroupID)
     End Function
 
-    Public Shared Function GetNonBusinessDates(ByVal CompanyGroupCode As String, ByVal dtStart As Date, ByVal dtEnd As Date) As DataSet
+    Public Shared Function GetNonBusinessDates(CompanyGroupCode As String, dtStart As Date, dtEnd As Date) As DataSet
         Dim ds As DataSet
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
         ds = nonBusinessCalendarDAL.GetNonBusinessDates(CompanyGroupCode, dtStart, dtEnd)

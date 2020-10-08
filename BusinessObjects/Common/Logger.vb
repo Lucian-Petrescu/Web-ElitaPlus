@@ -13,12 +13,12 @@ Public Module Logger
 
     Private traceSource As TraceSource = New TraceSource("ElitaHarvesterService", Nothing)
 
-    Public Delegate Sub AddMessageDelegate(ByVal message As String)
-    Public Delegate Sub AddExceptionDelegate(ByVal exception As Exception)
-    Public Delegate Sub AddErrorDelegate(ByVal message As String, ByVal exception As Exception)
+    Public Delegate Sub AddMessageDelegate(message As String)
+    Public Delegate Sub AddExceptionDelegate(exception As Exception)
+    Public Delegate Sub AddErrorDelegate(message As String, exception As Exception)
     Private Property _loggerClient As ILoggerClient
 
-    Public Sub Initialize(ByVal applicationName As String)
+    Public Sub Initialize(applicationName As String)
         Try
             Dim OracleHelper As OracleHelper = New OracleHelper(Function() New OracleConnectionStringBuilder() With {
             .UserID = ElitaConfig.Current.Database.UserName,
@@ -46,7 +46,7 @@ Public Module Logger
         Next
     End Sub
 
-    Public Sub AddInfo(ByVal message As String)
+    Public Sub AddInfo(message As String)
         TraceLine(TraceEventType.Information, message)
 
         Try
@@ -60,7 +60,7 @@ Public Module Logger
 
     End Sub
 
-    Public Sub AddError(ByVal exception As Exception)
+    Public Sub AddError(exception As Exception)
         Try
             _loggerClient.LogException(New ExceptionLogItem() With {
         .Exception = exception,
@@ -72,13 +72,13 @@ Public Module Logger
 
     End Sub
 
-    Public Sub AddEventException(ByVal exception As Exception)
+    Public Sub AddEventException(exception As Exception)
         Dim sb As New StringBuilder
         BuildExceptionString(exception, sb)
         AddError(sb.ToString())
     End Sub
 
-    Public Sub AddError(ByVal message As String, ByVal exception As Exception)
+    Public Sub AddError(message As String, exception As Exception)
         Try
             _loggerClient.LogException(New ExceptionLogItem() With {
         .Exception = exception,
@@ -95,7 +95,7 @@ Public Module Logger
         End Try
     End Sub
 
-    Private Sub BuildExceptionString(ByVal exception As Exception, ByVal sb As StringBuilder)
+    Private Sub BuildExceptionString(exception As Exception, sb As StringBuilder)
         sb.AppendLine("*** Start of Exception ***")
         sb.AppendFormat("Exception of Type {0} with message {1}", exception.GetType().FullName, exception.Message)
         sb.AppendLine()
@@ -106,7 +106,7 @@ Public Module Logger
         End If
     End Sub
 
-    Public Sub AddError(ByVal message As String)
+    Public Sub AddError(message As String)
         Try
             _loggerClient.LogException(New ExceptionLogItem() With {
         .Message = message,
@@ -119,11 +119,11 @@ Public Module Logger
         End Try
     End Sub
 
-    Public Sub AddWarning(ByVal message As String)
+    Public Sub AddWarning(message As String)
         AddInfo(message)
     End Sub
 
-    Public Sub AddDebugLog(ByVal message As String)
+    Public Sub AddDebugLog(message As String)
         AddInfo(message)
     End Sub
 
@@ -135,7 +135,7 @@ Public Module Logger
         AddInfo("Exit")
     End Sub
 
-    Private Sub TraceLine(ByVal level As TraceEventType, ByVal message As String)
+    Private Sub TraceLine(level As TraceEventType, message As String)
         Dim traceLevel As String = Nothing
 
         Select Case level

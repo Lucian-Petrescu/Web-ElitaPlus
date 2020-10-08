@@ -5,7 +5,7 @@ Public Class PremiumAdjustmentSettings
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class PremiumAdjustmentSettings
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -49,7 +49,7 @@ Public Class PremiumAdjustmentSettings
 
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Row = Nothing
             Dim dal As New PremiumAdjustmentSettingsDAL
@@ -239,7 +239,7 @@ Public Class PremiumAdjustmentSettings
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal DealerId As Guid) As PremiumAdjustnmentSettingSearchDV
+    Public Shared Function getList(DealerId As Guid) As PremiumAdjustnmentSettingSearchDV
         Try
             Dim dal As New PremiumAdjustmentSettingsDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -267,7 +267,7 @@ Public Class PremiumAdjustmentSettings
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

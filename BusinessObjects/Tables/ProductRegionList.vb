@@ -1,16 +1,16 @@
 ﻿Public Class ProductRegionList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ProductCode)
+    Public Sub New(parent As ProductCode)
         MyBase.New(LoadTable(parent), GetType(ProductRegion), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ProductRegion).ProductCodeId.Equals(CType(Parent, ProductCode).Id)
     End Function
 
-    Public Function Find(ByVal RegionId As Guid) As ProductRegion
+    Public Function Find(RegionId As Guid) As ProductRegion
         Dim bo As ProductRegion
         For Each bo In Me
             If bo.RegionId.Equals(RegionId) Then Return bo
@@ -20,7 +20,7 @@
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ProductCode) As DataTable
+    Private Shared Function LoadTable(parent As ProductCode) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ProductRegionList)) Then
                 Dim dal As New ProductRegionDAL

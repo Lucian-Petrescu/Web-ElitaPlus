@@ -17,15 +17,15 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 
 #Region "Constructors"
 
-    Friend Sub New(ByVal useCustomSave As Boolean)
+    Friend Sub New(useCustomSave As Boolean)
         Me.New(IIf(useCustomSave, 1, DEFAULT_THREAD_COUNT), IIf(useCustomSave, 1, DEFAULT_TRANSACTION_SIZE), useCustomSave)
     End Sub
 
-    Friend Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer)
+    Friend Sub New(threadCount As Integer, transactionSize As Integer)
         Me.New(threadCount, transactionSize, False)
     End Sub
 
-    Private Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer, ByVal useCustomSave As Boolean)
+    Private Sub New(threadCount As Integer, transactionSize As Integer, useCustomSave As Boolean)
         _threadCount = Math.Min(threadCount, MaximumThreadCount)
         If (transactionSize = 0) Then
             _transactionSize = 0
@@ -46,7 +46,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 #End Region
 
 #Region "Delegate"
-    Private Delegate Sub ProcessDelegate(ByVal id As Guid)
+    Private Delegate Sub ProcessDelegate(id As Guid)
 #End Region
 
 #Region "Fields"
@@ -131,15 +131,15 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 #End Region
 
 #Region "Methods"
-    Protected Sub AppendTrace(ByVal trace As String)
+    Protected Sub AppendTrace(trace As String)
         _trace.Append(trace)
     End Sub
 
-    Protected Sub AppendTraceLine(ByVal trace As String)
+    Protected Sub AppendTraceLine(trace As String)
         _trace.AppendLine(trace)
     End Sub
 
-    Protected Function DecimalTypeToString(ByVal decimalType As Nullable(Of Decimal)) As String
+    Protected Function DecimalTypeToString(decimalType As Nullable(Of Decimal)) As String
         If (decimalType Is Nothing) Then
             Return "N/A"
         Else
@@ -147,14 +147,14 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         End If
     End Function
 
-    Public Function ProcessAsync(ByVal id As Guid) As Guid
+    Public Function ProcessAsync(id As Guid) As Guid
         Dim oProcessDelegate As New ProcessDelegate(AddressOf Process)
         InterfaceStatusId = InterfaceStatusWrk.CreateInterfaceStatus(InterfaceStatusWrkDAL.DESC_PROCESS)
         oProcessDelegate.BeginInvoke(id, Nothing, Nothing)
         Return InterfaceStatusId.Value
     End Function
 
-    Public Sub Process(ByVal id As Guid)
+    Public Sub Process(id As Guid)
         Try
             Dim beforeRecord As TRecon = Nothing
             Dim keyChangedResult As KeyChangeReturnType
@@ -263,7 +263,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         End Try
     End Sub
 
-    Protected Sub Save(ByVal familyDataSet As DataSet, ByVal reconRecord As TRecon)
+    Protected Sub Save(familyDataSet As DataSet, reconRecord As TRecon)
         Dim argument As Object
         argument = BeforeSave(familyDataSet)
         If (_useCustomSave) Then
@@ -298,36 +298,36 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 
     End Sub
 
-    Protected MustOverride Function CreateFileLoadHeader(ByVal fileLoadHeaderId As Guid) As THeader
+    Protected MustOverride Function CreateFileLoadHeader(fileLoadHeaderId As Guid) As THeader
 
-    Protected MustOverride Function CreateFileLoadDetail(ByVal fileLoadDetailId As Guid, ByVal headerRecord As THeader) As TRecon
+    Protected MustOverride Function CreateFileLoadDetail(fileLoadDetailId As Guid, headerRecord As THeader) As TRecon
 
 
     Public Overridable Sub AfterCreateFileLoadHeader()
 
     End Sub
 
-    Protected MustOverride Function ProcessDetailRecord(ByVal reconRecord As TRecon, ByVal familyDataSet As DataSet) As ProcessResult
+    Protected MustOverride Function ProcessDetailRecord(reconRecord As TRecon, familyDataSet As DataSet) As ProcessResult
 
-    Public Overridable Function BeforeSave(ByVal familyDataSet As DataSet) As Object
+    Public Overridable Function BeforeSave(familyDataSet As DataSet) As Object
         Return Nothing
     End Function
 
-    Public Overridable Sub AfterSave(ByVal argument As Object, ByVal familyDataSet As DataSet)
+    Public Overridable Sub AfterSave(argument As Object, familyDataSet As DataSet)
 
     End Sub
 
-    Protected Overridable Function IsKeyChanged(ByVal beforeReconRecord As TRecon, ByVal afterReconRecord As TRecon, ByVal familyDataSet As DataSet) As KeyChangeReturnType
+    Protected Overridable Function IsKeyChanged(beforeReconRecord As TRecon, afterReconRecord As TRecon, familyDataSet As DataSet) As KeyChangeReturnType
         Dim returnValue As KeyChangeReturnType
         returnValue.IsChanged = False
         Return returnValue
     End Function
 
-    Protected Overridable Sub KeyChanged(ByVal key As String, ByVal beforeReconRecord As TRecon, ByVal afterReconRecord As TRecon, ByVal familyDataSet As DataSet)
+    Protected Overridable Sub KeyChanged(key As String, beforeReconRecord As TRecon, afterReconRecord As TRecon, familyDataSet As DataSet)
 
     End Sub
 
-    Protected Overridable Sub CustomSave(ByVal headerRecord As THeader)
+    Protected Overridable Sub CustomSave(headerRecord As THeader)
 
     End Sub
 

@@ -14,7 +14,7 @@ Public Class CustItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -28,20 +28,20 @@ Public Class CustItem
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -63,7 +63,7 @@ Public Class CustItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CustItemDAL
             If _isDSCreator Then
@@ -387,7 +387,7 @@ Public Class CustItem
 #End Region
 
 #Region "Public Members"
-    Public Shared Function FindRegistration(ByVal certificateId As Guid) As CustItemDAL.RegistrationDetails
+    Public Shared Function FindRegistration(certificateId As Guid) As CustItemDAL.RegistrationDetails
         Dim dal As New CustItemDAL
         Try
             Return dal.FindRegistration(certificateId)
@@ -396,7 +396,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function CreateItemElements(ByVal customerItem As CustItemDC, ByVal custRegBO As CustRegistration) As String
+    Public Shared Function CreateItemElements(customerItem As CustItemDC, custRegBO As CustRegistration) As String
         Try
             Dim ds As DataSet
             Dim noId As Guid
@@ -492,7 +492,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function DeleteItem(ByVal custItemBO As CustItem) As String
+    Public Shared Function DeleteItem(custItemBO As CustItem) As String
         Try
             Dim yesId As Guid
 
@@ -529,7 +529,7 @@ Public Class CustItem
         End Try
     End Sub
 
-    Public Shared Function IsIMEINumberValid(ByVal imeiNumber As String) As Boolean
+    Public Shared Function IsIMEINumberValid(imeiNumber As String) As Boolean
         Dim dal As New CustItemDAL
 
         If (imeiNumber = String.Empty) Then
@@ -544,7 +544,7 @@ Public Class CustItem
 
     End Function
 
-    Public Shared Function ActivateItem(ByVal custItemDeleteActivate As CustItemDeleteActivateDC, ByVal custRegBO As CustRegistration, ByVal custItemBO As CustItem) As String
+    Public Shared Function ActivateItem(custItemDeleteActivate As CustItemDeleteActivateDC, custRegBO As CustRegistration, custItemBO As CustItem) As String
         Try
             Dim regStatusActiveId As Guid
             Dim regStatusPendingId As Guid
@@ -597,7 +597,7 @@ Public Class CustItem
 #End Region
 
 #Region "Data Retrieveing Methods"
-    Public Shared Function GetItemFromEmail(ByVal emailId As String, ByVal dealerId As Guid) As DataSet
+    Public Shared Function GetItemFromEmail(emailId As String, dealerId As Guid) As DataSet
         Try
             Dim dal As New CustItemDAL
             Dim ds As DataSet
@@ -619,7 +619,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function GetItemforDealerAndRegistration(ByVal imeiNumber As String, ByVal dealerId As Guid, ByVal registrationId As Guid) As DataSet
+    Public Shared Function GetItemforDealerAndRegistration(imeiNumber As String, dealerId As Guid, registrationId As Guid) As DataSet
         Try
             Dim dal As New CustItemDAL
 
@@ -629,7 +629,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function GetItemByRegistrationAndIMEI(ByVal registrationId As Guid, ByVal imeiNumber As String) As Guid
+    Public Shared Function GetItemByRegistrationAndIMEI(registrationId As Guid, imeiNumber As String) As Guid
         Try
             Dim dal As New CustItemDAL
 
@@ -639,7 +639,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function CheckItemforDealer(ByVal imeiNumber As String, ByVal dealerId As Guid) As Integer
+    Public Shared Function CheckItemforDealer(imeiNumber As String, dealerId As Guid) As Integer
         Try
             Dim dal As New CustItemDAL
 
@@ -649,7 +649,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function GetCertItemIDforTaxImei(ByVal taxID As String, ByVal imeiNumber As String, ByVal dealerId As Guid, ByVal cellNumber As String) As Guid
+    Public Shared Function GetCertItemIDforTaxImei(taxID As String, imeiNumber As String, dealerId As Guid, cellNumber As String) As Guid
         Try
             Dim dal As New CustItemDAL
 
@@ -667,11 +667,11 @@ Public Class CustItem
     Public NotInheritable Class ValueMandatoryConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.CELL_PHONE_NUMBER_IS_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CustItem = CType(objectToValidate, CustItem)
             Dim returnVal As Boolean = True
             If (Not obj.EquipmentId.Equals(Guid.Empty)) Then

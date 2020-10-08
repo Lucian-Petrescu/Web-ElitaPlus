@@ -95,7 +95,7 @@ Public Class Enrollment
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As VSCEnrollmentDs)
+    Public Sub New(ds As VSCEnrollmentDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -108,7 +108,7 @@ Public Class Enrollment
 
 #Region "Private Members"
 
-    Private Sub MapDataSet(ByVal ds As VSCEnrollmentDs)
+    Private Sub MapDataSet(ds As VSCEnrollmentDs)
 
         ' Mapping column names
         Dim schema As String = ds.GetXmlSchema
@@ -143,7 +143,7 @@ Public Class Enrollment
     Private Sub Initialize()
     End Sub
 
-    Private Sub ValidateInput(ByVal ds As VSCEnrollmentDs)
+    Private Sub ValidateInput(ds As VSCEnrollmentDs)
 
         ' No customer
         If ds.Customer.Count = 0 Then Throw New BOValidationException("VSC Enrollment Error: ", Common.ErrorCodes.WS_XML_INVALID)
@@ -236,7 +236,7 @@ Public Class Enrollment
 
     End Sub
 
-    Private Sub Load(ByVal ds As VSCEnrollmentDs)
+    Private Sub Load(ds As VSCEnrollmentDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -255,7 +255,7 @@ Public Class Enrollment
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As VSCEnrollmentDs)
+    Private Sub PopulateBOFromWebService(ds As VSCEnrollmentDs)
 
         Try
 
@@ -388,7 +388,7 @@ Public Class Enrollment
 
     End Sub
 
-    Private Sub NewApplicant(ByVal name As String, ByVal CustomerOccupation As String, ByVal PEP As String, ByVal IncomeRangeCode As String)
+    Private Sub NewApplicant(name As String, CustomerOccupation As String, PEP As String, IncomeRangeCode As String)
 
         Dim newRow As DataRow = Dataset.Tables(TABLE_NAME_CUSTOMER).NewRow
         newRow(0) = name
@@ -399,7 +399,7 @@ Public Class Enrollment
 
     End Sub
 
-    Private Sub NewCoverage(ByVal code As String, ByVal price As Double, ByVal quote_item_number As Integer)
+    Private Sub NewCoverage(code As String, price As Double, quote_item_number As Integer)
 
         Dim newRow As DataRow = Dataset.Tables(TABLE_NAME_OPTIONS).NewRow
         newRow(0) = code
@@ -1385,11 +1385,11 @@ Public Class Enrollment
     Public NotInheritable Class ValidCreditCardNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.WS_INVALID_CREDIT_CARD_NUMBER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Enrollment = CType(objectToValidate, Enrollment)
 
             If Not obj.CreditCardNumber Is Nothing AndAlso Not CreditCardFormat.IsCreditCardValid(obj.CreditCardTypeCode, obj.CreditCardNumber) Then

@@ -6,7 +6,7 @@ Public Class ServiceGroupRiskType
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,7 +20,7 @@ Public Class ServiceGroupRiskType
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -28,20 +28,20 @@ Public Class ServiceGroupRiskType
 
 
     'Exiting or not BO using parent keys attaching to a BO family
-    Public Sub New(ByVal serviceGroupId As Guid, ByVal riskTypeId As Guid, ByVal familyDS As DataSet)
+    Public Sub New(serviceGroupId As Guid, riskTypeId As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(serviceGroupId, riskTypeId)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -64,7 +64,7 @@ Public Class ServiceGroupRiskType
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceGroupRiskTypeDAL
             If _isDSCreator Then
@@ -89,7 +89,7 @@ Public Class ServiceGroupRiskType
     End Sub
 
 
-    Protected Sub Load(ByVal serviceGroupId As Guid, ByVal riskTypeId As Guid)
+    Protected Sub Load(serviceGroupId As Guid, riskTypeId As Guid)
         'try to find it thru a sequential search
         Dim row As DataRow
         For Each row In Dataset.Tables(ServiceGroupDAL.TABLE_NAME).Rows
@@ -215,7 +215,7 @@ Public Class ServiceGroupRiskType
         End Get
     End Property
 
-    Public Sub UpdateManufaturers(ByVal selectedManufacturerGuidStrCollection As Hashtable)
+    Public Sub UpdateManufaturers(selectedManufacturerGuidStrCollection As Hashtable)
         If selectedManufacturerGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -242,7 +242,7 @@ Public Class ServiceGroupRiskType
         End If
     End Sub
 
-    Public Sub AttachManufaturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub AttachManufaturers(selectedManufacturerGuidStrCollection As ArrayList)
         Dim sgRtManIdStr As String
         For Each sgRtManIdStr In selectedManufacturerGuidStrCollection
             Dim sgRtMan As SgRtManufacturer = SgRtManufacturerChildren.GetNewChild
@@ -252,7 +252,7 @@ Public Class ServiceGroupRiskType
         Next
     End Sub
 
-    Public Sub DetachManufaturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub DetachManufaturers(selectedManufacturerGuidStrCollection As ArrayList)
         Dim sgRtManIdStr As String
         For Each sgRtManIdStr In selectedManufacturerGuidStrCollection
             Dim sgRtMan As SgRtManufacturer = SgRtManufacturerChildren.Find(New Guid(sgRtManIdStr))
@@ -283,7 +283,7 @@ Public Class ServiceGroupRiskType
         Return dv
     End Function
 
-    Protected Function GetManufacturersLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetManufacturersLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
         Dim sgRtMan As SgRtManufacturer
         Dim inClause As String = "(-1"
         For Each sgRtMan In SgRtManufacturerChildren

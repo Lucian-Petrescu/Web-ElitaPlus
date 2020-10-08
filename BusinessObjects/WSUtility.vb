@@ -27,7 +27,7 @@ Public Class WSUtility
 
     End Sub
 
-    Public Sub New(ByVal DS As DataSet)
+    Public Sub New(DS As DataSet)
         MyBase.New()
         Dataset = DS
 
@@ -52,7 +52,7 @@ Public Class WSUtility
     Private Sub Initialize()
     End Sub
 
-    Public Shared Function CompactData(ByVal dw As DataView) As String
+    Public Shared Function CompactData(dw As DataView) As String
 
         Try
 
@@ -83,7 +83,7 @@ Public Class WSUtility
 
     End Function
 
-    Public Shared Function GetManufacturerGUID(ByVal sManufacturer As String, ByVal companyGroupID As Guid) As System.Guid
+    Public Shared Function GetManufacturerGUID(sManufacturer As String, companyGroupID As Guid) As System.Guid
         Try
 
             Dim oManu As New Manufacturer(sManufacturer.ToUpper, companyGroupID)
@@ -96,7 +96,7 @@ Public Class WSUtility
         End Try
     End Function
 
-    Public Shared Function GetDealerCode(ByVal DealerID As Guid) As String
+    Public Shared Function GetDealerCode(DealerID As Guid) As String
         Try
 
             Dim oDealer As New Dealer(DealerID)
@@ -110,7 +110,7 @@ Public Class WSUtility
         End Try
     End Function
 
-    Public Shared Function GetDealerCode(ByVal sDealerName As String, ByVal companyGroupID As Guid) As String
+    Public Shared Function GetDealerCode(sDealerName As String, companyGroupID As Guid) As String
         Try
 
             Dim oDealer As New Dealer(companyGroupID, sDealerName.ToUpper)
@@ -124,7 +124,7 @@ Public Class WSUtility
         End Try
     End Function
 
-    Public Shared Function GetDealerID(ByVal companyGroupID As Guid, ByVal sDealer As String) As System.Guid
+    Public Shared Function GetDealerID(companyGroupID As Guid, sDealer As String) As System.Guid
         Try
 
             Dim oDealer As New Dealer(companyGroupID, sDealer.ToUpper)
@@ -147,7 +147,7 @@ Public Class WSUtility
         End Try
     End Function
 
-    Public Shared Function FormatErrorStringArray(ByVal Err() As String) As String
+    Public Shared Function FormatErrorStringArray(Err() As String) As String
         Dim FormattedError As String = ""
         Dim i As Integer
         For i = 0 To Err.Length - 1
@@ -158,7 +158,7 @@ Public Class WSUtility
 
     End Function
 
-    Public Shared Function FormatAndTranslateErrorsFromBOValidationExc(ByVal validationExc As BOValidationException, Optional ByVal Translate As Boolean = True) As String
+    Public Shared Function FormatAndTranslateErrorsFromBOValidationExc(validationExc As BOValidationException, Optional ByVal Translate As Boolean = True) As String
         Dim err As Assurant.Common.Validation.ValidationError
         Dim errStrList As String
         For Each err In validationExc.ValidationErrorList

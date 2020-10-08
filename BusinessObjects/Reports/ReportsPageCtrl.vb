@@ -7,7 +7,7 @@ Public Class ReportsPageCtrl
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class ReportsPageCtrl
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class ReportsPageCtrl
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ReportsPagectrlDAL
             If _isDSCreator Then
@@ -209,7 +209,7 @@ Public Class ReportsPageCtrl
         End Try
     End Sub
 
-    Public Function GetRptRunDateAndPageNum(ByVal RptName As String, ByVal CompanyId As Guid) As DataSet
+    Public Function GetRptRunDateAndPageNum(RptName As String, CompanyId As Guid) As DataSet
         Dim ds As DataSet = Nothing
         Dim dal As New ReportsPagectrlDAL
         Try
@@ -221,7 +221,7 @@ Public Class ReportsPageCtrl
 
     End Function
 
-    Public Function GetRunningPeriodDetails(ByVal RptName As String, ByVal CompanyId As Guid) As DataSet
+    Public Function GetRunningPeriodDetails(RptName As String, CompanyId As Guid) As DataSet
         Dim ds As DataSet = Nothing
         Dim dal As New ReportsPagectrlDAL
         Try
@@ -233,7 +233,7 @@ Public Class ReportsPageCtrl
 
     End Function
 
-    Public Function ChkRptRunningForPeriod(ByVal RptName As String, ByVal ReportPeriod As String, ByVal CompanyId As Guid) As Boolean
+    Public Function ChkRptRunningForPeriod(RptName As String, ReportPeriod As String, CompanyId As Guid) As Boolean
         Dim ds As DataSet = Nothing
         Dim dal As New ReportsPagectrlDAL
         Try
@@ -250,7 +250,7 @@ Public Class ReportsPageCtrl
 
     End Function
 
-    Public Function ChkPeriodIsOpen(ByVal ReportPeriod As String, ByVal CompanyId As Guid) As Boolean
+    Public Function ChkPeriodIsOpen(ReportPeriod As String, CompanyId As Guid) As Boolean
         Dim dal As New ReportsPageCtrlDAL
         Dim ClosingDate As Date = Date.Today
         Dim BeginDate As Date

@@ -7,7 +7,7 @@ Public Class CountryTax
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class CountryTax
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class CountryTax
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CountryTaxDAL
             If _isDSCreator Then
@@ -698,7 +698,7 @@ Public Class CountryTax
 #Region "Derived Properties"
 
 
-    Public ReadOnly Property TaxGroup(ByVal taxGroupNum As Integer) As TaxGroupData
+    Public ReadOnly Property TaxGroup(taxGroupNum As Integer) As TaxGroupData
         Get
             CheckDeleted()
             If taxGroupNum < 1 OrElse taxGroupNum > MAX_NUMBER_OF_TAX_GROUPS Then
@@ -793,7 +793,7 @@ Public Class CountryTax
 
     End Sub
 
-    Public Sub Copy(ByVal original As CountryTax)
+    Public Sub Copy(original As CountryTax)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing country tax")
         End If
@@ -837,7 +837,7 @@ Public Class CountryTax
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function getEmptyList(dv As DataView) As System.Data.DataView
         Try
             Dim dsv As DataSet
             dsv = dv.Table().DataSet
@@ -850,7 +850,7 @@ Public Class CountryTax
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getList(ByVal oCountryIds As ArrayList, ByVal oCompanyIds As ArrayList, ByVal LanguageId As Guid) As System.Data.DataView
+    Public Shared Function getList(oCountryIds As ArrayList, oCompanyIds As ArrayList, LanguageId As Guid) As System.Data.DataView
         Try
             Dim dal As New CountryTaxDAL
             Return New System.Data.DataView(dal.LoadList(oCountryIds, oCompanyIds, LanguageId).Tables(0))
@@ -879,13 +879,13 @@ Public Class CountryTax
         End Try
     End Sub
 
-    Public Shared Function GetTaxRate(ByVal guidcountryID As Guid, ByVal guidTaxTypeID As Guid, _
-                                      ByVal guidRegionID As Guid, ByVal dtEffectiveDate As Date, ByVal guidDealerId As Guid) As Decimal
+    Public Shared Function GetTaxRate(guidcountryID As Guid, guidTaxTypeID As Guid, _
+                                      guidRegionID As Guid, dtEffectiveDate As Date, guidDealerId As Guid) As Decimal
         Dim dal As New CountryTaxDAL
         Return dal.LoadTaxRate(guidcountryID, guidTaxTypeID, guidRegionID, dtEffectiveDate, guidDealerId)
     End Function
 
-    Public Shared Function getManualTaxesByTaxType(ByVal oCountryId As Guid, ByVal TaxTypeCode As String, ByVal dtEffective As Date, ByVal DealerId As Guid) As System.Data.DataView
+    Public Shared Function getManualTaxesByTaxType(oCountryId As Guid, TaxTypeCode As String, dtEffective As Date, DealerId As Guid) As System.Data.DataView
         Try
             Dim dal As New CountryTaxDAL
             Return New System.Data.DataView(dal.LoadManualTaxes(oCountryId, TaxTypeCode, dtEffective, DealerId).Tables(0))
@@ -913,12 +913,12 @@ Public Class CountryTax
 
         Public ReadOnly TaxGroupNum As Integer
 
-        Public Sub New(ByVal fieldDisplayName As String, ByVal taxGroupID As Integer)
+        Public Sub New(fieldDisplayName As String, taxGroupID As Integer)
             MyBase.New(fieldDisplayName, String.Format(ALL_ENTRIES_REQUIRED, taxGroupID))
             TaxGroupNum = taxGroupID
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
             Dim oTG As TaxGroupData = obj.TaxGroup(TaxGroupNum)
 
@@ -946,12 +946,12 @@ Public Class CountryTax
 
         Public ReadOnly TaxGroupNum As Integer
 
-        Public Sub New(ByVal fieldDisplayName As String, ByVal taxGroupID As Integer)
+        Public Sub New(fieldDisplayName As String, taxGroupID As Integer)
             MyBase.New(fieldDisplayName, String.Format(PERCENT_GREATER_THAN_ZERO, taxGroupID))
             TaxGroupNum = taxGroupID
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
 
             Dim oTG As TaxGroupData = obj.TaxGroup(TaxGroupNum)
@@ -982,11 +982,11 @@ Public Class CountryTax
     Public NotInheritable Class ValidLastEntryForDelete
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, LAST_ENTRY_ONLY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
 
             If obj.IsDeleted Then 'when deleting
@@ -1003,11 +1003,11 @@ Public Class CountryTax
     Public NotInheritable Class ValidEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVALID_EFFECTIVE_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
 
             If Not obj.IsDeleted Then 'Edit or add new
@@ -1026,11 +1026,11 @@ Public Class CountryTax
     Public NotInheritable Class ValidNewEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EFFECTIVE_DATE_NOT_GREATER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
 
             If obj.IsNew Then ' when add new 
@@ -1049,11 +1049,11 @@ Public Class CountryTax
     Public NotInheritable Class RequiredAtLeastOneTaxgroupFilled
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ONE_TAX_GROUP_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
             Dim i As Integer, blnFound As Boolean
 

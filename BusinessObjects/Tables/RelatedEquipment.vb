@@ -6,7 +6,7 @@ Public Class RelatedEquipment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class RelatedEquipment
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class RelatedEquipment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RelatedEquipmentDAL
             If _isDSCreator Then
@@ -228,14 +228,14 @@ Public Class RelatedEquipment
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As RelatedEquipment)
+    Public Sub Copy(original As RelatedEquipment)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
         MyBase.CopyFrom(original)
     End Sub
 
-    Public Function GetRelatedEquipmentList(ByVal equipmentId As Guid) As DataView
+    Public Function GetRelatedEquipmentList(equipmentId As Guid) As DataView
         Try
             Dim RelatedEquipDAL As RelatedEquipmentDAL
             Return RelatedEquipDAL.GetRelatedEquipmentList(equipmentId).Tables(0).DefaultView
@@ -245,7 +245,7 @@ Public Class RelatedEquipment
         End Try
     End Function
 
-    Public Shared Function GetEquipmentType(ByVal equipment_Type As Guid) As DataView
+    Public Shared Function GetEquipmentType(equipment_Type As Guid) As DataView
         Try
             Dim dv As DataView = LookupListNew.GetEquipmentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             Dim STR As String = dv.RowFilter.ToString
@@ -262,15 +262,15 @@ Public Class RelatedEquipment
     Public Class RelatedEquipmentList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Equipment)
+        Public Sub New(parent As Equipment)
             MyBase.New(LoadTable(parent), GetType(RelatedEquipment), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, RelatedEquipment).EquipmentId.Equals(CType(Parent, Equipment).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Equipment) As DataTable
+        Private Shared Function LoadTable(parent As Equipment) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(RelatedEquipmentList)) Then
                     Dim dal As New RelatedEquipmentDAL

@@ -6,7 +6,7 @@ Public Class ServiceNetwork
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -20,20 +20,20 @@ Public Class ServiceNetwork
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ServiceNetwork
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceNetworkDAL
             If _isDSCreator Then
@@ -190,7 +190,7 @@ Public Class ServiceNetwork
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ServiceNetwork)
+    Public Sub Copy(original As ServiceNetwork)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Center")
         End If
@@ -219,7 +219,7 @@ Public Class ServiceNetwork
         End Get
     End Property
 
-    Public Sub AttachServiceCenters(ByVal selectedServiceCenterGuidStrCollection As ArrayList)
+    Public Sub AttachServiceCenters(selectedServiceCenterGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceCenterGuidStrCollection
             Dim snSrvBO As ServiceNetworkSvc = ServiceNetworkSvcChildren.GetNewChild
@@ -229,7 +229,7 @@ Public Class ServiceNetwork
         Next
     End Sub
 
-    Public Sub DetachServiceCenters(ByVal selectedServiceCenterGuidStrCollection As ArrayList)
+    Public Sub DetachServiceCenters(selectedServiceCenterGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceCenterGuidStrCollection
             Dim snSrvBO As ServiceNetworkSvc = ServiceNetworkSvcChildren.Find(New Guid(snSrvIdStr))
@@ -269,7 +269,7 @@ Public Class ServiceNetwork
         Return dv
     End Function
 
-    Protected Function GetServiceCentersLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetServiceCentersLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim snSrvBO As ServiceNetworkSvc
         Dim inClause As String = "(-1"
@@ -292,7 +292,7 @@ Public Class ServiceNetwork
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal searchCode As String, ByVal searchDesc As String) As ServiceNetworkSearchDV
+    Public Shared Function getList(searchCode As String, searchDesc As String) As ServiceNetworkSearchDV
         Try
             Dim dal As New ServiceNetworkDAL
             Dim oCompany As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
@@ -314,23 +314,23 @@ Public Class ServiceNetwork
         Public Const COL_NAME_SERVICE_NETWORK_ID As String = ServiceNetworkDAL.COL_NAME_SERVICE_NETWORK_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ServiceNetworkId(ByVal row) As Guid
+        Public Shared ReadOnly Property ServiceNetworkId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_SERVICE_NETWORK_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ShortDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ShortDescription(row As DataRow) As String
             Get
                 Return row(COL_NAME_SHORT_DESC).ToString
             End Get

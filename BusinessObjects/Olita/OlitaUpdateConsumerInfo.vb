@@ -77,7 +77,7 @@ Public Class OlitaUpdateConsumerInfo
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As OlitaUpdateConsumerInfoDs)
+    Public Sub New(ds As OlitaUpdateConsumerInfoDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -94,7 +94,7 @@ Public Class OlitaUpdateConsumerInfo
     Private _mailing_regionId As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As OlitaUpdateConsumerInfoDs)
+    Private Sub MapDataSet(ds As OlitaUpdateConsumerInfoDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -116,7 +116,7 @@ Public Class OlitaUpdateConsumerInfo
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As OlitaUpdateConsumerInfoDs)
+    Private Sub Load(ds As OlitaUpdateConsumerInfoDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -134,7 +134,7 @@ Public Class OlitaUpdateConsumerInfo
             Throw New ElitaPlusException("Olita UpdateConsumerInfo Saving Data", Common.ErrorCodes.UNEXPECTED_ERROR)
         End Try
     End Sub
-    Public Function GetSalutationDesc(ByVal originalSalutationCode As String) As String
+    Public Function GetSalutationDesc(originalSalutationCode As String) As String
         Dim salutationDesc As String
         Dim list As DataView = LookupListNew.GetSalutationLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -143,7 +143,7 @@ Public Class OlitaUpdateConsumerInfo
         Return salutationDesc
     End Function
 
-    Private Sub PopulateBOFromWebService(ByVal ds As OlitaUpdateConsumerInfoDs)
+    Private Sub PopulateBOFromWebService(ds As OlitaUpdateConsumerInfoDs)
         Dim _CertListDataSet As DataSet
         Dim oCert As Certificate
         Dim isProdSalesDateDirty As Boolean = False
@@ -225,7 +225,7 @@ Public Class OlitaUpdateConsumerInfo
 
     
 
-    Private Sub NewProductSerialNumber(ByVal aProdRow As product_serial_numbersRow)
+    Private Sub NewProductSerialNumber(aProdRow As product_serial_numbersRow)
         Dim newRow As DataRow = Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).NewRow
         With aProdRow
             newRow(DATA_COL_NAME_FULL_CERT_NUMBER) = .full_cert_number
@@ -766,7 +766,7 @@ Public Class OlitaUpdateConsumerInfo
         End Get
     End Property
 
-    Private ReadOnly Property ManufacturerId(ByVal description As String) As Guid
+    Private ReadOnly Property ManufacturerId(description As String) As Guid
         Get
             Dim _manufacturerId As Guid = Guid.Empty
 
@@ -791,7 +791,7 @@ Public Class OlitaUpdateConsumerInfo
         End Get
     End Property
 
-    Private ReadOnly Property MembershipTypeId(ByVal code As String) As Guid
+    Private ReadOnly Property MembershipTypeId(code As String) As Guid
         Get
             Dim _membershipTypeId As Guid = Guid.Empty
             Dim list As DataView = LookupListNew.GetMembershipTypeLanguageLookupList(Authentication.LangId)
@@ -804,7 +804,7 @@ Public Class OlitaUpdateConsumerInfo
             Return _membershipTypeId
         End Get
     End Property
-    Private ReadOnly Property SalutationId(ByVal code As String) As Guid
+    Private ReadOnly Property SalutationId(code As String) As Guid
         Get
             Dim _salutationId As Guid = Guid.Empty
             Dim list As DataView = LookupListNew.GetSalutationLanguageLookupList(Authentication.LangId)
@@ -909,7 +909,7 @@ Public Class OlitaUpdateConsumerInfo
 
     End Function
 
-    Private Sub PopulateCertItemForProducts(ByVal aCertItem As CertItem, ByVal i As Integer)
+    Private Sub PopulateCertItemForProducts(aCertItem As CertItem, i As Integer)
         Dim aRow As DataRow = Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows(i)
 
         aCertItem.SerialNumber = aRow(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER)
@@ -925,7 +925,7 @@ Public Class OlitaUpdateConsumerInfo
     End Sub
 
     ' For Product Serial Number
-    Private Sub BuildCertItemParentAndCertChild(ByVal certListDataSet As DataSet)
+    Private Sub BuildCertItemParentAndCertChild(certListDataSet As DataSet)
         'build the cert_ids arraylist
         Dim certIds As New ArrayList
         Dim i As Integer
@@ -979,7 +979,7 @@ Public Class OlitaUpdateConsumerInfo
     End Sub
 
     ' It does not have Product Serial Number
-    Private Function BuildCertParentAndAddressChildAndSave(ByVal certListDataSet As DataSet) As Boolean
+    Private Function BuildCertParentAndAddressChildAndSave(certListDataSet As DataSet) As Boolean
         Dim certParentObj As Certificate
         ' create the parent cert
         If IsEndorse Then
@@ -1006,8 +1006,8 @@ Public Class OlitaUpdateConsumerInfo
 
     End Function
 
-    Private Sub UpdateEndorsement(ByVal IsProdSerialN As Boolean, ByVal certBO As Certificate, _
-                                                    ByVal certItemBo As CertItem)
+    Private Sub UpdateEndorsement(IsProdSerialN As Boolean, certBO As Certificate, _
+                                                    certItemBo As CertItem)
         Dim certIds As New ArrayList
         Dim certItemTable As DataTable
         Dim firstCertItem As CertItem = certItemBo
@@ -1037,8 +1037,8 @@ Public Class OlitaUpdateConsumerInfo
 
     End Sub
 
-    Private Sub PopulateCertificateWithConsumerInfo(ByVal IsProdSerialN As Boolean, ByVal certBO As Certificate, _
-                                                    ByVal certItemBo As CertItem)
+    Private Sub PopulateCertificateWithConsumerInfo(IsProdSerialN As Boolean, certBO As Certificate, _
+                                                    certItemBo As CertItem)
 
         
         certBO.SalutationId = SalutationId(SalutationCode)
@@ -1113,11 +1113,11 @@ Public Class OlitaUpdateConsumerInfo
     Public NotInheritable Class ValidUserCountry
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_USER_COUNTRY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OlitaUpdateConsumerInfo = CType(objectToValidate, OlitaUpdateConsumerInfo)
 
             Dim valid As Boolean = False
@@ -1148,11 +1148,11 @@ Public Class OlitaUpdateConsumerInfo
     Public NotInheritable Class ValidMailingUserCountry
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_MAILING_COUNTRY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OlitaUpdateConsumerInfo = CType(objectToValidate, OlitaUpdateConsumerInfo)
 
             Dim valid As Boolean = False

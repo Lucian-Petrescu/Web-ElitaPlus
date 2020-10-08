@@ -15,7 +15,7 @@ Imports Assurant.ElitaPlus.Common
 #Region " Constructors "
 
 
-    Public Sub New(ByVal validationErrors() As ValidationError, ByVal businessObjectName As String, _
+    Public Sub New(validationErrors() As ValidationError, businessObjectName As String, _
     Optional ByVal sUniqueId As String = "")
         MyBase.New("Validation Errors Found at BO: " & businessObjectName, ErrorCodes.BO_INVALID_DATA)
         Dim err As Assurant.Common.Validation.ValidationError
@@ -40,16 +40,16 @@ Imports Assurant.ElitaPlus.Common
     End Sub
 
 
-    Public Sub New(ByVal message As String, Optional ByVal innerException As Exception = Nothing)
+    Public Sub New(message As String, Optional ByVal innerException As Exception = Nothing)
         MyBase.New("Validation Errors Found at BO", ErrorCodes.BO_INVALID_DATA, innerException)
     End Sub
 
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 
-    Public Sub New(ByVal message As String, ByVal errorCode As String, Optional ByVal innerException As Exception = Nothing)
+    Public Sub New(message As String, errorCode As String, Optional ByVal innerException As Exception = Nothing)
         MyBase.New(message, errorCode, innerException)
     End Sub
 

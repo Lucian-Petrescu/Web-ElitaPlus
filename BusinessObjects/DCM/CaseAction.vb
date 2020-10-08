@@ -6,7 +6,7 @@ Public Class CaseAction
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CaseAction
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CaseAction
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New CaseActionDAL            
             If _isDSCreator Then
@@ -290,7 +290,7 @@ Public Class CaseAction
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCaseActionList(ByVal CaseId As Guid, ByVal LanguageId As Guid) As CaseActionDV
+    Public Shared Function GetCaseActionList(CaseId As Guid, LanguageId As Guid) As CaseActionDV
         Try
             Dim dal As New CaseActionDAL
 
@@ -300,7 +300,7 @@ Public Class CaseAction
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetClaimActionList(ByVal ClaimId As Guid, ByVal LanguageId As Guid) As CaseActionDV
+    Public Shared Function GetClaimActionList(ClaimId As Guid, LanguageId As Guid) As CaseActionDV
         Try
             Dim dal As New CaseActionDAL
 
@@ -321,7 +321,7 @@ Public Class CaseAction
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

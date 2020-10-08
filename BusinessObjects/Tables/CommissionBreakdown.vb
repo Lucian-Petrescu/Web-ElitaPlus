@@ -6,7 +6,7 @@ Public Class CommissionBreakdown
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CommissionBreakdown
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CommissionBreakdown
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommissionBreakdownDAL
             If _isDSCreator Then
@@ -348,7 +348,7 @@ Public Class CommissionBreakdown
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal oData As Object) As DataView
+    Public Shared Function LoadList(oData As Object) As DataView
         Try
             Dim oCommissionBreakdownData As CommissionBreakdownData = CType(oData, CommissionBreakdownData)
             Dim dal As New CommissionBreakdownDAL
@@ -373,11 +373,11 @@ Public Class CommissionBreakdown
     Public NotInheritable Class ValidMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COMM_BREAK_MARKUP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
             Dim oBreakdown As CommissionBreakdown = CType(objectToValidate, CommissionBreakdown)
             Dim nSumm As Double
@@ -404,7 +404,7 @@ Public Class CommissionBreakdown
 
         End Function
 
-        Private Function GetRestrictMarkup(ByVal oBreakdown As CommissionBreakdown) As Boolean
+        Private Function GetRestrictMarkup(oBreakdown As CommissionBreakdown) As Boolean
             Dim oPeriodData As New CommissionPeriodData
             Dim oPeriod As New CommissionPeriod(oBreakdown.CommissionPeriodId)
 
@@ -417,11 +417,11 @@ Public Class CommissionBreakdown
     Public NotInheritable Class ValidComm
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COMM_BREAK_COMM_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
             Dim oBreakdown As CommissionBreakdown = CType(objectToValidate, CommissionBreakdown)
             Dim nSumm As Double

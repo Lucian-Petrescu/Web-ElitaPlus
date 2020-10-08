@@ -37,7 +37,7 @@
         End Get
     End Property
 
-    Public Sub New(ByVal pRepositoryCode As String, ByVal pStoragePath As String, ByVal pAbsoluteFileName As String, ByVal pStoredHash As String, ByVal pComputedHash As String, ByVal ex As Exception)
+    Public Sub New(pRepositoryCode As String, pStoragePath As String, pAbsoluteFileName As String, pStoredHash As String, pComputedHash As String, ex As Exception)
         MyBase.New(String.Format("Document Download Failed for Repository : {0}, Storage Path : {1}, Absolute Path : {2}, Stored Hash : {3}, Computed Hash : {4}", _
                                  pRepositoryCode, pStoragePath, pAbsoluteFileName, pStoredHash, pComputedHash), "FILE_INTEGRITY_FAILED", ex)
         oRepositoryCode = pRepositoryCode

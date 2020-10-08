@@ -7,7 +7,7 @@
 #Region "Constructors"
 
         'Exiting BO
-        Public Sub New(ByVal id As Guid)
+        Public Sub New(id As Guid)
             MyBase.New()
             Dataset = New DataSet
             Load(id)
@@ -21,20 +21,20 @@
         End Sub
 
         'Exiting BO attaching to a BO family
-        Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+        Public Sub New(id As Guid, familyDS As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load(id)
         End Sub
 
         'New BO attaching to a BO family
-        Public Sub New(ByVal familyDS As DataSet)
+        Public Sub New(familyDS As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load()
         End Sub
 
-        Public Sub New(ByVal row As DataRow)
+        Public Sub New(row As DataRow)
             MyBase.New(False)
             Dataset = row.Table.DataSet
             Me.Row = row
@@ -56,7 +56,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SVCPLReconDAL
             If _isDSCreator Then
@@ -237,7 +237,7 @@
     End Sub
 
 
-    Public Function Add(ByVal svc_price_list_recon_id As Guid, ByVal servicenterId As Guid, ByVal price_list_id As Guid, ByVal status_xcd As String, ByVal Requested_By As String) As Integer
+    Public Function Add(svc_price_list_recon_id As Guid, servicenterId As Guid, price_list_id As Guid, status_xcd As String, Requested_By As String) As Integer
         Dim dal As New SVCPLReconDAL
         Return dal.Add(svc_price_list_recon_id, servicenterId, price_list_id, status_xcd, Requested_By)
     End Function
@@ -251,7 +251,7 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function SVCLoadList(ByVal servicecenterid As Guid) As System.Data.DataView
+    Public Shared Function SVCLoadList(servicecenterid As Guid) As System.Data.DataView
         Try
             Dim dal As New SVCPLReconDAL
             Dim ds As New DataSet
@@ -262,7 +262,7 @@
         End Try
     End Function
 
-    Public Shared Function LoadLatestStatusList(ByVal servicecenterid As Guid) As DataSet
+    Public Shared Function LoadLatestStatusList(servicecenterid As Guid) As DataSet
         Try
             Dim dal As New SVCPLReconDAL
             Dim ds As New DataSet

@@ -87,13 +87,13 @@ Public Class DealerVscReconWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -108,20 +108,20 @@ Public Class DealerVscReconWrk
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -143,7 +143,7 @@ Public Class DealerVscReconWrk
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerVscReconWrkDAL
             If _isDSCreator Then
@@ -1441,7 +1441,7 @@ Public Class DealerVscReconWrk
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal DealerfileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(DealerfileProcessedId As Guid) As Guid
         Get
             Dim oDealerfileProcessed As New DealerFileProcessed(DealerfileProcessedId)
             Dim oDealer As New Dealer(oDealerfileProcessed.DealerId)
@@ -1475,7 +1475,7 @@ Public Class DealerVscReconWrk
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerfileProcessedID As Guid) As DataView
+    Public Shared Function LoadList(dealerfileProcessedID As Guid) As DataView
         Try
             Dim dal As New DealerVscReconWrkDAL
             Dim ds As DataSet
@@ -1491,7 +1491,7 @@ Public Class DealerVscReconWrk
     End Function
 
 
-    Public Shared Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataView
+    Public Shared Function LoadRejectList(dealerfileProcessedID As Guid) As DataView
         Try
             Dim dal As New DealerVscReconWrkDAL
             Dim ds As DataSet
@@ -1514,11 +1514,11 @@ Public Class DealerVscReconWrk
     Public NotInheritable Class ValidateDealer
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.WS_INVALID_DEALER_DOESNOT_EXIST_IN_DEALER_GROUP)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DealerVscReconWrk = CType(objectToValidate, DealerVscReconWrk)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
@@ -1536,11 +1536,11 @@ Public Class DealerVscReconWrk
     Public NotInheritable Class CertNumberValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_INVALID_CERT_NUMBER_FORMAT_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DealerVscReconWrk = CType(objectToValidate, DealerVscReconWrk)
 
             If obj.CertificateNumber Is String.Empty OrElse obj.CertificateNumber Is Nothing Then

@@ -15,8 +15,8 @@
     '    MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EFFECTIVE_EXPIRATION_ERR)
     'End Sub
 
-    Public Sub New(ByVal fieldDisplayName As String, ByVal oErrEffective As String, ByVal oErrMax As String, _
-    ByVal oErrDelete As String)
+    Public Sub New(fieldDisplayName As String, oErrEffective As String, oErrMax As String, _
+    oErrDelete As String)
         MyBase.New(fieldDisplayName, oErrEffective)
         moErrMax = oErrMax
         moErrDelete = oErrDelete
@@ -25,7 +25,7 @@
 #Region "Validate"
 
 #End Region
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal oIntervalObject As Object) _
+    Public Overrides Function IsValid(valueToCheck As Object, oIntervalObject As Object) _
                                                                                                     As Boolean
         Dim bValid As Boolean = True
         Dim oIntervalDate As IValidateIntervalDate = CType(oIntervalObject, IValidateIntervalDate)

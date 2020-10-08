@@ -7,7 +7,7 @@ Public Class DailyObdFileDetailTemp
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class DailyObdFileDetailTemp
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class DailyObdFileDetailTemp
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DailyObdFileDetailTempDAL
             If _isDSCreator Then
@@ -244,8 +244,8 @@ Public Class DailyObdFileDetailTemp
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal FromDate As String, ByVal ToDate As String, ByVal CertNumber As String, ByVal SelectionOnNewEnrollment As String, _
-        ByVal SelectionOnCancel As String, ByVal SelectionOnBilling As String) As ObdFileDetTempSearchDV
+    Public Shared Function getList(FromDate As String, ToDate As String, CertNumber As String, SelectionOnNewEnrollment As String, _
+        SelectionOnCancel As String, SelectionOnBilling As String) As ObdFileDetTempSearchDV
         Try
             Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(DailyObdFileDetailTemp), Nothing, "Search", Nothing)}
             If (CertNumber.Equals(String.Empty) AndAlso FromDate.Equals(String.Empty) AndAlso ToDate.Equals(String.Empty) _
@@ -282,25 +282,25 @@ Public Class DailyObdFileDetailTemp
         Public Const COL_SELECTION_ON_BILLING As String = "Selection_On_Billing"
         Public Const COL_BILLING_DETAIL_ID As String = "Billing_Detail_Id"
 #End Region
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
-        Public Shared ReadOnly Property FileDetailTempid(ByVal row) As Guid
+        Public Shared ReadOnly Property FileDetailTempid(row) As Guid
             Get
                 Return New Guid(CType(row(COL_File_Detail_Temp_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CertNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CertNumber(row As DataRow) As String
             Get
                 Return row(COL_CERT_NUMBER).ToString
             End Get
         End Property
     End Class
 #End Region
-    Public Shared Sub getDetailRecordsList(ByVal CompanyCode As String, ByVal Dealercode As String, ByVal CertNumber As String, _
-                                           ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                            ByVal fromdate As Date, ByVal todate As Date, ByVal callfrom As String, _
+    Public Shared Sub getDetailRecordsList(CompanyCode As String, Dealercode As String, CertNumber As String, _
+                                           selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                            fromdate As Date, todate As Date, callfrom As String, _
                                              Optional ByVal processeddate As Date = Nothing, _
                                             Optional ByVal selectioncertificate As String = "")
         Try
@@ -310,7 +310,7 @@ Public Class DailyObdFileDetailTemp
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
-    Public Shared Function DeleteTempRecord(ByVal file_detail_temp_id As Guid)
+    Public Shared Function DeleteTempRecord(file_detail_temp_id As Guid)
         Try
             Dim dal As New DailyObdFileDetailTempDAL
             dal.deletetemprecord(file_detail_temp_id)

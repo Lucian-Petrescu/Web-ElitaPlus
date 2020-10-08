@@ -9,7 +9,7 @@
         End Get
     End Property
 
-    Public Sub New(ByVal pRepositoryName As String)
+    Public Sub New(pRepositoryName As String)
         MyBase.New(String.Format("Repository {0} not found.", pRepositoryName), "REPOSITORY_NOT_FOUND")
         oRepositoryName = pRepositoryName
     End Sub

@@ -31,7 +31,7 @@ Public Class CommBrkdwnValidation
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CommBrkdwnValidationDs)
+    Public Sub New(ds As CommBrkdwnValidationDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -40,7 +40,7 @@ Public Class CommBrkdwnValidation
         dsMyCommBrkdwnValidation = ds
     End Sub
 
-    Public Sub New(ByVal ds As CommBrkdwnValidationDs, ByVal xml As String)
+    Public Sub New(ds As CommBrkdwnValidationDs, xml As String)
         MyBase.New()
 
         MapDataSet(ds)
@@ -57,7 +57,7 @@ Public Class CommBrkdwnValidation
     Dim _uploadSessionId As String
     Dim _uploadSessionGuidId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As CommBrkdwnValidationDs)
+    Private Sub MapDataSet(ds As CommBrkdwnValidationDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -79,7 +79,7 @@ Public Class CommBrkdwnValidation
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As CommBrkdwnValidationDs)
+    Private Sub Load(ds As CommBrkdwnValidationDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -98,7 +98,7 @@ Public Class CommBrkdwnValidation
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CommBrkdwnValidationDs)
+    Private Sub PopulateBOFromWebService(ds As CommBrkdwnValidationDs)
         Try
             If ds.CommBrkdwnValidation.Count = 0 Then Exit Sub
             With ds.CommBrkdwnValidation.Item(0)
@@ -343,7 +343,7 @@ Public Class CommBrkdwnValidation
 
     End Function
 
-    Public Function CheckDBNull(ByVal obj As Object) As Object
+    Public Function CheckDBNull(obj As Object) As Object
         If DBNull.Value.Equals(obj) Then
             If obj.GetType Is GetType(DecimalType) Then
                 Return 0
@@ -355,7 +355,7 @@ Public Class CommBrkdwnValidation
         End If
     End Function
 
-    Private Sub BuildCommPeriod(ByRef objCommPeriod As CommissionPeriod, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+    Private Sub BuildCommPeriod(ByRef objCommPeriod As CommissionPeriod, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
         If Not objCommEntyBrkdwnUpload Is Nothing Then
             objCommPeriod = New CommissionPeriod
             With objCommPeriod
@@ -386,7 +386,7 @@ Public Class CommBrkdwnValidation
         End If
     End Sub
 
-    Private Sub BuildCommEntity(ByRef objCommEntity As CommissionEntity, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+    Private Sub BuildCommEntity(ByRef objCommEntity As CommissionEntity, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
         If Not objCommEntyBrkdwnUpload Is Nothing Then
             objCommEntity = New CommissionEntity()
             With objCommEntity
@@ -408,7 +408,7 @@ Public Class CommBrkdwnValidation
         End If
     End Sub
 
-    Private Sub BuildAssociateCommissions(ByRef objAssociateCommissions As AssociateCommissions, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+    Private Sub BuildAssociateCommissions(ByRef objAssociateCommissions As AssociateCommissions, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
         If Not objCommEntyBrkdwnUpload Is Nothing Then
             objAssociateCommissions = New AssociateCommissions
             With objAssociateCommissions
@@ -418,7 +418,7 @@ Public Class CommBrkdwnValidation
         End If
     End Sub
 
-    Private Sub BuildBankInfo(ByRef objBankInfo As BankInfo, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+    Private Sub BuildBankInfo(ByRef objBankInfo As BankInfo, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
         If Not objCommEntyBrkdwnUpload Is Nothing Then
             objBankInfo = New BankInfo()
             With objBankInfo

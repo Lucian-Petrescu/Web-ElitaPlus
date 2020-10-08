@@ -8,7 +8,7 @@ Public Class ServiceOrder
 
 #Region "Constructors"
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -22,26 +22,26 @@ Public Class ServiceOrder
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Public Sub New(ByVal claimBO As ClaimBase, Optional ByVal newServiceOrder As Boolean = False)
+    Public Sub New(claimBO As ClaimBase, Optional ByVal newServiceOrder As Boolean = False)
         ' MyBase.New(False)
         '   Me.Dataset = claimBO.Dataset
         MyBase.New()
@@ -63,7 +63,7 @@ Public Class ServiceOrder
     ' it calls the service order new(claim) again. To make sure the service order(s) created
     ' earlier doesnt get saved, we mark them as deleted. Thus, when the claim BO commits/saves,
     ' service order(s) marked for deletion will be deleted and the active one will be saved.
-    Protected Sub PurgeServiceOrder(ByVal claimBO As ClaimBase)
+    Protected Sub PurgeServiceOrder(claimBO As ClaimBase)
         Try
             Dim dal As New ServiceOrderDAL
             If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
@@ -101,7 +101,7 @@ Public Class ServiceOrder
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceOrderDAL
             If _isDSCreator Then
@@ -125,7 +125,7 @@ Public Class ServiceOrder
         End Try
     End Sub
 
-    Protected Sub Load(ByVal claimBO As ClaimBase)
+    Protected Sub Load(claimBO As ClaimBase)
         Try
             Dim dal As New ServiceOrderDAL
             If _isDSCreator Then
@@ -282,7 +282,7 @@ Public Class ServiceOrder
         End Try
     End Sub
 
-    Public Function AddExtendedClaimStatus(ByVal claimStatusId As Guid) As ClaimStatus
+    Public Function AddExtendedClaimStatus(claimStatusId As Guid) As ClaimStatus
 
         If Not claimStatusId.Equals(Guid.Empty) Then
             _claimStatusBO = New ClaimStatus(claimStatusId, Dataset)
@@ -325,7 +325,7 @@ Public Class ServiceOrder
     ''' <param name="pCompanyCode">Company Code of Claim</param>
     ''' <param name="pMethodOfRepair">Method of Repair of Claim</param>
     ''' <returns>HTML Service Order</returns>
-    Private Shared Function GetReportHtml(ByVal pServiceOrderXml As String, ByVal pActivityCode As String, ByVal pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
+    Private Shared Function GetReportHtml(pServiceOrderXml As String, pActivityCode As String, pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
 
         Dim xsltString As String = GetReportXslt(pActivityCode, pCompanyCode, pMethodOfRepair)
 
@@ -364,7 +364,7 @@ Public Class ServiceOrder
     ''' <remarks>When Resource does not exists for combination of Activity Code, Company Code and Repair Code then Report is returned based on Activity Code and Company Code</remarks>
     ''' <returns>XSLT String read from resource</returns>
     ''' <exception cref="ElitaPlusException">When resource is not found</exception>
-    Private Shared Function GetReportXslt(ByVal pActivityCode As String, ByVal pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
+    Private Shared Function GetReportXslt(pActivityCode As String, pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
 
         Dim reportType As String
         Select Case pActivityCode
@@ -414,23 +414,23 @@ Public Class ServiceOrder
 #End Region
 
 #Region "Shared Methods"
-    Public Shared Function GetLatestServiceOrderID(ByVal claimID As Guid, Optional claimAuthID As Guid = Nothing) As Guid
+    Public Shared Function GetLatestServiceOrderID(claimID As Guid, Optional claimAuthID As Guid = Nothing) As Guid
         Dim dal As ServiceOrderDAL = New ServiceOrderDAL
         Return dal.GetLatestID(claimID, claimAuthID)
     End Function
-    Public Shared Function GetSericeOrderEmailContent(ByVal companyid As Guid) As String
+    Public Shared Function GetSericeOrderEmailContent(companyid As Guid) As String
         Dim dal As ServiceOrderDAL = New ServiceOrderDAL
         Return dal.GetSericeOrderEmailContent(companyid)
     End Function
 
 
     '08/24/2006 - ALR - Added method to retrieve the serviceorderimage from the DB  
-    Public Shared Function GetServiceOrderImage(ByVal ServiceOrderImageId As Guid) As Byte()
+    Public Shared Function GetServiceOrderImage(ServiceOrderImageId As Guid) As Byte()
         Dim dal As New ServiceOrderDAL
         Return dal.LoadImage(ServiceOrderImageId)
     End Function
 
-    Public Shared Function GenerateServiceOrder(ByVal claimBO As ClaimBase, Optional tr As IDbTransaction = Nothing, Optional claimAuthId As Guid = Nothing) As ServiceOrder
+    Public Shared Function GenerateServiceOrder(claimBO As ClaimBase, Optional tr As IDbTransaction = Nothing, Optional claimAuthId As Guid = Nothing) As ServiceOrder
 
         Try
 

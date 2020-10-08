@@ -18,7 +18,7 @@ Public Class WorkQueueItemStatusReason
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal pWorkQueue As WorkQueue, ByVal pWorkQueueItemStatusReason As WrkQueue.WorkQueueItemStatusReason)
+    Public Sub New(pWorkQueue As WorkQueue, pWorkQueueItemStatusReason As WrkQueue.WorkQueueItemStatusReason)
         MyBase.New()
         _isNew = False
         _isDeleted = False
@@ -28,7 +28,7 @@ Public Class WorkQueueItemStatusReason
         AddHandler _workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
     End Sub
 
-    Public Sub New(ByVal pWorkQueue As WorkQueue)
+    Public Sub New(pWorkQueue As WorkQueue)
         MyBase.New()
         Dataset = pWorkQueue.Dataset
         _isNew = True
@@ -65,7 +65,7 @@ Public Class WorkQueueItemStatusReason
 #End Region
 
 #Region "Event Handlers"
-    Private Sub WorkQueueItemStatusReason_PropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+    Private Sub WorkQueueItemStatusReason_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
         If (e.PropertyName = "Reason") Then
             UpdateDescription()
         End If
@@ -162,11 +162,11 @@ End Namespace
 <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
 Public NotInheritable Class ValidateDuplicateReasons
     Inherits ValidBaseAttribute
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_DUPLICATE_STATUS_REASON)
     End Sub
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As WorkQueueItemStatusReason = CType(objectToValidate, WorkQueueItemStatusReason)
         Dim cnt As Integer
         cnt = (From wqisr As WorkQueueItemStatusReason In obj.WorkQueue.StatusReasons _

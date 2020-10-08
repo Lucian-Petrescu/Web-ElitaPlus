@@ -7,7 +7,7 @@ Public Class Equipment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,14 +21,14 @@ Public Class Equipment
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -55,7 +55,7 @@ Public Class Equipment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EquipmentDAL
             If _isDSCreator Then
@@ -407,7 +407,7 @@ Public Class Equipment
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As Equipment)
+    Public Sub Copy(original As Equipment)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Equipment")
         End If
@@ -439,7 +439,7 @@ Public Class Equipment
         Next
     End Sub
 
-    Public Shared Function FindEquipment(ByVal dealer As String, ByVal manufacturer As String, ByVal model As String, ByVal lookupDate As Date) As Guid
+    Public Shared Function FindEquipment(dealer As String, manufacturer As String, model As String, lookupDate As Date) As Guid
         Try
             Dim dal As New EquipmentDAL
             Return dal.FindEquipment(dealer, manufacturer, model, lookupDate)
@@ -448,7 +448,7 @@ Public Class Equipment
         End Try
     End Function
 
-    Public Shared Function GetEquipmentClassIdByEquipmentId(ByVal equipmentId As Guid) As Guid
+    Public Shared Function GetEquipmentClassIdByEquipmentId(equipmentId As Guid) As Guid
         Try
             Dim equipmentDAL As New EquipmentDAL
             Return equipmentDAL.GetEquipmentClassIdByEquipmentId(equipmentId)
@@ -460,9 +460,9 @@ Public Class Equipment
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal description As String, ByVal model As String, _
-                                        ByVal manufacturerName As String, ByVal equipmentClassName As String, _
-                                        ByVal equipmentTypeName As String, Optional ByVal sku As String = "", Optional ByVal EquipmentList_Code As String = "") As Equipment.EquipmentSearchDV
+    Public Shared Function GetList(description As String, model As String, _
+                                        manufacturerName As String, equipmentClassName As String, _
+                                        equipmentTypeName As String, Optional ByVal sku As String = "", Optional ByVal EquipmentList_Code As String = "") As Equipment.EquipmentSearchDV
         Try
             Dim dal As New EquipmentDAL
             Dim oCompanyGroupIds As ArrayList
@@ -520,65 +520,65 @@ Public Class Equipment
         
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property EquipmentId(ByVal row) As Guid
+        Public Shared ReadOnly Property EquipmentId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EQUIPMENT_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Model(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Model(row As DataRow) As String
             Get
                 Return row(COL_NAME_MODEL).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Manufacturer(ByVal row) As Guid
+        Public Shared ReadOnly Property Manufacturer(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_MANUFACTURER), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property EquipmentClass(ByVal row) As Guid
+        Public Shared ReadOnly Property EquipmentClass(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EQUIPMENT_CLASS), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property EquipmentType(ByVal row) As Guid
+        Public Shared ReadOnly Property EquipmentType(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EQUIPMENT_TYPE), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property sku(ByVal row) As String
+        Public Shared ReadOnly Property sku(row) As String
             Get
                 Return CType(row(COL_NAME_SKU), String)
             End Get
         End Property
 
-        Public Shared ReadOnly Property color(ByVal row) As String
+        Public Shared ReadOnly Property color(row) As String
             Get
                 Return CType(row(COL_NAME_COLOR_XCD_ID), String)
             End Get
         End Property
 
-        Public Shared ReadOnly Property memory(ByVal row) As String
+        Public Shared ReadOnly Property memory(row) As String
             Get
                 Return CType(row(COL_NAME_MEMORY_XCD_ID), String)
             End Get
         End Property
 
-        Public Shared ReadOnly Property carrier(ByVal row) As String
+        Public Shared ReadOnly Property carrier(row) As String
             Get
                 Return CType(row(COL_NAME_CARRIER_XCD_ID), String)
             End Get
@@ -586,7 +586,7 @@ Public Class Equipment
 
     End Class
 
-    Public Shared Function LoadEquipmentListForWS(ByVal EquipmentListCode As String, ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function LoadEquipmentListForWS(EquipmentListCode As String, CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New EquipmentDAL
             Return dal.LoadEquipmentListForWS(EquipmentListCode, CompanyGroupId)
@@ -632,7 +632,7 @@ Public Class Equipment
         Public Const COL_NAME_PATH As String = EquipmentImageDAL.COL_NAME_PATH
         Public Const COL_NAME_IMAGE_TYPE As String = EquipmentImageDAL.COL_NAME_IMAGE_TYPE
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -647,7 +647,7 @@ Public Class Equipment
         End Function
     End Class
 
-    Public Function GetImageChild(ByVal childId As Guid) As EquipmentImage
+    Public Function GetImageChild(childId As Guid) As EquipmentImage
         Return CType(EquipmentImageChildren.GetChild(childId), EquipmentImage)
     End Function
 
@@ -683,7 +683,7 @@ Public Class Equipment
         Public Const COL_NAME_EQUIPMENT_COMMENT_ID As String = EquipmentCommentDAL.COL_NAME_EQUIPMENT_COMMENT_ID
         Public Const COL_NAME_COMMENT As String = EquipmentCommentDAL.COL_NAME_COMMENT
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -695,7 +695,7 @@ Public Class Equipment
         End Function
     End Class
 
-    Public Function GetCommentChild(ByVal childId As Guid) As EquipmentComment
+    Public Function GetCommentChild(childId As Guid) As EquipmentComment
         Return CType(EquipmentCommentChildren.GetChild(childId), EquipmentComment)
     End Function
 
@@ -752,7 +752,7 @@ Public Class Equipment
         Public Const COL_NAME_IS_COVERED As String = RelatedEquipmentDAL.COL_NAME_IS_COVERED
         Public Const COL_NAME_CHILD_EQUIPMENT_ID As String = RelatedEquipmentDAL.COL_NAME_CHILD_EQUIPMENT_ID
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -770,7 +770,7 @@ Public Class Equipment
         End Function
     End Class
 
-    Public Function GetRelatedEquipmentChild(ByVal childId As Guid) As RelatedEquipment
+    Public Function GetRelatedEquipmentChild(childId As Guid) As RelatedEquipment
         Return CType(RelatedEquipmentChildren.GetChild(childId), RelatedEquipment)
     End Function
 
@@ -805,7 +805,7 @@ Public Class Equipment
         Return New MfgCoverage.MfgCoverageSearchDV(Dataset.Tables(MfgCoverageDAL.TABLE_NAME))
     End Function
 
-    Public Function ExecuteEquipmentListFilter(ByVal makeid As Guid, ByVal equipmentClass As Guid, ByVal equipmentType As Guid, ByVal Model As String, ByVal Description As String, ByVal parentEquipmenttype As Guid) As DataView
+    Public Function ExecuteEquipmentListFilter(makeid As Guid, equipmentClass As Guid, equipmentType As Guid, Model As String, Description As String, parentEquipmenttype As Guid) As DataView
         Dim eqListDal As New EquipmentDAL
 
         If String.IsNullOrEmpty(Description) Then Description &= DALBase.ASTERISK
@@ -818,8 +818,8 @@ Public Class Equipment
     End Function
 
 
-    Public Shared Function GetEquipmentIdByEquipmentList(ByVal equipmentListCode As String, _
-                                                         ByVal effectiveDate As DateTime, ByVal manufacturer_id As Guid, ByVal model As String) As Guid
+    Public Shared Function GetEquipmentIdByEquipmentList(equipmentListCode As String, _
+                                                         effectiveDate As DateTime, manufacturer_id As Guid, model As String) As Guid
         Dim dal As New EquipmentDAL
         Return dal.GetEquipmentIdByEquipmentList(equipmentListCode, effectiveDate, manufacturer_id, model)
 
@@ -832,12 +832,12 @@ Public Class Equipment
     Public NotInheritable Class ValueMandatoryIfNotMasterModel
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Equipment = CType(objectToValidate, Equipment)
             If (obj.IsMasterEquipment = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")) Then
                 Dim vma As ValueMandatoryAttribute = New ValueMandatoryAttribute(_fieldDisplayName)
@@ -852,11 +852,11 @@ Public Class Equipment
     Public NotInheritable Class CheckDuplicate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM003)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Equipment = CType(objectToValidate, Equipment)
             If (obj.CheckDuplicateMakeModel()) Then
                 Return False

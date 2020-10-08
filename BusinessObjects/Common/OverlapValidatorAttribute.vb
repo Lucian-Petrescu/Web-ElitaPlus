@@ -11,7 +11,7 @@ Public NotInheritable Class OverlapValidatorAttribute
     Private _dataTablePropertyName As String
     Private _dataRowPropertyName As String
 
-    Public Sub New(ByVal fieldDisplayName As String, Optional ByVal message As String = Assurant.ElitaPlus.Common.ErrorCodes.OVERLAPPING_SCHEDULE_ERR)
+    Public Sub New(fieldDisplayName As String, Optional ByVal message As String = Assurant.ElitaPlus.Common.ErrorCodes.OVERLAPPING_SCHEDULE_ERR)
         MyBase.New(fieldDisplayName, message)
 
     End Sub
@@ -62,7 +62,7 @@ Public NotInheritable Class OverlapValidatorAttribute
     End Property
 
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
         Dim oDataTable As DataTable
         Dim oLhsRow As DataRow
         Dim expression As StringBuilder

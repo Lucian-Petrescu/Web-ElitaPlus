@@ -27,7 +27,7 @@ Public Class OlitaSerialNumberUpdate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As OlitaSerialNumberUpdateDs)
+    Public Sub New(ds As OlitaSerialNumberUpdateDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -42,7 +42,7 @@ Public Class OlitaSerialNumberUpdate
     Private _regionId As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As OlitaSerialNumberUpdateDs)
+    Private Sub MapDataSet(ds As OlitaSerialNumberUpdateDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -64,7 +64,7 @@ Public Class OlitaSerialNumberUpdate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As OlitaSerialNumberUpdateDs)
+    Private Sub Load(ds As OlitaSerialNumberUpdateDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -83,7 +83,7 @@ Public Class OlitaSerialNumberUpdate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As OlitaSerialNumberUpdateDs)
+    Private Sub PopulateBOFromWebService(ds As OlitaSerialNumberUpdateDs)
         Try
             If ds.OlitaSerialNumberUpdate.Count = 0 Then Exit Sub
             With ds.OlitaSerialNumberUpdate.Item(0)
@@ -213,7 +213,7 @@ Public Class OlitaSerialNumberUpdate
         End Try
 
     End Function
-    Private Sub BuildCertItemAndSave(ByVal certID As Guid)
+    Private Sub BuildCertItemAndSave(certID As Guid)
         'Get the cert_item
         Dim certItemDV As CertItem.CertItemSearchDV = CertItem.GetItems(certID)
         Dim certItemBO As CertItem = New CertItem(New Guid(CType(certItemDV.Table.Rows(0).Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())))

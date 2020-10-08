@@ -16,7 +16,7 @@ Public Class ScheduleDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -37,7 +37,7 @@ Public Class ScheduleDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -51,20 +51,20 @@ Public Class ScheduleDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -86,7 +86,7 @@ Public Class ScheduleDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ScheduleDetailDAL
             If _isDSCreator Then
@@ -110,13 +110,13 @@ Public Class ScheduleDetail
         End Try
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal SecondaryKeyName As String)
+    Public Sub New(id As Guid, familyDS As DataSet, SecondaryKeyName As String)
         MyBase.New(False)
         Dataset = familyDS
         Load(id, SecondaryKeyName)
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, ByVal SecondaryKeyName As String)
+    Protected Sub Load(id As Guid, SecondaryKeyName As String)
         Try
             Dim dal As New ScheduleDetailDAL
             If _isDSCreator Then
@@ -140,7 +140,7 @@ Public Class ScheduleDetail
         End Try
     End Sub
 
-    Public Shared Function LoadScheduleDetail(ByVal ScheduleId As Guid) As DataView
+    Public Shared Function LoadScheduleDetail(ScheduleId As Guid) As DataView
         Try
             Dim dal As New ScheduleDetailDAL
             Dim ds As DataSet
@@ -154,7 +154,7 @@ Public Class ScheduleDetail
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As ScheduleDetail) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As ScheduleDetail) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -303,15 +303,15 @@ Public Class ScheduleDetail
     Public Class ScheduleDetailList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Schedule)
+        Public Sub New(parent As Schedule)
             MyBase.New(LoadTable(parent), GetType(ScheduleDetail), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ScheduleDetail).ScheduleId.Equals(CType(Parent, Schedule).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Schedule) As DataTable
+        Private Shared Function LoadTable(parent As Schedule) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ScheduleDetailList)) Then
                     Dim dal As New ScheduleDetailDAL

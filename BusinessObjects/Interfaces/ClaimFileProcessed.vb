@@ -29,7 +29,7 @@ Public Class ClaimFileProcessed
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -43,14 +43,14 @@ Public Class ClaimFileProcessed
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -72,7 +72,7 @@ Public Class ClaimFileProcessed
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimFileProcessedDAL
             If _isDSCreator Then
@@ -318,7 +318,7 @@ Public Class ClaimFileProcessed
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal oData As Object) As DataView
+    Public Shared Function LoadList(oData As Object) As DataView
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -339,7 +339,7 @@ Public Class ClaimFileProcessed
 
     End Function
 
-    Public Shared Function LoadListForADealer(ByVal oData As Object, ByVal dealerCode As String) As DataView
+    Public Shared Function LoadListForADealer(oData As Object, dealerCode As String) As DataView
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -367,8 +367,8 @@ Public Class ClaimFileProcessed
         Public dealerName As String
     End Structure
 
-    Public Shared Function GetDealerLayout(ByVal dealerID As Guid, _
-    ByVal oInterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode) As DealerInfo
+    Public Shared Function GetDealerLayout(dealerID As Guid, _
+    oInterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode) As DealerInfo
         Dim retDealerInfo As DealerInfo
         Dim sLayout As String
         Dim oContract As Contract
@@ -410,7 +410,7 @@ Public Class ClaimFileProcessed
 
 #Region "StoreProcedures Control"
 
-    Public Shared Sub ValidateFile(ByVal oData As Object)
+    Public Shared Sub ValidateFile(oData As Object)
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -424,7 +424,7 @@ Public Class ClaimFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub ProcessFileRecords(ByVal oData As Object)
+    Public Shared Sub ProcessFileRecords(oData As Object)
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -437,7 +437,7 @@ Public Class ClaimFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub DeleteFile(ByVal oData As Object)
+    Public Shared Sub DeleteFile(oData As Object)
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -453,7 +453,7 @@ Public Class ClaimFileProcessed
 #End Region
 
 #Region "Validation"
-    Public Shared Function IsFileProcessed(ByVal oData As Object) As Boolean
+    Public Shared Function IsFileProcessed(oData As Object) As Boolean
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -465,7 +465,7 @@ Public Class ClaimFileProcessed
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Sub ValidateFileName(ByVal fileLength As Integer)
+    Public Shared Sub ValidateFileName(fileLength As Integer)
         If fileLength = 0 Then
             Dim errors() As ValidationError = {New ValidationError(DEALERLOADFORM_FORM001, GetType(ClaimFileProcessed), Nothing, Nothing, Nothing)}
             Throw New BOValidationException(errors, GetType(ClaimFileProcessed).FullName)

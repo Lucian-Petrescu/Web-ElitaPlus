@@ -7,7 +7,7 @@ Public Class Coverage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class Coverage
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class Coverage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageDAL
             If _isDSCreator Then
@@ -849,9 +849,9 @@ Public Class Coverage
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal dealerId As Guid, ByVal productCodeId As Guid, ByVal itemId As Guid,
-                                   ByVal coverageTypeId As Guid, ByVal certificateDuration As Assurant.Common.Types.LongType,
-                                   ByVal coverageDuration As Assurant.Common.Types.LongType) As DataView
+    Public Shared Function GetList(dealerId As Guid, productCodeId As Guid, itemId As Guid,
+                                   coverageTypeId As Guid, certificateDuration As Assurant.Common.Types.LongType,
+                                   coverageDuration As Assurant.Common.Types.LongType) As DataView
         Try
             Dim dal As New CoverageDAL
             Return New DataView(dal.LoadList(ElitaPlusIdentity.Current.ActiveUser.Companies,
@@ -952,7 +952,7 @@ Public Class Coverage
 
     End Function
 
-    Public Shared Function GetCurrencyOfCoverage(ByVal coverageId As Guid) As DataView
+    Public Shared Function GetCurrencyOfCoverage(coverageId As Guid) As DataView
         Try
             Dim dal As New CoverageDAL
             Return New DataView(dal.GetCurrencyOfCoverage(coverageId).Tables(0))
@@ -960,7 +960,7 @@ Public Class Coverage
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetProductLiabilityLimitBase(ByVal productId As Guid) As Guid
+    Public Shared Function GetProductLiabilityLimitBase(productId As Guid) As Guid
         Dim ProductLiabilityLimitBaseId As Guid
         Try
             Dim dal As New CoverageDAL
@@ -976,7 +976,7 @@ Public Class Coverage
         End Try
     End Function
 
-    Public Shared Function GetCoverageDeductable(ByVal dealerId As Guid, ByVal effectiveDate As String, ByVal languageId As Guid) As DataView
+    Public Shared Function GetCoverageDeductable(dealerId As Guid, effectiveDate As String, languageId As Guid) As DataView
         Try
             Dim dal As New CoverageDAL
             Return New DataView(dal.GetCoverageDeductible(dealerId, effectiveDate, languageId).Tables(0))
@@ -986,7 +986,7 @@ Public Class Coverage
     End Function
 
     'Used by Olita Web Service 
-    Public Shared Function getDealerCoveragesInfo(ByRef ds As DataSet, ByVal dealerId As Guid, ByVal WarrSalesDate As Date) As DataSet
+    Public Shared Function getDealerCoveragesInfo(ByRef ds As DataSet, dealerId As Guid, WarrSalesDate As Date) As DataSet
         Try
             Dim dal As New CoverageDAL
             Return dal.LoadDealerCoveragesInfo(ds, dealerId, WarrSalesDate)
@@ -996,7 +996,7 @@ Public Class Coverage
         End Try
     End Function
 
-    Public Shared Function GetAssociatedCertificateCount(ByVal coverageId As Guid) As UInt64
+    Public Shared Function GetAssociatedCertificateCount(coverageId As Guid) As UInt64
         Try
             Dim dal As New CoverageDAL
             Dim dsCoverageCertificateCount As DataSet = dal.GetAssociatedCertificateCount(coverageId)
@@ -1021,11 +1021,11 @@ Public Class Coverage
     Public NotInheritable Class ValidCertificateDuration
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.COVERAGEBO_014)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
 
             Dim oContract As Contract = New Contract
@@ -1058,11 +1058,11 @@ Public Class Coverage
     Public NotInheritable Class ValidCoverageDates
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.COVERAGEBO_015)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             If Not (obj.Effective Is Nothing Or obj.Expiration Is Nothing) Then
                 If obj.Effective.Value > obj.Expiration.Value Then
@@ -1077,11 +1077,11 @@ Public Class Coverage
     Public NotInheritable Class ValidCoveragePeriod
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.COVERAGEBO_016)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             Dim bValid As Boolean = True
@@ -1141,11 +1141,11 @@ Public Class Coverage
     Public NotInheritable Class ValidContract
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.COVERAGEBO_019)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bValid As Boolean = True
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             Try
@@ -1192,11 +1192,11 @@ Public Class Coverage
     Public NotInheritable Class ValidCertDurationForPerodicRenewable
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CERT_DURATION_FOR_PERODIC_RENEW)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             Dim SinglePremiumRenewable As String = "4"
 
@@ -1237,11 +1237,11 @@ Public Class Coverage
     Public NotInheritable Class ValidCoverageDurationForPerodicRenewable
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COVERAGE_DURATION_FOR_PERODIC_RENEW)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             Dim SinglePremiumRenewable As String = "4"
 
@@ -1281,11 +1281,11 @@ Public Class Coverage
     Public NotInheritable Class ValidOffsetForPerodicRenewable
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_OFFSET_FOR_PERODIC_RENEW)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
 
             Try
@@ -1320,11 +1320,11 @@ Public Class Coverage
     Public NotInheritable Class ValidOffsetDaysNotForPerodicRenewable
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "OFFSET_DAYS_INVALID_FOR_PERODIC_RENEW")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
 
             Try
@@ -1356,11 +1356,11 @@ Public Class Coverage
     Public NotInheritable Class ValidateAgentCodeMandetory
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             'Get Dealer Company specific flag settings
             If ((Not obj Is Nothing) And (Not obj.DealerId = Guid.Empty)) Then
@@ -1385,11 +1385,11 @@ Public Class Coverage
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidateCoverageClaimLimit
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COVERAGE_CLAIM_LIMIT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
 
             REM Only allow to have not empty value when on product code record,
@@ -1451,7 +1451,7 @@ Public Class Coverage
         Return productDepreciationScd
     End Function
 
-    Public Sub AddCoverageDepreciationScdChild(ByVal depreciationScheduleId As Guid)
+    Public Sub AddCoverageDepreciationScdChild(depreciationScheduleId As Guid)
 
         Dim productDepreciationScd As DepreciationScdRelation = GetCoverageDepreciationScdChild()
 

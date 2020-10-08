@@ -4,7 +4,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,7 +53,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ConfigQuestionSetDAL
             If _isDSCreator Then
@@ -285,7 +285,7 @@
         End Try
     End Sub
 
-    Public Sub DeleteConfiguration(ByVal configQuestionSetId As Guid)
+    Public Sub DeleteConfiguration(configQuestionSetId As Guid)
         Try
             Dim dal As New ConfigQuestionSetDAL
             dal.DeleteConfiguration(configQuestionSetId)
@@ -324,13 +324,13 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ConfigQuestionSetSearchDV, ByVal NewBO As ConfigQuestionSet)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ConfigQuestionSetSearchDV, NewBO As ConfigQuestionSet)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -379,9 +379,9 @@
         End If
     End Sub
 
-    Public Shared Function getList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                                   ByVal ProductCode As String, ByVal RiskTypeID As Guid, ByVal CoverageTypeID As Guid,
-                                   ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As ConfigQuestionSetSearchDV
+    Public Shared Function getList(CompGrpID As Guid, CompanyID As Guid, DealerGrpID As Guid, DealerID As Guid,
+                                   ProductCode As String, RiskTypeID As Guid, CoverageTypeID As Guid,
+                                   strPurposeXCD As String, strQuestionSetCode As String) As ConfigQuestionSetSearchDV
         Try
             Dim dal As New ConfigQuestionSetDAL
             Return New ConfigQuestionSetSearchDV(dal.LoadList(CompGrpID:=CompGrpID, CompanyID:=CompanyID, DealerGrpID:=DealerGrpID, DealerID:=DealerID,
@@ -398,11 +398,11 @@
     Public NotInheritable Class ValidProductCodeDealer
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "Either Company Group / Company / Dealer Group / Dealer / Product Code / Coverage Type / Risk Type Or Device Type Is Required")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
             If (Guid.Empty = obj.CompanyGroupId) And (Guid.Empty = obj.CompanyId) And

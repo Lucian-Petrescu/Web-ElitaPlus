@@ -18,7 +18,7 @@ Public Class GetDealerProductsInfo
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetDealerProductsInfoDs)
+    Public Sub New(ds As GetDealerProductsInfoDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -56,12 +56,12 @@ Public Class GetDealerProductsInfo
 
     'End Sub
 
-    Private Function RemoveExcessData(ByVal xmlStringOutput As String) As String
+    Private Function RemoveExcessData(xmlStringOutput As String) As String
         xmlStringOutput = Regex.Replace(xmlStringOutput, "<PRODUCT_CODE_ID>[^>]+</PRODUCT_CODE_ID>|<ITEM_ID>[^>]+</ITEM_ID>|<COVERAGE_ID>[^>]+</COVERAGE_ID>|<COVERAGE_RATE_ID>[^>]+</COVERAGE_RATE_ID>", String.Empty)
         Return xmlStringOutput
     End Function
 
-    Private Sub MapDataSet(ByVal ds As GetDealerProductsInfoDs)
+    Private Sub MapDataSet(ds As GetDealerProductsInfoDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -83,7 +83,7 @@ Public Class GetDealerProductsInfo
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetDealerProductsInfoDs)
+    Private Sub Load(ds As GetDealerProductsInfoDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -102,7 +102,7 @@ Public Class GetDealerProductsInfo
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetDealerProductsInfoDs)
+    Private Sub PopulateBOFromWebService(ds As GetDealerProductsInfoDs)
         Try
             If ds.GetDealerProductsInfo.Count = 0 Then Exit Sub
             With ds.GetDealerProductsInfo.Item(0)

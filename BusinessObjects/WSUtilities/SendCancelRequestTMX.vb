@@ -13,7 +13,7 @@ Public Class SendCancelRequestTMX
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As SendCancelRequestTMXDs)
+    Public Sub New(ds As SendCancelRequestTMXDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -32,7 +32,7 @@ Public Class SendCancelRequestTMX
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub MapDataSet(ByVal ds As SendCancelRequestTMXDs)
+    Private Sub MapDataSet(ds As SendCancelRequestTMXDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -50,7 +50,7 @@ Public Class SendCancelRequestTMX
 
     End Sub
 
-    Private Sub Load(ByVal ds As SendCancelRequestTMXDs)
+    Private Sub Load(ds As SendCancelRequestTMXDs)
         Try
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
             Row = newRow
@@ -67,7 +67,7 @@ Public Class SendCancelRequestTMX
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As SendCancelRequestTMXDs)
+    Private Sub PopulateBOFromWebService(ds As SendCancelRequestTMXDs)
         Try
             If ds.SendCancelRequestTMX.Count = 0 Then Exit Sub
 

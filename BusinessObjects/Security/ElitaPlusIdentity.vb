@@ -68,7 +68,7 @@ Public Class ElitaPlusIdentity
 
 #Region " Constructors "
 
-    Public Sub New(ByVal authenticationType As String)
+    Public Sub New(authenticationType As String)
 
         MyBase.New()
     End Sub
@@ -117,11 +117,11 @@ Public Class ElitaPlusIdentity
     '    End Set
     'End Property
 
-    Public Shared Function GetEmailAddresses(ByVal pUserIds As String()) As String()
+    Public Shared Function GetEmailAddresses(pUserIds As String()) As String()
         Return pUserIds.Select(Of String)(Function(lan) PopulateLDAPProperties(lan)).ToArray()
     End Function
 
-    Private Shared Function PopulateLDAPProperties(ByVal pUserId As String) As String
+    Private Shared Function PopulateLDAPProperties(pUserId As String) As String
         Dim ldapProperties As Dictionary(Of String, Object) = Authentication.GetLdapFields(pUserId, New String() {"mail"})
 
         If (ldapProperties.ContainsKey("mail")) Then
@@ -166,11 +166,11 @@ Public Class ElitaPlusIdentity
         End Get
     End Property
 
-    Public Function isInRole(ByVal roleCode As String) As Boolean
+    Public Function isInRole(roleCode As String) As Boolean
         Return _user.isInRole(roleCode)
     End Function
 
-    Public Sub CreateUser(ByVal userNetworkID As String)
+    Public Sub CreateUser(userNetworkID As String)
         _user = New User(userNetworkID)
     End Sub
 

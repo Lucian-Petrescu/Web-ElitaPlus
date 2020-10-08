@@ -24,8 +24,8 @@ Public Class AcselXQuoteCancelCert
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As AcselXQuoteCancelCertDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As AcselXQuoteCancelCertDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = xml
         FuncToProc = functionToProcess

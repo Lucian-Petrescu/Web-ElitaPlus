@@ -4,7 +4,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,7 +53,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ListPriceDAL
             If _isDSCreator Then
@@ -85,9 +85,9 @@
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal dealerId As Guid, ByVal strManufacturerName As String, _
-                             ByVal strModelNumber As String, ByVal strSku As String, ByVal fromDate As String, _
-                             ByVal toDate As String, ByVal amountTypeId As Guid) As ListPriceSearchDV
+    Public Shared Function GetList(dealerId As Guid, strManufacturerName As String, _
+                             strModelNumber As String, strSku As String, fromDate As String, _
+                             toDate As String, amountTypeId As Guid) As ListPriceSearchDV
         Try
             Dim dal As New ListPriceDAL
             Return New ListPriceSearchDV(dal.LoadListAll(ElitaPlusIdentity.Current.ActiveUser.LanguageId, _
@@ -100,8 +100,8 @@
 #End Region
 
 #Region "Public Methods"
-    Public Shared Function GetSKU(ByVal dealerId As Guid, ByVal manufacturerName As String, _
-                             ByVal modelNumber As String) As String
+    Public Shared Function GetSKU(dealerId As Guid, manufacturerName As String, _
+                             modelNumber As String) As String
         Try
             Dim dal As New ListPriceDAL
             Dim dv As ListPriceSearchDV = New ListPriceSearchDV(dal.LoadPriceList(dealerId, manufacturerName, modelNumber, String.Empty, _
@@ -122,7 +122,7 @@
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function IsSKUValid(ByVal dealerId As Guid, ByVal strSKU As String, ByVal dtEffective As Date, ByRef dListPrice As DecimalType) As Boolean
+    Public Shared Function IsSKUValid(dealerId As Guid, strSKU As String, dtEffective As Date, ByRef dListPrice As DecimalType) As Boolean
         Dim blnValid As Boolean = False
         dListPrice = ListPrice.GetListPrice(dealerId, strSKU, dtEffective.ToString("yyyyMMdd"))
         If (dListPrice <> Nothing) Then
@@ -131,8 +131,8 @@
         Return blnValid
     End Function
 
-    Public Shared Function GetListPrice(ByVal dealerId As Guid, ByVal strSku As String, _
-                         ByVal dateOfLoss As String) As DecimalType
+    Public Shared Function GetListPrice(dealerId As Guid, strSku As String, _
+                         dateOfLoss As String) As DecimalType
         Try
             Dim dal As New ListPriceDAL
             Dim dv As ListPriceSearchDV = New ListPriceSearchDV(dal.LoadPriceList(dealerId, String.Empty, String.Empty, strSku, _
@@ -190,66 +190,66 @@
 #End Region
 
 #Region "Properties"
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ListPriceId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property ListPriceId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_LIST_PRICE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property DealerName(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property DealerCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER_CODE).ToString
             End Get
         End Property
 
 
-        Public Shared ReadOnly Property SKU(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property SKU(row As DataRow) As String
             Get
                 Return row(COL_NAME_SKU_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ModelNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ModelNumber(row As DataRow) As String
             Get
                 Return row(COL_NAME_MODEL_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ManufacturerName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ManufacturerName(row As DataRow) As String
             Get
                 Return row(COL_NAME_MANUFACTURER_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row As DataRow) As Date
+        Public Shared ReadOnly Property Effective(row As DataRow) As Date
             Get
                 Return row(COL_NAME_EFFECTIVE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row As DataRow) As Date
+        Public Shared ReadOnly Property Expiration(row As DataRow) As Date
             Get
                 Return row(COL_NAME_EXPIRATION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Amount(ByVal row As DataRow) As Decimal
+        Public Shared ReadOnly Property Amount(row As DataRow) As Decimal
             Get
                 Return CType(row(COL_NAME_AMOUNT), Decimal)
             End Get
         End Property
 
-        Public Shared ReadOnly Property AmountTypeId(ByVal row) As Guid
+        Public Shared ReadOnly Property AmountTypeId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_AMOUNT_TYPE_ID), Byte()))
             End Get

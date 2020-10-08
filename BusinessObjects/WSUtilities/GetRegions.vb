@@ -17,7 +17,7 @@ Public Class GetRegions
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetRegionsDs)
+    Public Sub New(ds As GetRegionsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -30,7 +30,7 @@ Public Class GetRegions
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetRegionsDs)
+    Private Sub MapDataSet(ds As GetRegionsDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -52,7 +52,7 @@ Public Class GetRegions
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetRegionsDs)
+    Private Sub Load(ds As GetRegionsDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -71,7 +71,7 @@ Public Class GetRegions
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetRegionsDs)
+    Private Sub PopulateBOFromWebService(ds As GetRegionsDs)
         Try
             If ds.GetRegions.Count = 0 Then Exit Sub
             With ds.GetRegions.Item(0)

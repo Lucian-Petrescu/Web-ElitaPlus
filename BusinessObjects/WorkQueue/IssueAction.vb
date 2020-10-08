@@ -20,7 +20,7 @@ Public NotInheritable Class IssueAction
 
 #Region "Constructors"
 
-    Friend Sub New(ByVal workQueueItem As WorkQueueItem)
+    Friend Sub New(workQueueItem As WorkQueueItem)
         _workQueueItem = workQueueItem
         GenerateDisplayXML()
         LoadXSLTPath()
@@ -38,7 +38,7 @@ Public NotInheritable Class IssueAction
         _xml.LoadXml(xmlString)
     End Sub
 
-    Private Function Serialize(ByVal item As IssueActionView) As String
+    Private Function Serialize(item As IssueActionView) As String
         Dim objXS As New XmlSerializer(item.GetType())
         Dim objSW As New StringWriter
 
@@ -47,7 +47,7 @@ Public NotInheritable Class IssueAction
         Return objSW.ToString()
     End Function
 
-    Private Function GetIssueActionView(ByVal claimId As Guid, ByVal claimIssueId As Guid) As IssueActionView
+    Private Function GetIssueActionView(claimId As Guid, claimIssueId As Guid) As IssueActionView
 
         Dim claim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(claimId)
         Dim claimIssue As ClaimIssue = If(claimIssueId <> Nothing, New ClaimIssue(claimIssueId), Nothing)

@@ -16,7 +16,7 @@ Public Class GetClaimsByDateRange
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimsByDateRangeDs)
+    Public Sub New(ds As GetClaimsByDateRangeDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -29,7 +29,7 @@ Public Class GetClaimsByDateRange
 #Region "Private Members"
     Private _serviceCenterId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetClaimsByDateRangeDs)
+    Private Sub MapDataSet(ds As GetClaimsByDateRangeDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -51,7 +51,7 @@ Public Class GetClaimsByDateRange
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimsByDateRangeDs)
+    Private Sub Load(ds As GetClaimsByDateRangeDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -69,7 +69,7 @@ Public Class GetClaimsByDateRange
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimsByDateRangeDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimsByDateRangeDs)
         Try
             If ds.GetClaimsByDateRange.Count = 0 Then Exit Sub
             With ds.GetClaimsByDateRange.Item(0)

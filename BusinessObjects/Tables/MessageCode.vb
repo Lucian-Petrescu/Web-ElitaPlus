@@ -6,7 +6,7 @@ Public Class MessageCode
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,20 +19,20 @@ Public Class MessageCode
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -54,7 +54,7 @@ Public Class MessageCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New MessageCodeDAL
             If _isDSCreator Then
@@ -189,7 +189,7 @@ Public Class MessageCode
         End Try
     End Sub
 
-    Public Shared Function IsNewMsgCode(ByVal strMsgCode As String, ByVal strMsgType As String, ByVal strUIProgCode As String) As Boolean
+    Public Shared Function IsNewMsgCode(strMsgCode As String, strMsgType As String, strUIProgCode As String) As Boolean
         Dim blnResult As Boolean = True, dal As New MessageCodeDAL
         Dim ds As DataSet = dal.getExistingMSGCode(strMsgCode, strMsgType, strUIProgCode)
         If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
@@ -198,7 +198,7 @@ Public Class MessageCode
         Return blnResult
     End Function
 
-    Public Shared Function GetMsgIdFromMsgCode(ByVal strMsgCode As String, ByVal strMsgType As String) As Guid
+    Public Shared Function GetMsgIdFromMsgCode(strMsgCode As String, strMsgType As String) As Guid
         Dim dal As New MessageCodeDAL, guidID As Guid
         Dim ds As DataSet = dal.loadMsgIdFromMsgCode(strMsgCode, strMsgType)
         guidID = Guid.Empty
@@ -224,13 +224,13 @@ Public Class MessageCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToMSGCodeSearchDV(ByRef dv As MessageCodeSearchDV, ByVal NewMSGCodeBO As MessageCode)
+    Public Shared Sub AddNewRowToMSGCodeSearchDV(ByRef dv As MessageCodeSearchDV, NewMSGCodeBO As MessageCode)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewMSGCodeBO.IsNew Then
@@ -260,7 +260,7 @@ Public Class MessageCode
         End If
     End Sub
 
-    Public Shared Function getList(ByVal guidMsgType As Guid, ByVal strMsgCode As String, ByVal strUIProgCode As String) As MessageCodeSearchDV
+    Public Shared Function getList(guidMsgType As Guid, strMsgCode As String, strUIProgCode As String) As MessageCodeSearchDV
         Try
             Dim dal As New MessageCodeDAL
             Return New MessageCodeSearchDV(dal.LoadList(guidMsgType, strMsgCode, strUIProgCode).Tables(0))

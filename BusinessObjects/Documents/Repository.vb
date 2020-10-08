@@ -16,7 +16,7 @@ Namespace Documents
 #Region "Constructors"
 
         'New BO attaching to a BO family
-        Friend Sub New(ByVal pDataTable As DataTable)
+        Friend Sub New(pDataTable As DataTable)
             MyBase.New(False)
             Dataset = pDataTable.DataSet
             Dim newRow As DataRow = pDataTable.NewRow
@@ -26,7 +26,7 @@ Namespace Documents
             Initialize()
         End Sub
 
-        Friend Sub New(ByVal row As DataRow)
+        Friend Sub New(row As DataRow)
             MyBase.New(False)
             Dataset = row.Table.DataSet
             Me.Row = row
@@ -45,7 +45,7 @@ Namespace Documents
             Return New Document()
         End Function
 
-        Public Sub Upload(ByVal pDocument As Document)
+        Public Sub Upload(pDocument As Document)
             pDocument.RepositoryCode = Code
             If (Not pDocument.FileName Is Nothing) AndAlso (pDocument.FileType.Length > 0) Then
                 pDocument.FileType = pDocument.FileName.Split(New Char() {"."}).Last().ToUpper()
@@ -68,7 +68,7 @@ Namespace Documents
             pDocument.Save()
         End Sub
 
-        Private Sub AzureBlobUpload(ByVal pDocument As Document)
+        Private Sub AzureBlobUpload(pDocument As Document)
             Dim storeageConnectionString As String = ConfigurationManager.AppSettings("AzureBlobConnectionString")
             Dim storageAccount As CloudStorageAccount
             If (Not CloudStorageAccount.TryParse(storeageConnectionString, storageAccount)) Then
@@ -80,12 +80,12 @@ Namespace Documents
             Dim cloudBlockBlob As CloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(pDocument.Id.ToString() + ".file")
             cloudBlockBlob.UploadFromByteArray(pDocument.Data, 0, pDocument.Data.Length)
         End Sub
-        Private Sub FileSystemUpload(ByVal pDocument As Document)
+        Private Sub FileSystemUpload(pDocument As Document)
             Dim fileName As String = pDocument.AbsoluteFileName
             System.IO.File.WriteAllBytes(fileName, pDocument.Data)
         End Sub
 
-        Public Function Download(ByVal pDocumentId As Guid) As Document
+        Public Function Download(pDocumentId As Guid) As Document
             Dim oDocument As Document = New Document(pDocumentId)
             Return oDocument
         End Function
@@ -203,11 +203,11 @@ Namespace Documents
         Public NotInheritable Class CheckDuplicateCode
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, DUPLICATE_REPOSITORY_CODE)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Repository = CType(objectToValidate, Repository)
                 If (DocumentManager.Current.Repositories.Where(Function(r) r.Code = obj.Code AndAlso r.Id <> obj.Id).Count() = 0) Then
                     Return True
@@ -221,11 +221,11 @@ Namespace Documents
         Public NotInheritable Class CheckDuplicateStoragePath
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, DUPLICATE_REPOSITORY_STORAGE_PATH)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Repository = CType(objectToValidate, Repository)
                 If (DocumentManager.Current.Repositories.Where(Function(r) r.StoragePath = obj.StoragePath AndAlso r.Id <> obj.Id).Count() = 0) Then
                     Return True
@@ -239,11 +239,11 @@ Namespace Documents
         Public NotInheritable Class CheckReadWriteTest
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, REPOSITORY_STORAGE_PHYSICAL_PATH_READ_WRITE_FAILED)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Repository = CType(objectToValidate, Repository)
                 If (obj.StoragePath Is Nothing) OrElse (obj.StoragePath.Trim().Length = 0) Then
                     Return False

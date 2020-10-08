@@ -34,8 +34,8 @@ Public Class CancelCreditCardAuthVSCBrazil
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CancelCreditCardAuthVSCBrazilDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As CancelCreditCardAuthVSCBrazilDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = xml
         FuncToProc = functionToProcess
@@ -114,7 +114,7 @@ Public Class CancelCreditCardAuthVSCBrazil
 
         Return bind
     End Function
-    Private Shared Function Get_EndPoint(ByVal url As String) As EndpointAddress
+    Private Shared Function Get_EndPoint(url As String) As EndpointAddress
         Dim eab As EndpointAddressBuilder
 
         eab = New EndpointAddressBuilder
@@ -123,7 +123,7 @@ Public Class CancelCreditCardAuthVSCBrazil
         Return eab.ToEndpointAddress
     End Function
 
-    Private Shared Function Get_ServiceClient(ByVal url As String) As VSCBrazilCreditCardAuth.ServicoCobrancaAssurantClient
+    Private Shared Function Get_ServiceClient(url As String) As VSCBrazilCreditCardAuth.ServicoCobrancaAssurantClient
         Dim bind As BasicHttpBinding
         Dim ea As EndpointAddress
         Dim sc As VSCBrazilCreditCardAuth.ServicoCobrancaAssurantClient
@@ -206,7 +206,7 @@ Public Class CancelCreditCardAuthVSCBrazil
 
     End Function
 
-    Private Shared Function CreateArrayFromXMLInpout(ByVal xmlinput As String) As ArrayList
+    Private Shared Function CreateArrayFromXMLInpout(xmlinput As String) As ArrayList
         Dim xmlDoc As XmlDocument
         Dim reader As XmlTextReader
         Dim Inputarray As New ArrayList
@@ -230,8 +230,8 @@ Public Class CancelCreditCardAuthVSCBrazil
 
     End Function
 
-    Private Function GetResponseXML(ByVal blnSuccess As Boolean, ByVal strAuthNum As String, _
-                                   ByVal strRejectCode As String, ByVal strRejectMsg As String) As String
+    Private Function GetResponseXML(blnSuccess As Boolean, strAuthNum As String, _
+                                   strRejectCode As String, strRejectMsg As String) As String
 
         Dim objDoc As New Xml.XmlDocument
         Dim objRoot As Xml.XmlElement

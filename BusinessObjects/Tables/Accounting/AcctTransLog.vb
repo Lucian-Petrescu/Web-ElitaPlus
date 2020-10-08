@@ -6,7 +6,7 @@ Public Class AcctTransLog
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class AcctTransLog
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class AcctTransLog
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctTransLogDAL
             If _isDSCreator Then
@@ -902,7 +902,7 @@ Public Class AcctTransLog
         End Try
     End Sub
 
-    Public Function GetAccountingInterfaceTables(ByVal oFelitaEngineData As FelitaEngine.FelitaEngineData, ByVal BatchNumber As String) As DataSet()
+    Public Function GetAccountingInterfaceTables(oFelitaEngineData As FelitaEngine.FelitaEngineData, BatchNumber As String) As DataSet()
 
 
         Dim dal As New AcctTransLogDAL
@@ -1112,7 +1112,7 @@ Public Class AcctTransLog
     End Function
 
     'Function to determine whether or not the dataset contains valid tables that will require we gather the header information
-    Public Shared Function isDSValid(ByVal ds As DataSet, Optional ByVal CheckVendors As Boolean = True) As Boolean
+    Public Shared Function isDSValid(ds As DataSet, Optional ByVal CheckVendors As Boolean = True) As Boolean
 
         If (Not ds.Tables(AcctTransLogDAL.Table_LINEITEM) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_LINEITEM).Rows.Count > 0) _
          OrElse (Not ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM).Rows.Count > 0) Then
@@ -1132,7 +1132,7 @@ Public Class AcctTransLog
         Return False
     End Function
 
-    Public Shared Function PurgeTransLog(ByVal ds As DataSet, ByVal PurgeVendors As Boolean)
+    Public Shared Function PurgeTransLog(ds As DataSet, PurgeVendors As Boolean)
 
         Dim tbl As DataTable
         Dim arrIDs As New ArrayList
@@ -1163,7 +1163,7 @@ Public Class AcctTransLog
 
     End Function
 
-    Private Function IsJournalBalanced(ByVal ds As DataSet) As Boolean
+    Private Function IsJournalBalanced(ds As DataSet) As Boolean
 
 
         Dim crAmount, drAmount As Long
@@ -1192,7 +1192,7 @@ Public Class AcctTransLog
 
     End Function
 
-    Public Shared Sub PopulateAccountingEvents(ByVal CompanyCode As String, ByVal AcctEventId As Guid, ByVal IncludeVendors As Boolean)
+    Public Shared Sub PopulateAccountingEvents(CompanyCode As String, AcctEventId As Guid, IncludeVendors As Boolean)
 
         Dim _dal As New AcctTransLogDAL
 
@@ -1218,7 +1218,7 @@ Public Class AcctTransLog
 
     End Sub
 
-    Private Function MergeDataSets(ByVal CompanyId As Guid, ByVal ext As String, ByVal eventType As String, ByVal ds As DataSet, ByVal newDs As DataSet, ByVal eventId As Guid) As Boolean
+    Private Function MergeDataSets(CompanyId As Guid, ext As String, eventType As String, ds As DataSet, newDs As DataSet, eventId As Guid) As Boolean
 
         Dim isBalanced As Boolean = True
         Dim dtTemp As DataTable
@@ -1433,7 +1433,7 @@ Public Class AcctTransLog
 
     End Function
 
-    Public Function BuildVendorTable(ByVal dt As DataTable) As DataTable
+    Public Function BuildVendorTable(dt As DataTable) As DataTable
 
         Dim dtTemp As DataTable
         Dim dsHelp As New DSHelper
@@ -1447,7 +1447,7 @@ Public Class AcctTransLog
 
     End Function
 
-    Public Sub AddLineNumbers(ByVal ext As String, ByVal ds As DataSet)
+    Public Sub AddLineNumbers(ext As String, ds As DataSet)
 
         If ext = FelitaEngine.SMARTSTREAM_PREFIX Then
 

@@ -6,7 +6,7 @@ Public Class Country
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class Country
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -49,7 +49,7 @@ Public Class Country
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CountryDAL
             If _isDSCreator Then
@@ -73,7 +73,7 @@ Public Class Country
         End Try
     End Sub
 
-    Protected Sub LoadChildren(ByVal reloadData As Boolean)
+    Protected Sub LoadChildren(reloadData As Boolean)
         CountryPostalCodeFormat.LoadList(Dataset, Id, reloadData)
     End Sub
 #End Region
@@ -619,7 +619,7 @@ Public Class Country
         End Try
     End Sub
 
-    Public Sub AttachPostalCodeFormat(ByVal postalCodeGuidStr() As String)
+    Public Sub AttachPostalCodeFormat(postalCodeGuidStr() As String)
         LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
@@ -637,7 +637,7 @@ Public Class Country
         End If
     End Sub
 
-    Public Sub AttachPostalCodeFormat(ByVal postalCodeGuidStr As String)
+    Public Sub AttachPostalCodeFormat(postalCodeGuidStr As String)
         LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
@@ -653,7 +653,7 @@ Public Class Country
         End If
     End Sub
 
-    Public Sub DetachPostalCodeFormat(ByVal postalCodeGuidStr() As String)
+    Public Sub DetachPostalCodeFormat(postalCodeGuidStr() As String)
         LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
@@ -664,7 +664,7 @@ Public Class Country
             Next
         End If
     End Sub
-    Public Sub DetachPostalCodeFormat(ByVal postalCodeGuidStr As String)
+    Public Sub DetachPostalCodeFormat(postalCodeGuidStr As String)
         LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
@@ -758,7 +758,7 @@ Public Class Country
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String) As CountrySearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String) As CountrySearchDV
         Try
             Dim dal As New CountryDAL
             Return New CountrySearchDV(dal.LoadList(descriptionMask, codeMask).Tables(0))
@@ -767,7 +767,7 @@ Public Class Country
         End Try
     End Function
 
-    Public Shared Function GetCountriesDv(ByVal oCompanies As ArrayList) As DataView
+    Public Shared Function GetCountriesDv(oCompanies As ArrayList) As DataView
         Dim dal As New CountryDAL
         Dim ds As DataSet
 
@@ -775,7 +775,7 @@ Public Class Country
         Return ds.Tables(CountryDAL.TABLE_NAME).DefaultView
     End Function
 
-    Public Shared Function GetCountries(ByVal oCompanies As ArrayList) As ArrayList
+    Public Shared Function GetCountries(oCompanies As ArrayList) As ArrayList
         Dim oCountriesDv = GetCountriesDv(oCompanies)
         Dim oCountriesArr = New ArrayList
 
@@ -793,7 +793,7 @@ Public Class Country
         Return oCountriesArr
     End Function
 
-    Public Shared Function GetCountriesRegionsForWS(ByVal oCountriesIds As ArrayList) As DataSet
+    Public Shared Function GetCountriesRegionsForWS(oCountriesIds As ArrayList) As DataSet
         Try
             Dim objCountriesRegionsDS As New DataSet("CountriesRegions")
 
@@ -822,7 +822,7 @@ Public Class Country
         End Try
     End Function
 
-    Public Shared Function GetCountryPostalFormat(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetCountryPostalFormat(oCountryId As Guid) As DataView
 
         Try
             Dim dal As New CountryDAL
@@ -832,7 +832,7 @@ Public Class Country
         End Try
     End Function
 
-    Public Shared Function GetCountryByteFlag(ByVal oCountryId As Guid) As DataSet
+    Public Shared Function GetCountryByteFlag(oCountryId As Guid) As DataSet
         Try
             Dim dal As New CountryDAL
             Return dal.GetCountryByteFlag(oCountryId)
@@ -857,7 +857,7 @@ Public Class Country
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -871,11 +871,11 @@ Public Class Country
     Public NotInheritable Class EmailAddress
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Country = CType(objectToValidate, Country)
 
             If obj.NotifyGroupEmail Is String.Empty OrElse obj.NotifyGroupEmail Is Nothing Then
@@ -891,11 +891,11 @@ Public Class Country
     Public NotInheritable Class PriceListApprovedEmail
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Country = CType(objectToValidate, Country)
 
 
@@ -928,11 +928,11 @@ Public Class Country
     Public NotInheritable Class RequiredConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Country = CType(objectToValidate, Country)
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
             If Not obj.RegulatoryReportingId.Equals(Guid.Empty) AndAlso obj.RegulatoryReportingId.Equals(yesId) AndAlso (valueToCheck Is Nothing OrElse valueToCheck.Equals(String.Empty)) Then
@@ -946,11 +946,11 @@ Public Class Country
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class RequiredConditionallyAllowForceAddressXcd
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Country = CType(objectToValidate, Country)
             Dim lkYesNo As DataView = LookupListNew.DropdownLookupList("YESNO", Authentication.LangId)
             lkYesNo.RowFilter += " and code='Y'"
@@ -966,11 +966,11 @@ Public Class Country
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class RequiredConditionallyAddressConfidenceThreshold
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Country = CType(objectToValidate, Country)
             Dim lkYesNo As DataView = LookupListNew.DropdownLookupList("YESNO", Authentication.LangId)
             lkYesNo.RowFilter += " and code='Y'"

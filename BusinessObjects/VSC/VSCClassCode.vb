@@ -6,7 +6,7 @@ Public Class VSCClassCode
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -20,20 +20,20 @@ Public Class VSCClassCode
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -58,7 +58,7 @@ Public Class VSCClassCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCClassCodeDAL
             If _isDSCreator Then
@@ -213,16 +213,16 @@ Public Class VSCClassCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal CodeIdMask As Guid, _
-                                                 ByVal ActiveMask As Guid, _
-                                                       ByVal companygroupId As Guid) As DataView
+    Public Shared Function getList(CodeIdMask As Guid, _
+                                                 ActiveMask As Guid, _
+                                                       companygroupId As Guid) As DataView
         Try
             Dim dal As New VSCClassCodeDAL
 
@@ -232,7 +232,7 @@ Public Class VSCClassCode
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
         Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
         Dim companygroupId As Guid = company.CompanyGroupId
         Dim dt As DataTable

@@ -6,7 +6,7 @@ Public Class ComunaCode
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ComunaCode
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ComunaCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ComunaCodeDAL
             If _isDSCreator Then
@@ -79,7 +79,7 @@ Public Class ComunaCode
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal ComunaMask As String, ByVal PostalCodeMask As String, ByVal RegionMask As Guid) As ComunaCodeSearchDV
+    Public Shared Function LoadList(ComunaMask As String, PostalCodeMask As String, RegionMask As Guid) As ComunaCodeSearchDV
         Try
             Dim dal As New ComunaCodeDAL
             Dim UserId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
@@ -91,7 +91,7 @@ Public Class ComunaCode
 
     End Function
  
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ComunaCodeSearchDV, ByVal NewComunaCodeBO As ComunaCode)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ComunaCodeSearchDV, NewComunaCodeBO As ComunaCode)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -220,7 +220,7 @@ Public Class ComunaCode
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal countryID As Guid) As DataSet
+    Public Shared Function LoadList(countryID As Guid) As DataSet
         Try
             Dim dal As New ComunaCodeDAL
             Return dal.LoadList(countryID)
@@ -251,7 +251,7 @@ Public Class ComunaCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

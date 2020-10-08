@@ -6,7 +6,7 @@ Public Class ContractUpload
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ContractUpload
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ContractUpload
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ContractUploadDAL
             If _isDSCreator Then
@@ -2072,7 +2072,7 @@ Public Class ContractUpload
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetPreValidatedContractsForUpload(ByVal UploadSessionId As String) As DataSet
+    Public Shared Function GetPreValidatedContractsForUpload(UploadSessionId As String) As DataSet
         Try
             Dim dal As New ContractUploadDAL
             Return dal.LoadPreValidatedContractsForUpload(UploadSessionId)
@@ -2081,7 +2081,7 @@ Public Class ContractUpload
         End Try
     End Function
 
-    Public Shared Function UpdatePreValidatedContractRecord(preValidatedContractId As Guid, ByVal strValidationErrors As String) As DataSet
+    Public Shared Function UpdatePreValidatedContractRecord(preValidatedContractId As Guid, strValidationErrors As String) As DataSet
         Try
             Dim dal As New ContractUploadDAL
             Return dal.UpdatePreValidatedContractRecord(preValidatedContractId, strValidationErrors)

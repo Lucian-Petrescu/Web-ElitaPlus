@@ -1,6 +1,6 @@
 ﻿Public Class CollectedPayDetail
     Inherits BusinessObjectBase
-    Public Shared Function getCollectPayTotals(ByVal certId As Guid) As CollectPayTotals
+    Public Shared Function getCollectPayTotals(certId As Guid) As CollectPayTotals
         Try
             Dim dal As New BillingPayDetailDAL
             Return New CollectPayTotals(dal.LoadCollectPayTotals(certId).Tables(0))
@@ -9,7 +9,7 @@
         End Try
     End Function
 
-    Public Shared Function getCollectPayHistList(ByVal certId As Guid, ByVal Sortby As String) As CollectPayHistorySearchDV
+    Public Shared Function getCollectPayHistList(certId As Guid, Sortby As String) As CollectPayHistorySearchDV
         Try
             Dim dal As New BillingPayDetailDAL
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -23,7 +23,7 @@
     Public Class CollectPayHistorySearchDV
         Inherits DataView
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -56,32 +56,32 @@
 
 #End Region
 
-        Public Shared ReadOnly Property CollectedAmount(ByVal row) As String
+        Public Shared ReadOnly Property CollectedAmount(row) As String
             Get
                 Return row(COL_NAME_COLLECTED_AMOUNT).ToString()
             End Get
         End Property
 
 
-        Public Shared ReadOnly Property CoverageSequence(ByVal row) As Integer
+        Public Shared ReadOnly Property CoverageSequence(row) As Integer
             Get
                 Return row(COL_NAME_COVERAGE_SEQ_PC).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property RejectDate(ByVal row) As DateType
+        Public Shared ReadOnly Property RejectDate(row) As DateType
             Get
                 Return row(COL_NAME_REJECT_DATE_PC).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property CreatedDate(ByVal row) As DateType
+        Public Shared ReadOnly Property CreatedDate(row) As DateType
             Get
                 Return row(COL_NAME_DATE_PROCESSED_PC).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property CollectedDate(ByVal row) As DateType
+        Public Shared ReadOnly Property CollectedDate(row) As DateType
             Get
                 Return row(COL_NAME_COLLECTED_DATE).ToString()
             End Get
@@ -93,7 +93,7 @@
         '    End Get
         'End Property
 
-        Public Shared ReadOnly Property BillingStartDate(ByVal row) As DateType
+        Public Shared ReadOnly Property BillingStartDate(row) As DateType
             Get
                 Return row(COL_NAME_DATE_SEND).ToString()
             End Get
@@ -106,7 +106,7 @@
         'End Property
 
         'Req - 1016 Start
-        Public Shared ReadOnly Property PaymentDueDate(ByVal row) As DateType
+        Public Shared ReadOnly Property PaymentDueDate(row) As DateType
             Get
                 Return row(COL_NAME_PAYMENT_DUE_DATE).ToString()
             End Get
@@ -129,7 +129,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

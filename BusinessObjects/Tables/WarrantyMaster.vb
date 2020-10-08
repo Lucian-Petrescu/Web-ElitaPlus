@@ -6,7 +6,7 @@ Public Class WarrantyMaster
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class WarrantyMaster
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class WarrantyMaster
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New WarrantyMasterDAL
             If _isDSCreator Then
@@ -326,7 +326,7 @@ Public Class WarrantyMaster
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal compIds As ArrayList, ByVal dealerId As Guid, ByVal skuNumber As String, ByVal manufacturerName As String, ByVal modelNumber As String, ByVal warrantyType As String) As WarrantyMasterSearchDV
+    Public Shared Function getList(compIds As ArrayList, dealerId As Guid, skuNumber As String, manufacturerName As String, modelNumber As String, warrantyType As String) As WarrantyMasterSearchDV
         Try
             Dim dal As New WarrantyMasterDAL
             Return New WarrantyMasterSearchDV(dal.LoadList(compIds, dealerId, skuNumber, manufacturerName, modelNumber, warrantyType).Tables(0))
@@ -363,7 +363,7 @@ Public Class WarrantyMaster
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

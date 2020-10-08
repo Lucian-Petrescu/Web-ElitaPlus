@@ -6,7 +6,7 @@ Public Class IssueQuestion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class IssueQuestion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class IssueQuestion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New IssueQuestionDAL
             If _isDSCreator Then
@@ -205,22 +205,22 @@ Public Class IssueQuestion
 
 #Region "Public Methods"
 
-    Public Function ExecuteQuestionsListFilter(ByVal Issue As Guid, ByVal QuestionList As String, ByVal SearchTags As String) As DataView
+    Public Function ExecuteQuestionsListFilter(Issue As Guid, QuestionList As String, SearchTags As String) As DataView
         Dim eqListDal As New IssueQuestionDAL
         Return eqListDal.ExecuteQuestionsFilter(Issue, QuestionList, SearchTags).Tables(0).DefaultView
     End Function
 
-    Public Function AvailableQuestionsList(ByVal Issue As Guid, ByVal QuestionList As String, ByVal SearchTags As String, ByVal ActiveOn As String) As DataView
+    Public Function AvailableQuestionsList(Issue As Guid, QuestionList As String, SearchTags As String, ActiveOn As String) As DataView
         Dim eqListDal As New IssueQuestionDAL
         Return eqListDal.AvailableQuestionListFilter(Issue, QuestionList, SearchTags, ActiveOn, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0).DefaultView
     End Function
 
-    Public Function ExecuteDealerListFilter(ByVal Code As String) As DataView
+    Public Function ExecuteDealerListFilter(Code As String) As DataView
         Dim eqListDal As New IssueQuestionDAL
         Return eqListDal.ExecuteDealerFilter(Code).Tables(0).DefaultView
     End Function
 
-    Public Function GetSelectedDealerList(ByVal QuestionListCode As String) As DataView
+    Public Function GetSelectedDealerList(QuestionListCode As String) As DataView
         Dim eqListDal As New IssueQuestionListDAL
         Return eqListDal.GetSelectedDealerList(QuestionListCode).Tables(0).DefaultView
     End Function
@@ -229,14 +229,14 @@ Public Class IssueQuestion
 
 #Region "Public Methods"
 
-    Public Sub Copy(ByVal original As IssueQuestion)
+    Public Sub Copy(original As IssueQuestion)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Issue Question.")
         End If
         MyBase.CopyFrom(original)
     End Sub
 
-    Public Shared Function IsChild(ByVal IssueId As Guid, ByVal SoftQuestionId As Guid) As Byte()
+    Public Shared Function IsChild(IssueId As Guid, SoftQuestionId As Guid) As Byte()
 
         Try
             Dim dal As New IssueQuestionDAL

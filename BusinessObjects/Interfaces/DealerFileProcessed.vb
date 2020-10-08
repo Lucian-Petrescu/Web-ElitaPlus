@@ -30,13 +30,13 @@ Public Class DealerFileProcessed
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal parentfile As Boolean)
+    Public Sub New(id As Guid, parentfile As Boolean)
         MyBase.New()
         Dataset = New DataSet
         Load(id, parentfile)
@@ -49,14 +49,14 @@ Public Class DealerFileProcessed
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -78,7 +78,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerFileProcessedDAL
             If _isDSCreator Then
@@ -102,7 +102,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, ByVal IsParentFile As Boolean)
+    Protected Sub Load(id As Guid, IsParentFile As Boolean)
         Try
             Dim dal As New DealerFileProcessedDAL
             If _isDSCreator Then
@@ -462,8 +462,8 @@ Public Class DealerFileProcessed
 
 #Region "DealerFile"
 
-    Public Shared Function getDealerFileNamesBwtnDateRange(ByVal CompanyId As Guid, ByVal DealerCode As String, ByVal BeginDate As String, _
-                                                           ByVal EndDate As String, ByVal FileType As String, ByVal rejectionType As String) As DataView
+    Public Shared Function getDealerFileNamesBwtnDateRange(CompanyId As Guid, DealerCode As String, BeginDate As String, _
+                                                           EndDate As String, FileType As String, rejectionType As String) As DataView
         Dim dal As New DealerFileProcessedDAL
         Dim ds As DataSet
         Dim dv As DataView
@@ -481,7 +481,7 @@ Public Class DealerFileProcessed
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal compIds As ArrayList, ByVal oData As Object) As DataView
+    Public Shared Function LoadList(compIds As ArrayList, oData As Object) As DataView
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -503,8 +503,8 @@ Public Class DealerFileProcessed
         Public dealerName As String
     End Structure
 
-    Public Shared Function GetDealerLayout(ByVal dealerID As Guid, _
-    ByVal oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode) As DealerInfo
+    Public Shared Function GetDealerLayout(dealerID As Guid, _
+    oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode) As DealerInfo
         Dim retDealerInfo As DealerInfo
         Dim sLayout As String
         Dim oContract As Contract
@@ -558,7 +558,7 @@ Public Class DealerFileProcessed
     '    intStatus.Save()
     'End Sub
 
-    Public Shared Sub ValidateFile(ByVal oData As Object)
+    Public Shared Sub ValidateFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -571,7 +571,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub ProcessFileRecords(ByVal oData As Object)
+    Public Shared Sub ProcessFileRecords(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -584,7 +584,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub DeleteFile(ByVal oData As Object)
+    Public Shared Sub DeleteFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -597,7 +597,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub DownloadFile(ByVal oData As Object)
+    Public Shared Sub DownloadFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -610,7 +610,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub GenerateResponseFile(ByVal oData As Object)
+    Public Shared Sub GenerateResponseFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -627,7 +627,7 @@ Public Class DealerFileProcessed
 
 #Region "Validation"
 
-    Public Shared Sub ValidateFileName(ByVal fileLength As Integer)
+    Public Shared Sub ValidateFileName(fileLength As Integer)
         If fileLength = 0 Then
             Dim errors() As ValidationError = {New ValidationError(DEALERLOADFORM_FORM001, GetType(DealerFileProcessed), Nothing, Nothing, Nothing)}
             Throw New BOValidationException(errors, GetType(DealerFileProcessed).FullName)

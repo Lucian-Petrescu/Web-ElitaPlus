@@ -85,7 +85,7 @@ Public Class GalaxyInsertClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GalaxyInsertClaimDs)
+    Public Sub New(ds As GalaxyInsertClaimDs)
         MyBase.New()
 
         dsCoverageInfo = New DataSet
@@ -129,7 +129,7 @@ Public Class GalaxyInsertClaim
 
 #Region "Member Methods"
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GalaxyInsertClaimDs)
+    Private Sub PopulateBOFromWebService(ds As GalaxyInsertClaimDs)
         Try
             If ds.GalaxyInsertClaim.Count = 0 Then Exit Sub
             With ds.GalaxyInsertClaim.Item(0)
@@ -450,7 +450,7 @@ Public Class GalaxyInsertClaim
         End Try
     End Function
 
-    Private Sub MapDataSet(ByVal ds As GalaxyInsertClaimDs)
+    Private Sub MapDataSet(ds As GalaxyInsertClaimDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -468,7 +468,7 @@ Public Class GalaxyInsertClaim
 
     End Sub
 
-    Private Sub Load(ByVal ds As GalaxyInsertClaimDs)
+    Private Sub Load(ds As GalaxyInsertClaimDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow

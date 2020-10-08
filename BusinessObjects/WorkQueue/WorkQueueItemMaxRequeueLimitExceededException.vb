@@ -9,11 +9,11 @@ Public NotInheritable Class WorkQueueItemMaxRequeueLimitExceededException
         Me.New(TranslationBase.TranslateLabelOrMessage("MSG_MAX_REQUEUE_COUNT_REACHED"))
     End Sub
 
-    Public Sub New(ByVal message As String, Optional ByVal innerException As Exception = Nothing)
+    Public Sub New(message As String, Optional ByVal innerException As Exception = Nothing)
         MyBase.New(TranslationBase.TranslateLabelOrMessage("MSG_MAX_REQUEUE_COUNT_REACHED") & message, ErrorCodes.GUI_ERROR_MAX_REQUEUE_LIMIT_EXCEEDED, innerException)
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 

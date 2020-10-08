@@ -17,7 +17,7 @@ Public Class GetCoverageInfo
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetCoverageInfoDS)
+    Public Sub New(ds As GetCoverageInfoDS)
         MyBase.New()
 
         MapDataSet(ds)
@@ -30,7 +30,7 @@ Public Class GetCoverageInfo
 #Region "Private Members"
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetCoverageInfoDS)
+    Private Sub MapDataSet(ds As GetCoverageInfoDS)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -52,7 +52,7 @@ Public Class GetCoverageInfo
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetCoverageInfoDS)
+    Private Sub Load(ds As GetCoverageInfoDS)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -70,7 +70,7 @@ Public Class GetCoverageInfo
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetCoverageInfoDS)
+    Private Sub PopulateBOFromWebService(ds As GetCoverageInfoDS)
         Try
             If ds.GetCoverageInfo.Count = 0 Then Exit Sub
             With ds.GetCoverageInfo.Item(0)

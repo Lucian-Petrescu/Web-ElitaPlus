@@ -16,7 +16,7 @@ Public Class ContactInfo
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -30,21 +30,21 @@ Public Class ContactInfo
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IContactInfoUser)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -52,7 +52,7 @@ Public Class ContactInfo
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser, ByVal Flg As Boolean)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IContactInfoUser, Flg As Boolean)
         MyBase.New(Flg)
         Dataset = familyDS
         Load(id)
@@ -60,7 +60,7 @@ Public Class ContactInfo
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser)
+    Public Sub New(familyDS As DataSet, userObj As IContactInfoUser)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -69,7 +69,7 @@ Public Class ContactInfo
 
 
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -91,7 +91,7 @@ Public Class ContactInfo
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ContactInfoDAL
             If _isDSCreator Then
@@ -286,7 +286,7 @@ Public Class ContactInfo
     End Property
 
     Private _address As Address = Nothing
-    Public ReadOnly Property Address(ByVal parentDataSet As DataSet) As Address
+    Public ReadOnly Property Address(parentDataSet As DataSet) As Address
         Get
             If _address Is Nothing Then
                 If AddressId.Equals(Guid.Empty) Then
@@ -420,7 +420,7 @@ Public Class ContactInfo
             _ItemName = String.Empty
             _Required = True
         End Sub
-        Public Sub New(ByVal ItemName As String, Optional ByVal Required As Boolean = True)
+        Public Sub New(ItemName As String, Optional ByVal Required As Boolean = True)
             _ItemName = ItemName
             _Required = Required
         End Sub
@@ -441,7 +441,7 @@ Public Class ContactInfo
             End Set
         End Property
     End Class
-    Public Shared Sub SplitContactInfoRequiredFieldsString(ByVal ContactInfoReqFieldsStr As String, ByRef AddressComponents As Collections.Generic.List(Of ContactInfoRequiredFieldsItem))
+    Public Shared Sub SplitContactInfoRequiredFieldsString(ContactInfoReqFieldsStr As String, ByRef AddressComponents As Collections.Generic.List(Of ContactInfoRequiredFieldsItem))
         ContactInfoReqFieldsStr = ContactInfoReqFieldsStr.Trim
         'MailAddrFmtStr = "[ADR1][-][\n][ADR2][\n][ZIP][Space][CITY][Space][COU][\n][RGNAME]*[,][Space][RGCODE]"
         If ContactInfoReqFieldsStr.Trim <> "" Then
@@ -457,7 +457,7 @@ Public Class ContactInfo
             End While
         End If
     End Sub
-    Public Shared Function IsAddressComponentRequired(ByVal MailAddrFmtStr As String, ByVal strComponent As String) As Boolean
+    Public Shared Function IsAddressComponentRequired(MailAddrFmtStr As String, strComponent As String) As Boolean
         Dim blnRequired As Boolean = False
         MailAddrFmtStr = MailAddrFmtStr.Trim
         If MailAddrFmtStr.Trim <> "" Then
@@ -481,7 +481,7 @@ Public Class ContactInfo
     Public NotInheritable Class RequiredFieldBySetting
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String, ByVal x As String, ByVal shortName As String)
+        Public Sub New(fieldDisplayName As String, x As String, shortName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
             propertyShortName = shortName
         End Sub
@@ -496,7 +496,7 @@ Public Class ContactInfo
             End Set
         End Property
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ContactInfo = CType(objectToValidate, ContactInfo)
 
             If InStr(obj.ContactInfoReqFields, propertyShortName) > 0 Then

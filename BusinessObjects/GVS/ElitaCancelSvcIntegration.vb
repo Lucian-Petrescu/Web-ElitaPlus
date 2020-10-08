@@ -24,7 +24,7 @@ Public Class ElitaCancelSvcIntegration
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Public Sub New(ds As ElitaCancelSvcIntegrationDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -42,7 +42,7 @@ Public Class ElitaCancelSvcIntegration
     Dim _functionTypeCode As String
     Dim _functionTypeId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Private Sub MapDataSet(ds As ElitaCancelSvcIntegrationDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -64,7 +64,7 @@ Public Class ElitaCancelSvcIntegration
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Private Sub Load(ds As ElitaCancelSvcIntegrationDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -83,7 +83,7 @@ Public Class ElitaCancelSvcIntegration
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Private Sub PopulateBOFromWebService(ds As ElitaCancelSvcIntegrationDs)
         Try
             If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)

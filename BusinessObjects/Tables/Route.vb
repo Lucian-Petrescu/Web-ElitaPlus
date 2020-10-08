@@ -6,7 +6,7 @@ Public Class Route
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Route
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Route
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RouteDAL
             If _isDSCreator Then
@@ -224,7 +224,7 @@ Public Class Route
     '    End Get
     'End Property
 
-    Public Sub AttachServiceCenters(ByVal selectedServiceCenterGuidStrCollection As ArrayList)
+    Public Sub AttachServiceCenters(selectedServiceCenterGuidStrCollection As ArrayList)
         Dim routeSrvIdStr As String
         For Each routeSrvIdStr In selectedServiceCenterGuidStrCollection
             Dim routeSrvBO As ServiceCenter = New ServiceCenter(New Guid(routeSrvIdStr), Dataset)
@@ -233,7 +233,7 @@ Public Class Route
         Next
     End Sub
 
-    Public Sub DetachServiceCenters(ByVal selectedServiceCenterGuidStrCollection As ArrayList)
+    Public Sub DetachServiceCenters(selectedServiceCenterGuidStrCollection As ArrayList)
         Dim routeSrvIdStr As String
         For Each routeSrvIdStr In selectedServiceCenterGuidStrCollection
             Dim routeSrvBO As ServiceCenter = New ServiceCenter(New Guid(routeSrvIdStr), Dataset)
@@ -242,7 +242,7 @@ Public Class Route
         Next
     End Sub
 
-    Public Shared Function GetAvailableSCs(ByVal scNetworkId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetAvailableSCs(scNetworkId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -252,7 +252,7 @@ Public Class Route
     End Function
 
 
-    Public Shared Function GetSelectedSCs(ByVal routeId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetSelectedSCs(routeId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -267,7 +267,7 @@ Public Class Route
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal RouteId As Guid, ByVal serviceNetworkId As Guid) As RouteSearchDV
+    Public Shared Function getList(RouteId As Guid, serviceNetworkId As Guid) As RouteSearchDV
         Try
             Dim dal As New RouteDAL
             'Dim oCompany As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
@@ -278,7 +278,7 @@ Public Class Route
         End Try
     End Function
 
-    Public Shared Function LoadList(ByVal scNetworkId As Guid) As DataSet
+    Public Shared Function LoadList(scNetworkId As Guid) As DataSet
         Try
             Dim dal As New RouteDAL
             Return dal.LoadList(scNetworkId)
@@ -289,7 +289,7 @@ Public Class Route
 
     End Function
 
-    Public Shared Function GetRouteByCode(ByVal routeCode As String) As DataSet
+    Public Shared Function GetRouteByCode(routeCode As String) As DataSet
 
         Try
             Dim dal As New RouteDAL
@@ -315,23 +315,23 @@ Public Class Route
         Public Const COL_NAME_SERVICE_NETWORK_CODE = RouteDAL.COL_NAME_SERVICE_NETWORK_CODE
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property routeId(ByVal row) As Guid
+        Public Shared ReadOnly Property routeId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ROUTE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ShortDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ShortDescription(row As DataRow) As String
             Get
                 Return row(COL_NAME_SHORT_DESC).ToString
             End Get

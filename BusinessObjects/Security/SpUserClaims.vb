@@ -19,7 +19,7 @@ Public Class SpUserClaims
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -33,20 +33,20 @@ Public Class SpUserClaims
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -68,7 +68,7 @@ Public Class SpUserClaims
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SpUserClaimsDAL
             If _isDSCreator Then
@@ -224,7 +224,7 @@ Public Class SpUserClaims
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadSpUserClaims(ByVal UserId As Guid, ByVal LanguageId As Guid) As DataView
+    Public Shared Function LoadSpUserClaims(UserId As Guid, LanguageId As Guid) As DataView
         Dim dal As New SpUserClaimsDAL
         Dim ds As DataSet
         ds = dal.LoadSpUserClaims(UserId)
@@ -234,40 +234,40 @@ Public Class SpUserClaims
     Public Class SpUserClaimsDV
         Inherits DataView
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property UserId(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property UserId(row As DataRow) As String
             Get
                 Return row(SpUserClaimsDAL.COL_NAME_USER_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property SpClaimTypeID(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property SpClaimTypeID(row As DataRow) As String
             Get
                 Return row(SpUserClaimsDAL.COL_NAME_SP_CLAIM_TYPE_ID).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property SpClaimCodeDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property SpClaimCodeDescription(row As DataRow) As String
             Get
                 Return row(SpClaimTypesDAL.COL_NAME_SP_CLAIM_CODE_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property SpClaimValue(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property SpClaimValue(row As DataRow) As String
             Get
                 Return row(SpUserClaimsDAL.COL_NAME_SP_CLAIM_VALUE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Effective(row As DataRow) As String
             Get
                 Return row(SpUserClaimsDAL.COL_NAME_EFFECTIVE_DATE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Expiration(row As DataRow) As String
             Get
                 Return row(SpUserClaimsDAL.COL_NAME_EXPIRATION_DATE).ToString
             End Get

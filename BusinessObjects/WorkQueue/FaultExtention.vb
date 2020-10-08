@@ -4,11 +4,11 @@ Imports System.Reflection
 
 Public Module FaultExtention
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of WrkQueue.ValidationFault)) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of WrkQueue.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of WrkQueue.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of WrkQueue.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing
@@ -38,11 +38,11 @@ Public Module FaultExtention
     End Function
 
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of DocAdmin.ValidationFault)) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of DocAdmin.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of DocAdmin.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of DocAdmin.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing
@@ -72,11 +72,11 @@ Public Module FaultExtention
     End Function
 
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Doc.ValidationFault)) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of Doc.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Doc.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of Doc.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing
@@ -106,11 +106,11 @@ Public Module FaultExtention
     End Function
 
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Auth.ValidationFault)) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of Auth.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
     <Extension> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Auth.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    Public Function AsBOValidationException(ex As FaultException(Of Auth.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing

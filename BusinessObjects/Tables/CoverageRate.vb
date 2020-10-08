@@ -6,7 +6,7 @@ Public Class CoverageRate
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CoverageRate
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CoverageRate
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageRateDAL
             If _isDSCreator Then
@@ -560,7 +560,7 @@ Public Class CoverageRate
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal CoverageId As Guid) As DataView
+    Public Shared Function GetList(CoverageId As Guid) As DataView
         Try
             Dim dal As New CoverageRateDAL
             Return New DataView(dal.LoadList(CoverageId).Tables(0))
@@ -568,7 +568,7 @@ Public Class CoverageRate
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetCovRateListForDelete(ByVal CoverageId As Guid) As DataView
+    Public Shared Function GetCovRateListForDelete(CoverageId As Guid) As DataView
         Try
             Dim dal As New CoverageRateDAL
             Return New DataView(dal.LoadCovRateListForDelete(CoverageId).Tables(0))
@@ -578,9 +578,9 @@ Public Class CoverageRate
     End Function
 
 
-    Public Shared Function GetExpectedGWP(ByVal DealerId As Guid, ByVal ProductCode As String, ByVal certificate_duration As Integer,
-                                          ByVal WarrSalesDate As Date, ByVal PurchasePrice As Double, ByVal CoverageDuration As Integer,
-                                           ByVal ProductPurchaseDate As Date) As Object
+    Public Shared Function GetExpectedGWP(DealerId As Guid, ProductCode As String, certificate_duration As Integer,
+                                          WarrSalesDate As Date, PurchasePrice As Double, CoverageDuration As Integer,
+                                           ProductPurchaseDate As Date) As Object
         Try
             Dim dal As New CoverageRateDAL
             Return dal.GetExpectedGWP(DealerId, ProductCode, certificate_duration, WarrSalesDate, PurchasePrice, CoverageDuration, ProductPurchaseDate)
@@ -590,7 +590,7 @@ Public Class CoverageRate
     End Function
 
     'Used by Olita Web Service 
-    Public Shared Function getDealerCoverageRatesInfo(ByRef ds As DataSet, ByVal dealerId As Guid, ByVal WarrSalesDate As Date) As DataSet
+    Public Shared Function getDealerCoverageRatesInfo(ByRef ds As DataSet, dealerId As Guid, WarrSalesDate As Date) As DataSet
         Try
             Dim dal As New CoverageRateDAL
             Return dal.LoadDealerCoverageRatesInfo(ds, dealerId, WarrSalesDate)
@@ -601,7 +601,7 @@ Public Class CoverageRate
     End Function
 #End Region
 
-    Public Function HasIgnorePremiumConfiguredForContract(ByVal coverageId As Guid) As Boolean
+    Public Function HasIgnorePremiumConfiguredForContract(coverageId As Guid) As Boolean
 
         Dim pCoverage As New Coverage(coverageId)
         Dim oDealer As New Dealer(pCoverage.DealerId)
@@ -640,7 +640,7 @@ Public Class CoverageRate
         Return isIgnorePremiumYesForContract
     End Function
 
-    Public Function HasDealerConfiguredForAcctBucket(ByVal coverageId As Guid) As Boolean
+    Public Function HasDealerConfiguredForAcctBucket(coverageId As Guid) As Boolean
 
         Dim pCoverage As New Coverage(coverageId)
         Dim oDealer As New Dealer(pCoverage.DealerId)
@@ -667,7 +667,7 @@ Public Class CoverageRate
         Return isDealerConfiguredForAcctBucket
     End Function
 
-    Public Function HasProductConfiguredForSequentialRenewalNo(ByVal coverageId As Guid) As Boolean
+    Public Function HasProductConfiguredForSequentialRenewalNo(coverageId As Guid) As Boolean
 
         Dim pCoverage As New Coverage(coverageId)
         Dim oDealer As New Dealer(pCoverage.DealerId)
@@ -700,11 +700,11 @@ Public Class CoverageRate
     Public NotInheritable Class ValidCoverageRates
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_RATE_FORM009)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageRate = CType(objectToValidate, CoverageRate)
 
             Dim bValid As Boolean = True
@@ -724,7 +724,7 @@ Public Class CoverageRate
         End Function
 
         ' It validates that the price range falls within the previous and next range +- THRESHOLD
-        Private Function ValidateRange(ByVal sNewLow As Assurant.Common.Types.DecimalType, ByVal sNewHigh As Assurant.Common.Types.DecimalType, ByVal oCoverageRate As CoverageRate) As Boolean
+        Private Function ValidateRange(sNewLow As Assurant.Common.Types.DecimalType, sNewHigh As Assurant.Common.Types.DecimalType, oCoverageRate As CoverageRate) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)
             Dim oNewHigh As Double = Math.Round(Convert.ToDouble(sNewHigh.Value), 2)
@@ -785,11 +785,11 @@ Public Class CoverageRate
     Public NotInheritable Class ValidCoverageSum
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_RATE_FORM010)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageRate = CType(objectToValidate, CoverageRate)
 
             'US 521697 check if dealer is configured for Account Bucket, if not then only validate for > 100% calculation
@@ -820,11 +820,11 @@ Public Class CoverageRate
     Public NotInheritable Class ValidGrossAmountPercent
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_RATE_FORM013)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageRate = CType(objectToValidate, CoverageRate)
             If Not obj.GrossAmountPercent Is Nothing Then
                 If ((obj.GrossAmountPercent.Value) > Convert.ToDecimal(100)) Then
@@ -842,11 +842,11 @@ Public Class CoverageRate
     Public NotInheritable Class ValidateRenewalNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_RATE_FORM015)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageRate = CType(objectToValidate, CoverageRate)
             If obj IsNot Nothing AndAlso obj.LowPrice IsNot Nothing AndAlso obj.HighPrice IsNot Nothing AndAlso obj.RenewalNumber IsNot Nothing Then
                 If Not obj.IsProductSetForSequenceRenewalNo Then
@@ -859,7 +859,7 @@ Public Class CoverageRate
             Return True
 
         End Function
-        Private Function CheckRenewalNumber(ByVal sNewLow As Assurant.Common.Types.DecimalType, ByVal sNewHigh As Assurant.Common.Types.DecimalType, ByVal sNewRenewalNumber As Assurant.Common.Types.LongType, ByVal oCoverageRate As CoverageRate) As Boolean
+        Private Function CheckRenewalNumber(sNewLow As Assurant.Common.Types.DecimalType, sNewHigh As Assurant.Common.Types.DecimalType, sNewRenewalNumber As Assurant.Common.Types.LongType, oCoverageRate As CoverageRate) As Boolean
 
             Dim bValid As Boolean = True
             Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)
@@ -921,7 +921,7 @@ Public Class CoverageRate
             Return bValid
         End Function
 
-        Private Function CheckRenewalNumberForProduct(ByVal sNewLow As Assurant.Common.Types.DecimalType, ByVal sNewHigh As Assurant.Common.Types.DecimalType, ByVal sNewRenewalNumber As Assurant.Common.Types.LongType, ByVal oCoverageRate As CoverageRate) As Boolean
+        Private Function CheckRenewalNumberForProduct(sNewLow As Assurant.Common.Types.DecimalType, sNewHigh As Assurant.Common.Types.DecimalType, sNewRenewalNumber As Assurant.Common.Types.LongType, oCoverageRate As CoverageRate) As Boolean
 
             Dim bValid As Boolean = True
             Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)

@@ -11,20 +11,20 @@
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal isNew As Boolean, ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(isNew As Boolean, id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(isNew, id)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal isNew As Boolean, ByVal id As Guid)
+    Protected Sub Load(isNew As Boolean, id As Guid)
         Try
             Dim dal As New CommPCodeEntityListDAL
             If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then

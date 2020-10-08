@@ -4,7 +4,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,7 +53,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New OcMessageAttemptsDAL
             If _isDSCreator Then
@@ -223,7 +223,7 @@
 
 #Region "Public Members"
 
-    Public Sub SaveNewMsgAttempt(ByVal messageId As Guid, ByVal recipientAddress As String, ByVal description As String, ByVal senderReason As String, ByRef returnCode As Integer, ByRef returnMessage As String)
+    Public Sub SaveNewMsgAttempt(messageId As Guid, recipientAddress As String, description As String, senderReason As String, ByRef returnCode As Integer, ByRef returnMessage As String)
         Dim dal As New OcMessageAttemptsDAL
         dal.AddMessageAttempt(messageId, recipientAddress, description, senderReason, returnCode, returnMessage)
     End Sub
@@ -231,7 +231,7 @@
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal ocMessageId As Guid) As DataView
+    Public Shared Function GetList(ocMessageId As Guid) As DataView
         Try
             Dim dal As New OcMessageAttemptsDAL
             Return New DataView(dal.LoadList(ocMessageId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -264,7 +264,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

@@ -21,7 +21,7 @@ Public Class ApInvoiceLines
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -35,20 +35,20 @@ Public Class ApInvoiceLines
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -70,7 +70,7 @@ Public Class ApInvoiceLines
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New ApInvoiceLinesDAL            
             If _isDSCreator Then
@@ -452,7 +452,7 @@ Public Class ApInvoiceLines
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Function GetApInvoiceLines(ByVal accountPayableInvoiceHeaderId As Guid) As DataView
+    Public Function GetApInvoiceLines(accountPayableInvoiceHeaderId As Guid) As DataView
         Try
             Dim dal As New ApInvoiceLinesDAL
             Dim ds As DataSet = New DataSet
@@ -465,7 +465,7 @@ Public Class ApInvoiceLines
         End Try
     End Function
 
-    public Function GetAuthorization(ByVal serviceCenterId As Guid , ByVal claimNumber As String, ByVal authorizationNumber As string) As Dataview
+    public Function GetAuthorization(serviceCenterId As Guid , claimNumber As String, authorizationNumber As string) As Dataview
         Try
             Dim dal As New ApInvoiceLinesDAL
             Dim ds As DataSet = New DataSet
@@ -477,7 +477,7 @@ Public Class ApInvoiceLines
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public function GetPoLines(ByVal authorizationIds As Generic.List(Of Guid)) As Dataview
+    Public function GetPoLines(authorizationIds As Generic.List(Of Guid)) As Dataview
         Try
             Dim dal As New ApInvoiceLinesDAL
             Dim ds As DataSet = New DataSet
@@ -520,7 +520,7 @@ Public Class ApInvoiceLines
         Public Const MSG_THE_VALUE_REQUIRED_UOM As String = "MSG_THE_VALUE_REQUIRED_UOM"
         Public Const MSG_THE_VALUE_REQUIRED_TOTAL_PRICE As String = "MSG_THE_VALUE_REQUIRED_TOTAL_PRICE"
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -532,11 +532,11 @@ Public Class ApInvoiceLines
     Public NotInheritable class ValueMandatoryVendorItem
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_ITEM_CODE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj = CType(objectToValidate, ApInvoiceLines)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
@@ -551,11 +551,11 @@ Public Class ApInvoiceLines
     Public NotInheritable class ValueMandatoryVendorItemDescription
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_DESCRIPTION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj = CType(objectToValidate, ApInvoiceLines)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
@@ -570,11 +570,11 @@ Public Class ApInvoiceLines
     Public NotInheritable class ValueMandatoryQuantity
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_QTY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj = CType(objectToValidate, ApInvoiceLines)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
@@ -589,11 +589,11 @@ Public Class ApInvoiceLines
     Public NotInheritable class ValueMandatoryUnitPrice
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_UNIT_PRICE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj = CType(objectToValidate, ApInvoiceLines)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
@@ -608,11 +608,11 @@ Public Class ApInvoiceLines
     Public NotInheritable class ValueMandatoryTotalPrice
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_TOTAL_PRICE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj = CType(objectToValidate, ApInvoiceLines)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
@@ -627,11 +627,11 @@ Public Class ApInvoiceLines
     Public NotInheritable class ValueMandatoryUom
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_UOM)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj = CType(objectToValidate, ApInvoiceLines)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False

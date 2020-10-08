@@ -7,7 +7,7 @@
     Public Sub New()
         MyBase.New()
     End Sub
-    Public Sub New(ByVal oSearch As PriceListSearchDC)
+    Public Sub New(oSearch As PriceListSearchDC)
         MyBase.New()
         InForceDate = oSearch.In_Force_Date
         ClaimNumber = oSearch.Claim_Number
@@ -35,7 +35,7 @@
         End If
     End Sub
 
-    Public Shared Function GetCompanyId(ByVal Companycode As String) As Guid
+    Public Shared Function GetCompanyId(Companycode As String) As Guid
         Dim oUser As New User(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Dim userAssignedCompaniesDv As DataView = oUser.GetSelectedAssignedCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
         Dim companyId As System.Guid = Guid.Empty
@@ -54,7 +54,7 @@
         End If
     End Function
 
-    Public Function GetPriceList(ByVal oPriceListSearch As PriceListSearchDC) As DataSet Implements IPriceListSearch.GetPriceList
+    Public Function GetPriceList(oPriceListSearch As PriceListSearchDC) As DataSet Implements IPriceListSearch.GetPriceList
         Try
             Dim dal As New PriceListDetailDAL
             Return dal.GetPriceList(InForceDate, ClaimNumber, CompanyCode, "", "", "", "", ServiceClassCode, ServiceTypeCode, Make, Model, LowPrice, HighPrice, ServiceLevelCode)

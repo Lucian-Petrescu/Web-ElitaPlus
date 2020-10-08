@@ -7,7 +7,7 @@ Public Class CreditCardFormat
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class CreditCardFormat
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class CreditCardFormat
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CreditCardFormatDAL
             If _isDSCreator Then
@@ -85,7 +85,7 @@ Public Class CreditCardFormat
 #Region "Private Members"
     'Initialization code for new objects
     Private _regularExpression As RegularExpression
-    Private Sub Initialize(ByVal blnNew As Boolean)
+    Private Sub Initialize(blnNew As Boolean)
         If _regularExpression Is Nothing Then
             If blnNew Then
                 _regularExpression = New RegularExpression(Dataset)
@@ -195,7 +195,7 @@ Public Class CreditCardFormat
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -213,7 +213,7 @@ Public Class CreditCardFormat
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal CreditCardTypeId As Guid) As CreditCardFormatSearchDV
+    Public Shared Function LoadList(CreditCardTypeId As Guid) As CreditCardFormatSearchDV
         Try
             Dim dal As New CreditCardFormatDAL
             Return New CreditCardFormatSearchDV(dal.LoadList(CreditCardTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -222,7 +222,7 @@ Public Class CreditCardFormat
         End Try
     End Function
 
-    Public Shared Function LoadByCode(ByVal CreditCardTypeCode As String) As DataView
+    Public Shared Function LoadByCode(CreditCardTypeCode As String) As DataView
         Try
             Dim dal As New CreditCardFormatDAL
             Return dal.LoadByCode(CreditCardTypeCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0).DefaultView
@@ -231,7 +231,7 @@ Public Class CreditCardFormat
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CreditCardFormatSearchDV, ByVal NewCreditCardFormatBO As CreditCardFormat)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CreditCardFormatSearchDV, NewCreditCardFormatBO As CreditCardFormat)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -256,7 +256,7 @@ Public Class CreditCardFormat
         End If
     End Sub
 
-    Public Shared Function IsCreditCardValid(ByVal CreditCardTypeCode As String, ByVal CreditCardNumber As String) As Boolean
+    Public Shared Function IsCreditCardValid(CreditCardTypeCode As String, CreditCardNumber As String) As Boolean
         Dim dv As DataView = CreditCardFormat.LoadByCode(CreditCardTypeCode)
         If dv Is Nothing OrElse dv.Count <= 0 OrElse dv.Item(0).Item(CreditCardFormatSearchDV.COL_FORMAT).Equals(String.Empty) Then
             Throw New StoredProcedureGeneratedException("Credit Card Format Error", Common.ErrorCodes.WS_CREDIT_CARD_FORMAT_NOT_FOUND)

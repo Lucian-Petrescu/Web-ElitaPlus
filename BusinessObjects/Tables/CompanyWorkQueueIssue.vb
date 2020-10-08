@@ -6,7 +6,7 @@ Public Class CompanyWorkQueueIssue
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CompanyWorkQueueIssue
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CompanyWorkQueueIssue
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New companyworkqueueissuedAL
             If _isDSCreator Then
@@ -172,7 +172,7 @@ Public Class CompanyWorkQueueIssue
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As RuleIssue)
+    Public Sub Copy(original As RuleIssue)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Rule Issue.")
         End If
@@ -184,15 +184,15 @@ Public Class CompanyWorkQueueIssue
     Public Class CompanyWorkqueueIssueList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Issue)
+        Public Sub New(parent As Issue)
             MyBase.New(LoadTable(parent), GetType(CompanyWorkQueueIssue), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, CompanyWorkQueueIssue).IssueId.Equals(CType(Parent, Issue).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Issue) As DataTable
+        Private Shared Function LoadTable(parent As Issue) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(CompanyWorkqueueIssueList)) Then
                     Dim dal As New CompanyWorkQueueIssueDAL
@@ -213,12 +213,12 @@ Public Class CompanyWorkQueueIssue
         Inherits ValidBaseAttribute
         Implements IValidatorAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.INVALID_COMPANY_WORKQUEUE_ISSUE)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             Dim obj As CompanyWorkQueueIssue = CType(context, CompanyWorkQueueIssue)
             For Each dtrow As DataRow In obj.Dataset.Tables(CompanyWorkQueueIssueDAL.TABLE_NAME).Rows
                 If Not dtrow.RowState = DataRowState.Deleted AndAlso Not dtrow.RowState = DataRowState.Detached Then

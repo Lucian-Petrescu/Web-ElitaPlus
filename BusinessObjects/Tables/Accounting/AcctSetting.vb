@@ -6,7 +6,7 @@ Public Class AcctSetting
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,26 +20,26 @@ Public Class AcctSetting
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Public Sub New(ByVal AccountingCompanyId As Guid, ByVal Code As String, ByVal VendType As AcctSettingDAL.VendorType, Optional ByVal AcctType As String = "")
+    Public Sub New(AccountingCompanyId As Guid, Code As String, VendType As AcctSettingDAL.VendorType, Optional ByVal AcctType As String = "")
         MyBase.New()
         Dataset = New DataSet
 
@@ -64,7 +64,7 @@ Public Class AcctSetting
     End Sub
 
     'For Branches
-    Public Sub New(ByVal AccountingCompanyId As Guid, ByVal DealerCode As String, ByVal BranchCode As String, Optional ByVal AcctType As String = ACCT_TYPE_DEBITOR)
+    Public Sub New(AccountingCompanyId As Guid, DealerCode As String, BranchCode As String, Optional ByVal AcctType As String = ACCT_TYPE_DEBITOR)
         MyBase.New()
         Dataset = New DataSet
 
@@ -95,7 +95,7 @@ Public Class AcctSetting
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctSettingDAL
             If _isDSCreator Then
@@ -1300,7 +1300,7 @@ Public Class AcctSetting
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As AcctSetting)
+    Public Sub Copy(original As AcctSetting)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing accounting setting.")
         End If
@@ -1308,7 +1308,7 @@ Public Class AcctSetting
         CopyFrom(original)
     End Sub
 
-    Public Shared Function IsIDXAcctSettingAndCode(ByVal accountCompanyId As Guid, ByVal accountCode As String) As Boolean
+    Public Shared Function IsIDXAcctSettingAndCode(accountCompanyId As Guid, accountCode As String) As Boolean
         Dim dal As New AcctSettingDAL
 
         Return dal.IsIDXAcctSettingAndCode(accountCompanyId, accountCode)
@@ -1322,7 +1322,7 @@ Public Class AcctSetting
         Return dal.LoadCounterPartById(Id)
     End Function
 #Region "Dealer Group"
-    Public Shared Function GetDealerGroups(ByVal strDealerGroupName As String, ByVal strDealerGroupCode As String) As DealerGroupAcctSettingsDV
+    Public Shared Function GetDealerGroups(strDealerGroupName As String, strDealerGroupCode As String) As DealerGroupAcctSettingsDV
 
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
@@ -1367,7 +1367,7 @@ Public Class AcctSetting
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1388,7 +1388,7 @@ Public Class AcctSetting
 #End Region
 
 #Region "Commission Entity"
-    Public Shared Function GetCommissionEntities(ByVal strCommissionEntityName As String) As CommissionEntityAcctSettingsDV
+    Public Shared Function GetCommissionEntities(strCommissionEntityName As String) As CommissionEntityAcctSettingsDV
 
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
@@ -1432,7 +1432,7 @@ Public Class AcctSetting
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1448,7 +1448,7 @@ Public Class AcctSetting
         End Function
     End Class
 #End Region
-    Public Function GetDealers(ByVal strDealerName As String, ByVal strDealerCode As String) As DealerAcctSettingsDV
+    Public Function GetDealers(strDealerName As String, strDealerCode As String) As DealerAcctSettingsDV
 
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
@@ -1466,7 +1466,7 @@ Public Class AcctSetting
 
     End Function
 
-    Public Shared Function GetDealersForAcctSetting(ByVal oCompanyIds As ArrayList) As DealerAcctSettingsDV
+    Public Shared Function GetDealersForAcctSetting(oCompanyIds As ArrayList) As DealerAcctSettingsDV
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
         Try
@@ -1483,7 +1483,7 @@ Public Class AcctSetting
 
 
 
-    Public Shared Function GetAccountingCompanies(ByVal Companies As ArrayList) As AcctCompanyDV
+    Public Shared Function GetAccountingCompanies(Companies As ArrayList) As AcctCompanyDV
 
         Try
             Dim _AcctDAL As New AcctCompanyDAL
@@ -1511,7 +1511,7 @@ Public Class AcctSetting
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1528,7 +1528,7 @@ Public Class AcctSetting
         End Function
     End Class
 
-    Public Function GetServiceCenters(ByVal strSCName As String, ByVal strSCCode As String) As ServiceCenterAcctSettingsDV
+    Public Function GetServiceCenters(strSCName As String, strSCCode As String) As ServiceCenterAcctSettingsDV
 
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
@@ -1546,7 +1546,7 @@ Public Class AcctSetting
 
     End Function
 
-    Public Shared Function GetServiceCentersByAcctCompany(ByVal oAcctCompanyIds As ArrayList, Optional ByVal oSVCIDs As Generic.List(Of Guid) = Nothing) As DataSet
+    Public Shared Function GetServiceCentersByAcctCompany(oAcctCompanyIds As ArrayList, Optional ByVal oSVCIDs As Generic.List(Of Guid) = Nothing) As DataSet
         Dim _dal As New AcctSettingDAL
         Try
             Return _dal.GetServiceCentersByAcctCompanies(oAcctCompanyIds, oSVCIDs)
@@ -1555,7 +1555,7 @@ Public Class AcctSetting
         End Try
     End Function
 
-    Public Shared Function GetServiceCentersByCountry(ByVal oAcctCountryIds As ArrayList) As DataSet
+    Public Shared Function GetServiceCentersByCountry(oAcctCountryIds As ArrayList) As DataSet
         Dim _dal As New AcctSettingDAL
         Try
             Return _dal.GetServiceCentersByCountries(oAcctCountryIds)
@@ -1565,7 +1565,7 @@ Public Class AcctSetting
     End Function
 
 
-    Public Shared Function GetServiceCentersForAcctSetting(ByVal oCountryIds As ArrayList) As ServiceCenterAcctSettingsDV
+    Public Shared Function GetServiceCentersForAcctSetting(oCountryIds As ArrayList) As ServiceCenterAcctSettingsDV
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
 
@@ -1594,7 +1594,7 @@ Public Class AcctSetting
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1622,14 +1622,14 @@ Public Class AcctSetting
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
 
 #Region "Branch"
 
-    Public Function GetBranches(ByVal strBranchName As String, ByVal strBranchCode As String) As BranchAcctSettingsDV
+    Public Function GetBranches(strBranchName As String, strBranchCode As String) As BranchAcctSettingsDV
 
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
@@ -1647,7 +1647,7 @@ Public Class AcctSetting
 
     End Function
 
-    Public Shared Function GetDealersForBranch(ByVal oCompanyIds As ArrayList) As DealerAcctSettingsDV
+    Public Shared Function GetDealersForBranch(oCompanyIds As ArrayList) As DealerAcctSettingsDV
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
         Try
@@ -1662,7 +1662,7 @@ Public Class AcctSetting
         End Try
     End Function
 
-    Public Shared Function GetBranchesForAcctSetting(ByVal oDealerId As Guid) As BranchAcctSettingsDV
+    Public Shared Function GetBranchesForAcctSetting(oDealerId As Guid) As BranchAcctSettingsDV
         Dim _dal As New AcctSettingDAL
         Dim ds As DataSet
         Try
@@ -1690,7 +1690,7 @@ Public Class AcctSetting
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1717,11 +1717,11 @@ Public Class AcctSetting
     Public NotInheritable Class ValidPaymentTerms
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.ERR_BO_PAYMENT_TERMS_REQD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
             If (obj.PaymentTermsId = Guid.Empty) Then
                 Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
@@ -1739,12 +1739,12 @@ Public Class AcctSetting
     Public NotInheritable Class ValidSSVendorId
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
 
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
             If (obj.AccountAnalysisCode6 Is Nothing OrElse obj.AccountAnalysisCode6.Trim = String.Empty) Then
                 Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
@@ -1757,7 +1757,7 @@ Public Class AcctSetting
 
         End Function
 
-        Public Overrides Function isMandatory(ByVal PropName As String, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function isMandatory(PropName As String, objectToValidate As Object) As Boolean
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
             Dim reqProps() As String = New String() {"ACCOUNTANALYSISCODE6"}
 
@@ -1788,11 +1788,11 @@ Public Class AcctSetting
     Public NotInheritable Class ValidAccountNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_TOO_SHORT_OR_TOO_LONG)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
 
             If Not valueToCheck Is Nothing Then
@@ -1818,12 +1818,12 @@ Public Class AcctSetting
         Inherits ValidBaseAttribute
 
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
 
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
 
 
@@ -1837,7 +1837,7 @@ Public Class AcctSetting
 
         End Function
 
-        Public Overrides Function isMandatory(ByVal PropName As String, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function isMandatory(PropName As String, objectToValidate As Object) As Boolean
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
             Dim reqProps() As String = New String() {"SUPPLIERANALYSISCODE1"}
 

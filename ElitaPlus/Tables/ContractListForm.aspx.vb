@@ -224,16 +224,20 @@ Partial Class ContractListForm
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
         Try
-            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
-                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
-                    btnEditItem = CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl("SelectAction"), LinkButton)
-                    btnEditItem.Text = dvRow(Contract.ContractSearchDV.COL_DEALER_CODE).ToString
-                    e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(Contract.ContractSearchDV.COL_COMPANY_CODE).ToString
-                    e.Row.Cells(GRID_COL_DEALER_NAME_IDX).Text = dvRow(Contract.ContractSearchDV.COL_DEALER_NAME).ToString
-                    e.Row.Cells(GRID_COL_EFFECTIVE_IDX).Text = GetDateFormattedString(CType(dvRow(Contract.ContractSearchDV.COL_EFFECTIVE), Date))
-                    e.Row.Cells(GRID_COL_EXPIRATION_IDX).Text = GetDateFormattedString(CType(dvRow(Contract.ContractSearchDV.COL_EXPIRATION), Date))
-                    e.Row.Cells(GRID_COL_CONTRACT_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
-                End If
+            If _
+                dvRow IsNot Nothing AndAlso Not State.bnoRow AndAlso
+                (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse
+                 itemType = ListItemType.SelectedItem) Then
+                btnEditItem = CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl("SelectAction"), LinkButton)
+                btnEditItem.Text = dvRow(Contract.ContractSearchDV.COL_DEALER_CODE).ToString
+                e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(Contract.ContractSearchDV.COL_COMPANY_CODE).ToString
+                e.Row.Cells(GRID_COL_DEALER_NAME_IDX).Text = dvRow(Contract.ContractSearchDV.COL_DEALER_NAME).ToString
+                e.Row.Cells(GRID_COL_EFFECTIVE_IDX).Text =
+                    GetDateFormattedString(CType(dvRow(Contract.ContractSearchDV.COL_EFFECTIVE), Date))
+                e.Row.Cells(GRID_COL_EXPIRATION_IDX).Text =
+                    GetDateFormattedString(CType(dvRow(Contract.ContractSearchDV.COL_EXPIRATION), Date))
+                e.Row.Cells(GRID_COL_CONTRACT_ID_IDX).Text =
+                    GetGuidStringFromByteArray(CType(dvRow(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)

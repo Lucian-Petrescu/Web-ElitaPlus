@@ -7,7 +7,7 @@ Public Class InstallmentFactor
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class InstallmentFactor
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class InstallmentFactor
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InstallmentFactorDAL
             If _isDSCreator Then
@@ -80,7 +80,7 @@ Public Class InstallmentFactor
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal DealerId As Guid, ByVal effective As Date, ByVal expiration As Date) As DataView
+    Public Shared Function LoadList(DealerId As Guid, effective As Date, expiration As Date) As DataView
         Try
             Dim dal As New InstallmentFactorDAL
             Dim ds As DataSet
@@ -94,7 +94,7 @@ Public Class InstallmentFactor
 
     End Function
 
-    Public Shared Function GetInstallmentFactorList(ByVal DealerId As Guid, ByVal effective As Date, ByVal expiration As Date) As DataSet
+    Public Shared Function GetInstallmentFactorList(DealerId As Guid, effective As Date, expiration As Date) As DataSet
         Try
             Dim dal As New InstallmentFactorDAL
             Dim ds As DataSet
@@ -108,7 +108,7 @@ Public Class InstallmentFactor
 
     End Function
 
-    Public Shared Function LoadListByDealer(ByVal DealerId As Guid) As DataSet
+    Public Shared Function LoadListByDealer(DealerId As Guid) As DataSet
         Try
             Dim dal As New InstallmentFactorDAL
             Dim ds As DataSet
@@ -264,7 +264,7 @@ Public Class InstallmentFactor
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetInstallmentFactorByDealer(ByVal dealerID As Guid, ByVal compId As ArrayList) As InstallmentFactorSearchDV
+    Public Shared Function GetInstallmentFactorByDealer(dealerID As Guid, compId As ArrayList) As InstallmentFactorSearchDV
         Try
             Dim dal As New InstallmentFactorDAL
             Dim dv As New InstallmentFactorSearchDV(dal.GetInstallmentFactorByDealer(dealerID, compId).Tables(0))
@@ -276,7 +276,7 @@ Public Class InstallmentFactor
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As InstallmentFactor) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As InstallmentFactor) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -369,7 +369,7 @@ Public Class InstallmentFactor
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -382,11 +382,11 @@ Public Class InstallmentFactor
     Public NotInheritable Class ValidInstallmentFactor
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ERR_LOW_PAYMENT_MORE_THAN_HIGH_PAYMENT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As InstallmentFactor = CType(objectToValidate, InstallmentFactor)
             Dim bValid As Boolean = True
 
@@ -404,7 +404,7 @@ Public Class InstallmentFactor
 
         End Function
 
-        Private Function ValidateRange(ByVal sNewLow As Assurant.Common.Types.LongType, ByVal sNewHigh As Assurant.Common.Types.LongType, ByVal oInstallmentFactor As InstallmentFactor) As Boolean
+        Private Function ValidateRange(sNewLow As Assurant.Common.Types.LongType, sNewHigh As Assurant.Common.Types.LongType, oInstallmentFactor As InstallmentFactor) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = sNewLow.Value
             Dim oNewHigh As Long = sNewHigh.Value
@@ -461,11 +461,11 @@ Public Class InstallmentFactor
 Public NotInheritable Class ValidInstallmentFactorPeriod
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVALID_INSTALLMENT_FACTOR_PERIOD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As InstallmentFactor = CType(objectToValidate, InstallmentFactor)
             Dim bValid As Boolean = True
@@ -532,11 +532,11 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
         Dim ar As New ArrayList
         Dim bValidFactor As Boolean = False
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVALID_INSTALLMENT_FACTOR_PERCENT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As InstallmentFactor = CType(objectToValidate, InstallmentFactor)
             Dim bValid As Boolean = True
 
@@ -560,7 +560,7 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
 
         End Function
 
-        Private Function ValidateRange(ByVal oInstallmentFactor As InstallmentFactor) As Boolean
+        Private Function ValidateRange(oInstallmentFactor As InstallmentFactor) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = oInstallmentFactor.LowNumberOfPayments
             Dim oNewHigh As Long = oInstallmentFactor.HighNumberOfPayments
@@ -627,7 +627,7 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
 
         End Function
 
-        Public Function ValidateInstallmentFactorSequence(ByVal oNewFactor As DecimalType, ByVal oFactor As DecimalType) As Boolean
+        Public Function ValidateInstallmentFactorSequence(oNewFactor As DecimalType, oFactor As DecimalType) As Boolean
             Dim bValid As Boolean = False
 
             If (Not oNewFactor Is Nothing AndAlso Not oFactor Is Nothing) Then

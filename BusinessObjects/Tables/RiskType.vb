@@ -38,7 +38,7 @@ Public Class RiskType
 
     End Sub
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
 
         MyBase.New()
         Dataset = New Dataset
@@ -46,19 +46,19 @@ Public Class RiskType
 
     End Sub
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -77,7 +77,7 @@ Public Class RiskType
     End Sub
 
     'Call this method from the Constructor for Update and Delete
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
 
         'Dim dal As RiskTypeDAL = New RiskTypeDAL
         'Dim ds As Dataset = New Dataset
@@ -287,9 +287,9 @@ Public Class RiskType
 
 #Region "List Methods"
 
-    Public Shared Function GetRiskTypeList(ByVal descriptionMask As String, ByVal riskTypeEnglishMask As String, _
-                                           ByVal riskGroupIdForSearch As Guid, ByVal languageId As Guid, _
-                                           ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function GetRiskTypeList(descriptionMask As String, riskTypeEnglishMask As String, _
+                                           riskGroupIdForSearch As Guid, languageId As Guid, _
+                                           CompanyGroupId As Guid) As DataView
         Try
             Dim dal As New RiskTypeDAL
             Dim ds As Dataset
@@ -303,7 +303,7 @@ Public Class RiskType
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table

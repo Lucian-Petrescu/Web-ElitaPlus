@@ -6,7 +6,7 @@ Public Class ServCenterMethRepair
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ServCenterMethRepair
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ServCenterMethRepair
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServCenterMethRepairDAL
             If _isDSCreator Then
@@ -194,7 +194,7 @@ Public Class ServCenterMethRepair
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetMethodOfRepairList(ByVal serviceCenterId As Guid) As Generic.List(Of ServCenterMethRepair)
+    Public Shared Function GetMethodOfRepairList(serviceCenterId As Guid) As Generic.List(Of ServCenterMethRepair)
         Dim dal As New ServCenterMethRepairDAL
         Dim ds As DataSet = dal.GetSelectedListMor(serviceCenterId)
         Dim morList As New Generic.List(Of ServCenterMethRepair)

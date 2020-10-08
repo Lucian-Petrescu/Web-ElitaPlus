@@ -3,7 +3,7 @@ Public Class VscTableProcessed
 
 #Region "StoreProcedures Control"
 
-    Public Shared Sub ProcessFileRecords(ByVal oVscTableProcessedData As VscTableProcessedData)
+    Public Shared Sub ProcessFileRecords(oVscTableProcessedData As VscTableProcessedData)
         ' Dim ds As DataSet
         Try
             Dim dal As New VscTableProcessedDAL

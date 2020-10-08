@@ -6,7 +6,7 @@ Public Class ProductEquipment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,26 +20,26 @@ Public Class ProductEquipment
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
-    Public Sub New(ByVal familyDS As DataSet, ByVal id As Guid, ByVal tableName As String)
+    Public Sub New(familyDS As DataSet, id As Guid, tableName As String)
         MyBase.New(False)
         Dataset = familyDS
         Load(tableName)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -60,7 +60,7 @@ Public Class ProductEquipment
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal tableName As String)
+    Protected Sub Load(tableName As String)
         Try
             Dim dal As New ProductEquipmentDAL
             If Dataset.Tables.IndexOf(tableName) < 0 Then
@@ -75,7 +75,7 @@ Public Class ProductEquipment
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductEquipmentDAL
             If _isDSCreator Then
@@ -316,7 +316,7 @@ Public Class ProductEquipment
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal ProductCodeId As Guid) As DataView
+    Public Shared Function GetList(ProductCodeId As Guid) As DataView
         Try
             Dim dal As New ProductEquipmentDAL
             Return New DataView(dal.LoadList(ProductCodeId).Tables(0))
@@ -324,7 +324,7 @@ Public Class ProductEquipment
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetBenefitsList(ByVal ProductCodeId As Guid) As ProductEquipmentSearchDV
+    Public Shared Function GetBenefitsList(ProductCodeId As Guid) As ProductEquipmentSearchDV
         Try
             Dim dal As New ProductEquipmentDAL
 
@@ -335,7 +335,7 @@ Public Class ProductEquipment
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Private Function GetProdManuEquipList(ByVal ProductCodeId As Guid, ByVal ManufacturerId As Guid, ByVal EquipmentId As Guid) As DataView
+    Private Function GetProdManuEquipList(ProductCodeId As Guid, ManufacturerId As Guid, EquipmentId As Guid) As DataView
         Try
             Dim dal As New ProductEquipmentDAL
             Return New DataView(dal.LoadProdManuEquipList(ProductCodeId, ManufacturerId, EquipmentId).Tables(0))
@@ -350,10 +350,10 @@ Public Class ProductEquipment
     Public NotInheritable Class ValidEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM003)
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
             Dim bValid As Boolean = True
@@ -377,10 +377,10 @@ Public Class ProductEquipment
     Public NotInheritable Class EquipmentRequired
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM004)
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
             If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
@@ -397,10 +397,10 @@ Public Class ProductEquipment
     Public NotInheritable Class EquipmentOverlappingValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM005)
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
             If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
@@ -444,11 +444,11 @@ Public Class ProductEquipment
     Public NotInheritable Class ValidExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
             Dim bValid As Boolean = True
@@ -467,7 +467,7 @@ Public Class ProductEquipment
 
         End Function
 
-        Private Function ValidateExpirationRange(ByVal NewEffectiveDateProductEquip As Assurant.Common.Types.DateType, ByVal NewExpirationDateProductEquip As Assurant.Common.Types.DateType, ByVal oProductEquipment As ProductEquipment) As Boolean
+        Private Function ValidateExpirationRange(NewEffectiveDateProductEquip As Assurant.Common.Types.DateType, NewExpirationDateProductEquip As Assurant.Common.Types.DateType, oProductEquipment As ProductEquipment) As Boolean
 
             Dim bValid As Boolean = True
             Dim bChangeRec As Boolean = False
@@ -528,7 +528,7 @@ Public Class ProductEquipment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -577,7 +577,7 @@ Public Class ProductEquipment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -599,11 +599,11 @@ Public Class ProductEquipment
     Public Class ProductBenefitsDetailList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ProductCode)
+        Public Sub New(parent As ProductCode)
             MyBase.New(LoadTable(parent), GetType(ProductEquipment), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ProductEquipment).ProductCodeId.Equals(CType(Parent, ProductCode).Id)
         End Function
 
@@ -617,7 +617,7 @@ Public Class ProductEquipment
             Return bo
         End Function
 
-        Public Function Find(ByVal ProductBenefitsId As Guid) As ProductEquipment
+        Public Function Find(ProductBenefitsId As Guid) As ProductEquipment
             Dim bo As ProductEquipment
             For Each bo In Me
                 If bo.Id.Equals(ProductBenefitsId) Then Return bo
@@ -625,7 +625,7 @@ Public Class ProductEquipment
             Return Nothing
         End Function
 
-        Public Function Delete(ByVal ProductBenefitsId As Guid)
+        Public Function Delete(ProductBenefitsId As Guid)
             Dim bo As ProductEquipment
             Dim dr As DataRow
 
@@ -637,7 +637,7 @@ Public Class ProductEquipment
 
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ProductCode) As DataTable
+        Private Shared Function LoadTable(parent As ProductCode) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ProductBenefitsDetailList)) Then
                     parent.LoadProductBenefits()

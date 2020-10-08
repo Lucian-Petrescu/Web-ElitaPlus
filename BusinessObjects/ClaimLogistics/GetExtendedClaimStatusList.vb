@@ -12,7 +12,7 @@ Public Class GetExtendedClaimStatusList
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetExtendedClaimStatusListDs)
+    Public Sub New(ds As GetExtendedClaimStatusListDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -25,7 +25,7 @@ Public Class GetExtendedClaimStatusList
 #Region "Private Members"
     Private _company_group_id As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetExtendedClaimStatusListDs)
+    Private Sub MapDataSet(ds As GetExtendedClaimStatusListDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -47,7 +47,7 @@ Public Class GetExtendedClaimStatusList
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetExtendedClaimStatusListDs)
+    Private Sub Load(ds As GetExtendedClaimStatusListDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -65,7 +65,7 @@ Public Class GetExtendedClaimStatusList
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetExtendedClaimStatusListDs)
+    Private Sub PopulateBOFromWebService(ds As GetExtendedClaimStatusListDs)
         Try
             If ds.GetExtendedClaimStatusList.Count = 0 Then Exit Sub
             With ds.GetExtendedClaimStatusList.Item(0)

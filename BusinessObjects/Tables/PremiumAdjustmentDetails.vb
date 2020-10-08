@@ -6,7 +6,7 @@ Public Class PremiumAdjustmentDetails
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class PremiumAdjustmentDetails
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class PremiumAdjustmentDetails
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PremiumAdjustmentDetailsDAL
             If _isDSCreator Then
@@ -333,7 +333,7 @@ Public Class PremiumAdjustmentDetails
     End Sub
 
 
-    Public Shared Sub Delete(ByVal Premium_Adjustment_Id As Guid)
+    Public Shared Sub Delete(Premium_Adjustment_Id As Guid)
 
         Dim dal As New PremiumAdjustmentDetailsDAL
         dal.Delete(Premium_Adjustment_Id)
@@ -347,7 +347,7 @@ Public Class PremiumAdjustmentDetails
 #Region "DataView Retrieveing Methods"
 
 
-    Public Shared Function getList(ByVal DealerId As Guid, ByVal CompanyId As Guid) As PremiumAdjustmentSearchDV
+    Public Shared Function getList(DealerId As Guid, CompanyId As Guid) As PremiumAdjustmentSearchDV
         Try
             Dim dal As New PremiumAdjustmentDetailsDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -358,7 +358,7 @@ Public Class PremiumAdjustmentDetails
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As PremiumAdjustmentSearchDV, ByVal bo As PremiumAdjustmentDetails) As PremiumAdjustmentSearchDV
+    Public Shared Function GetNewDataViewRow(dv As PremiumAdjustmentSearchDV, bo As PremiumAdjustmentDetails) As PremiumAdjustmentSearchDV
 
         Dim dt As DataTable
         dt = dv.Table
@@ -415,7 +415,7 @@ Public Class PremiumAdjustmentDetails
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

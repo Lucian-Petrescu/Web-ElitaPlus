@@ -6,7 +6,7 @@ Public Class ApsPublishingLog
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ApsPublishingLog
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ApsPublishingLog
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New ApsPublishingLogDAL            
             If _isDSCreator Then
@@ -294,13 +294,13 @@ Public Class ApsPublishingLog
         End Try
     End Sub
 
-    Public Shared Function GetAPSPublishingLogsList(ByVal Header As String, _
-                                  ByVal Code As String, _
-                                  ByVal MachineName As String, _
-                                  ByVal UserName As String, _
-                                  ByVal TypeName As String, _
-                                  ByVal TableName As String, _
-                                  ByVal generationDate As SearchCriteriaStructType(Of Date)) As APSOracleLogsSearchDV
+    Public Shared Function GetAPSPublishingLogsList(Header As String, _
+                                  Code As String, _
+                                  MachineName As String, _
+                                  UserName As String, _
+                                  TypeName As String, _
+                                  TableName As String, _
+                                  generationDate As SearchCriteriaStructType(Of Date)) As APSOracleLogsSearchDV
 
         Try
 
@@ -318,11 +318,11 @@ Public Class ApsPublishingLog
     Public NotInheritable Class NotMoreThan10DaysGenerationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_GENERATION_DATE_NOT_BEYOND_10_DAYS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim oApsPublishing As ApsPublishingLog = CType(objectToValidate, ApsPublishingLog)
             Dim ts As TimeSpan = (DateTime.Now - oApsPublishing.GenerationDateTime)
             If ts.Days > 10 Then
@@ -354,56 +354,56 @@ Public Class ApsPublishingLog
         Public Const COL_NAME_EXTENDED_CONTENT2 As String = ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property Header(ByVal row) As Guid
+        Public Shared ReadOnly Property Header(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_HEADER), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Type(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Type(row As DataRow) As String
             Get
                 Return row(COL_NAME_TYPE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property GenerationDateTime(ByVal row As DataRow) As Date
+        Public Shared ReadOnly Property GenerationDateTime(row As DataRow) As Date
             Get
                 Return row(COL_NAME_GENERATION_DATE_TIIME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property MachineName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property MachineName(row As DataRow) As String
             Get
                 Return row(COL_NAME_MACHINE_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property UserName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property UserName(row As DataRow) As String
             Get
                 Return row(COL_NAME_USER_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ApplicationName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ApplicationName(row As DataRow) As String
             Get
                 Return row(COL_NAME_APPLICATION_NAME).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ExendedContent(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ExendedContent(row As DataRow) As String
             Get
                 Return row(COL_NAME_EXTENDED_CONTENT).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ExendedContent2(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ExendedContent2(row As DataRow) As String
             Get
                 Return row(COL_NAME_EXTENDED_CONTENT2).ToString
             End Get

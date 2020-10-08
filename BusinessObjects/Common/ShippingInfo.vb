@@ -6,7 +6,7 @@ Public Class ShippingInfo
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ShippingInfo
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ShippingInfo
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ShippingInfoDAL
             If _isDSCreator Then
@@ -300,7 +300,7 @@ Public Class ShippingInfo
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Sub PrePopulate(ByVal objCertItemCoverage As CertItemCoverage, ByVal objServiceCenter As ServiceCenter)
+    Public Sub PrePopulate(objCertItemCoverage As CertItemCoverage, objServiceCenter As ServiceCenter)
         Dim objCert As New Certificate(objCertItemCoverage.CertId)
         Dim objAddress As New Address(objCert.AddressId)
         Address1 = objAddress.Address1
@@ -313,7 +313,7 @@ Public Class ShippingInfo
         TotalCharge = New DecimalType(objServiceCenter.ProcessingFee.Value + objCertItemCoverage.Deductible.Value)
 
     End Sub
-    Public Shared Sub DeleteNewChildShippingInfo(ByVal parentClaim As Claim)
+    Public Shared Sub DeleteNewChildShippingInfo(parentClaim As Claim)
         Dim row As DataRow
         If parentClaim.Dataset.Tables.IndexOf(ShippingInfoDAL.TABLE_NAME) >= 0 Then
             Dim rowIndex As Integer
@@ -330,7 +330,7 @@ Public Class ShippingInfo
         End If
     End Sub
 
-    Public Sub CopyFromThis(ByVal objShippingInfo As ShippingInfo)
+    Public Sub CopyFromThis(objShippingInfo As ShippingInfo)
         Address1 = objShippingInfo.Address1
         Address2 = objShippingInfo.Address2
         City = objShippingInfo.City

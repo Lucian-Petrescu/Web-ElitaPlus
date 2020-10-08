@@ -24,7 +24,7 @@ Public Class VSCModel
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -37,7 +37,7 @@ Public Class VSCModel
         Load()
     End Sub
     'Existing BO
-    Public Sub New(ByVal manufacturer As String, ByVal description As String, ByVal year As Integer)
+    Public Sub New(manufacturer As String, description As String, year As Integer)
         MyBase.New()
         Dataset = New Dataset
         Load(manufacturer, description, year)
@@ -45,20 +45,20 @@ Public Class VSCModel
 
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -80,7 +80,7 @@ Public Class VSCModel
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCModelDAL
             If _isDSCreator Then
@@ -103,7 +103,7 @@ Public Class VSCModel
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal manufacturer As String, ByVal description As String, ByVal year As Integer)
+    Protected Sub Load(manufacturer As String, description As String, year As Integer)
         Try
             Dim dal As New VSCModelDAL
             If _isDSCreator Then
@@ -377,7 +377,7 @@ Public Class VSCModel
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Sub Copy(ByVal original As VSCModel)
+    Public Sub Copy(original As VSCModel)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing VSC MODEL")
         End If
@@ -387,11 +387,11 @@ Public Class VSCModel
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal make As String, _
-                                   ByVal model As String, _
-                                   ByVal trim As String, _
-                                   ByVal year As String, _
-                                   ByVal coverageSupport As String) As VSCModelSearchDV
+    Public Shared Function getList(make As String, _
+                                   model As String, _
+                                   trim As String, _
+                                   year As String, _
+                                   coverageSupport As String) As VSCModelSearchDV
         Try
 
             Dim dal As New VSCModelDAL
@@ -414,12 +414,12 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function getDistinctList(ByVal make As String, _
-                                   ByVal model As String, _
-                                   ByVal trim As String, _
-                                   ByVal year As String, _
-                                   ByVal requestedfield As String, _
-                                   ByVal coverageSupport As String) As VSCModelSearchDV
+    Public Shared Function getDistinctList(make As String, _
+                                   model As String, _
+                                   trim As String, _
+                                   year As String, _
+                                   requestedfield As String, _
+                                   coverageSupport As String) As VSCModelSearchDV
         Try
 
             Dim dal As New VSCModelDAL
@@ -442,7 +442,7 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -467,7 +467,7 @@ Public Class VSCModel
 
 #Region "Web Services Methods"
 
-    Public Function GetModels(ByVal DS As VSCGetModelsInputDs) As String
+    Public Function GetModels(DS As VSCGetModelsInputDs) As String
         Try
 
             Dim sMake As String = ""
@@ -513,7 +513,7 @@ Public Class VSCModel
         End Try
     End Function
 
-    Public Function GetVersions(ByVal DS As VSCGetVersionsInputDs) As String
+    Public Function GetVersions(DS As VSCGetVersionsInputDs) As String
         Try
 
             Dim sMake As String = ""
@@ -572,7 +572,7 @@ Public Class VSCModel
         End Try
     End Function
 
-    Public Function GetYears(ByVal DS As VSCGetYearsInputDs) As String
+    Public Function GetYears(DS As VSCGetYearsInputDs) As String
         Try
 
             Dim sMake As String = ""
@@ -633,7 +633,7 @@ Public Class VSCModel
         End Try
     End Function
 
-    Public Shared Function GetVSCModels(ByVal companyGroupId As Guid, ByVal make As String) As DataSet
+    Public Shared Function GetVSCModels(companyGroupId As Guid, make As String) As DataSet
         Try
             Dim dal As New VSCModelDAL
             Return dal.LoadVSCModels(companyGroupId, make)
@@ -644,7 +644,7 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function GetVSCEngineVersions(ByVal companyGroupId As Guid, ByVal make As String, ByVal model As String) As DataSet
+    Public Shared Function GetVSCEngineVersions(companyGroupId As Guid, make As String, model As String) As DataSet
         Try
             Dim dal As New VSCModelDAL
             Return dal.LoadVSCEngineVersions(companyGroupId, make, model)
@@ -654,7 +654,7 @@ Public Class VSCModel
         End Try
 
     End Function
-    Public Shared Function GetVSCYears(ByVal companyGroupId As Guid, ByVal make As String, ByVal model As String, ByVal engineVersion As String) As DataSet
+    Public Shared Function GetVSCYears(companyGroupId As Guid, make As String, model As String, engineVersion As String) As DataSet
         Try
             Dim dal As New VSCModelDAL
             Return dal.LoadVSCYears(companyGroupId, make, model, engineVersion)
@@ -665,7 +665,7 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function ValidateExternalCarCode(ByVal companyGroupId As Guid, ByVal externalCarCode As String, ByVal ManufacturerId As Guid, ByVal model As String, ByVal engineVersion As String) As Boolean
+    Public Shared Function ValidateExternalCarCode(companyGroupId As Guid, externalCarCode As String, ManufacturerId As Guid, model As String, engineVersion As String) As Boolean
         Dim isValid As Boolean = True
         Dim dal As VSCModelDAL
         Dim ds As DataSet
@@ -707,7 +707,7 @@ Public Class VSCModel
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
 
         End Sub
@@ -730,11 +730,11 @@ Public Class VSCModel
     Public NotInheritable Class Valid_CarCode
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CAR_CODE_ERROR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As VSCModel = CType(objectToValidate, VSCModel)
             If obj.CarCode Is Nothing Then Return True
             Dim strCarCode As String = obj.CarCode
@@ -755,11 +755,11 @@ Public Class VSCModel
     Public NotInheritable Class Valid_External_Car_Code
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EXTERNAL_CAR_CODE_ERROR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As VSCModel = CType(objectToValidate, VSCModel)
             If obj.ExternalCarCode Is Nothing Then Return True
             Dim strExternalCarCode As String = obj.ExternalCarCode

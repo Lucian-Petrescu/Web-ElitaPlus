@@ -6,7 +6,7 @@ Public Class OcTemplateRecipient
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class OcTemplateRecipient
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class OcTemplateRecipient
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New OcTemplateRecipientDAL            
             If _isDSCreator Then
@@ -202,7 +202,7 @@ Public Class OcTemplateRecipient
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal templateId As Guid) As DataView
+    Public Shared Function GetList(templateId As Guid) As DataView
         Try
             Dim dal As New OcTemplateRecipientDAL
             Return New DataView(dal.LoadList(templateId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -232,7 +232,7 @@ Public Class OcTemplateRecipient
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -262,11 +262,11 @@ Public Class OcTemplateRecipient
     Public NotInheritable Class NewValueMandatory
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FIELD_NUMBER_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateRecipient = CType(objectToValidate, OcTemplateRecipient)
 
             If String.IsNullOrEmpty(obj.RecipientSourceFieldXcd) AndAlso String.IsNullOrEmpty(obj.RecipientAddress) Then
@@ -282,11 +282,11 @@ Public Class OcTemplateRecipient
     Public NotInheritable Class ValidEmailAddress
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateRecipient = CType(objectToValidate, OcTemplateRecipient)
             Dim emailExpression As New System.Text.RegularExpressions.Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
 

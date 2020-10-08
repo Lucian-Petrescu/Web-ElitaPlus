@@ -34,7 +34,7 @@ Public Class WorkQueueItem
 #End Region
 
 #Region "Static Methods"
-    Friend Shared Function GetDataTypeId(ByVal dataTypeName As String) As Guid
+    Friend Shared Function GetDataTypeId(dataTypeName As String) As Guid
         Dim workQueueDataItemTypes As WrkQueue.WorkQueueItemDataType()
         Dim workQueueDataItemType As WrkQueue.WorkQueueItemDataType
         If (Not oDataTypes.ContainsKey(dataTypeName)) Then
@@ -52,7 +52,7 @@ Public Class WorkQueueItem
         Return oDataTypes(dataTypeName)
     End Function
 
-    Private Shared Function GetNextQueueItemForUser(ByVal networkId As String) As WrkQueue.WorkQueueItem
+    Private Shared Function GetNextQueueItemForUser(networkId As String) As WrkQueue.WorkQueueItem
         Try
             Return WorkQueueClientProxy.GetNextWorkQueueItem(networkId)
         Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
@@ -66,7 +66,7 @@ Public Class WorkQueueItem
         End Try
     End Function
 
-    Public Shared Function GetNextValidWorkQueueItem(ByVal networkId As String) As WorkQueueItem
+    Public Shared Function GetNextValidWorkQueueItem(networkId As String) As WorkQueueItem
         Dim flag As Boolean = False
         Dim wkqItem As WrkQueue.WorkQueueItem
         Dim workQueueItem As WorkQueueItem
@@ -107,7 +107,7 @@ Public Class WorkQueueItem
         AddWorkQueueHistoryItem(WorkQueue.DefaultCompletedReason.Reason, Codes.WQ_HISTORY_ACTION_PROCESS_CODE)
     End Function
 
-    Public Function ReQueue(ByVal reasonId As Guid, ByVal reason As String)
+    Public Function ReQueue(reasonId As Guid, reason As String)
         Try
             WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             WorkQueueItem.WorkQueueItemStatusReasonId = reasonId
@@ -129,7 +129,7 @@ Public Class WorkQueueItem
         AddWorkQueueHistoryItem(reason, Codes.WQ_HISTORY_ACTION_REQUEUE_CODE)
     End Function
 
-    Public Function ReDirect(ByVal queueName As String, ByVal reasonId As Guid, ByVal reason As String)
+    Public Function ReDirect(queueName As String, reasonId As Guid, reason As String)
         Try
             WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             WorkQueueItem.WorkQueueItemStatusReasonId = reasonId
@@ -149,7 +149,7 @@ Public Class WorkQueueItem
         AddWorkQueueHistoryItem(reason, Codes.WQ_HISTORY_ACTION_REDIRECT_CODE)
     End Function
 
-    Private Function AddWorkQueueHistoryItem(ByVal reason As String, ByVal action As String)
+    Private Function AddWorkQueueHistoryItem(reason As String, action As String)
 
         Dim itemDesc As String
         Select Case WorkQueueItemType
@@ -175,7 +175,7 @@ Public Class WorkQueueItem
         _workQueueItem = New WrkQueue.WorkQueueItem()
     End Sub
 
-    Private Sub New(ByVal pWorkQueueItem As WrkQueue.WorkQueueItem)
+    Private Sub New(pWorkQueueItem As WrkQueue.WorkQueueItem)
         _workQueueItem = pWorkQueueItem
         _isNew = False
         _isDeleted = False
@@ -280,7 +280,7 @@ Public Class WorkQueueItem
 #End Region
 
 #Region "Instance Methods"
-    Private Shared Function IsWorkQueueItemAssociatedToPendingClaim(ByVal wkQItem As WorkQueueItem) As Boolean
+    Private Shared Function IsWorkQueueItemAssociatedToPendingClaim(wkQItem As WorkQueueItem) As Boolean
         Dim flag As Boolean = False
 
         If (wkQItem.WorkQueueItem.ClaimId = Nothing) Then
@@ -372,7 +372,7 @@ Namespace WrkQueue
 #End Region
 
 #Region "Private Methods"
-        Default Friend Property Metadata(ByVal metadataName As String) As String
+        Default Friend Property Metadata(metadataName As String) As String
             Get
                 Dim oWqid As WorkQueueItemData
                 oWqid = (From wqid In WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
@@ -404,7 +404,7 @@ Namespace WrkQueue
             End Set
         End Property
 
-        Private Function MetaDataAsGuid(ByVal metadataName As String) As Guid
+        Private Function MetaDataAsGuid(metadataName As String) As Guid
             Dim id As String = Me(metadataName)
             Return If(id Is Nothing, Nothing, New Guid(id))
         End Function

@@ -6,7 +6,7 @@ Public Class DailyOutboundFileDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class DailyOutboundFileDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class DailyOutboundFileDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DailyOutboundFileDetailDAL
             If _isDSCreator Then
@@ -305,11 +305,11 @@ Public Class DailyOutboundFileDetail
 
         Private _dataTable As DataTable
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property FileHeaderTempId(ByVal row) As Guid
+        Public Shared ReadOnly Property FileHeaderTempId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_File_Detail_ID), Byte()))
             End Get
@@ -320,9 +320,9 @@ Public Class DailyOutboundFileDetail
 
 #End Region
 #Region "Insert Detail Records"
-    Public Shared Function InsertDetailRecord(ByVal Company_id As Guid, ByVal Dealer_id As Guid, ByVal cert_id As Guid, ByVal certcreatedDate As Date, ByVal CertNumber As String, _
-                                           ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                            ByVal recordType As String, ByVal createdDate As Date, ByVal createdBy As String, ByVal billing_detail_id As Guid, Optional ByVal selectioncertificate As String = "")
+    Public Shared Function InsertDetailRecord(Company_id As Guid, Dealer_id As Guid, cert_id As Guid, certcreatedDate As Date, CertNumber As String, _
+                                           selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                            recordType As String, createdDate As Date, createdBy As String, billing_detail_id As Guid, Optional ByVal selectioncertificate As String = "")
         Try
             Dim dal As New DailyOutboundFileDetailDAL
             dal.insertdetailrecords(Company_id, Dealer_id, cert_id, CertNumber, certcreatedDate, selectonNewEnrollment, selectoncancel, selectonbilling, recordType, createdDate, createdBy, billing_detail_id) ' fromdate, todate, callfrom, processeddate, selectioncertificate)
@@ -333,9 +333,9 @@ Public Class DailyOutboundFileDetail
 
 #End Region
 
-    Public Shared Sub getDetailviewList(ByVal CompanyCode As String, ByVal Dealercode As String, ByVal CertNumber As String, _
-                                           ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                            ByVal fromdate As Date, ByVal todate As Date, ByVal callfrom As String, _
+    Public Shared Sub getDetailviewList(CompanyCode As String, Dealercode As String, CertNumber As String, _
+                                           selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                            fromdate As Date, todate As Date, callfrom As String, _
                                              Optional ByVal processeddate As Date = Nothing, _
                                             Optional ByVal selectioncertificate As String = "")
         Try
@@ -346,7 +346,7 @@ Public Class DailyOutboundFileDetail
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
-    Public Shared Function DeleteDetailRecord(ByVal file_detail_Id As Guid)
+    Public Shared Function DeleteDetailRecord(file_detail_Id As Guid)
         Try
             Dim dal As New DailyOutboundFileDetailDAL
             dal.deletedetailrecord(file_detail_Id)

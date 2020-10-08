@@ -6,7 +6,7 @@ Public Class EarningPercent
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class EarningPercent
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class EarningPercent
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EarningPercentDAL
             If _isDSCreator Then
@@ -192,7 +192,7 @@ Public Class EarningPercent
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal EarningPatternId As Guid) As DataView
+    Public Shared Function GetList(EarningPatternId As Guid) As DataView
         Try
             Dim dal As New EarningPercentDAL
             Return New DataView(dal.LoadList(EarningPatternId).Tables(0))
@@ -222,11 +222,11 @@ Public Class EarningPercent
     Public NotInheritable Class ValidTerm
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_MONTH_IS_INVALID)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EarningPercent = CType(objectToValidate, EarningPercent)
 
             Dim bValid As Boolean = True
@@ -247,11 +247,11 @@ Public Class EarningPercent
     Public NotInheritable Class ValidPercent
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_PERCENT_IS_INVALID)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EarningPercent = CType(objectToValidate, EarningPercent)
             Dim bValid As Boolean = True
 

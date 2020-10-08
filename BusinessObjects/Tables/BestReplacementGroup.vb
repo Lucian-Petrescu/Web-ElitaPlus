@@ -6,7 +6,7 @@ Public Class BestReplacementGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class BestReplacementGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -50,7 +50,7 @@ Public Class BestReplacementGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BestReplacementGroupDAL
             If _isDSCreator Then
@@ -175,7 +175,7 @@ Public Class BestReplacementGroup
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As BestReplacementGroup)
+    Public Sub Copy(original As BestReplacementGroup)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement")
         End If
@@ -194,7 +194,7 @@ Public Class BestReplacementGroup
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal searchCode As String, ByVal searchDesc As String) As BestReplacementGroup.BestReplacementGroupSearchDV
+    Public Shared Function GetList(searchCode As String, searchDesc As String) As BestReplacementGroup.BestReplacementGroupSearchDV
         Try
             Dim dal As New BestReplacementGroupDAL
             Dim oCompanyGroupIds As ArrayList
@@ -220,29 +220,29 @@ Public Class BestReplacementGroup
         Public Const COL_NAME_COMPANY_GROUP_ID As String = BestReplacementGroupDAL.COL_NAME_COMPANY_GROUP_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property MigrationPathId(ByVal row) As Guid
+        Public Shared ReadOnly Property MigrationPathId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_MIGRATION_PATH_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyGroupId(ByVal row) As Guid
+        Public Shared ReadOnly Property CompanyGroupId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMPANY_GROUP_ID), Byte()))
             End Get
@@ -284,7 +284,7 @@ Public Class BestReplacementGroup
         Public Const COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER As String = BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER
         Public Const COL_NAME_REPLACEMENT_MODEL As String = BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MODEL
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -300,7 +300,7 @@ Public Class BestReplacementGroup
         End Function
     End Class
 
-    Public Function GetChild(ByVal childId As Guid) As BestReplacement
+    Public Function GetChild(childId As Guid) As BestReplacement
         Return CType(BestReplacementChildren.GetChild(childId), BestReplacement)
     End Function
 

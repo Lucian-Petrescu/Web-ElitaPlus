@@ -14,7 +14,7 @@ Public Class BranchStandardization
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -28,20 +28,20 @@ Public Class BranchStandardization
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -63,7 +63,7 @@ Public Class BranchStandardization
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BranchStandardizationDAL
             If _isDSCreator Then
@@ -185,7 +185,7 @@ Public Class BranchStandardization
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Sub AddNewRowToBranchStandardizationSearchDV(ByRef dv As BranchStandardizationSearchDV, ByVal NewBranchStandardizationBO As BranchStandardization)
+    Public Shared Sub AddNewRowToBranchStandardizationSearchDV(ByRef dv As BranchStandardizationSearchDV, NewBranchStandardizationBO As BranchStandardization)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBranchStandardizationBO.IsNew Then
@@ -217,9 +217,9 @@ Public Class BranchStandardization
         End If
     End Sub
 
-    Public Shared Function GetBranchAliasList(ByVal descriptionMask As String, _
-                                                ByVal branchIdForSearch As Guid, _
-                                                ByVal dealerId As Guid) As BranchStandardizationSearchDV
+    Public Shared Function GetBranchAliasList(descriptionMask As String, _
+                                                branchIdForSearch As Guid, _
+                                                dealerId As Guid) As BranchStandardizationSearchDV
         Try
             Dim companyIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim dal As New BranchStandardizationDAL
@@ -238,7 +238,7 @@ Public Class BranchStandardization
 
 #Region "Memebers"
 
-    Public Function MyGetFormattedSearchStringForSQL(ByVal str As String) As String
+    Public Function MyGetFormattedSearchStringForSQL(str As String) As String
         If (Not IsNothing(str)) Then
             str = str.Trim
             str = str.ToUpper
@@ -270,7 +270,7 @@ Public Class BranchStandardization
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

@@ -19,7 +19,7 @@ Public Class CommPlan
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -33,20 +33,20 @@ Public Class CommPlan
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -68,7 +68,7 @@ Public Class CommPlan
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommPlanDAL
             If _isDSCreator Then
@@ -215,7 +215,7 @@ Public Class CommPlan
         End Set
     End Property
 
-    Public Function AddCommPlanDistribution(ByVal assDistID As Guid) As CommPlanDistribution
+    Public Function AddCommPlanDistribution(assDistID As Guid) As CommPlanDistribution
         If assDistID.Equals(Guid.Empty) Then
             Dim objCommDist As New CommPlanDistribution(Dataset)
             Return objCommDist
@@ -233,7 +233,7 @@ Public Class CommPlan
 
 #Region "Properties-Expiration"
 
-    Public ReadOnly Property MaxExpiration(ByVal oData As Object) As Date
+    Public ReadOnly Property MaxExpiration(oData As Object) As Date
         Get
             Dim ds As Dataset
             Dim oExpiration As Date
@@ -257,7 +257,7 @@ Public Class CommPlan
         End Get
     End Property
 
-    Public ReadOnly Property ExpirationCount(ByVal oData As Object) As Integer
+    Public ReadOnly Property ExpirationCount(oData As Object) As Integer
         Get
             Dim ds As Dataset
             Dim nExpiration As Integer
@@ -280,7 +280,7 @@ Public Class CommPlan
         End Get
     End Property
 
-    Public ReadOnly Property ExpirationOverlapping(ByVal oData As Object) As Integer
+    Public ReadOnly Property ExpirationOverlapping(oData As Object) As Integer
         Get
             Dim ds As Dataset
             Dim nExpiration As Integer
@@ -303,7 +303,7 @@ Public Class CommPlan
         End Get
     End Property
 
-    Public Shared Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+    Public Shared Function CommPaymentExist(pi_commmission_plan_id As Guid) As String
         Try
             Dim dal As New CommPlanDAL
             Return dal.CommPaymentExist(pi_commmission_plan_id)
@@ -314,7 +314,7 @@ Public Class CommPlan
     End Function
 
     'Public Shared Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, byval pi_effective_date As Date, pi_expiration_date as Date ) As String
-    Public Shared Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date as Date, ByVal pi_commmission_plan_id As Guid ) As String
+    Public Shared Function CheckDatesOverLap(pi_dealer_id As Guid, pi_expiration_date as Date, pi_commmission_plan_id As Guid ) As String
         Try
             Dim dal As New CommPlanDAL
             'Return dal.CheckDatesOverLap(pi_dealer_id ,pi_effective_date , pi_expiration_date )
@@ -330,7 +330,7 @@ Public Class CommPlan
 #End Region
     
 #Region "Public Members"
-    Public Sub Copy(ByVal original As CommPlan)
+    Public Sub Copy(original As CommPlan)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Dealer")
         End If
@@ -367,7 +367,7 @@ Public Class CommPlan
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal oCommPlanData As CommPlanData) As CommPlanSearchDV
+    Public Shared Function getList(oCommPlanData As CommPlanData) As CommPlanSearchDV
         Try
             Dim dal As New CommPlanDAL
             Return New CommPlanSearchDV(dal.LoadList(oCommPlanData, ElitaPlusIdentity.Current.ActiveUser.Id).Tables(0))
@@ -435,7 +435,7 @@ Public Class CommPlan
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

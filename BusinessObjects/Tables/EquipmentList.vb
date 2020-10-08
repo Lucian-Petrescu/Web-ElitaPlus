@@ -6,7 +6,7 @@ Public Class EquipmentList
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class EquipmentList
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -51,7 +51,7 @@ Public Class EquipmentList
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EquipmentListDAL
             If _isDSCreator Then
@@ -209,7 +209,7 @@ Public Class EquipmentList
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As EquipmentList)
+    Public Sub Copy(original As EquipmentList)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
@@ -264,9 +264,9 @@ Public Class EquipmentList
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal code As String, _
-                                        ByVal description As String, ByVal effective As String, _
-                                        ByVal expiration As String) As EquipmentList.EquipmentSearchDV
+    Public Shared Function GetList(code As String, _
+                                        description As String, effective As String, _
+                                        expiration As String) As EquipmentList.EquipmentSearchDV
         Try
             Dim dal As New EquipmentListDAL
             Dim oCompanyGroupIds As ArrayList
@@ -301,41 +301,41 @@ Public Class EquipmentList
         Public Const COL_NAME_EXPIRATION As String = EquipmentListDAL.COL_NAME_EXPIRATION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property EquipmentListId(ByVal row) As Guid
+        Public Shared ReadOnly Property EquipmentListId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EQUIPMENT_LIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Comments(ByVal row) As Guid
+        Public Shared ReadOnly Property Comments(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMENTS), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row) As Guid
+        Public Shared ReadOnly Property Effective(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EFFECTIVE), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row) As Guid
+        Public Shared ReadOnly Property Expiration(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EXPIRATION), Byte()))
             End Get
@@ -353,7 +353,7 @@ Public Class EquipmentList
         End Get
     End Property
 
-    Public Function GetChild(ByVal childId As Guid) As EquipmentListDetail
+    Public Function GetChild(childId As Guid) As EquipmentListDetail
         Return CType(BestEquipmentListChildren.GetChild(childId), EquipmentListDetail)
     End Function
 
@@ -369,8 +369,8 @@ Public Class EquipmentList
 
 #Region "Public Methods"
 
-    Public Shared Function CheckListCodeForOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeForOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New EquipmentListDAL
@@ -396,8 +396,8 @@ Public Class EquipmentList
     End Function
 
 
-    Public Shared Function CheckListCodeDurationOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeDurationOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New EquipmentListDAL
@@ -423,8 +423,8 @@ Public Class EquipmentList
     End Function
 
 
-    Public Shared Function ExpirePreviousList(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function ExpirePreviousList(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New EquipmentListDAL
@@ -443,13 +443,13 @@ Public Class EquipmentList
         Return False
     End Function
 
-    Public Function GetSelectedEquipmentList(ByVal EquipmentListID As Guid) As DataView
+    Public Function GetSelectedEquipmentList(EquipmentListID As Guid) As DataView
         Dim eqListDal As New EquipmentListDAL
         Return eqListDal.GetSelectedEquipmentList(EquipmentListID).Tables(0).DefaultView
 
     End Function
 
-    Public Shared Function ExpireList(ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function ExpireList(expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New EquipmentListDAL
@@ -476,11 +476,11 @@ Public Class EquipmentList
     Public NotInheritable Class CheckDuplicate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM004)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EquipmentList = CType(objectToValidate, EquipmentList)
             If (obj.CheckDuplicateEquipmentListCode()) Then
                 Return False
@@ -494,11 +494,11 @@ Public Class EquipmentList
     Public NotInheritable Class CheckListAssignedToDealer
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EquipmentList = CType(objectToValidate, EquipmentList)
             If (obj.CheckIfListIsAssignedToDealer()) Then
                 Return False
@@ -512,11 +512,11 @@ Public Class EquipmentList
     Public NotInheritable Class CheckListCodeDatesOverlaped
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EquipmentList = CType(objectToValidate, EquipmentList)
             If (obj.CheckListCodeDatesForOverlap()) Then
                 Return False
@@ -585,7 +585,7 @@ Public Class EquipmentList
         Return False
     End Function
 
-    Public Shared Function CheckIfListIsAssignedToDealer(ByVal vCode As String, ByVal vId As Guid) As Boolean
+    Public Shared Function CheckIfListIsAssignedToDealer(vCode As String, vId As Guid) As Boolean
         Dim EquipDal As New EquipmentListDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
@@ -599,7 +599,7 @@ Public Class EquipmentList
         Return False
     End Function
 
-    Public Shared Function CheckDuplicateEquipmentListCode(ByVal vCode As String, ByVal vEffective As String, ByVal vId As Guid) As Boolean
+    Public Shared Function CheckDuplicateEquipmentListCode(vCode As String, vEffective As String, vId As Guid) As Boolean
         Dim EquipDal As New EquipmentListDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList

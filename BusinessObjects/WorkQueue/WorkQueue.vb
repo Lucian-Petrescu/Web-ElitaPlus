@@ -86,7 +86,7 @@ Partial Public Class WorkQueue
         Return returnValue
     End Function
 
-    Public Shared Function GetStatList(ByVal workQueueName As String, ByVal companyCode As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date)) As WrkQueue.WorkQueueStats()
+    Public Shared Function GetStatList(workQueueName As String, companyCode As String, actionCode As String, activeOn As Nullable(Of Date)) As WrkQueue.WorkQueueStats()
         Dim returnValue As WrkQueue.WorkQueueStats()
         Dim oUser As User = ElitaPlusIdentity.Current.ActiveUser
         Dim userName As String = oUser.NetworkId
@@ -110,7 +110,7 @@ Partial Public Class WorkQueue
         Return returnValue
     End Function
 
-    Public Shared Function GetList(ByVal workQueueName As String, ByVal companyCode As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date), ByVal requireAdminRole As Boolean) As WrkQueue.WorkQueue()
+    Public Shared Function GetList(workQueueName As String, companyCode As String, actionCode As String, activeOn As Nullable(Of Date), requireAdminRole As Boolean) As WrkQueue.WorkQueue()
         Try
             Dim oUser As User = ElitaPlusIdentity.Current.ActiveUser
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
@@ -160,7 +160,7 @@ Partial Public Class WorkQueue
 #End Region
 
 #Region "Permissions"
-    Public Shared Function GrantProcessWQPermission(ByVal workQueueName As String, ByVal NetworkId As String) As Boolean
+    Public Shared Function GrantProcessWQPermission(workQueueName As String, NetworkId As String) As Boolean
         Try
             Dim permission As Auth.Permission
             Dim permissions As Auth.Permission()
@@ -208,7 +208,7 @@ Partial Public Class WorkQueue
     End Function
 
 
-    Public Shared Function RevokeProcessWQPermission(ByVal workQueueName As String, ByVal NetworkId As String) As Boolean
+    Public Shared Function RevokeProcessWQPermission(workQueueName As String, NetworkId As String) As Boolean
         Try
             Dim permission As Auth.Permission
             Dim permissions As Auth.Permission()
@@ -266,12 +266,12 @@ Partial Public Class WorkQueue
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         BuildWorkQueue(id)
     End Sub
 
-    Private Sub BuildWorkQueue(ByVal id As Guid)
+    Private Sub BuildWorkQueue(id As Guid)
         Dataset = New DataSet
         CreateEmptyTable()
         _isNew = False
@@ -496,19 +496,19 @@ Partial Public Class WorkQueue
         End Get
     End Property
 
-    Public Function ConvertTimeFromUtc(ByVal value As Nullable(Of DateTime)) As Nullable(Of DateTime)
+    Public Function ConvertTimeFromUtc(value As Nullable(Of DateTime)) As Nullable(Of DateTime)
         Return WrkQueue.WorkQueue.ConvertTimeFromUtc(value, TimeZone)
     End Function
 
-    Public Function ConvertTimeToUtc(ByVal value As Nullable(Of DateTime)) As Nullable(Of DateTime)
+    Public Function ConvertTimeToUtc(value As Nullable(Of DateTime)) As Nullable(Of DateTime)
         Return WrkQueue.WorkQueue.ConvertTimeToUtc(value, TimeZone)
     End Function
 
-    Public Function ConvertTimeFromUtc(ByVal value As DateTime) As DateTime
+    Public Function ConvertTimeFromUtc(value As DateTime) As DateTime
         Return WrkQueue.WorkQueue.ConvertTimeFromUtc(value, TimeZone)
     End Function
 
-    Public Function ConvertTimeToUtc(ByVal value As DateTime) As DateTime
+    Public Function ConvertTimeToUtc(value As DateTime) As DateTime
         Return WrkQueue.WorkQueue.ConvertTimeToUtc(value, TimeZone)
     End Function
 #End Region
@@ -671,7 +671,7 @@ Partial Public Class WorkQueue
         Return returnValue
     End Function
 
-    Public Sub Copy(ByVal target As WorkQueue)
+    Public Sub Copy(target As WorkQueue)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Work Queue")
         End If
@@ -780,7 +780,7 @@ Partial Public Class WorkQueue
         Return newReason
     End Function
 
-    Private Function AddReason(ByVal workQueueItemStatusReasonType As WrkQueue.StatusType) As WorkQueueItemStatusReason
+    Private Function AddReason(workQueueItemStatusReasonType As WrkQueue.StatusType) As WorkQueueItemStatusReason
         Dim newReason As WorkQueueItemStatusReason
         newReason = New WorkQueueItemStatusReason(Me)
         newReason.ItemStatusReason.Status = workQueueItemStatusReasonType
@@ -803,7 +803,7 @@ Partial Public Class WorkQueue
         Return ScheduleChildren.AsSelectionView()
     End Function
 
-    Public Function GetScheduleChild(ByVal childId As Guid) As EntitySchedule
+    Public Function GetScheduleChild(childId As Guid) As EntitySchedule
         Return CType(ScheduleChildren.GetChild(childId), EntitySchedule)
     End Function
 
@@ -838,7 +838,7 @@ Namespace WrkQueue
             End Set
         End Property
 
-        Default Friend Property Metadata(ByVal metadataName As String) As String
+        Default Friend Property Metadata(metadataName As String) As String
             Get
                 If (MetadataList Is Nothing) Then Return String.Empty
                 If ((From wqmd In MetadataList Where wqmd.Name = metadataName Select wqmd).Count() = 1) Then
@@ -944,28 +944,28 @@ Namespace WrkQueue
         End Property
 
 #Region "Time Conversion Functions"
-        Private Shared Function GetTimeZoneInfo(ByVal standardName As String) As TimeZoneInfo
+        Private Shared Function GetTimeZoneInfo(standardName As String) As TimeZoneInfo
             If (standardName Is Nothing OrElse String.IsNullOrEmpty(standardName)) Then Return Nothing
             Return (From tzi In TimeZoneInfo.GetSystemTimeZones() Where tzi.StandardName = standardName Select tzi).First()
         End Function
 
-        Friend Shared Function ConvertTimeFromUtc(ByVal value As Nullable(Of DateTime), ByVal pTimeZoneStandardName As String) As Nullable(Of DateTime)
+        Friend Shared Function ConvertTimeFromUtc(value As Nullable(Of DateTime), pTimeZoneStandardName As String) As Nullable(Of DateTime)
             Return ConvertTimeFromUtc(value, GetTimeZoneInfo(pTimeZoneStandardName))
         End Function
 
-        Friend Shared Function ConvertTimeToUtc(ByVal value As Nullable(Of DateTime), ByVal pTimeZoneStandardName As String) As Nullable(Of DateTime)
+        Friend Shared Function ConvertTimeToUtc(value As Nullable(Of DateTime), pTimeZoneStandardName As String) As Nullable(Of DateTime)
             Return ConvertTimeToUtc(value, GetTimeZoneInfo(pTimeZoneStandardName))
         End Function
 
-        Friend Shared Function ConvertTimeFromUtc(ByVal value As DateTime, ByVal pTimeZoneStandardName As String) As DateTime
+        Friend Shared Function ConvertTimeFromUtc(value As DateTime, pTimeZoneStandardName As String) As DateTime
             Return ConvertTimeFromUtc(value, GetTimeZoneInfo(pTimeZoneStandardName))
         End Function
 
-        Friend Shared Function ConvertTimeToUtc(ByVal value As DateTime, ByVal pTimeZoneStandardName As String) As DateTime
+        Friend Shared Function ConvertTimeToUtc(value As DateTime, pTimeZoneStandardName As String) As DateTime
             Return ConvertTimeToUtc(value, GetTimeZoneInfo(pTimeZoneStandardName))
         End Function
 
-        Friend Shared Function ConvertTimeFromUtc(ByVal value As Nullable(Of DateTime), ByVal pTimeZone As TimeZoneInfo) As Nullable(Of DateTime)
+        Friend Shared Function ConvertTimeFromUtc(value As Nullable(Of DateTime), pTimeZone As TimeZoneInfo) As Nullable(Of DateTime)
             If (value.HasValue) Then
                 Return New Nullable(Of DateTime)(ConvertTimeFromUtc(value.Value, pTimeZone))
             Else
@@ -973,7 +973,7 @@ Namespace WrkQueue
             End If
         End Function
 
-        Friend Shared Function ConvertTimeToUtc(ByVal value As Nullable(Of DateTime), ByVal pTimeZone As TimeZoneInfo) As Nullable(Of DateTime)
+        Friend Shared Function ConvertTimeToUtc(value As Nullable(Of DateTime), pTimeZone As TimeZoneInfo) As Nullable(Of DateTime)
             If (value.HasValue) Then
                 Return New Nullable(Of DateTime)(ConvertTimeToUtc(value.Value, pTimeZone))
             Else
@@ -981,7 +981,7 @@ Namespace WrkQueue
             End If
         End Function
 
-        Friend Shared Function ConvertTimeFromUtc(ByVal value As DateTime, ByVal pTimeZone As TimeZoneInfo) As DateTime
+        Friend Shared Function ConvertTimeFromUtc(value As DateTime, pTimeZone As TimeZoneInfo) As DateTime
             Dim oTimeZoneInfo As TimeZoneInfo
             oTimeZoneInfo = pTimeZone
             If (oTimeZoneInfo Is Nothing) Then
@@ -992,7 +992,7 @@ Namespace WrkQueue
             End If
         End Function
 
-        Friend Shared Function ConvertTimeToUtc(ByVal value As DateTime, ByVal pTimeZone As TimeZoneInfo) As DateTime
+        Friend Shared Function ConvertTimeToUtc(value As DateTime, pTimeZone As TimeZoneInfo) As DateTime
             Dim oTimeZoneInfo As TimeZoneInfo
             oTimeZoneInfo = pTimeZone
             If (oTimeZoneInfo Is Nothing) Then
@@ -1087,11 +1087,11 @@ End Namespace
 Public NotInheritable Class ValidateTransformationFile
     Inherits ValidBaseAttribute
     Private _fieldDisplayName As String
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_TRANSFORMATION_FILE_NOT_FOUND)
     End Sub
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
         If (objectToCheck Is Nothing) Then Return False
         Return BaseActionProvider.TransformationFileExists(objectToCheck.ToString())
     End Function
@@ -1100,11 +1100,11 @@ End Class
 <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
 Public NotInheritable Class ValidateScheduleCount
     Inherits ValidBaseAttribute
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_REQUIRED)
     End Sub
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As WorkQueue = CType(objectToValidate, WorkQueue)
         Return obj.ScheduleChildren.Count > 0
     End Function
@@ -1113,11 +1113,11 @@ End Class
 <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
 Public NotInheritable Class ValidateReDirectReasonCount
     Inherits ValidBaseAttribute
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_REDIRECT_REQUIRED)
     End Sub
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As WorkQueue = CType(objectToValidate, WorkQueue)
         Return obj.ReDirectReasons.Length > 0
     End Function
@@ -1126,11 +1126,11 @@ End Class
 <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
 Public NotInheritable Class ValidateReQueueReasonCount
     Inherits ValidBaseAttribute
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_REQUEUE_REQUIRED)
     End Sub
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As WorkQueue = CType(objectToValidate, WorkQueue)
         Return obj.ReQueueReasons.Length > 0
     End Function

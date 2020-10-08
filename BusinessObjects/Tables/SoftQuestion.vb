@@ -6,7 +6,7 @@ Public Class SoftQuestion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class SoftQuestion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class SoftQuestion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SoftQuestionDAL
             If _isDSCreator Then
@@ -210,7 +210,7 @@ Public Class SoftQuestion
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -218,7 +218,7 @@ Public Class SoftQuestion
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal softQuestionGrpId As Guid, ByVal companyGroupId As Guid) As SoftQuestionDV
+    Public Shared Function getList(softQuestionGrpId As Guid, companyGroupId As Guid) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -227,7 +227,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getSoftQuestionGroups(ByVal companyGroupId As Guid) As SoftQuestionDV
+    Public Shared Function getSoftQuestionGroups(companyGroupId As Guid) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -236,7 +236,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getSoftQuestionGroupForRiskType(ByVal companyGroupId As Guid, ByVal riskTypeId As Guid) As SoftQuestionDV
+    Public Shared Function getSoftQuestionGroupForRiskType(companyGroupId As Guid, riskTypeId As Guid) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -245,7 +245,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getChildren(ByVal parentID As Guid) As SoftQuestionDV
+    Public Shared Function getChildren(parentID As Guid) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -254,7 +254,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getMaxChildOrder(ByVal parentID As Guid) As Long
+    Public Shared Function getMaxChildOrder(parentID As Guid) As Long
         Try
             Dim dal As New SoftQuestionDAL
             Return dal.GetMaxChildOrder(parentID)
@@ -263,7 +263,7 @@ Public Class SoftQuestion
         End Try
     End Function
 
-    Public Shared Function getSoftQuestionId(ByVal parentID As Guid, ByVal ChildOrder As Long) As Guid
+    Public Shared Function getSoftQuestionId(parentID As Guid, ChildOrder As Long) As Guid
         Try
             Dim dal As New SoftQuestionDAL
             Return dal.GetSoftQuestionId(parentID, ChildOrder)
@@ -272,7 +272,7 @@ Public Class SoftQuestion
         End Try
     End Function
 
-    Public Shared Function getAvailableSoftQuestionGroup(ByVal companyGroupId As Guid) As SoftQuestionDV
+    Public Shared Function getAvailableSoftQuestionGroup(companyGroupId As Guid) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -282,7 +282,7 @@ Public Class SoftQuestion
         End Try
     End Function
     '<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>'<0>
-    Public Shared Function getReOrderSoftQuestionGroup(ByVal companyGroupId As Guid) As SoftQuestionDV
+    Public Shared Function getReOrderSoftQuestionGroup(companyGroupId As Guid) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -292,7 +292,7 @@ Public Class SoftQuestion
         End Try
     End Function
 
-    Public Shared Function getReOrderSoftQuestion(ByVal SOFT_QUESTION_GROUP_ID As String) As SoftQuestionDV
+    Public Shared Function getReOrderSoftQuestion(SOFT_QUESTION_GROUP_ID As String) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -301,7 +301,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getReOrderSoftQuestion2(ByVal SOFT_QUESTION_ID As String) As SoftQuestionDV
+    Public Shared Function getReOrderSoftQuestion2(SOFT_QUESTION_ID As String) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -310,7 +310,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getLastRow(ByVal soft_question_group_id As String, ByVal PARENT_ID As String, ByVal CHILD_ORDER As String, ByVal DESCRIPTION As String) As SoftQuestionDV
+    Public Shared Function getLastRow(soft_question_group_id As String, PARENT_ID As String, CHILD_ORDER As String, DESCRIPTION As String) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -319,7 +319,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getReOrderSoftQuestion3(ByVal soft_question_group_id As String) As SoftQuestionDV
+    Public Shared Function getReOrderSoftQuestion3(soft_question_group_id As String) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -328,7 +328,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getNullParentQuestion(ByVal SOFT_QUESTION_ID As String) As SoftQuestionDV
+    Public Shared Function getNullParentQuestion(SOFT_QUESTION_ID As String) As SoftQuestionDV
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -337,7 +337,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function InsertReOrderSoftQuestion(ByVal soft_question_group_id As String, ByVal parent_id As String, ByVal child_order As Integer, ByVal description As String)
+    Public Shared Function InsertReOrderSoftQuestion(soft_question_group_id As String, parent_id As String, child_order As Integer, description As String)
         Try
             Dim dal As New SoftQuestionDAL
 
@@ -346,7 +346,7 @@ Public Class SoftQuestion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function DeleteReOrderSoftQuestion(ByVal SOFT_QUESTION_GROUP_ID As String)
+    Public Shared Function DeleteReOrderSoftQuestion(SOFT_QUESTION_GROUP_ID As String)
         Try
             Dim dal As New SoftQuestionDAL
 

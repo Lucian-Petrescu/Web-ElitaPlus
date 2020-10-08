@@ -82,7 +82,7 @@ Public Class PostalCodeValidator
     Private postCode As String
     Private reformatInp As Boolean
 
-    Public Sub New(ByVal countryID As Guid, ByVal postalCode As String, Optional ByVal reformatInput As Boolean = False)
+    Public Sub New(countryID As Guid, postalCode As String, Optional ByVal reformatInput As Boolean = False)
         couID = countryID
         postCode = postalCode
         reformatInp = reformatInput

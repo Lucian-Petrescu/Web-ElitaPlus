@@ -27,7 +27,7 @@ Public Class PublishedTask
 
 #Region "Constructors"
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -41,20 +41,20 @@ Public Class PublishedTask
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -76,7 +76,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PublishedTaskDAL
             If _isDSCreator Then
@@ -318,7 +318,7 @@ Public Class PublishedTask
         End Set
     End Property
 
-    Default Public ReadOnly Property Argument(ByVal key As String) As String
+    Default Public ReadOnly Property Argument(key As String) As String
         Get
             Dim returnValue As String = String.Empty
             If (_arguments Is Nothing) Then
@@ -484,19 +484,19 @@ Public Class PublishedTask
     End Sub
 
     Public Shared Function GetList(
-          ByVal companyId As Guid _
-        , ByVal dealerId As Guid _
-        , ByVal countryId As Guid _
-        , ByVal product As String _
-        , ByVal coverageTypeId As Guid _
-        , ByVal eventTypeId As Guid _
-        , ByVal task As String _
-        , ByVal statusId As Guid _
-        , ByVal sender As String _
-        , ByVal arguments As String _
-        , ByVal machineName As String _
-        , ByVal startDate As String _
-        , ByVal endDate As String _
+          companyId As Guid _
+        , dealerId As Guid _
+        , countryId As Guid _
+        , product As String _
+        , coverageTypeId As Guid _
+        , eventTypeId As Guid _
+        , task As String _
+        , statusId As Guid _
+        , sender As String _
+        , arguments As String _
+        , machineName As String _
+        , startDate As String _
+        , endDate As String _
         , Optional ByVal LimitResultset As Integer = PublishedTaskDAL.MAX_NUMBER_OF_ROWS) As PublishedTask.PublishedTaskSearchDV
 
         Try
@@ -536,17 +536,17 @@ Public Class PublishedTask
 
 #Region "Action Methods"
 
-    Public Shared Sub AddEvent(ByVal companyGroupId As Guid,
-                               ByVal companyId As Guid,
-                               ByVal countryId As Guid,
-                               ByVal dealerId As Guid,
-                               ByVal productCode As String,
-                               ByVal coverageTypeId As Guid,
-                               ByVal sender As String,
-                               ByVal arguments As String,
-                               ByVal eventDate As DateTime,
-                               ByVal eventTypeId As Guid,
-                               ByVal eventArgumentId As Guid,
+    Public Shared Sub AddEvent(companyGroupId As Guid,
+                               companyId As Guid,
+                               countryId As Guid,
+                               dealerId As Guid,
+                               productCode As String,
+                               coverageTypeId As Guid,
+                               sender As String,
+                               arguments As String,
+                               eventDate As DateTime,
+                               eventTypeId As Guid,
+                               eventArgumentId As Guid,
                                Optional ByVal dealergroupId As Guid = Nothing)
         Try
             Dim dal As New PublishedTaskDAL
@@ -568,7 +568,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Shared Function GetNextTask(ByVal subscriberId As Guid, ByVal machineName As String, ByVal processThreadName As String) As PublishedTask
+    Public Shared Function GetNextTask(subscriberId As Guid, machineName As String, processThreadName As String) As PublishedTask
 
         Dim p_task_id As Guid
         Dim p_task As PublishedTask
@@ -590,7 +590,7 @@ Public Class PublishedTask
         End Try
     End Function
 
-    Public Sub CompleteTask(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub CompleteTask(machineName As String, processThreadName As String)
         Try
             Dim dal As New PublishedTaskDAL
             dal.CompleteTask(Id, machineName, processThreadName)
@@ -599,7 +599,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Sub FailedTask(ByVal machineName As String, ByVal processThreadName As String, ByVal failReason As String)
+    Public Sub FailedTask(machineName As String, processThreadName As String, failReason As String)
         Try
             Dim dal As New PublishedTaskDAL
             dal.FailedTask(Id, machineName, processThreadName, failReason)
@@ -608,7 +608,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Shared Sub ResetTask(ByVal publishedTaskId As Guid)
+    Public Shared Sub ResetTask(publishedTaskId As Guid)
         Try
             Dim dal As New PublishedTaskDAL
             dal.ResetTask(publishedTaskId)
@@ -617,7 +617,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Shared Sub DeleteTask(ByVal publishedTaskId As Guid)
+    Public Shared Sub DeleteTask(publishedTaskId As Guid)
         Try
             Dim dal As New PublishedTaskDAL
             dal.DeleteTask(publishedTaskId)
@@ -626,7 +626,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Shared Sub GetOutBoundMessageDetails(ByVal publishedTaskId As Guid, ByRef oErrCode As Integer, ByRef oErrMsg As String,
+    Public Shared Sub GetOutBoundMessageDetails(publishedTaskId As Guid, ByRef oErrCode As Integer, ByRef oErrMsg As String,
                                                 ByRef oMessageId As Guid, ByRef oTemplateCode As String, ByRef oWhiteList As String,
                                                 ByRef oTemplateUserName As String, ByRef oTemplatePassword As String,
                                                 ByRef oRecipients As System.Collections.Generic.List(Of String),
@@ -679,59 +679,59 @@ Public Class PublishedTask
         Public Const COL_NAME_TASK_STATUS_CODE As String = "TASK_STATUS_CODE"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PublishedTaskId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property PublishedTaskId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PUBLISHED_TASK_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyGroup(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CompanyGroup(row As DataRow) As String
             Get
                 Return row(COL_NAME_COMPANY_GROUP).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Company(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Company(row As DataRow) As String
             Get
                 Return row(COL_NAME_COMPANY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Country(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Country(row As DataRow) As String
             Get
                 Return row(COL_NAME_COUNTRY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Dealer(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Dealer(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ProductCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ProductCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_PRODUCT_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CoverageType(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CoverageType(row As DataRow) As String
             Get
                 Return row(COL_NAME_COVERAGE_TYPE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EventType(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property EventType(row As DataRow) As String
             Get
                 Return row(COL_NAME_EVENT_TYPE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EventDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property EventDate(row As DataRow) As DateType
             Get
                 If row(COL_NAME_EVENT_DATE) Is DBNull.Value Then
                     Return Nothing
@@ -743,31 +743,31 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property Sender(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Sender(row As DataRow) As String
             Get
                 Return row(COL_NAME_SENDER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property TaskStatus(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property TaskStatus(row As DataRow) As String
             Get
                 Return row(COL_NAME_TASK_STATUS).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Arguments(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Arguments(row As DataRow) As String
             Get
                 Return row(COL_NAME_ARGUMENTS).ToString().Replace(";", "<br />").Replace(":", " = ")
             End Get
         End Property
 
-        Public Shared ReadOnly Property Task(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Task(row As DataRow) As String
             Get
                 Return row(COL_NAME_TASK).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property LockDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property LockDate(row As DataRow) As DateType
             Get
                 If row(COL_NAME_LOCK_DATE) Is DBNull.Value Then
                     Return Nothing
@@ -777,7 +777,7 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property RetryCount(ByVal row As DataRow) As Nullable(Of Integer)
+        Public Shared ReadOnly Property RetryCount(row As DataRow) As Nullable(Of Integer)
             Get
                 If row(COL_NAME_RETRY_COUNT) Is DBNull.Value Then
                     Return Nothing
@@ -787,7 +787,7 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property LastAttemptDate(ByVal row As DataRow) As Nullable(Of Date)
+        Public Shared ReadOnly Property LastAttemptDate(row As DataRow) As Nullable(Of Date)
             Get
                 If row(COL_NAME_LAST_ATTEMPT_DATE) Is DBNull.Value Then
                     Return Nothing
@@ -797,19 +797,19 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property MachineName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property MachineName(row As DataRow) As String
             Get
                 Return row(COL_NAME_MACHINE_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property TaskStatusCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property TaskStatusCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_TASK_STATUS_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property FailReason(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property FailReason(row As DataRow) As String
             Get
                 Return row(COL_NAME_FAIL_REASON).ToString
             End Get

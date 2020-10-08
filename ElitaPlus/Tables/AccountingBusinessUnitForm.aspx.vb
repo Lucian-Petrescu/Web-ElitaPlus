@@ -621,57 +621,53 @@ Namespace Tables
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow AndAlso (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) Then
+                CType(e.Row.Cells(ACCT_BUSINESS_UNIT_ID_COL).FindControl(ACCT_BUSINESS_UNIT_ID_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))
+                'e.Row.Cells(Me.ACCT_BUSINESS_UNIT_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))
+                e.Row.Cells(ACCT_COMPANY_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_ID), Byte()))
+                'e.Row.Cells(Me.BUSINESS_UNIT_COL).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT).ToString
+                'e.Row.Cells(Me.ACCT_COMPANY_DESCRIPTION_COL).Controls()
 
-                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
-                    CType(e.Row.Cells(ACCT_BUSINESS_UNIT_ID_COL).FindControl(ACCT_BUSINESS_UNIT_ID_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))
-                    'e.Row.Cells(Me.ACCT_BUSINESS_UNIT_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))
-                    e.Row.Cells(ACCT_COMPANY_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_ID), Byte()))
-                    'e.Row.Cells(Me.BUSINESS_UNIT_COL).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT).ToString
-                    'e.Row.Cells(Me.ACCT_COMPANY_DESCRIPTION_COL).Controls()
+                If (State.IsEditMode = True _
+                        AndAlso State.AcctBusinessUnitID.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())))) Then
+                    CType(e.Row.Cells(BUSINESS_UNIT_COL).FindControl(BUSINESS_UNIT_TEXTBOX), TextBox).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT).ToString
+                    CType(e.Row.Cells(CODE_COL).FindControl(CODE_TEXTBOX), TextBox).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_CODE).ToString
+                    CType(e.Row.Cells(ACCT_COMPANY_DESCRIPTION_COL).FindControl(ACCT_COMPANY_DROPLIST), DropDownList).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_DESCRIPTION).ToString
 
-                    If (State.IsEditMode = True _
-                            AndAlso State.AcctBusinessUnitID.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())))) Then
-                        CType(e.Row.Cells(BUSINESS_UNIT_COL).FindControl(BUSINESS_UNIT_TEXTBOX), TextBox).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT).ToString
-                        CType(e.Row.Cells(CODE_COL).FindControl(CODE_TEXTBOX), TextBox).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_CODE).ToString
-                        CType(e.Row.Cells(ACCT_COMPANY_DESCRIPTION_COL).FindControl(ACCT_COMPANY_DROPLIST), DropDownList).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_DESCRIPTION).ToString
+                    '  BindListControlToDataView(CType(e.Row.Cells(Me.SUPPRESS_VEND_COL).FindControl(Me.SUPPRESS_VEND_DROPLIST), DropDownList), Me.State.YESNOdv, , , False)
+                    Dim yesNoLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
+                    CType(e.Row.Cells(SUPPRESS_VEND_COL).FindControl(SUPPRESS_VEND_DROPLIST), DropDownList).Populate(yesNoLkl, New PopulateOptions())
 
-                        '  BindListControlToDataView(CType(e.Row.Cells(Me.SUPPRESS_VEND_COL).FindControl(Me.SUPPRESS_VEND_DROPLIST), DropDownList), Me.State.YESNOdv, , , False)
-                        Dim yesNoLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
-                        CType(e.Row.Cells(SUPPRESS_VEND_COL).FindControl(SUPPRESS_VEND_DROPLIST), DropDownList).Populate(yesNoLkl, New PopulateOptions())
-
-                        If dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS) IsNot DBNull.Value Then
-                            SetSelectedItem(CType(e.Row.Cells(SUPPRESS_VEND_COL).FindControl(SUPPRESS_VEND_DROPLIST), DropDownList), LookupListNew.GetIdFromCode(State.YESNOdv, dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS).ToString))
-                        End If
-
-                        '  BindListControlToDataView(CType(e.Row.Cells(Me.PAYMENT_METHOD_COL).FindControl(Me.PAYMENT_METHOD_DROPLIST), DropDownList), LookupListNew.GetPaymentMethodLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), , , False) 'PMTHD
-
-                        Dim paymentMethodLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTHD", ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
-                        CType(e.Row.Cells(PAYMENT_METHOD_COL).FindControl(PAYMENT_METHOD_DROPLIST), DropDownList).Populate(paymentMethodLkl, New PopulateOptions())
-                        If dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD) IsNot DBNull.Value AndAlso Not GuidControl.ByteArrayToGuid(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD)) = Guid.Empty Then
-                            SetSelectedItem(CType(e.Row.Cells(PAYMENT_METHOD_COL).FindControl(PAYMENT_METHOD_DROPLIST), DropDownList), GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD), Byte())))
-                        End If
-
-
-                    Else
-                        CType(e.Row.Cells(BUSINESS_UNIT_COL).FindControl(BUSINESS_UNIT_LABEL), Label).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT).ToString
-                        CType(e.Row.Cells(CODE_COL).FindControl(CODE_LABEL), Label).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_CODE).ToString
-                        CType(e.Row.Cells(ACCT_COMPANY_DESCRIPTION_COL).FindControl(ACCT_COMPANY_DESCRIPTION_LABEL), Label).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_DESCRIPTION).ToString
-
-                        Dim suppressVendLabel As String = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS).ToString
-                        Dim dRow() As DataRow = State.YESNOdv.Table.Select("code='" & suppressVendLabel & "' and language_id='" & GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId) & "'")
-                        If (dRow IsNot Nothing AndAlso dRow.Length > 0) Then
-                            CType(e.Row.Cells(SUPPRESS_VEND_COL).FindControl(SUPPRESS_VEND_LABEL), Label).Text = CType(dRow(0).Item("Description"), String)
-                        End If
-
-                        If dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD) IsNot DBNull.Value Then
-                            CType(e.Row.Cells(PAYMENT_METHOD_COL).FindControl(PAYMENT_METHOD_LABEL), Label).Text = LookupListNew.GetDescriptionFromId(LookupListNew.GetPaymentMethodLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), New Guid(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD), Byte())))
-                        End If
-
-
-
+                    If dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS) IsNot DBNull.Value Then
+                        SetSelectedItem(CType(e.Row.Cells(SUPPRESS_VEND_COL).FindControl(SUPPRESS_VEND_DROPLIST), DropDownList), LookupListNew.GetIdFromCode(State.YESNOdv, dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS).ToString))
                     End If
-                    'e.Row.Cells(Me.ACCT_COMPANY_DESCRIPTION_COL).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_DESCRIPTION).ToString
+
+                    '  BindListControlToDataView(CType(e.Row.Cells(Me.PAYMENT_METHOD_COL).FindControl(Me.PAYMENT_METHOD_DROPLIST), DropDownList), LookupListNew.GetPaymentMethodLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), , , False) 'PMTHD
+
+                    Dim paymentMethodLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTHD", ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
+                    CType(e.Row.Cells(PAYMENT_METHOD_COL).FindControl(PAYMENT_METHOD_DROPLIST), DropDownList).Populate(paymentMethodLkl, New PopulateOptions())
+                    If dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD) IsNot DBNull.Value AndAlso Not GuidControl.ByteArrayToGuid(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD)) = Guid.Empty Then
+                        SetSelectedItem(CType(e.Row.Cells(PAYMENT_METHOD_COL).FindControl(PAYMENT_METHOD_DROPLIST), DropDownList), GetGuidStringFromByteArray(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD), Byte())))
+                    End If
+
+
+                Else
+                    CType(e.Row.Cells(BUSINESS_UNIT_COL).FindControl(BUSINESS_UNIT_LABEL), Label).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT).ToString
+                    CType(e.Row.Cells(CODE_COL).FindControl(CODE_LABEL), Label).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_CODE).ToString
+                    CType(e.Row.Cells(ACCT_COMPANY_DESCRIPTION_COL).FindControl(ACCT_COMPANY_DESCRIPTION_LABEL), Label).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_DESCRIPTION).ToString
+
+                    Dim suppressVendLabel As String = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS).ToString
+                    Dim dRow() As DataRow = State.YESNOdv.Table.Select("code='" & suppressVendLabel & "' and language_id='" & GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId) & "'")
+                    If (dRow IsNot Nothing AndAlso dRow.Length > 0) Then
+                        CType(e.Row.Cells(SUPPRESS_VEND_COL).FindControl(SUPPRESS_VEND_LABEL), Label).Text = CType(dRow(0).Item("Description"), String)
+                    End If
+
+                    If dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD) IsNot DBNull.Value Then
+                        CType(e.Row.Cells(PAYMENT_METHOD_COL).FindControl(PAYMENT_METHOD_LABEL), Label).Text = LookupListNew.GetDescriptionFromId(LookupListNew.GetPaymentMethodLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), New Guid(CType(dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_PAYMENT_METHOD), Byte())))
+                    End If
+
+
+
                 End If
             End If
         End Sub

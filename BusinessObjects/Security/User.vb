@@ -26,7 +26,7 @@ Public Class User
     ''' <param name="pPrivilegeCode"></param>
     ''' <returns></returns>
 
-        Public Shared Function GetUsers(ByVal country_id As Guid, ByVal pPermissionCode As String) As String()
+        Public Shared Function GetUsers(country_id As Guid, pPermissionCode As String) As String()
         Dim dal As New UserDAL
         Dim oLANIdDs As DataSet
         Dim lanIdList As New List(Of String)
@@ -64,7 +64,7 @@ Public Class User
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -72,7 +72,7 @@ Public Class User
     End Sub
 
     'Exiting BO using networkId
-    Public Sub New(ByVal networkId As String)
+    Public Sub New(networkId As String)
         MyBase.New()
         Dataset = New DataSet
         Load(networkId)
@@ -89,7 +89,7 @@ Public Class User
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -97,7 +97,7 @@ Public Class User
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -115,7 +115,7 @@ Public Class User
         SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Row = Nothing
         Dim dal As New UserDAL
         If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
@@ -131,7 +131,7 @@ Public Class User
         LoadCompanyAssigned(id)
     End Sub
 
-    Protected Sub Load(ByVal networkId As String)
+    Protected Sub Load(networkId As String)
         Row = Nothing
         Dim dal As New UserDAL
         If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
@@ -144,7 +144,7 @@ Public Class User
         LoadCompanyAssigned(New Guid(CType(Row(UserDAL.COL_NAME_USER_ID), Byte())))
     End Sub
 
-    Private Sub LoadCompanyAssigned(ByVal id As Guid)
+    Private Sub LoadCompanyAssigned(id As Guid)
         If Not Row Is Nothing Then
             Dim userCompanyAssignedDv As UserCompanyAssigned.UserCompanyAssignedDV = GetSelectedAssignedCompanies(id)
             _paymentLimits = New Dictionary(Of Guid, DecimalType)
@@ -212,7 +212,7 @@ Public Class User
     ''' <param name="companyId">Company ID for which Authorization Limit is to be fetched.</param>
     ''' <returns><see cref="DecimalType" /> object containing value of Authorization Limit for Company ID specified in Parameter.</returns>
     ''' <remarks>Returns Nothing when Company ID not found or Authorization Limits not initialized.</remarks>
-    Public ReadOnly Property AuthorizationLimit(ByVal companyId As Guid) As DecimalType
+    Public ReadOnly Property AuthorizationLimit(companyId As Guid) As DecimalType
         Get
             CheckDeleted()
             If (_authorizationLimits Is Nothing) Then
@@ -233,7 +233,7 @@ Public Class User
     ''' <param name="companyId">Company ID for which Payment Limit is to be fetched.</param>
     ''' <returns><see cref="DecimalType" /> object containing value of Payment Limit for Company ID specified in Parameter.</returns>
     ''' <remarks>Returns Nothing when Company ID not found or Payment Limits not initialized.</remarks>
-    Public ReadOnly Property PaymentLimit(ByVal companyId As Guid) As DecimalType
+    Public ReadOnly Property PaymentLimit(companyId As Guid) As DecimalType
         Get
             CheckDeleted()
             If (_paymentLimits Is Nothing) Then
@@ -248,7 +248,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property LiabilityOverrideLimit(ByVal companyId As Guid) As DecimalType
+    Public ReadOnly Property LiabilityOverrideLimit(companyId As Guid) As DecimalType
         Get
             CheckDeleted()
             If (_liabilityOverrideLimits Is Nothing) Then
@@ -263,7 +263,7 @@ Public Class User
         End Get
     End Property
 
-    Private Sub AddCompanyAssigned(ByVal oCompanyId As Guid, Optional ByVal oAuthorizationLimit As DecimalType = Nothing, Optional ByVal oPaymentLimit As DecimalType = Nothing,
+    Private Sub AddCompanyAssigned(oCompanyId As Guid, Optional ByVal oAuthorizationLimit As DecimalType = Nothing, Optional ByVal oPaymentLimit As DecimalType = Nothing,
                                    Optional ByVal oLiabilityOverrideLimit As DecimalType = Nothing)
         If (oAuthorizationLimit = Nothing) Then
             oAuthorizationLimit = New DecimalType(0)
@@ -438,7 +438,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property Company(ByVal oCompanyId As Guid) As Company
+    Public ReadOnly Property Company(oCompanyId As Guid) As Company
         Get
             Dim oCompany As Company
             If moCompanies.ContainsKey(oCompanyId.ToString) Then
@@ -449,7 +449,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property Country(ByVal oCompanyId As Guid) As Country
+    Public ReadOnly Property Country(oCompanyId As Guid) As Country
         Get
             Dim oCountry As New Country(Company(oCompanyId).CountryId)
 
@@ -660,7 +660,7 @@ Public Class User
 
 #Region "External BOs"
 
-    Public Shared Function GetUserRoles(ByVal userId As Guid) As DataView
+    Public Shared Function GetUserRoles(userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -668,7 +668,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_ROLES).DefaultView
     End Function
 
-    Public Shared Function GetAvailableRoles(ByVal userId As Guid) As DataView
+    Public Shared Function GetAvailableRoles(userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -676,7 +676,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_ROLES).DefaultView
     End Function
 
-    Public Shared Function LoadUserCompanyAssigned(ByVal grpID As Guid, ByVal userId As Guid) As DataView
+    Public Shared Function LoadUserCompanyAssigned(grpID As Guid, userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -684,7 +684,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_COMPANY_ASSIGNED).DefaultView
     End Function
 
-    Public Shared Function GetAvailableCompanies(ByVal grpID As Guid, ByVal userId As Guid) As DataView
+    Public Shared Function GetAvailableCompanies(grpID As Guid, userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -692,7 +692,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_COMPANIES).DefaultView
     End Function
 
-    Public Shared Function GetSelectedCompanies(ByVal grpID As Guid, ByVal userId As Guid) As DataView
+    Public Shared Function GetSelectedCompanies(grpID As Guid, userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -700,7 +700,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_COMPANIES).DefaultView
     End Function
 
-    Public Shared Function GetAvailableAssignedCompanies(ByVal userId As Guid) As DataView
+    Public Shared Function GetAvailableAssignedCompanies(userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -708,7 +708,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_COMPANIES).DefaultView
     End Function
 
-    Public Shared Function GetSelectedAssignedCompanies(ByVal userId As Guid) As UserCompanyAssigned.UserCompanyAssignedDV
+    Public Shared Function GetSelectedAssignedCompanies(userId As Guid) As UserCompanyAssigned.UserCompanyAssignedDV
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -716,14 +716,14 @@ Public Class User
         Return New UserCompanyAssigned.UserCompanyAssignedDV(ds.Tables(UserCompanyAssignedDAL.TABLE_NAME))
     End Function
 
-    Public Shared Function GetAvailableCompanyGroup(ByVal userId As Guid) As DataView
+    Public Shared Function GetAvailableCompanyGroup(userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
         ds = dal.LoadAvailableCompanyGroup(userId)
         Return ds.Tables(UserDAL.TABLE_USER_COMPANY_GROUPS).DefaultView
     End Function
 
-    Public Shared Function GetUserCountries(ByVal userId As Guid) As DataView
+    Public Shared Function GetUserCountries(userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -731,7 +731,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_COMPANIES).DefaultView
     End Function
 
-    Public Shared Function GetUserCompanies(ByVal userId As Guid) As DataView
+    Public Shared Function GetUserCompanies(userId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -739,7 +739,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_COMPANIES).DefaultView
     End Function
 
-    Public Shared Function GetUserCompanies(ByVal userId As Guid, ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetUserCompanies(userId As Guid, oCountryId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -747,7 +747,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_USER_COUNTRY_COMPANIES).DefaultView
     End Function
 
-    Public Shared Function GetUserBasedOnPermission(ByVal userId As Guid, ByVal companyId As Guid, ByVal permission_type_code As String) As DataView
+    Public Shared Function GetUserBasedOnPermission(userId As Guid, companyId As Guid, permission_type_code As String) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -774,7 +774,7 @@ Public Class User
 
 
     Private userRoles As DataView
-    Public Function isInRole(ByVal roleCode As String) As Boolean
+    Public Function isInRole(roleCode As String) As Boolean
         If userRoles Is Nothing Then
             userRoles = GetUserRoles(Id)
             userRoles.Sort = UserDAL.COL_NAME_ROLE_CODE
@@ -814,7 +814,7 @@ Public Class User
         Return userCompanies
     End Function
 
-    Public Function Companies(ByVal oCountryId As Guid) As ArrayList
+    Public Function Companies(oCountryId As Guid) As ArrayList
         Dim oCompaniesDv As DataView
         Dim oCompanies = New ArrayList
 
@@ -940,7 +940,7 @@ Public Class User
         End If
     End Sub
 
-    Public Function AddUserRoleChild(ByVal roleId As Guid) As UserRole
+    Public Function AddUserRoleChild(roleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
         oUserRole = New UserRole(Dataset)
@@ -949,14 +949,14 @@ Public Class User
         Return oUserRole
     End Function
 
-    Public Function GetUserRoleChild(ByVal roleId As Guid) As UserRole
+    Public Function GetUserRoleChild(roleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
         oUserRole = New UserRole(Dataset, Id, roleId)
         Return oUserRole
     End Function
 
-    Public Sub AttachUserRoles(ByVal selectedRoleGuidStrCollection As ArrayList)
+    Public Sub AttachUserRoles(selectedRoleGuidStrCollection As ArrayList)
         Dim userRoleIdStr As String
         For Each userRoleIdStr In selectedRoleGuidStrCollection
             Dim userRoleBO As UserRole = AddRoleChild(New Guid(userRoleIdStr))
@@ -964,7 +964,7 @@ Public Class User
         Next
     End Sub
 
-    Public Sub DetachUserRoles(ByVal selectedRoleGuidStrCollection As ArrayList)
+    Public Sub DetachUserRoles(selectedRoleGuidStrCollection As ArrayList)
         Dim userRoleIdStr As String
         For Each userRoleIdStr In selectedRoleGuidStrCollection
             Dim userRoleBO As UserRole = GetRoleChild(New Guid(userRoleIdStr))
@@ -973,7 +973,7 @@ Public Class User
         Next
     End Sub
 
-    Public Function AddRoleChild(ByVal RoleId As Guid) As UserRole
+    Public Function AddRoleChild(RoleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
         oUserRole = New UserRole(Dataset)
@@ -983,7 +983,7 @@ Public Class User
 
     End Function
 
-    Public Function GetRoleChild(ByVal RoleId As Guid) As UserRole
+    Public Function GetRoleChild(RoleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
         oUserRole = New UserRole(Dataset, Id, RoleId)
@@ -1000,7 +1000,7 @@ Public Class User
         oUserCompany.InitTable()
     End Sub
 
-    Public Function AddCompanyGrpChild(ByVal CompanyId As Guid, ByVal AuthorizationLimit As Decimal, ByVal PaymentLimit As Decimal,ByVal LiabilityOverrideLimit As Decimal) As UserCompanyAssigned
+    Public Function AddCompanyGrpChild(CompanyId As Guid, AuthorizationLimit As Decimal, PaymentLimit As Decimal,LiabilityOverrideLimit As Decimal) As UserCompanyAssigned
         Dim oUserCompanyAssigned As UserCompanyAssigned
 
         oUserCompanyAssigned = New UserCompanyAssigned(Dataset)
@@ -1012,14 +1012,14 @@ Public Class User
         Return oUserCompanyAssigned
     End Function
 
-    Public Function GetCompanyGrpChild(ByVal CompanyId As Guid) As UserCompanyAssigned
+    Public Function GetCompanyGrpChild(CompanyId As Guid) As UserCompanyAssigned
         Dim oUserCompanyAssigned As UserCompanyAssigned
 
         oUserCompanyAssigned = New UserCompanyAssigned(Dataset, Id, CompanyId)
         Return oUserCompanyAssigned
     End Function
 
-    Public Function AddUserCompanyGrpChild(ByVal CompanyId As Guid) As UserCompany
+    Public Function AddUserCompanyGrpChild(CompanyId As Guid) As UserCompany
         Dim oUserCompany As UserCompany
         oUserCompany = New UserCompany(Dataset)
         oUserCompany.UserId = Id
@@ -1027,13 +1027,13 @@ Public Class User
         Return oUserCompany
     End Function
 
-    Public Function GetUserCompanyGrpChild(ByVal CompanyId As Guid) As UserCompany
+    Public Function GetUserCompanyGrpChild(CompanyId As Guid) As UserCompany
         Dim oUserCompany As UserCompany
         oUserCompany = New UserCompany(Dataset, Id, CompanyId)
         Return oUserCompany
     End Function
 
-    Public Function UpdateUserCompanies(ByVal oCompanies As ArrayList) As ArrayList
+    Public Function UpdateUserCompanies(oCompanies As ArrayList) As ArrayList
         Dim oCompanyId As Guid
         Dim oUserCompany As UserCompany
         Dim oDataset As DataSet = New DataSet
@@ -1061,7 +1061,7 @@ Public Class User
     End Sub
 
 
-    Public Shared Function LoadUserOtherCompaniesIDs(ByVal UserFirstCompany_id As Guid, ByVal companyGroup_id As Guid) As ArrayList
+    Public Shared Function LoadUserOtherCompaniesIDs(UserFirstCompany_id As Guid, companyGroup_id As Guid) As ArrayList
         ' Since the Active user companies may not have all the companies of the user's company_group,
         ' this method is intended to provide the companies (IDs only) within the company group of the active user.
         ' The active user first company will be excluded.
@@ -1083,14 +1083,14 @@ Public Class User
 
         Return oCompaniesArr
     End Function
-    Public Shared Function GetSpUserClaims(ByVal userId As Guid, ByVal languageId As Guid, ByVal SpClaimCode As String) As SpUserClaims.SpUserClaimsDV
+    Public Shared Function GetSpUserClaims(userId As Guid, languageId As Guid, SpClaimCode As String) As SpUserClaims.SpUserClaimsDV
         Dim dal As New UserDAL
         Dim ds As DataSet
 
         ds = dal.LoadSpUserClaims(userId, languageId, SpClaimCode)
         Return New SpUserClaims.SpUserClaimsDV(ds.Tables(SpUserClaimsDAL.TABLE_NAME))
     End Function
-    Public Function AddSecurityClaim(ByVal SpClaimTypeID As Guid, ByVal SpClaimValue As String, ByVal Effective As DateTime, ByVal Expiration As DateTime) As SpUserClaims
+    Public Function AddSecurityClaim(SpClaimTypeID As Guid, SpClaimValue As String, Effective As DateTime, Expiration As DateTime) As SpUserClaims
         Dim oSpUserClaims As SpUserClaims
 
         oSpUserClaims = New SpUserClaims(Dataset)
@@ -1101,7 +1101,7 @@ Public Class User
         oSpUserClaims.ExpirationDate = Expiration
         Return oSpUserClaims
     End Function
-    Public Function GetSecurityClaim(ByVal SpClaimsID As Guid) As SpUserClaims
+    Public Function GetSecurityClaim(SpClaimsID As Guid) As SpUserClaims
         Dim oSpUserClaims As SpUserClaims
         oSpUserClaims = New SpUserClaims(SpClaimsID, Dataset)
         Return oSpUserClaims
@@ -1124,7 +1124,7 @@ Public Class User
 
 #Region "External User Methods"
 
-    Public Shared Function GetExternalUserServiceCenters(ByVal oServiceCenterId As Guid) As DataView
+    Public Shared Function GetExternalUserServiceCenters(oServiceCenterId As Guid) As DataView
         Dim dal As New UserDAL
         Dim ds As DataSet
 
@@ -1132,7 +1132,7 @@ Public Class User
         Return ds.Tables(UserDAL.TABLE_EXTERNAL_USER_SERVICE_CENTER).DefaultView
     End Function
 
-    Public Shared Function GetExternalUserDealers(ByVal oDealerId As Guid) As DataView
+    Public Shared Function GetExternalUserDealers(oDealerId As Guid) As DataView
         Return Nothing
     End Function
 
@@ -1165,8 +1165,8 @@ Public Class User
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetUserNewList(ByVal NetworkIDMask As String, ByVal userNameMask As String, _
-                                          ByVal roleMask As String, ByVal companyCodeMask As String _
+    Public Shared Function GetUserNewList(NetworkIDMask As String, userNameMask As String, _
+                                          roleMask As String, companyCodeMask As String _
                                           ) As UserSearchDV
         Try
             'Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -1233,29 +1233,29 @@ Public Class User
         Public Const COL_COMPANY_CODE As String = UserDAL.COL_NAME_COMPANY_SEARCH_CODE
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property UserId(ByVal row) As Guid
+        Public Shared ReadOnly Property UserId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_USER_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property UserName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property UserName(row As DataRow) As String
             Get
                 Return row(COL_USER_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property NetworkID(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property NetworkID(row As DataRow) As String
             Get
                 Return row(COL_NETWORK_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property IsActive(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property IsActive(row As DataRow) As String
             Get
                 Return row(COL_ACTIVE).ToString
             End Get
@@ -1309,7 +1309,7 @@ Public Class User
         Public Const COL_NAME_COMPANY_ID As String = WorkQueueAssignDAL.COL_NAME_COMPANY_ID
         Public Const COL_NAME_USER_ID As String = WorkQueueAssignDAL.COL_NAME_USER_ID
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -1410,28 +1410,28 @@ Public Class User
 
 #Region "User Claim Validations"
 
-    Public Shared Function IsDealerValidForUserClaim(ByVal userId As Guid, ByVal dealerCode As String) As Boolean
+    Public Shared Function IsDealerValidForUserClaim(userId As Guid, dealerCode As String) As Boolean
         Dim dal As New UserDAL
         
         return dal.IsDealerValidForUserClaim(userId, dealerCode)
         
     End Function
 
-    Public Shared Function IsDealerGroupValidForUserClaim(ByVal userId As Guid, ByVal dealerGroupCode As String) As Boolean
+    Public Shared Function IsDealerGroupValidForUserClaim(userId As Guid, dealerGroupCode As String) As Boolean
         Dim dal As New UserDAL
         
         return dal.IsDealerGroupValidForUserClaim(userId, dealerGroupCode)
         
     End Function
 
-    Public Shared Function IsCompanyGroupValidForUserClaim(ByVal userId As Guid, ByVal companyGroupCode As String) As Boolean
+    Public Shared Function IsCompanyGroupValidForUserClaim(userId As Guid, companyGroupCode As String) As Boolean
         Dim dal As New UserDAL
 
         return dal.IsCompanyGroupValidForUserClaim(userId, companyGroupCode)
         
     End Function
 
-    Public Shared Function IsServiceCenterValidForUserClaim(ByVal userId As Guid, ByVal serviceCenterCode As String, countryCode As string) As Boolean
+    Public Shared Function IsServiceCenterValidForUserClaim(userId As Guid, serviceCenterCode As String, countryCode As string) As Boolean
         Dim dal As New UserDAL
 
         return dal.IsServiceCenterValidForUserClaim(userId, serviceCenterCode, countryCode)

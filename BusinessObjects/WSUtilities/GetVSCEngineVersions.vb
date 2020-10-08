@@ -14,7 +14,7 @@ Public Class GetVSCEngineVersions
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetVSCEngineVersionsDs)
+    Public Sub New(ds As GetVSCEngineVersionsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -27,7 +27,7 @@ Public Class GetVSCEngineVersions
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetVSCEngineVersionsDs)
+    Private Sub MapDataSet(ds As GetVSCEngineVersionsDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -49,7 +49,7 @@ Public Class GetVSCEngineVersions
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetVSCEngineVersionsDs)
+    Private Sub Load(ds As GetVSCEngineVersionsDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -68,7 +68,7 @@ Public Class GetVSCEngineVersions
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetVSCEngineVersionsDs)
+    Private Sub PopulateBOFromWebService(ds As GetVSCEngineVersionsDs)
         Try
             If ds.GetVSCEngineVersions.Count = 0 Then Exit Sub
             With ds.GetVSCEngineVersions.Item(0)

@@ -6,7 +6,7 @@ Public Class Answer
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Answer
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Answer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AnswerDAL
             If _isDSCreator Then
@@ -81,7 +81,7 @@ Public Class Answer
 
 
     ''DEF-2285
-    Public Sub Load(ByVal ds As DataSet, ByVal id As Guid)
+    Public Sub Load(ds As DataSet, id As Guid)
         Try
             Dim dal As New AnswerDAL
             dal.Load(ds, id)
@@ -305,14 +305,14 @@ Public Class Answer
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As Answer)
+    Public Sub Copy(original As Answer)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
         MyBase.CopyFrom(original)
     End Sub
 
-    Public Function GetAnswerList(ByVal SoftQuestinoId As Guid) As DataView
+    Public Function GetAnswerList(SoftQuestinoId As Guid) As DataView
         Try
             Dim ANSdal As AnswerDAL
             Return ANSdal.GetAnswerList(QuestionId).Tables(0).DefaultView
@@ -322,7 +322,7 @@ Public Class Answer
         End Try
     End Function
 
-    Public Shared Function GetAnswerCodebyValue(ByVal AnswerValue As String) As String
+    Public Shared Function GetAnswerCodebyValue(AnswerValue As String) As String
         Try
             Dim ansDAL As New AnswerDAL
             Return ansDAL.GetAnswerCodeByValue(AnswerValue)
@@ -332,7 +332,7 @@ Public Class Answer
         End Try
     End Function
 
-    Public Shared Function GetAnswerDataByCode(ByVal AnswerCode As String) As DataSet
+    Public Shared Function GetAnswerDataByCode(AnswerCode As String) As DataSet
         Try
             Dim ansDAL As New AnswerDAL
             Return ansDAL.GetAnswerDataByCode(AnswerCode)
@@ -352,18 +352,18 @@ Public Class Answer
     Public Class AnswerList
         Inherits BusinessObjectListBase
         ReadOnly const_today As DateTime = DateTime.Now
-        Public Sub New(ByVal parent As Question)
+        Public Sub New(parent As Question)
             MyBase.New(LoadTable(parent, DateTime.Now), GetType(Answer), parent)
         End Sub
-        Public Sub New(ByVal parent As Question, ByVal ActiveOn As DateTime)
+        Public Sub New(parent As Question, ActiveOn As DateTime)
             MyBase.New(LoadTable(parent, ActiveOn), GetType(Answer), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, Answer).QuestionId.Equals(CType(Parent, Question).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Question, ByVal ActiveOn As DateTime) As DataTable
+        Private Shared Function LoadTable(parent As Question, ActiveOn As DateTime) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(AnswerList)) Then
                     Dim dal As New AnswerDAL
@@ -395,12 +395,12 @@ Public Class Answer
         Inherits ValidBaseAttribute
         Implements IValidatorAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.INVALID_CODE)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             Dim obj As Answer = CType(context, Answer)
             For Each dtrow As DataRow In obj.Dataset.Tables(AnswerDAL.TABLE_NAME).Rows
                 If dtrow.RowState <> DataRowState.Deleted OrElse dtrow.RowState <> DataRowState.Detached Then
@@ -422,12 +422,12 @@ Public Class Answer
         Implements IValidatorAttribute
 
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.INVALID_ORDER)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             Dim obj As Answer = CType(context, Answer)
             For Each dtrow As DataRow In obj.Dataset.Tables(AnswerDAL.TABLE_NAME).Rows
                 If dtrow.RowState <> DataRowState.Deleted OrElse dtrow.RowState <> DataRowState.Detached Then

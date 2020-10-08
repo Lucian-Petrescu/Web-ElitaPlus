@@ -6,7 +6,7 @@ Public Class SoftQuestionGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,21 +21,21 @@ Public Class SoftQuestionGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@ Public Class SoftQuestionGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SoftQuestionGroupDAL
             If _isDSCreator Then
@@ -241,7 +241,7 @@ Public Class SoftQuestionGroup
     '    End If
     'End Sub
 
-    Public Sub AttachRiskTypes(ByVal selectedRiskTypeGuidStrCollection As ArrayList)
+    Public Sub AttachRiskTypes(selectedRiskTypeGuidStrCollection As ArrayList)
         Dim riskTypeID As String
         For Each riskTypeID In selectedRiskTypeGuidStrCollection
             'update to new soft question GUID
@@ -253,7 +253,7 @@ Public Class SoftQuestionGroup
         Next
     End Sub
 
-    Public Sub DetachRiskTypes(ByVal selectedRiskTypeGuidStrCollection As ArrayList)
+    Public Sub DetachRiskTypes(selectedRiskTypeGuidStrCollection As ArrayList)
         Dim riskTypeID As String
         For Each riskTypeID In selectedRiskTypeGuidStrCollection
             'update to new soft question GUID
@@ -265,14 +265,14 @@ Public Class SoftQuestionGroup
         Next
     End Sub
 
-    Public Shared Function GetAvailableRiskTypes(ByVal companyGroupId As Guid) As Dataset
+    Public Shared Function GetAvailableRiskTypes(companyGroupId As Guid) As Dataset
         Dim ds As Dataset = New Dataset
         Dim rtDAL As RiskTypeDAL = New RiskTypeDAL
         rtDAL.LoadAvailableRiskTypeForSoftQuestion(ds, companyGroupId)
         Return ds
     End Function
 
-    Public Shared Function GetSelectedRiskTypes(ByVal softQuestionGrpID As Guid, Optional ByVal ds As Dataset = Nothing) As Dataset
+    Public Shared Function GetSelectedRiskTypes(softQuestionGrpID As Guid, Optional ByVal ds As Dataset = Nothing) As Dataset
         If ds Is Nothing Then
             ds = New Dataset
         End If
@@ -292,7 +292,7 @@ Public Class SoftQuestionGroup
 
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal companyGroupId As Guid) As SoftQuestionGroupDV
+    Public Shared Function getList(descriptionMask As String, companyGroupId As Guid) As SoftQuestionGroupDV
         Try
             Dim dal As New SoftQuestionGroupDAL
 
@@ -318,7 +318,7 @@ Public Class SoftQuestionGroup
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

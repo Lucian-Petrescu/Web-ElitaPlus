@@ -34,26 +34,26 @@ Public Class ConsentActions
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ConsentActionsDAL
             If _isDSCreator Then
@@ -97,7 +97,7 @@ Public Class ConsentActions
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getConsentActionsList(ByVal ReferenceType As String, ByVal ReferenceValueId As Guid, ByVal ConsentType As String, ByVal ConsentFieldName As String, ByVal languageId As Guid) As ConsentActionsSearchDV
+    Public Shared Function getConsentActionsList(ReferenceType As String, ReferenceValueId As Guid, ConsentType As String, ConsentFieldName As String, languageId As Guid) As ConsentActionsSearchDV
         Try
             Dim dal As New ConsentActionsDAL
             Dim fromdate As Date?
@@ -133,7 +133,7 @@ Public Class ConsentActions
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

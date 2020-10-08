@@ -49,14 +49,14 @@ Public Class GVSTransactionUpdate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GVSTransactionUpdateDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As GVSTransactionUpdateDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = xml
         FuncToProc = functionToProcess
     End Sub
 
-    Public Sub New(ByVal ds As GVSTransactionUpdateDs)
+    Public Sub New(ds As GVSTransactionUpdateDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -74,7 +74,7 @@ Public Class GVSTransactionUpdate
     Dim _functionTypeCode As String
     Dim _transactionId As String
 
-    Private Sub MapDataSet(ByVal ds As GVSTransactionUpdateDs)
+    Private Sub MapDataSet(ds As GVSTransactionUpdateDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -96,7 +96,7 @@ Public Class GVSTransactionUpdate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GVSTransactionUpdateDs)
+    Private Sub Load(ds As GVSTransactionUpdateDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -115,7 +115,7 @@ Public Class GVSTransactionUpdate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GVSTransactionUpdateDs)
+    Private Sub PopulateBOFromWebService(ds As GVSTransactionUpdateDs)
         Try
             If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)

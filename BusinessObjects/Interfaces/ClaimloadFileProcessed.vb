@@ -22,7 +22,7 @@ Public Class ClaimloadFileProcessed
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -36,20 +36,20 @@ Public Class ClaimloadFileProcessed
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -71,7 +71,7 @@ Public Class ClaimloadFileProcessed
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimloadFileProcessedDAL
             If _isDSCreator Then
@@ -289,7 +289,7 @@ Public Class ClaimloadFileProcessed
 #End Region
 
 #Region "Public Members"
-    Public Overloads Sub Save(ByVal oClaim As MultiAuthClaim)
+    Public Overloads Sub Save(oClaim As MultiAuthClaim)
         Try
             MyBase.Save()
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
@@ -332,7 +332,7 @@ Public Class ClaimloadFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub ValidateFileName(ByVal fileLength As Integer)
+    Public Shared Sub ValidateFileName(fileLength As Integer)
         If fileLength = 0 Then
             Dim errors() As ValidationError = {New ValidationError("DEALERLOADFORM_FORM001", GetType(ClaimFileProcessed), Nothing, Nothing, Nothing)}
             Throw New BOValidationException(errors, GetType(ClaimFileProcessed).FullName)
@@ -373,7 +373,7 @@ Public Class ClaimloadFileProcessed
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal ds As DataSet, ByVal claimLoadFileProcessedId As Guid, ByVal FileType As String) As DataSet
+    Public Shared Function LoadList(ds As DataSet, claimLoadFileProcessedId As Guid, FileType As String) As DataSet
         Try
             If (ds Is Nothing) Then ds = New DataSet
             If (FileType = Codes.CLAIM_LOAD_FILE_TYPE__VENDOR_INVOICE) Then
@@ -393,7 +393,7 @@ Public Class ClaimloadFileProcessed
         End Try
     End Function
 
-    Public Shared Function LoadList(ByVal userId As Guid, ByVal countryCode As String, ByVal fileType As String, ByVal fileName As String) As DataView
+    Public Shared Function LoadList(userId As Guid, countryCode As String, fileType As String, fileName As String) As DataView
         Try
             Dim dal As New ClaimloadFileProcessedDAL
             Dim ds As DataSet
@@ -409,7 +409,7 @@ Public Class ClaimloadFileProcessed
 #End Region
 
 #Region "StoreProcedures Control"
-    Public Shared Function ValidateFile(ByVal strFileName As String) As Guid
+    Public Shared Function ValidateFile(strFileName As String) As Guid
         Try
             Dim oData As New ClaimloadFileProcessedDAL.ClaimLoadFileProcessedData
             oData.filename = strFileName
@@ -423,7 +423,7 @@ Public Class ClaimloadFileProcessed
         End Try
     End Function
 
-    Public Shared Function ProcessFile(ByVal strFileName As String) As Guid
+    Public Shared Function ProcessFile(strFileName As String) As Guid
         Try
             Dim oData As New ClaimloadFileProcessedDAL.ClaimLoadFileProcessedData
             oData.filename = strFileName
@@ -437,7 +437,7 @@ Public Class ClaimloadFileProcessed
         End Try
     End Function
 
-    Public Shared Function DeleteFile(ByVal strFileName As String) As Guid
+    Public Shared Function DeleteFile(strFileName As String) As Guid
         Try
             Dim oData As New ClaimloadFileProcessedDAL.ClaimLoadFileProcessedData
             oData.filename = strFileName

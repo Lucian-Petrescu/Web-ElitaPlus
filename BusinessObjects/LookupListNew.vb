@@ -81,7 +81,7 @@ Public NotInheritable Class LookupListNew
 
     Private Shared ReadOnly _syncLock As New Object
 
-    Private Shared Function RetrieveList(ByVal listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Private Shared Function RetrieveList(listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = Nothing
 
         dv = LookupListCache.RetrieveFromCache(listName, displayNothingSelected)
@@ -125,7 +125,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Private Shared Function RetrieveParamList(ByVal listName As String, ByVal params() As DBHelper.DBHelperParameter) As DataView
+    Private Shared Function RetrieveParamList(listName As String, params() As DBHelper.DBHelperParameter) As DataView
         Dim dv As DataView = Nothing
 
         dv = LookupListDALNew.Load(listName, params)
@@ -163,7 +163,7 @@ Public NotInheritable Class LookupListNew
     '    Return dv
     'End Function
 
-    Private Shared Function GetDistinct(ByVal dv As DataView, ByVal sDistinictColumnName As String) As DataView
+    Private Shared Function GetDistinct(dv As DataView, sDistinictColumnName As String) As DataView
 
         Dim hTable = New Hashtable()
         Dim duplicateList = New ArrayList
@@ -190,11 +190,11 @@ Public NotInheritable Class LookupListNew
 #Region " Public Methods "
 
 
-    Public Shared Function DataView(ByVal listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function DataView(listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Return RetrieveList(listName, displayNothingSelected, orderByColumn)
     End Function
 
-    Public Shared Function DoubleFilteredView(ByVal listName As String, ByVal filterField1 As String, ByVal filterValue1 As String, ByVal filterField2 As String, ByVal filterValue2 As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function DoubleFilteredView(listName As String, filterField1 As String, filterValue1 As String, filterField2 As String, filterValue2 As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = RetrieveList(listName, displayNothingSelected, orderByColumn)
 
         Dim rowFilter As String
@@ -221,7 +221,7 @@ Public NotInheritable Class LookupListNew
         Return dv
     End Function
 
-    Public Shared Function FilteredView(ByVal listName As String, ByVal filterField As String, ByVal filterValue As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function FilteredView(listName As String, filterField As String, filterValue As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = RetrieveList(listName, displayNothingSelected, orderByColumn)
         If ((Not filterField Is Nothing) And (filterField.Length > 0)) Then
 
@@ -240,7 +240,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function FilteredView(ByVal listName As String, ByVal filterCondition As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function FilteredView(listName As String, filterCondition As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = RetrieveList(listName, displayNothingSelected, orderByColumn)
 
         dv.RowFilter = filterCondition
@@ -248,7 +248,7 @@ Public NotInheritable Class LookupListNew
         Return dv
 
     End Function
-    Public Shared Function FilteredDistinctView(ByVal listName As String, ByVal companyIds As ArrayList, ByVal sDistinictColumnName As String, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function FilteredDistinctView(listName As String, companyIds As ArrayList, sDistinictColumnName As String, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {}
 
         Dim whereClauseConditions As String
@@ -263,7 +263,7 @@ Public NotInheritable Class LookupListNew
         Return dv
     End Function
 
-    Public Shared Function FilteredParamView(ByVal listName As String, ByVal filterCondition As String, ByVal params() As DBHelper.DBHelperParameter) As DataView
+    Public Shared Function FilteredParamView(listName As String, filterCondition As String, params() As DBHelper.DBHelperParameter) As DataView
         Dim dv As DataView = RetrieveParamList(listName, params)
 
         dv.RowFilter = filterCondition
@@ -272,7 +272,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function FilteredViewWithDynamicInClause(ByVal listName As String, ByVal companyIds As ArrayList, ByVal filterField As String, ByVal filterValue As String) As DataView
+    Public Shared Function FilteredViewWithDynamicInClause(listName As String, companyIds As ArrayList, filterField As String, filterValue As String) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {}
 
         Dim inClauseConditions As String = Environment.NewLine & MiscUtil.BuildListForSql(" AND cc." & COL_COMPANY_ID_NAME, companyIds, True)
@@ -286,13 +286,13 @@ Public NotInheritable Class LookupListNew
         Return dv
     End Function
 
-    Public Shared Function XMLView(ByVal listName As String, ByVal groupName As String, ByVal rowName As String) As String
+    Public Shared Function XMLView(listName As String, groupName As String, rowName As String) As String
         Dim ds As DataSet = LookupListDALNew.Load(listName, groupName, rowName)
         Return ds.GetXml()
     End Function
 
 
-    Public Shared Function GetIdFromCode(ByVal listName As String, ByVal code As String) As Guid
+    Public Shared Function GetIdFromCode(listName As String, code As String) As Guid
         Dim id As Guid = Nothing
         Dim dv As DataView = DataView(listName)
 
@@ -304,7 +304,7 @@ Public NotInheritable Class LookupListNew
         Return id
     End Function
 
-    Public Shared Function GetIdFromExtCode(ByVal listName As String, ByVal extcode As String) As Guid
+    Public Shared Function GetIdFromExtCode(listName As String, extcode As String) As Guid
         Dim id As Guid = Nothing
         Dim dv As DataView = DataView(listName)
 
@@ -316,7 +316,7 @@ Public NotInheritable Class LookupListNew
         Return id
     End Function
 
-    Public Shared Function GetIdFromCode(ByVal dv As DataView, ByVal code As String) As Guid
+    Public Shared Function GetIdFromCode(dv As DataView, code As String) As Guid
         Dim id As Guid = Nothing
         dv.Sort = "code"
         Dim idx As Integer = dv.Find(code)
@@ -325,7 +325,7 @@ Public NotInheritable Class LookupListNew
 
         Return id
     End Function
-    Public Shared Function GetCodeFromId(ByVal listName As String, ByVal id As Guid) As String
+    Public Shared Function GetCodeFromId(listName As String, id As Guid) As String
         Dim dv As DataView = DataView(listName)
         Dim i As Integer
 
@@ -338,7 +338,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetSequenceFromId(ByVal dv As DataView, ByVal id As Guid) As Long
+    Public Shared Function GetSequenceFromId(dv As DataView, id As Guid) As Long
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
@@ -350,7 +350,7 @@ Public NotInheritable Class LookupListNew
         Return -1
     End Function
 
-    Public Shared Function GetDescriptionFromId(ByVal dv As DataView, ByVal id As Guid) As String
+    Public Shared Function GetDescriptionFromId(dv As DataView, id As Guid) As String
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
@@ -362,7 +362,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetDescriptionFromId(ByVal listName As String, ByVal id As Guid, ByVal languageId As Guid) As String
+    Public Shared Function GetDescriptionFromId(listName As String, id As Guid, languageId As Guid) As String
         Dim dv As DataView = DataView(listName)
         Dim i As Integer
 
@@ -377,7 +377,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetLanguageDescriptionFromId(ByVal listName As String, ByVal id As Guid, ByVal languageId As Guid) As String
+    Public Shared Function GetLanguageDescriptionFromId(listName As String, id As Guid, languageId As Guid) As String
         Dim dv As DataView = DataView(listName)
         Dim i As Integer
 
@@ -392,7 +392,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetCodeFromId(ByVal dv As DataView, ByVal id As Guid) As String
+    Public Shared Function GetCodeFromId(dv As DataView, id As Guid) As String
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
@@ -404,7 +404,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetDescriptionFromId(ByVal listName As String, ByVal id As Guid, Optional ByVal blnFilterByUserLangauge As Boolean = False) As String
+    Public Shared Function GetDescriptionFromId(listName As String, id As Guid, Optional ByVal blnFilterByUserLangauge As Boolean = False) As String
 
         Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Dim dv As DataView = DataView(listName)
@@ -437,7 +437,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetDescriptionFromCode(ByVal listName As String, ByVal code As String, ByVal languageId As Guid) As String
+    Public Shared Function GetDescriptionFromCode(listName As String, code As String, languageId As Guid) As String
         Dim i As Integer
         Dim dv As DataView = DataView(listName)
 
@@ -452,7 +452,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetDescriptionFromCode(ByVal dv As DataView, ByVal code As String) As String
+    Public Shared Function GetDescriptionFromCode(dv As DataView, code As String) As String
         Dim desc As String = Nothing
         dv.Sort = "code"
         Dim idx As Integer = dv.Find(code)
@@ -462,7 +462,7 @@ Public NotInheritable Class LookupListNew
         Return desc
     End Function
 
-    Public Shared Function GetDescriptionFromCode(ByVal listName As String, ByVal code As String) As String
+    Public Shared Function GetDescriptionFromCode(listName As String, code As String) As String
         Dim desc As String = Nothing
         Dim dv As DataView = DataView(listName)
 
@@ -474,7 +474,7 @@ Public NotInheritable Class LookupListNew
         Return desc
     End Function
 
-    Public Shared Function GetDescriptionFromExtCode(ByVal listName As String, ByVal languageId As Guid, ByVal extcode As String) As String
+    Public Shared Function GetDescriptionFromExtCode(listName As String, languageId As Guid, extcode As String) As String
         Dim desc As String = Nothing
         Dim dv As DataView = DropdownLookupList(listName, languageId)
         dv.RowFilter = dv.RowFilter & " and ExtCode= '" & extcode & "'"
@@ -483,7 +483,7 @@ Public NotInheritable Class LookupListNew
         End If
         Return desc
     End Function
-    Public Shared Function GetCodeFromDescription(ByVal dv As DataView, ByVal desc As String) As String
+    Public Shared Function GetCodeFromDescription(dv As DataView, desc As String) As String
         Dim code As String = Nothing
 
         dv.Sort = "description"
@@ -494,7 +494,7 @@ Public NotInheritable Class LookupListNew
         Return code
     End Function
 
-    Public Shared Function GetIdFromDescription(ByVal listName As String, ByVal description As String) As Guid
+    Public Shared Function GetIdFromDescription(listName As String, description As String) As Guid
         Dim id As Guid = Nothing
         Dim dv As DataView = DataView(listName)
 
@@ -506,7 +506,7 @@ Public NotInheritable Class LookupListNew
         Return id
     End Function
 
-    Public Shared Function GetIdFromDescription(ByVal dv As DataView, ByVal description As String) As Guid
+    Public Shared Function GetIdFromDescription(dv As DataView, description As String) As Guid
         Dim id As Guid = Nothing
         dv.Sort = "description"
         Dim idx As Integer = dv.Find(description)
@@ -520,7 +520,7 @@ Public NotInheritable Class LookupListNew
 
 #Region "Company Related LookupLists"
 
-    Public Shared Function GetAccountingClosingYearsLookupList(ByVal companyId As Guid) As DataView
+    Public Shared Function GetAccountingClosingYearsLookupList(companyId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ACCOUNTING_CLOSING_YEARS, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(companyId))
 
@@ -528,7 +528,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDealerLookupList(ByVal companyId As Guid) As DataView
+    Public Shared Function GetDealerLookupList(companyId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DEALERS, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(companyId))
 
@@ -536,10 +536,10 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetParentDealerLookupList(ByVal CompanyId As Guid) As DataView
+    Public Shared Function GetParentDealerLookupList(CompanyId As Guid) As DataView
         Return (FilteredView(LK_PARENT_DEALERS, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(CompanyId)))
     End Function
-    Public Shared Function GetOriginalDealerLookupList(ByVal companyId As Guid, ByVal ServiceCenterId As Guid) As DataView
+    Public Shared Function GetOriginalDealerLookupList(companyId As Guid, ServiceCenterId As Guid) As DataView
 
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -563,7 +563,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetDealerGroupLookupList(ByVal companyGrpId As Guid) As DataView
+    Public Shared Function GetDealerGroupLookupList(companyGrpId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DEALER_GROUPS, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(companyGrpId))
 
@@ -601,7 +601,7 @@ Public NotInheritable Class LookupListNew
 
 
 
-    Public Shared Function GetDealerCommissionBreakDownLookupList(ByVal companyId As Guid) As DataView
+    Public Shared Function GetDealerCommissionBreakDownLookupList(companyId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DEALER_COMMISSION_BREAKDOWN, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(companyId))
 
@@ -610,7 +610,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
     '07/2006 - ALR - Added to provide the dynamic query ability and enable multiple company lookups
-    Public Shared Function GetDealerCommissionBreakDownLookupList(ByVal companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing) As DataView
+    Public Shared Function GetDealerCommissionBreakDownLookupList(companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing) As DataView
 
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql("C." & COL_COMPANY_ID_NAME, companyIds)
         Dim sListName As String
@@ -640,7 +640,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetUserDealerLookupList(ByVal UserId As Guid) As DataView
+    Public Shared Function GetUserDealerLookupList(UserId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_USER_DEALER, COL_USER_ID_NAME, DALBase.GuidToSQLString(UserId))
 
@@ -648,7 +648,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetUserDealerAssignedLookupList(ByVal userId As Guid, ByVal dealer As String) As DataView
+    Public Shared Function GetUserDealerAssignedLookupList(userId As Guid, dealer As String) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_USER_ID_NAME, DALBase.GuidToSQLString(userId)) _
                     , New DBHelper.DBHelperParameter(COL_USER_ID_NAME, DALBase.GuidToSQLString(userId)) _
@@ -667,19 +667,19 @@ Public NotInheritable Class LookupListNew
 
     'End Function
 
-    Public Shared Function GetDealerMonthlyBillingLookupList(ByVal companyId As Guid) As DataView
+    Public Shared Function GetDealerMonthlyBillingLookupList(companyId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_DEALERS_MONTHLY_BILLING, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(companyId))
         Return (dv)
     End Function
 
-    Public Shared Function GetDealerMonthlyBillingLookupList(ByVal companyIds As ArrayList, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function GetDealerMonthlyBillingLookupList(companyIds As ArrayList, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         Dim dv As DataView = FilteredView(LK_DEALERS_MONTHLY_BILLING, sFilterCondition, True, orderByColumn)
 
         Return (dv)
     End Function
 
-    Public Shared Function GetAddressLookupList(ByVal companyId As Guid) As DataView
+    Public Shared Function GetAddressLookupList(companyId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ADDRESSES, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(companyId))
 
@@ -695,7 +695,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCompanyLookupList(ByVal oCompId As Guid) As DataView
+    Public Shared Function GetCompanyLookupList(oCompId As Guid) As DataView
         Dim parameters() As DBHelper.DBHelperParameter = {New DBHelper.DBHelperParameter("CompanyId", oCompId.ToByteArray)}
         Dim dv As DataView = FilteredParamView(LK_GET_COMPANY, "", parameters)
         Return (dv)
@@ -719,7 +719,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCompanyGroupNoptInUseLookupList(ByVal companyGrpIds As ArrayList) As DataView
+    Public Shared Function GetCompanyGroupNoptInUseLookupList(companyGrpIds As ArrayList) As DataView
         Dim inClauseConditions As String = Environment.NewLine & MiscUtil.BuildListForNetSql("where " & COL_COMPANY_GROUP_ID_NAME, companyGrpIds)
         ' Dim sListName As String = LK_COMPANY_GROUPS
         Dim dv As DataView = LookupListDALNew.Load(LK_COMPANY_GROUPS, inClauseConditions)
@@ -727,7 +727,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCompanyCreditCardsFormatLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCompanyCreditCardsFormatLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMPANY_CREDIT_CARDS_FORMAT, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -744,7 +744,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
     '5623
-    Public Shared Function GetUserCompanyLookupList(ByVal companygroupid As Guid, ByVal userid As Guid) As DataView
+    Public Shared Function GetUserCompanyLookupList(companygroupid As Guid, userid As Guid) As DataView
 
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -769,7 +769,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetCompanyCreditCardsLookupList(ByVal languageId As Guid, ByVal CompanyId As Guid) As DataView
+    Public Shared Function GetCompanyCreditCardsLookupList(languageId As Guid, CompanyId As Guid) As DataView
 
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
@@ -784,7 +784,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRepairCodeLookupList(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetRepairCodeLookupList(companyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_REPAIR_CODES, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(companyGroupId))
 
@@ -799,7 +799,7 @@ Public NotInheritable Class LookupListNew
     '    Return (dv)
     'End Function
 
-    Public Shared Function GetDealerLookupList(ByVal companyIds As ArrayList,
+    Public Shared Function GetDealerLookupList(companyIds As ArrayList,
                                                 Optional ByVal bAddCompanyCodeToDescription As Boolean = True,
                                                 Optional ByVal sDistinictColumnName As String = Nothing,
                                                 Optional ByVal dynamicOrderBYClause As String = "description",
@@ -849,7 +849,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetProducerLookupList(ByVal companyIds As ArrayList) As DataView
+    Public Shared Function GetProducerLookupList(companyIds As ArrayList) As DataView
 
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         Dim sListName As String
@@ -863,9 +863,9 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDealerLookupListByAttribute(ByVal companyIds As ArrayList,
-                                                           ByVal TableName As String,
-                                                           ByVal UI_Prog_Code As String) As DataView
+    Public Shared Function GetDealerLookupListByAttribute(companyIds As ArrayList,
+                                                           TableName As String,
+                                                           UI_Prog_Code As String) As DataView
 
         Dim companyidstring As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
 
@@ -876,8 +876,8 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetDealerLookupListByDealerType(ByVal companyIds As ArrayList,
-                                                            ByVal DealerType As String) As DataView
+    Public Shared Function GetDealerLookupListByDealerType(companyIds As ArrayList,
+                                                            DealerType As String) As DataView
 
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         Dim sListName As String
@@ -898,7 +898,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetDealersCommPrdLookupList(ByVal companyIds As ArrayList) As DataView
+    Public Shared Function GetDealersCommPrdLookupList(companyIds As ArrayList) As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
 
         Dim dv As DataView = FilteredView(LK_DEALERS_COMM_PROD, sFilterCondition)
@@ -907,7 +907,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDealersGroupsByCompanyLookupList(ByVal companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True) As DataView
+    Public Shared Function GetDealersGroupsByCompanyLookupList(companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True) As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         Dim sListName As String
 
@@ -926,7 +926,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCampaignNumberLookupList(ByVal companyIds As ArrayList) As DataView
+    Public Shared Function GetCampaignNumberLookupList(companyIds As ArrayList) As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         'If Not dealerId.Equals(Guid.Empty) Then
         '    sFilterCondition &= Environment.NewLine & " AND dealer_id = " & MiscUtil.GetDbStringFromGuid(dealerId, True) & ""
@@ -936,7 +936,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetDealerForProductCodeConvLookupList(ByVal companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing, Optional ByVal dynamicOrderBYClause As String = "description") As DataView
+    Public Shared Function GetDealerForProductCodeConvLookupList(companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing, Optional ByVal dynamicOrderBYClause As String = "description") As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         Dim sListName As String
         If bAddCompanyCodeToDescription And companyIds.Count > 1 Then
@@ -965,7 +965,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetEarningPatternStartsOnLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetEarningPatternStartsOnLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_EARNING_PATTERN_STARTS_ON, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -973,7 +973,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetEarningCodeLookupList(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetEarningCodeLookupList(companyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_EARNING_CODES, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(companyGroupId))
 
@@ -981,7 +981,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCommEntityLookupList(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetCommEntityLookupList(companyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMMISSION_ENTITIES, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(companyGroupId))
         Return (dv)
@@ -1008,14 +1008,14 @@ Public NotInheritable Class LookupListNew
 
     'End Function
 
-    Public Shared Function GetPostPrePaidLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPostPrePaidLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_POSTPRE_PAID, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
     End Function
-    Public Shared Function GetComputeDeductibleBasedOnAndExpressions(ByVal languageId As Guid) As DataView
+    Public Shared Function GetComputeDeductibleBasedOnAndExpressions(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMPUTE_DEDUCTIBLE_BASED_ON_AND_EXPRESSIONS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1023,7 +1023,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetReplacementBasedOnLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetReplacementBasedOnLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_REPLACEMENT_BASED_ON, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1031,7 +1031,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCollectionCycleTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCollectionCycleTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COLLECTION_CYCLE_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1039,7 +1039,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCoverageTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCoverageTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_COVERAGE_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1047,7 +1047,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetNotificationTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetNotificationTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_NOTIICATION_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1055,7 +1055,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetWhoPaysLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetWhoPaysLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_WHO_PAYS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1063,7 +1063,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCoverageTypeByCompanyGroupLookupList(ByVal languageId As Guid, ByVal CompanyGroupId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCoverageTypeByCompanyGroupLookupList(languageId As Guid, CompanyGroupId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
@@ -1078,7 +1078,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCoverageTypeByDealerLookupList(ByVal languageId As Guid, ByVal DealerId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCoverageTypeByDealerLookupList(languageId As Guid, DealerId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
@@ -1092,7 +1092,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetCoverageTypeLookupListNotInCovLoss(ByVal languageId As Guid, ByVal CompanyGroupId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCoverageTypeLookupListNotInCovLoss(languageId As Guid, CompanyGroupId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
@@ -1106,7 +1106,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetCoverageTypeByCompanyGroupLookupListNotInCovLoss(ByVal languageId As Guid, ByVal CompanyGroupId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCoverageTypeByCompanyGroupLookupListNotInCovLoss(languageId As Guid, CompanyGroupId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
@@ -1122,7 +1122,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCauseOfLossByCoverageTypeLookupList(ByVal languageId As Guid, ByVal CompanyGroupId As Guid, ByVal CoverageTypeId As Guid, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal LoadNoneActive As Boolean = False) As DataView
+    Public Shared Function GetCauseOfLossByCoverageTypeLookupList(languageId As Guid, CompanyGroupId As Guid, CoverageTypeId As Guid, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal LoadNoneActive As Boolean = False) As DataView
 
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
@@ -1146,7 +1146,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCauseOfLossByCoverageTypeAndSplSvcLookupList(ByVal CompanyGroupId As Guid, ByVal CoverageTypeId As Guid, ByVal DealerId As Guid, ByVal languageId As Guid, ByVal ProductCode As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal LoadNoneActive As Boolean = False) As DataView
+    Public Shared Function GetCauseOfLossByCoverageTypeAndSplSvcLookupList(CompanyGroupId As Guid, CoverageTypeId As Guid, DealerId As Guid, languageId As Guid, ProductCode As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal LoadNoneActive As Boolean = False) As DataView
 
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
@@ -1170,7 +1170,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCoverageTypeLookupList(ByVal itemId As Guid, ByVal languageId As Guid) As DataView
+    Public Shared Function GetCoverageTypeLookupList(itemId As Guid, languageId As Guid) As DataView
         Dim languageIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         languageIdList.Add(languageId)
         Dim sFilterCondition As String = MiscUtil.BuildListForSql(COL_LANGUAGE_ID_NAME, languageIdList)
@@ -1184,7 +1184,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCertificateDurationLookupList(ByVal oItemId As Guid, ByVal oCoverageTypeId As Guid) As DataView
+    Public Shared Function GetCertificateDurationLookupList(oItemId As Guid, oCoverageTypeId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter("item_id", oItemId),
@@ -1196,7 +1196,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCoverageDurationLookupList(ByVal oItemId, ByVal oCoverageTypeId, ByVal sCertificateDuration) As DataView
+    Public Shared Function GetCoverageDurationLookupList(oItemId, oCoverageTypeId, sCertificateDuration) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter("item_id", oItemId),
@@ -1209,7 +1209,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetClaimTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetClaimTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CLAIM_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1217,7 +1217,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetColorLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetColorLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COLORS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1225,7 +1225,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetClaimStatsActionLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetClaimStatsActionLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ACTION, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1233,7 +1233,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetClaimActivityLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetClaimActivityLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CLAIM_ACTIVITIES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1241,7 +1241,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCauseOfLossLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCauseOfLossLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CAUSES_OF_LOSS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1249,7 +1249,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetProdLiabilityLimitBasedOnList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetProdLiabilityLimitBasedOnList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1257,7 +1257,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCovergaePerilTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCovergaePerilTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_COVERAGE_PERIL_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1265,7 +1265,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetBenefitsEligibleActionList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetBenefitsEligibleActionList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_PRODUCT_BENEFITS_ACTION, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1275,7 +1275,7 @@ Public NotInheritable Class LookupListNew
 
 
 
-    Public Shared Function GetProdLiabilityLimitPolicyList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetProdLiabilityLimitPolicyList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_PROD_LIABILITY_LIMIT_POLICY_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1283,7 +1283,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetMethodOfRepairLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetMethodOfRepairLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_METHODS_OF_REPAIR, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1291,7 +1291,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetMethodOfFinBalForUpgList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetMethodOfFinBalForUpgList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_UPG_FINANCE_BAL_COMP_METH, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1299,7 +1299,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetMethodOfRepairForRepairsLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetMethodOfRepairForRepairsLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_METHODS_OF_REPAIR_FOR_REPAIRS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -1307,7 +1307,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetReasonClosedLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetReasonClosedLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_REASONS_CLOSED, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1315,7 +1315,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDeniedReasonLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetDeniedReasonLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DENIED_REASON, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1323,7 +1323,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDeniedReasonLookupList(ByVal languageId As Guid, ByVal dealerCode As String) As DataView
+    Public Shared Function GetDeniedReasonLookupList(languageId As Guid, dealerCode As String) As DataView
 
         Dim dv As DataView = DoubleFilteredView(LK_DEALER_DENIED_REASON, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), COL_DEALER, dealerCode)
 
@@ -1331,14 +1331,14 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCommentTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCommentTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMMENT_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
     End Function
-    Public Shared Function GetServiceOrderReportLookupList(ByVal companyID As Guid) As DataView
+    Public Shared Function GetServiceOrderReportLookupList(companyID As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SERVICE_ORDER_REPORTS, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(companyID))
 
@@ -1346,7 +1346,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRiskGroupsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetRiskGroupsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_RISK_GROUPS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1354,7 +1354,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetClaimSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetClaimSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CLAIM_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1362,7 +1362,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRepairLogisticsSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetRepairLogisticsSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_REPAIR_LOGISTICS_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1370,7 +1370,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetAdjusterClaimSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetAdjusterClaimSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ADJUSTER_CLAIM_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1378,7 +1378,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetNotificationSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetNotificationSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_NOTIFICATION_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1386,7 +1386,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetHUBRegionsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetHUBRegionsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_HUB_REGIONS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1395,7 +1395,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetSortOrderLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetSortOrderLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SORT_ORDER, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1403,7 +1403,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetClaimSearchByCommentTypeFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetClaimSearchByCommentTypeFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CLAIM_SEARCH_BY_COMMENT_TYPE_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1411,7 +1411,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPendingClaimSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPendingClaimSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1419,7 +1419,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetMonthsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetMonthsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LookupListNew.LK_MONTHS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1427,7 +1427,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetClaimFollowUpSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetClaimFollowUpSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CLAIM_FOLLOWUP_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1435,7 +1435,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCertificateSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCertificateSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CERTIFICATE_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1443,7 +1443,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetInvoiceSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetInvoiceSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_INVOICE_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1451,7 +1451,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetReplacementPolicyLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetReplacementPolicyLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_REPLACEMENT_POLICIES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -1459,7 +1459,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetSalutationLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetSalutationLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SALUTATION, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -1467,7 +1467,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDedCollMethodLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetDedCollMethodLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DED_COLL_METHOD, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -1475,7 +1475,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetSalutationLanguageLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetSalutationLanguageLookupList(languageId As Guid) As DataView
         Dim dv As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                    {New DBHelper.DBHelperParameter("language_id", languageId.ToByteArray)}
@@ -1486,7 +1486,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetMembershipTypeLanguageLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetMembershipTypeLanguageLookupList(languageId As Guid) As DataView
         Dim dv As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                    {New DBHelper.DBHelperParameter("language_id", languageId.ToByteArray)}
@@ -1497,7 +1497,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPaymentMethodLookupList(ByVal languageId As Guid, Optional ByVal IncludeBankTransfer As Boolean = True,
+    Public Shared Function GetPaymentMethodLookupList(languageId As Guid, Optional ByVal IncludeBankTransfer As Boolean = True,
                                                       Optional ByVal UserId As String = Nothing,
                                                       Optional ByVal CompanyId As String = Nothing,
                                                       Optional ByVal ExcludeByRole As Boolean = False) As DataView
@@ -1524,14 +1524,14 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetPaymentReasonLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPaymentReasonLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PAYMENTREASON, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
         Return (dv)
 
     End Function
-    Public Shared Function GetAcctStatusLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetAcctStatusLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ACCTSTATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -1539,7 +1539,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetAccountTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetAccountTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ACCOUNT_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -1547,7 +1547,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPayeeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPayeeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PAYEE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1555,21 +1555,21 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCommScheduleLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCommScheduleLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMM_SCHL, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
     End Function
-    Public Shared Function GetPayeeTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPayeeTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PAYEE_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
     End Function
-    Public Shared Function GetCoinsuranceLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCoinsuranceLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COINSURANCE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1578,7 +1578,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetCompanyGroupClaimNumberingLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCompanyGroupClaimNumberingLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMPANY_GROUP_CLAIM_NUMBERING, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1586,7 +1586,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCompanyGroupInvoiceNumberingLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCompanyGroupInvoiceNumberingLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMPANY_GROUP_INVOICE_NUMBERING, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1595,7 +1595,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
     'REQ-1142
-    Public Shared Function GetInactivatNewVehicleLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetInactivatNewVehicleLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_INACTIVATE_NEW_VEHICLE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1603,14 +1603,14 @@ Public NotInheritable Class LookupListNew
 
     End Function
     'REQ-863
-    Public Shared Function GetCompanyGroupInvoicegrpNumberingLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCompanyGroupInvoicegrpNumberingLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_COMPANY_GROUP_INVOICE_GRP_NUMBERING, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
     End Function
 
-    Public Shared Function GetLicenseTagFlag(ByVal languageId As Guid) As DataView
+    Public Shared Function GetLicenseTagFlag(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_LICENSE_TAG_FLAG, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1619,7 +1619,7 @@ Public NotInheritable Class LookupListNew
     End Function
     'REQ-1142
     'REQ-5723 start
-    Public Shared Function GetVinRestricMandatoryInfo(ByVal languageId As Guid) As DataView
+    Public Shared Function GetVinRestricMandatoryInfo(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_VRSTID, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1627,7 +1627,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPlancodeInQuoteOutput(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPlancodeInQuoteOutput(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PLAN_QUOTE_IN_QUOTE_OUTPUT, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1637,7 +1637,7 @@ Public NotInheritable Class LookupListNew
 
     'REQ-5723 End
 
-    Public Shared Function GetCompanyGroupAuthorizationNumberingLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCompanyGroupAuthorizationNumberingLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_COMPANY_GROUP_AUTHORIZATION_NUMBERING, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
@@ -1645,7 +1645,7 @@ Public NotInheritable Class LookupListNew
     End Function
     'END REQ-863
 
-    Public Shared Function GetCommTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCommTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COMMISSION_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1653,7 +1653,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDealerBrokerLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetDealerBrokerLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DEALE_BROKER, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1661,7 +1661,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetIntegratedWithLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetIntegratedWithLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_INTEGRATED_WITH, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1669,7 +1669,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetGVSFunctionTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetGVSFunctionTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_GVS_FUNCTION_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1677,7 +1677,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetGVSTransactionStatusList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetGVSTransactionStatusList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_GVS_TRANSACTION_STATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1685,13 +1685,13 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetOccurancesAllowedLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetOccurancesAllowedLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("OCCRALWD", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetPriceGroupDPLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetPriceGroupDPLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("PRCGROUP", languageId, displayNothingSelected)
 
@@ -1701,7 +1701,7 @@ Public NotInheritable Class LookupListNew
 
 #Region "Currency Related LookupList"
 
-    Public Shared Function GetCurrencyNotationLookupList(ByVal oCompanyId As Guid) As DataView
+    Public Shared Function GetCurrencyNotationLookupList(oCompanyId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
   {New DBHelper.DBHelperParameter(COL_COMPANY_ID_NAME, oCompanyId)}
@@ -1712,7 +1712,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCurrenciesForCompanyandDealersInCompanyLookupList(ByVal oCompanyId As Guid) As DataView
+    Public Shared Function GetCurrenciesForCompanyandDealersInCompanyLookupList(oCompanyId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
   {New DBHelper.DBHelperParameter(COL_COMPANY_ID_NAME, oCompanyId.ToByteArray()),
@@ -1724,7 +1724,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCurrenciesForCompanyByUserLookupList(ByVal oUserId As Guid) As DataView
+    Public Shared Function GetCurrenciesForCompanyByUserLookupList(oUserId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
   {New DBHelper.DBHelperParameter(COL_USER_ID_NAME, oUserId.ToByteArray())}
@@ -1746,7 +1746,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCountryLookupList(ByVal oCompanyId As Guid) As DataView
+    Public Shared Function GetCountryLookupList(oCompanyId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
     {New DBHelper.DBHelperParameter(COL_COMPANY_ID_NAME, oCompanyId)}
@@ -1757,7 +1757,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCompanyGroupCountryLookupList(ByVal oCompanyGroupId As Guid) As DataView
+    Public Shared Function GetCompanyGroupCountryLookupList(oCompanyGroupId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
     {New DBHelper.DBHelperParameter(COL_COMPANY_ID_NAME, oCompanyGroupId)}
@@ -1767,7 +1767,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetZipDistrictLookupList(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetZipDistrictLookupList(oCountryId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ZIP_DISTRICTS, COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(oCountryId), , COL_CODE_NAME)
 
@@ -1775,7 +1775,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPriceGroupLookupList(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetPriceGroupLookupList(oCountryId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PRICE_GROUPS, COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(oCountryId))
 
@@ -1783,7 +1783,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPriceListLookupList(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetPriceListLookupList(oCountryId As Guid) As DataView
 
         Dim countryIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         countryIdList.Add(oCountryId)
@@ -1798,7 +1798,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetServiceGroupLookupList(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetServiceGroupLookupList(oCountryId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SERVICE_GROUPS, COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(oCountryId))
 
@@ -1806,7 +1806,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetInvTypList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetInvTypList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_INVTYP, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1814,7 +1814,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetInvStatList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetInvStatList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_INVSTAT, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -1823,14 +1823,14 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetServiceCenterLookupList(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetServiceCenterLookupList(oCountryId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SERVICE_CENTERS, COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(oCountryId))
 
         Return (dv)
 
     End Function
-    Public Shared Function GetServiceNetworkLookupList(ByVal oCompanyGroupId As Guid) As DataView
+    Public Shared Function GetServiceNetworkLookupList(oCompanyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SERVICE_NETWORKS, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(oCompanyGroupId))
 
@@ -1838,7 +1838,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetServiceCenterLookupList(ByVal oCountryIds As ArrayList) As DataView
+    Public Shared Function GetServiceCenterLookupList(oCountryIds As ArrayList) As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COUNTRY_ID_NAME, oCountryIds)
         Dim dv As DataView = FilteredView(LK_SERVICE_CENTERS, sFilterCondition)
 
@@ -1846,7 +1846,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetStoreLookupList(ByVal oCountryIds As ArrayList) As DataView
+    Public Shared Function GetStoreLookupList(oCountryIds As ArrayList) As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COUNTRY_ID_NAME, oCountryIds)
         Dim dv As DataView = FilteredView(LK_PICKLIST_STORES, sFilterCondition)
 
@@ -1854,7 +1854,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetReplacementStoresLookupList(ByVal oCountryIds As ArrayList) As DataView
+    Public Shared Function GetReplacementStoresLookupList(oCountryIds As ArrayList) As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COUNTRY_ID_NAME, oCountryIds)
         Dim dv As DataView = FilteredView(LK_REPLACEMENT_STORES, sFilterCondition)
 
@@ -1862,14 +1862,14 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPicklistLookupList(ByVal oCompanyGroupId As Guid) As DataView
+    Public Shared Function GetPicklistLookupList(oCompanyGroupId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_PICKLIST_HEADER, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(oCompanyGroupId))
 
         Return (dv)
 
     End Function
 
-    Public Shared Function GetLoanerCenterLookupList(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetLoanerCenterLookupList(oCountryId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_LOANER_CENTERS, COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(oCountryId))
 
@@ -1877,7 +1877,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetManufacturerLookupList(ByVal oCompanyGroupId As Guid) As DataView
+    Public Shared Function GetManufacturerLookupList(oCompanyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_MANUFACTURERS, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(oCompanyGroupId))
 
@@ -1885,7 +1885,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetIssueLookupList(ByVal oCountryId As Guid) As DataView
+    Public Shared Function GetIssueLookupList(oCountryId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ISSUES, Nothing)
 
@@ -1902,7 +1902,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetRiskTypeLookupList(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetRiskTypeLookupList(companyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_RISKTYPES, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(companyGroupId))
 
@@ -1911,7 +1911,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetPoliceLookupList(ByVal countryIds As ArrayList, Optional ByVal bAddCountryCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing, Optional ByVal dynamicOrderBYClause As String = "description") As DataView
+    Public Shared Function GetPoliceLookupList(countryIds As ArrayList, Optional ByVal bAddCountryCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing, Optional ByVal dynamicOrderBYClause As String = "description") As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COUNTRY_ID_NAME, countryIds)
         Dim sListName As String
         'If bAddCountryCodeToDescription And countryIds.Count > 1 Then
@@ -1940,7 +1940,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRouteLookupList(ByVal oCompanyGroupId As Guid) As DataView
+    Public Shared Function GetRouteLookupList(oCompanyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ROUTE, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(oCompanyGroupId))
 
@@ -1948,7 +1948,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetServiceCenterByDealerLookupList(ByVal oDealerId As Guid) As DataView
+    Public Shared Function GetServiceCenterByDealerLookupList(oDealerId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SERVICE_CENTERS_DEALER, COL_DEALER_ID_NAME, DALBase.GuidToSQLString(oDealerId))
 
@@ -1956,7 +1956,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetExtendedStatusLookupList(ByVal oCompanyGroupId As Guid, ByVal languageId As Guid) As DataView
+    Public Shared Function GetExtendedStatusLookupList(oCompanyGroupId As Guid, languageId As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, oCompanyGroupId),
          New DBHelper.DBHelperParameter(COL_LANGUAGE_ID_NAME, languageId)}
@@ -1966,7 +1966,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetExtendedStatusByGroupLookupList(ByVal oCompanyGroupId As Guid, ByVal languageId As Guid) As DataView
+    Public Shared Function GetExtendedStatusByGroupLookupList(oCompanyGroupId As Guid, languageId As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, oCompanyGroupId),
          New DBHelper.DBHelperParameter(COL_LANGUAGE_ID_NAME, languageId)}
@@ -1977,7 +1977,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
     '5623
-    Public Shared Function GetExtendedStatusByGroupId(ByVal oCompanyGroupId As Guid, ByVal languageId As Guid, ByVal oExtClmStatusId As Guid) As guid
+    Public Shared Function GetExtendedStatusByGroupId(oCompanyGroupId As Guid, languageId As Guid, oExtClmStatusId As Guid) As guid
 
         Dim dvExtendedStatus As DataView = LookupListNew.GetExtendedStatusByGroupLookupList(oCompanyGroupId, languageId)
         Dim i As Integer, extendedStatusByGroupId As Guid
@@ -1991,7 +1991,7 @@ Public NotInheritable Class LookupListNew
 
         Return Nothing
     End Function
-    Public Shared Function GetExtendedStatusByGroupUserRoleLookupList(ByVal oCompanyGroupId As Guid, ByVal languageId As Guid) As DataView
+    Public Shared Function GetExtendedStatusByGroupUserRoleLookupList(oCompanyGroupId As Guid, languageId As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, oCompanyGroupId),
          New DBHelper.DBHelperParameter(COL_LANGUAGE_ID_NAME, languageId)}
@@ -2001,7 +2001,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetExtendedClaimStatusDefaultTypes(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetExtendedClaimStatusDefaultTypes(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_CLAIM_EXTENDED_STATUS_DEFAULT_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -2009,7 +2009,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetSCTurnAroundTimeByGroupLookupList(ByVal oCompanyGroupId As Guid) As DataView
+    Public Shared Function GetSCTurnAroundTimeByGroupLookupList(oCompanyGroupId As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, oCompanyGroupId)}
 
@@ -2022,7 +2022,7 @@ Public NotInheritable Class LookupListNew
 #End Region
 
 #Region "Dealer Related LookupLists"
-    Public Shared Function GetProductCodeLookupList(ByVal dealerId As Guid) As DataView
+    Public Shared Function GetProductCodeLookupList(dealerId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PRODUCTCODE, COL_DEALER_ID_NAME, DALBase.GuidToSQLString(dealerId), True, COL_CODE_NAME)
 
@@ -2030,14 +2030,14 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetAvailableProductCodeRiskTypeLookupList(ByVal id As Guid, ByVal tableName As String, ByVal column As String) As DataView
+    Public Shared Function GetAvailableProductCodeRiskTypeLookupList(id As Guid, tableName As String, column As String) As DataView
         Return LookupListDALNew.Load(LK_AVAILABLEPRODUCTCODERISKTYPE, id, tableName, column)
     End Function
 
-    Public Shared Function GetSelectedProductCodeRiskTypeLookupList(ByVal id As Guid, ByVal tableName As String, ByVal column As String) As DataView
+    Public Shared Function GetSelectedProductCodeRiskTypeLookupList(id As Guid, tableName As String, column As String) As DataView
         Return LookupListDALNew.Load(LK_SELECTEDPRODUCTCODERISKTYPE, id, tableName, column)
     End Function
-    Public Shared Function GetDealerTypeId(ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function GetDealerTypeId(CompanyGroupId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(CompanyGroupId))}
@@ -2047,7 +2047,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetCompaniesFromCountry(ByVal Country_id As Guid) As DataView 'REQ-5980
+    Public Shared Function GetCompaniesFromCountry(Country_id As Guid) As DataView 'REQ-5980
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(Country_id))}
@@ -2058,7 +2058,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDealersFromCountry(ByVal Country_id As Guid) As DataView 'REQ-5980
+    Public Shared Function GetDealersFromCountry(Country_id As Guid) As DataView 'REQ-5980
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(Country_id))}
@@ -2068,7 +2068,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetProductCodesFromCountry(ByVal Country_id As Guid) As DataView 'REQ-5980
+    Public Shared Function GetProductCodesFromCountry(Country_id As Guid) As DataView 'REQ-5980
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(Country_id))}
@@ -2078,7 +2078,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetBranchCodeLookupList(ByVal dealerId As Guid) As DataView
+    Public Shared Function GetBranchCodeLookupList(dealerId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_BRANCHCODE, COL_DEALER_ID_NAME, DALBase.GuidToSQLString(dealerId), True, COL_CODE_NAME)
 
@@ -2086,7 +2086,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetTemplateLookupList(ByVal dealercode As String) As DataView
+    Public Shared Function GetTemplateLookupList(dealercode As String) As DataView
         Dim dv As DataView = FilteredView(LK_TEMPLATE_DEALER, COL_DEALER, dealercode, True, COL_CODE_NAME)
         Return (dv)
     End Function
@@ -2094,7 +2094,7 @@ Public NotInheritable Class LookupListNew
 #End Region
 
 #Region "Product Code Related LookupLists"
-    Public Shared Function GetItemRiskTypeLookupList(ByVal productId As Guid) As DataView
+    Public Shared Function GetItemRiskTypeLookupList(productId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_ITEM_RISKTYPE, COL_PRODUCT_CODE_ID_NAME, DALBase.GuidToSQLString(productId))
 
@@ -2102,7 +2102,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRiskProductCodeLookupList(ByVal productId As Guid) As DataView
+    Public Shared Function GetRiskProductCodeLookupList(productId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_RISK_PRODUCTCODE, COL_PRODUCT_CODE_ID_NAME, DALBase.GuidToSQLString(productId))
 
@@ -2110,14 +2110,14 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetProductItemLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetProductItemLookupList(languageId As Guid) As DataView
 
         Return DropdownLookupList("PRODI", languageId)
 
     End Function
 
 
-    Public Shared Function GetPriceMatrixLookupList(ByVal productId As Guid, ByVal languageID As Guid) As DataView
+    Public Shared Function GetPriceMatrixLookupList(productId As Guid, languageID As Guid) As DataView
 
         Dim productIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         productIdList.Add(productId)
@@ -2132,7 +2132,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPercentOfRetailLookup(ByVal productId As Guid) As DataView
+    Public Shared Function GetPercentOfRetailLookup(productId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PERCENTOF_RETAIL_ITEM, COL_PRODUCT_CODE_ID_NAME, DALBase.GuidToSQLString(productId))
 
@@ -2140,20 +2140,20 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetTypeOfEquipmentLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetTypeOfEquipmentLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("TEQP", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetProductCodeByCompanyLookupList(ByVal companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing, Optional ByVal dynamicOrderBYClause As String = "description") As DataView
+    Public Shared Function GetProductCodeByCompanyLookupList(companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing, Optional ByVal dynamicOrderBYClause As String = "description") As DataView
 
         Dim dv As DataView = FilteredViewWithDynamicInClause(LK_PRODUCTCODE_BY_COMPANY, companyIds, Nothing, Nothing)
         Return (dv)
 
     End Function
 
-    Public Shared Function GetProductCodeByDealerLookupList(ByVal dealerId As Guid) As DataView
+    Public Shared Function GetProductCodeByDealerLookupList(dealerId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
    {New DBHelper.DBHelperParameter(COL_DEALER_ID_NAME, dealerId)}
@@ -2166,7 +2166,7 @@ Public NotInheritable Class LookupListNew
 
 #Region "General LookupList"
 
-    Public Shared Function GetCategoriesLookupList(ByVal Tab As String) As DataView
+    Public Shared Function GetCategoriesLookupList(Tab As String) As DataView
 
         Dim dv As DataView = FilteredView(LK_CATEGORIES, COL_TAB_NAME, Tab, False)
 
@@ -2188,7 +2188,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function getCertNumberFormatDescription(ByVal CertNumberFormatId As Guid) As String
+    Public Shared Function getCertNumberFormatDescription(CertNumberFormatId As Guid) As String
         Dim CertNumberFormatDesc As String
         Dim dv As DataView = DataView(LK_CERT_NUMBER_FORMAT)
         CertNumberFormatDesc = LookupListNew.GetDescriptionFromId(dv, CertNumberFormatId)
@@ -2203,7 +2203,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetIncomeRangeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetIncomeRangeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_INCOME_RANGE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2211,7 +2211,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
     'req 5547
-    Public Shared Function GetFastApprovalList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetFastApprovalList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_FAST_APPROVAL_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2220,7 +2220,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetPaymentTypeLookupList(ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function GetPaymentTypeLookupList(CompanyGroupId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PAYMENT_TYPES, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(CompanyGroupId), False)
 
@@ -2237,7 +2237,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetDocumentTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetDocumentTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DOCUMENT_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2245,7 +2245,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetValidationTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetValidationTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_VALIDATION_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2253,7 +2253,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetAudianceTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetAudianceTypeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_AUDIANCE_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2261,14 +2261,14 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetAuditSourceList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetAuditSourceList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_AUDIT_SOURCE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
         Return (dv)
 
     End Function
-    Public Shared Function GetSystemNotificationTypesLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetSystemNotificationTypesLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_SYSTEM_NOTIFICATION_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2283,7 +2283,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetValidateBankInfoLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetValidateBankInfoLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_VALIDATE_BANK_INFO, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2291,28 +2291,28 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCancellationReasonLookupList(ByVal compId As Guid) As DataView
+    Public Shared Function GetCancellationReasonLookupList(compId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_CANCELLATION_REASONS, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(compId))
 
         Return (dv)
 
     End Function
 
-    Public Shared Function GetCancellationReasonDealerFileLookupList(ByVal compId As Guid) As DataView
+    Public Shared Function GetCancellationReasonDealerFileLookupList(compId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_CANCELLATION_REASONS_DEALER_FILE, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(compId))
 
         Return (dv)
 
     End Function
 
-    Public Shared Function GetCancellationReasonWithCodeLookupList(ByVal compId As Guid) As DataView
+    Public Shared Function GetCancellationReasonWithCodeLookupList(compId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_CANCELLATION_REASONS_WITH_CODE, COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(compId))
 
         Return (dv)
 
     End Function
 
-    Public Shared Function GetCancellationReasonByDealerIdLookupList(ByVal dealerId As Guid) As DataView
+    Public Shared Function GetCancellationReasonByDealerIdLookupList(dealerId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_CANCELLATION_REASONS_BY_DEALER, COL_DEALER_ID_NAME, DALBase.GuidToSQLString(dealerId))
 
         Return (dv)
@@ -2327,7 +2327,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRegionLookupList(ByVal countryId As Guid) As DataView
+    Public Shared Function GetRegionLookupList(countryId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_COUNTRY_REGIONS, COL_COUNTRY_ID_NAME, DALBase.GuidToSQLString(countryId))
 
@@ -2335,7 +2335,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRegionLookupList(ByVal userCompanies As ArrayList) As DataView
+    Public Shared Function GetRegionLookupList(userCompanies As ArrayList) As DataView
 
         Dim userCountries As ArrayList = Country.GetCountries(userCompanies)
 
@@ -2350,7 +2350,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRegionTaxLookupList(ByVal regionId As Guid, ByVal taxTypeId As Guid) As DataView
+    Public Shared Function GetRegionTaxLookupList(regionId As Guid, taxTypeId As Guid) As DataView
 
         Dim regionIdList As System.Collections.ArrayList = New System.Collections.ArrayList
         regionIdList.Add(regionId)
@@ -2414,7 +2414,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPurposeList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPurposeList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CASE_PURPOSE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
@@ -2422,7 +2422,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetRelationshipList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetRelationshipList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_RELATION_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
@@ -2437,7 +2437,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetReportFormLookupList(ByVal userId As Guid) As DataView
+    Public Shared Function GetReportFormLookupList(userId As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_USER_ID_NAME, userId),
              New DBHelper.DBHelperParameter(COL_USER_ID_NAME, userId)}
@@ -2448,37 +2448,37 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetMaritalStatusLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetMaritalStatusLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_MARITALSTATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetNationalityLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetNationalityLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_NATIONALITY, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetPlaceOfBirthLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPlaceOfBirthLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_PLACEOFBIRTH, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetGenderLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetGenderLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_GENDER, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetPersonTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPersonTypeLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_PERSON_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetUpgradeTermUnitOfMeasureLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetUpgradeTermUnitOfMeasureLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_UPGRADE_TERM_UNIT_OF_MEASURE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetUpgFinanceInfoRequireLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetUpgFinanceInfoRequireLookupList(languageId As Guid) As DataView
         Return DropdownLookupList(LK_UPG_FINANCE_INFO_REQUIRE, languageId)
     End Function
 #End Region
@@ -2505,7 +2505,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetUserCountriesLookupList(ByVal userCompanies As ArrayList) As DataView
+    Public Shared Function GetUserCountriesLookupList(userCompanies As ArrayList) As DataView
         Dim dv As DataView = FilteredViewWithDynamicInClause(LK_USER_COUNTRIES_FOR_ALL_COMPANIES, userCompanies, COL_USER_ID_NAME, DALBase.GuidToSQLString(ElitaPlusIdentity.Current.ActiveUser.Id))
         Return (dv)
 
@@ -2514,8 +2514,8 @@ Public NotInheritable Class LookupListNew
 
 #Region "Parameter LookupList"
 
-    Public Shared Function GetSplitSystemTranslationsLookupList(ByVal companyIds As ArrayList, ByVal oInterfaceCode As String,
-            ByVal olangCode As String, ByVal oListCode As String) As DataView
+    Public Shared Function GetSplitSystemTranslationsLookupList(companyIds As ArrayList, oInterfaceCode As String,
+            olangCode As String, oListCode As String) As DataView
         '   Dim params(2) As DBHelper.DBHelperParameter
         Dim sFilterCondition As String
         Dim dv As DataView
@@ -2532,7 +2532,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetSplitSystemLookupList(ByVal companyIds As ArrayList, ByVal oInterfaceCode As String) As DataView
+    Public Shared Function GetSplitSystemLookupList(companyIds As ArrayList, oInterfaceCode As String) As DataView
         Dim sFilterCondition As String
         Dim dv As DataView
 
@@ -2551,7 +2551,7 @@ Public NotInheritable Class LookupListNew
 #Region "Dropdown LookupList"
 
 
-    Public Shared Function AllDropdownLanguageLookupLists(ByVal languageId As Guid) As DataView
+    Public Shared Function AllDropdownLanguageLookupLists(languageId As Guid) As DataView
         'Generic lookup list 
         'Returns all the lists
         Dim dv As DataView
@@ -2565,7 +2565,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function DropdownLanguageLookupList(ByVal DropdownCode As String, ByVal languageId As Guid) As DataView
+    Public Shared Function DropdownLanguageLookupList(DropdownCode As String, languageId As Guid) As DataView
         'Generic lookup list 
         'Returns all the lists
         Dim dv As DataView
@@ -2581,7 +2581,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function DropdownLookupList(ByVal DropdownCode As String, ByVal languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
+    Public Shared Function DropdownLookupList(DropdownCode As String, languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
         'Generic lookup list 
         'Returns a list of items for the specified lookup list code
 
@@ -2599,7 +2599,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function DropdownLookupListByDisplayToUserOption(ByVal DropdownCode As String, ByVal languageId As Guid, Optional ByVal DisplayToUserOnly As Boolean = True) As DataView
+    Public Shared Function DropdownLookupListByDisplayToUserOption(DropdownCode As String, languageId As Guid, Optional ByVal DisplayToUserOnly As Boolean = True) As DataView
         'Generic lookup list 
         'Returns a list of items for the specified lookup list code
 
@@ -2620,7 +2620,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetDescrionFromListCode(ByVal Listcode As String, ByVal code As String) As String
+    Public Shared Function GetDescrionFromListCode(Listcode As String, code As String) As String
 
         Dim i As Integer
         Dim data As DataView = DropdownLookupList(Listcode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -2637,7 +2637,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetListItemId(ByVal ListItemId As Guid, ByVal languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetListItemId(ListItemId As Guid, languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
         'Generic lookup list 
         'Returns the list items record for the specified lookup list item id
 
@@ -2657,7 +2657,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetListId(ByVal languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetListId(languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
         'Generic lookup list 
         'Returns the list record 
 
@@ -2673,7 +2673,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetList(ByVal languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetList(languageId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
 
         Dim dv As DataView = FilteredView(LK_LIST, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -2681,85 +2681,85 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetTMKStatusLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetTMKStatusLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("TMKSTATUS", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetYesNoLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetYesNoLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("YESNO", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetTaxTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetTaxTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("TTYP", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetPostMigConditionLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetPostMigConditionLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
         Return DropdownLookupList(LK_POST_MIG_CONDITION, languageId, displayNothingSelected)
     End Function
-    Public Shared Function GetReInsStatusLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetReInsStatusLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_REINSURANCE_STATUSES, languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetReInsStatusesWithoutPartialStatuesLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetReInsStatusesWithoutPartialStatuesLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_REINS_STATUSES_WITHOUT_PARTIAL_STATUSES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
     End Function
-    Public Shared Function GetOpenClosedLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetOpenClosedLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("CLM_STAGE_STATUS", languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetRefundComputeMethodLookupList(ByVal oLangId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetRefundComputeMethodLookupList(oLangId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("RMETH", oLangId, DisplayNothingSelected)
 
     End Function
 
-    Public Shared Function GetRefundDestinationLookupList(ByVal oLangId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetRefundDestinationLookupList(oLangId As Guid, Optional ByVal DisplayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("REFDS", oLangId, DisplayNothingSelected)
 
     End Function
 
-    Public Shared Function GetVscUploadsLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetVscUploadsLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("VSCU", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetBillingCriteriaList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetBillingCriteriaList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("BLCR", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetCancellationDependencyList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCancellationDependencyList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("CNLDEP", languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetCancellationLumpsumBillingList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCancellationLumpsumBillingList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("CNLSBL", languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetBillingFrequencyList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetBillingFrequencyList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("BLFQ", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetBillingStatusList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetBillingStatusList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("BLST", languageId, displayNothingSelected)
 
@@ -2767,7 +2767,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRoleProviderList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetRoleProviderList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(Codes.ROLE_PROVIDER, languageId, displayNothingSelected)
 
@@ -2775,7 +2775,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetBillingStatusListShort(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetBillingStatusListShort(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = GetBillingStatusList(languageId, displayNothingSelected)
 
@@ -2787,104 +2787,104 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRejectCodesList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetRejectCodesList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("REJCODE", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetClaimDeniedAuthorizationList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetClaimDeniedAuthorizationList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("CLADELETAUTHO", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetReportCeDestLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetReportCeDestLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("RCEDEST", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetRecordTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetRecordTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("RECTYP", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetPaymentRecordTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetPaymentRecordTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("PYMTRECTYP", languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetInvoiceRecordTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetInvoiceRecordTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("INVOICE_REC_TYP", languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetPymtRecordTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetPymtRecordTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("PAYMENT_REC_TYP", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetReinsuranceRecordTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetReinsuranceRecordTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_REINS_REC_TYPE, languageId, displayNothingSelected)
 
     End Function
 
     'Added for Req-610
-    Public Shared Function GetPhoneTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetPhoneTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("PHNRTP", languageId, displayNothingSelected)
 
     End Function
 
 
-    Public Shared Function GetMobileTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetMobileTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("MOB_TYPE", languageId, displayNothingSelected)
 
     End Function
 
     ''REQ-796
-    Public Shared Function GetTransactionTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetTransactionTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("CNTRTYPE", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetCostTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetCostTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("CT", languageId, displayNothingSelected)
 
     End Function
 
 
-    Public Shared Function GetAddressTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetAddressTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("ATYPE", languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetFinancedFrequency(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetFinancedFrequency(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList("FINFREQ", languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetIssueReopenReasonLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetIssueReopenReasonLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList(LK_ISSUE_REOPEN_REASON, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetIssueWaiveReasonLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+    Public Shared Function GetIssueWaiveReasonLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
 
         Return DropdownLookupList(LK_ISSUE_WAIVE_REASON, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetPreInvoiceStatusList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetPreInvoiceStatusList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PRE_INVOICE_STATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -2908,7 +2908,7 @@ Public NotInheritable Class LookupListNew
     ''' 	[co1mkt]	4/26/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetPlanLookupList(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetPlanLookupList(companyGroupId As Guid) As DataView
 
         ' Dim dv As DataView = RetrieveList(LK_PLANS)
         Dim dv As DataView = FilteredView(LK_PLANS, COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(companyGroupId))
@@ -2916,7 +2916,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetVSCMakeLookupList(ByVal CompanyGroupId As Guid, Optional ByVal tableName As String = LK_VSC_MANUFACTURERS) As DataView
+    Public Shared Function GetVSCMakeLookupList(CompanyGroupId As Guid, Optional ByVal tableName As String = LK_VSC_MANUFACTURERS) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(CompanyGroupId))}
@@ -2928,7 +2928,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
     'this list needs to change to be by CompanyGroupId. The table needs to include the CompanyGroupId
-    Public Shared Function GetVSCCoverageLimitLookupList(ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function GetVSCCoverageLimitLookupList(CompanyGroupId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(CompanyGroupId))}
@@ -2951,7 +2951,7 @@ Public NotInheritable Class LookupListNew
     ''' 	[co1mkt]	4/26/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetVSCModelsLookupList(ByVal ManufacturerId As String) As DataView
+    Public Shared Function GetVSCModelsLookupList(ManufacturerId As String) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_MANUFACTURER_ID_NAME, ManufacturerId)}
@@ -2961,7 +2961,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetVSCModelsLookupList(ByVal ManufacturerId As Guid) As DataView
+    Public Shared Function GetVSCModelsLookupList(ManufacturerId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_MANUFACTURER_ID_NAME, DALBase.GuidToSQLString(ManufacturerId))}
@@ -2984,7 +2984,7 @@ Public NotInheritable Class LookupListNew
     ''' 	[co1mkt]	4/26/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetVSCTrimLookupList(ByVal Model As String, ByVal make As String) As DataView
+    Public Shared Function GetVSCTrimLookupList(Model As String, make As String) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_MODEL_NAME, Model),
@@ -3008,7 +3008,7 @@ Public NotInheritable Class LookupListNew
     ''' 	[co1mkt]	4/26/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetVSCYearsLookupList(ByVal trim As String, ByVal model As String, ByVal make As String) As DataView
+    Public Shared Function GetVSCYearsLookupList(trim As String, model As String, make As String) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_TRIM_NAME, trim),
@@ -3022,7 +3022,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetVSCPlanLookupList(ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function GetVSCPlanLookupList(CompanyGroupId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(CompanyGroupId))}
@@ -3033,7 +3033,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetVSCClassCodesLookupList(ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function GetVSCClassCodesLookupList(CompanyGroupId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(CompanyGroupId))}
@@ -3055,7 +3055,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRiskTypesList(ByVal CompanyGroupId As Guid, ByVal RiskGroupId As Guid) As DataView
+    Public Shared Function GetRiskTypesList(CompanyGroupId As Guid, RiskGroupId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_COMPANY_GROUP_ID_NAME, DALBase.GuidToSQLString(CompanyGroupId)) _
@@ -3067,7 +3067,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
     'Req-1194
-    Public Shared Function GetCertRiskTypeLookupList(ByVal certificateId As Guid, ByVal dealerid As Guid) As DataView
+    Public Shared Function GetCertRiskTypeLookupList(certificateId As Guid, dealerid As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_CERT_ID, DALBase.GuidToSQLString(certificateId)) _
                     , New DBHelper.DBHelperParameter(COL_DEALER_ID_NAME, DALBase.GuidToSQLString(dealerid))}
@@ -3080,7 +3080,7 @@ Public NotInheritable Class LookupListNew
 
 #Region "Accounting Lookups"
 
-    Public Shared Function getAccountingEvents(ByVal AccountingCompanyId As Guid, ByVal LanguageId As Guid) As DataView
+    Public Shared Function getAccountingEvents(AccountingCompanyId As Guid, LanguageId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                          {New DBHelper.DBHelperParameter(AcctEventDAL.PAR_NAME_COMPANY_ID, DALBase.GuidToSQLString(AccountingCompanyId)) _
@@ -3091,7 +3091,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function getAccountingCompanies(ByVal UserId As Guid, Optional ByVal IncludeInactive As Boolean = False) As DataView
+    Public Shared Function getAccountingCompanies(UserId As Guid, Optional ByVal IncludeInactive As Boolean = False) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                          {New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID, DALBase.GuidToSQLString(UserId))}
@@ -3101,7 +3101,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
     'DEF 2624 : added extra optional paramter sFilterCondition for filtering out the file names list 
-    Public Shared Function getAccountingFileNames(ByVal CompanyId As Guid, ByVal BeginDate As String, ByVal EndDate As String, Optional ByVal sFilterCondition As String = Nothing) As DataView
+    Public Shared Function getAccountingFileNames(CompanyId As Guid, BeginDate As String, EndDate As String, Optional ByVal sFilterCondition As String = Nothing) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(COL_COMPANY_ID_NAME, DALBase.GuidToSQLString(CompanyId)) _
@@ -3113,7 +3113,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function getBusinessCoverageEntity(ByVal AcctCompanyId As Guid, ByVal languageID As Guid) As DataView
+    Public Shared Function getBusinessCoverageEntity(AcctCompanyId As Guid, languageID As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {New DBHelper.DBHelperParameter(COL_ACCT_COMPANY_ID_NAME, DALBase.GuidToSQLString(AcctCompanyId)) _
@@ -3127,7 +3127,7 @@ Public NotInheritable Class LookupListNew
 #End Region
 
 #Region "Comuna Lookup"
-    Public Shared Function GetRegionAndComunaList(ByVal regionID As Guid) As DataView
+    Public Shared Function GetRegionAndComunaList(regionID As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                          {New DBHelper.DBHelperParameter(COL_REGION_ID_NAME, DALBase.GuidToSQLString(regionID))}
         Dim dv As DataView = FilteredParamView("COMUNA_CODE", Nothing, params)
@@ -3139,7 +3139,7 @@ Public NotInheritable Class LookupListNew
 
 #Region "Report PageCtrl"
 
-    Public Shared Function Get_Report_RunDate_PageNum(ByVal RptName As String, ByVal CompanyId As Guid) As DataSet
+    Public Shared Function Get_Report_RunDate_PageNum(RptName As String, CompanyId As Guid) As DataSet
         Dim ds As DataSet = Nothing
         Try
             ds = LookupListDALNew.GET_RPT_RUNDATE_PAGENUM(RptName, CompanyId)
@@ -3150,7 +3150,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function ChkIfRptRunForDate(ByVal RptName As String, ByVal ReportRun_date As String, ByVal CompanyId As Guid) As Boolean
+    Public Shared Function ChkIfRptRunForDate(RptName As String, ReportRun_date As String, CompanyId As Guid) As Boolean
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(COL_REPORT_NAME, RptName) _
@@ -3175,7 +3175,7 @@ Public NotInheritable Class LookupListNew
 
 #Region "Equipment LookupList"
 
-    Public Shared Function GetEquipmentLookupList(ByVal companyGroupId As Guid, Optional ByVal manufacturerIdString As String = Nothing,
+    Public Shared Function GetEquipmentLookupList(companyGroupId As Guid, Optional ByVal manufacturerIdString As String = Nothing,
         Optional ByVal masterModel As BooleanType = Nothing, Optional ByVal equipmentTypeIdString As String = Nothing,
         Optional ByVal model As String = Nothing) As DataView
 
@@ -3219,9 +3219,9 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetEquipmentByEquipmentList_Lookup(ByVal companyGroupId As Guid,
-                                                              ByVal EquipmentList_code As String,
-                                                              ByVal Effective_on_date As Date,
+    Public Shared Function GetEquipmentByEquipmentList_Lookup(companyGroupId As Guid,
+                                                              EquipmentList_code As String,
+                                                              Effective_on_date As Date,
                                                               Optional ByVal manufacturerIdString As String = Nothing,
                                                               Optional ByVal masterModel As BooleanType = Nothing,
                                                               Optional ByVal equipmentTypeIdString As String = Nothing,
@@ -3269,7 +3269,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetManufacturerbyEquipmentList(ByVal EquipmentCode As String, ByVal Effective_on As Date) As DataView
+    Public Shared Function GetManufacturerbyEquipmentList(EquipmentCode As String, Effective_on As Date) As DataView
         Dim dv As DataView = FilteredParamView(LK_MANUFACTURER_BY_EQUIPMENT_LIST, "",
                          New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter("list_code", EquipmentCode),
@@ -3277,43 +3277,43 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetComputeDeductibleBasedOnLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetComputeDeductibleBasedOnLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_DEDUCTIBLE_BASED_ON, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetClaimLoadFileTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetClaimLoadFileTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_CLAIM_LOAD_FILE_TYPE, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetWorkQueueAction(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetWorkQueueAction(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_WQ_ACTION, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetEquipmentClassLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetEquipmentClassLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_EQUIPMENT_CLASS, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetEquipmentTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetEquipmentTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_EQUIPMENT_TYPE, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetImageTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetImageTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_IMAGE_TYPE, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetClaimEquipmentTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetClaimEquipmentTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_CLAIM_EQUIPMENT_TYPE, languageId, displayNothingSelected)
 
@@ -3323,14 +3323,14 @@ Public NotInheritable Class LookupListNew
 
 #End Region
 
-    Public Shared Function GetEventTaskStatus(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetEventTaskStatus(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
 
         Return DropdownLookupList(Codes.TASK_STATUS, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetAttributeDataTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetAttributeDataTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_ATTRIBUTE_DATA_TYPE, languageId, displayNothingSelected)
 
@@ -3343,7 +3343,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetEquipmentListLookupList(ByVal LongDate As DateTime) As DataView
+    Public Shared Function GetEquipmentListLookupList(LongDate As DateTime) As DataView
         'to fix def 1997 added a data parameter
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -3356,7 +3356,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetEquipmentMakeAndModel(ByVal equipmentId As Guid) As DataView
+    Public Shared Function GetEquipmentMakeAndModel(equipmentId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                {New DBHelper.DBHelperParameter("equipment_id", equipmentId.ToByteArray)}
@@ -3368,7 +3368,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetEquipmentListLookupListforPriceList(ByVal company_group_id As Guid, ByVal LongDate As DateTime) As DataView
+    Public Shared Function GetEquipmentListLookupListforPriceList(company_group_id As Guid, LongDate As DateTime) As DataView
         'to fix def 1997 added a data parameter
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -3379,7 +3379,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetBestReplacementLookupList(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetBestReplacementLookupList(companyGroupId As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                    {New DBHelper.DBHelperParameter("company_group_id", companyGroupId.ToByteArray)}
 
@@ -3389,7 +3389,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetIssuesListLookupList(ByVal LongDate As DateTime) As DataView
+    Public Shared Function GetIssuesListLookupList(LongDate As DateTime) As DataView
         'to fix def 1997 added a data parameter
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {}
@@ -3402,7 +3402,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
 #Region "Questions and Question List lookup lists"
-    Public Shared Function GetQuestionListLookupList(ByVal LongDate As DateTime) As DataView
+    Public Shared Function GetQuestionListLookupList(LongDate As DateTime) As DataView
         'REQ-860 - ELita Buildout - Issues/Adjudication
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -3415,17 +3415,17 @@ Public NotInheritable Class LookupListNew
     End Function
 
 
-    Public Shared Function GetIssueCommentTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetIssueCommentTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
         Return DropdownLookupList("ICTYP", languageId, displayNothingSelected)
     End Function
 
-    Public Shared Function GetIssueTypeLookupList(ByVal langId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetIssueTypeLookupList(langId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {}
         Dim dv As DataView = FilteredParamView(LK_ISSUE_TYPE_LIST, String.Empty, params)
         Return (dv)
     End Function
 
-    Public Shared Function GetIssueTypeCodeFromId(ByVal listName As String, ByVal id As Guid) As String
+    Public Shared Function GetIssueTypeCodeFromId(listName As String, id As Guid) As String
         Dim dv As DataView = DataView(listName)
         Dim i As Integer
 
@@ -3438,7 +3438,7 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetIssueTypeIdFromCode(ByVal listName As String, ByVal code As String) As Guid
+    Public Shared Function GetIssueTypeIdFromCode(listName As String, code As String) As Guid
         Dim dv As DataView = DataView(listName)
         Dim i As Integer
 
@@ -3451,13 +3451,13 @@ Public NotInheritable Class LookupListNew
         Return Nothing
     End Function
 
-    Public Shared Function GetNoteTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetNoteTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {}
         Dim dv As DataView = FilteredParamView(LK_NOTE_TYPE_LIST, String.Empty, params)
         Return (dv)
     End Function
 
-    Public Shared Function GetQuestionTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal ShowDiag As Boolean = False) As DataView
+    Public Shared Function GetQuestionTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal ShowDiag As Boolean = False) As DataView
 
         Dim CONST_DIAG As String = "DIAG"
 
@@ -3471,39 +3471,39 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetAnswerTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetAnswerTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_ANSWER_TYPE, Nothing)
         Return (dv)
 
     End Function
 
-    Public Shared Function GetQuestionsLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetQuestionsLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_QUESTION, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetAnswerLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetAnswerLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_ANSWER, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetRuleTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetRuleTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_RULE_TYPE, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetRuleCategoryLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetRuleCategoryLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_RULE_CATEGORY, languageId, displayNothingSelected)
 
     End Function
 
 
-    Public Shared Function GetEntityAttributeList(ByVal todayDate As DateTime, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetEntityAttributeList(todayDate As DateTime, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter("todayDate", todayDate.ToString("MM/dd/yyyy hh:mm:ss"))}
@@ -3525,7 +3525,7 @@ Public NotInheritable Class LookupListNew
     '    Return DropdownLookupList(LK_NOTE_TYPE, languageId, displayNothingSelected)
     'End Function
 
-    Public Shared Function LoadRiskTypes(ByVal certificateId As Guid, ByVal languageId As Guid, ByVal dateOfLoss As Date) As DataView
+    Public Shared Function LoadRiskTypes(certificateId As Guid, languageId As Guid, dateOfLoss As Date) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                     {New DBHelper.DBHelperParameter(COL_CERT_ID_NAME, certificateId.ToByteArray),
@@ -3536,7 +3536,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function LoadCoverageTypes(ByVal certificateId As Guid, ByVal ItemId As Guid, ByVal languageId As Guid, ByVal dateOfLoss As Date) As DataView
+    Public Shared Function LoadCoverageTypes(certificateId As Guid, ItemId As Guid, languageId As Guid, dateOfLoss As Date) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                     {New DBHelper.DBHelperParameter(COL_CERT_ID_NAME, certificateId.ToByteArray),
                                      New DBHelper.DBHelperParameter(COL_LANGUAGE_ID_NAME, languageId.ToByteArray),
@@ -3547,7 +3547,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
     End Function
 
-    Public Shared Function GetPriceList(ByVal CountryId As Guid) As DataView
+    Public Shared Function GetPriceList(CountryId As Guid) As DataView
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter(COL_COUNTRY_ID_NAME, CountryId.ToByteArray)}
 
@@ -3557,30 +3557,30 @@ Public NotInheritable Class LookupListNew
 
 #Region "Lookup list for Price List / Service Center"
 
-    Public Shared Function GetServiceClassLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetServiceClassLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_SERVICE_CLASS, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetServiceTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetServiceTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_SERVICE_TYPE, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetServiceLevelLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetServiceLevelLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_SERVICE_LEVEL, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetNewServiceTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetNewServiceTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_SERVICE_TYPE_NEW, languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetNewServiceTypeByServiceClassLookupList(ByVal languageId As Guid, ByVal ServiceClassID As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetNewServiceTypeByServiceClassLookupList(languageId As Guid, ServiceClassID As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter("language_id", languageId.ToByteArray),
@@ -3593,54 +3593,54 @@ Public NotInheritable Class LookupListNew
 
 
 
-    Public Shared Function GetDistributionMethodLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetDistributionMethodLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_DIST_METHOD, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetManageInventoryLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetManageInventoryLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_MANAGE_INVENTORY, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetDayOfWeekLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetDayOfWeekLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_DAYS_OF_WEEK, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetAFAProductTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetAFAProductTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_AFA_PRODUCT_TYPE, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetPaymentStatusLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetPaymentStatusLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_PAYMENT_GRP_STAT, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetClaimCloseRuleBasedOnList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetClaimCloseRuleBasedOnList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_CLAIM_RULSE_BASED_ON, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetDateOfPaymentOPtionsList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetDateOfPaymentOPtionsList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_DATE_OF_PAYMENT_OPTION, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetNumberOfDigitsRoundOffList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetNumberOfDigitsRoundOffList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_NUMBER_OF_DIGITS_ROUNDOFF, languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetBonusComputationMethodList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetBonusComputationMethodList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_BONUS_COMPUTATION_METHOD, languageId, displayNothingSelected)
 
@@ -3650,13 +3650,13 @@ Public NotInheritable Class LookupListNew
 
 #Region "VendorManagement"
 
-    Public Shared Function GetServiceClassList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetServiceClassList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_SERVICE_CLASS, languageId, displayNothingSelected)
 
     End Function
 
-    Public Shared Function GetServiceTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetServiceTypeList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_SERVICE_TYPE, languageId, displayNothingSelected)
 
@@ -3670,7 +3670,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetConditionLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetConditionLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_CONDITION, languageId, displayNothingSelected)
 
@@ -3679,7 +3679,7 @@ Public NotInheritable Class LookupListNew
 #End Region
 
 #Region "ClaimsProcess"
-    Public Shared Function GetClaimStatusFromCode(ByVal languageId As Guid, ByVal code As String) As String
+    Public Shared Function GetClaimStatusFromCode(languageId As Guid, code As String) As String
         Dim desc As String = Nothing
         Dim dv As DataView = FilteredView(LookupListCache.LK_CLAIM_STATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3692,7 +3692,7 @@ Public NotInheritable Class LookupListNew
     End Function
 #End Region
 
-    Public Shared Function GetTranslatedQuestionFromCode(ByVal languageId As Guid, ByVal code As String) As String
+    Public Shared Function GetTranslatedQuestionFromCode(languageId As Guid, code As String) As String
         Dim desc As String = Nothing
         Dim dv As DataView = FilteredView(LookupListCache.LK_QUESTION, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3718,7 +3718,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRejectionMsgTypesLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetRejectionMsgTypesLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_MSG_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3726,38 +3726,38 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetFileTypeLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetFileTypeLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_FILE_TYPE, languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetCommissionEntityTypeIdLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetCommissionEntityTypeIdLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList(LK_COMM_ENTITY_TYPE_ID, languageId, displayNothingSelected)
 
     End Function
-    Public Shared Function GetProdRewardNameLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetProdRewardNameLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PROD_REWARD_NAMES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
         Return (dv)
 
     End Function
-    Public Shared Function GetProdRewardTypesLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetProdRewardTypesLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_PROD_REWARD_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
         Return (dv)
 
     End Function
-    Public Shared Function GetDeviceGroupsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetDeviceGroupsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_DEVICE_GROUPS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
         Return (dv)
 
     End Function
-    Public Shared Function GetDeviceTypesLookupList(ByVal DeviceTypeCode As String, ByVal languageId As Guid) As DataView
+    Public Shared Function GetDeviceTypesLookupList(DeviceTypeCode As String, languageId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
        {New DBHelper.DBHelperParameter(COL_DEVICE_TYPES, DeviceTypeCode),
@@ -3768,7 +3768,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetCaseSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCaseSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CASE_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3776,7 +3776,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetRewardSearchFieldsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetRewardSearchFieldsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_REWARD_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3784,14 +3784,14 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCaseStatusLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCaseStatusLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CASE_STATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
     End Function
-    Public Shared Function GetCaseCloseReasonLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCaseCloseReasonLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CASE_CLOSE_REASON, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3799,7 +3799,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCasePurposeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetCasePurposeLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_CASE_PURPOSE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3815,7 +3815,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
     'REQ-6289
-    Public Shared Function GetProdLimitAppToXCDList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetProdLimitAppToXCDList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_PRODUCT_LIMIT_APP_TO_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -3824,7 +3824,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
     'REQ-6289-END
-    Public Shared Function GetUpdateReplaceRegisteredItemsLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetUpdateReplaceRegisteredItemsLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_UPDATE_REPLACE__REG_ITEMS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
 
@@ -3833,28 +3833,28 @@ Public NotInheritable Class LookupListNew
     End Function
 
     'REQ-6313
-    Public Shared Function GetParamValueSourceLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetParamValueSourceLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_PARAM_VALUE_SOURCE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetParamDataTypeLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetParamDataTypeLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_PARAM_DATA_TYPE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetYesNoXcdList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetYesNoXcdList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_YESNO_XCD, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
 
-    Public Shared Function GetRecipientSourceFieldLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetRecipientSourceFieldLookupList(languageId As Guid) As DataView
         Dim dv As DataView = FilteredView(LK_RECIPIENT_SOURCE_FIELD, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), False)
         Return (dv)
     End Function
     'END-REQ-6313
     
-    Public Shared Function GetUnitOfMeasureList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetUnitOfMeasureList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_UNIT_OF_MEASURE, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -3862,7 +3862,7 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
-    Public Shared Function GetBenefitTaxTypes(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetBenefitTaxTypes(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim dv As DataView = FilteredView(LK_BENEFIT_TAX_TYPES, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId), displayNothingSelected)
 
@@ -3872,7 +3872,7 @@ Public NotInheritable Class LookupListNew
     End Function
 
     'REQ-6230
-    Public Shared Function GetIndixProductsSortByLookupList(ByVal languageId As Guid) As DataView
+    Public Shared Function GetIndixProductsSortByLookupList(languageId As Guid) As DataView
 
         Dim dv As DataView = FilteredView(LK_RETAIL_PRICE_SEARCH_SORTBY_LIST, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
@@ -3880,7 +3880,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetCompanyGroupLookupList(ByVal oCompanyId As Guid) As DataView
+    Public Shared Function GetCompanyGroupLookupList(oCompanyId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
     {New DBHelper.DBHelperParameter(COL_COMPANY_ID_NAME, oCompanyId)}
@@ -3891,7 +3891,7 @@ Public NotInheritable Class LookupListNew
 
     End Function
 
-    Public Shared Function GetPayDeductLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function GetPayDeductLookupList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Return DropdownLookupList("CLAIM_PAY_DEDUCTIBLE", languageId, displayNothingSelected)
 

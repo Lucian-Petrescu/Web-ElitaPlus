@@ -15,7 +15,7 @@ Public Class GetRoutes
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetRoutesDs)
+    Public Sub New(ds As GetRoutesDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -30,7 +30,7 @@ Public Class GetRoutes
     Private _serviceNetworkID As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As GetRoutesDs)
+    Private Sub MapDataSet(ds As GetRoutesDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -52,7 +52,7 @@ Public Class GetRoutes
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetRoutesDs)
+    Private Sub Load(ds As GetRoutesDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -71,7 +71,7 @@ Public Class GetRoutes
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetRoutesDs)
+    Private Sub PopulateBOFromWebService(ds As GetRoutesDs)
         Try
             If ds.GetRoutes.Count = 0 Then Exit Sub
             With ds.GetRoutes.Item(0)

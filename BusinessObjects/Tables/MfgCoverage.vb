@@ -6,7 +6,7 @@ Public Class MfgCoverage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,27 +19,27 @@ Public Class MfgCoverage
         Load()
     End Sub
 
-    Public Sub New(ByVal familyDS As DataSet, ByVal equipmentId As Guid)
+    Public Sub New(familyDS As DataSet, equipmentId As Guid)
         MyBase.New(False)
         Dataset = familyDS
         LoadByEquipmentId(equipmentId)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class MfgCoverage
         End Try
     End Sub
 
-    Protected Sub LoadByEquipmentId(ByVal id As Guid)
+    Protected Sub LoadByEquipmentId(id As Guid)
         Try
             Dim dal As New MfgCoverageDAL
             If _isDSCreator Then
@@ -86,7 +86,7 @@ Public Class MfgCoverage
     End Sub
 
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New MfgCoverageDAL
             If _isDSCreator Then
@@ -278,7 +278,7 @@ Public Class MfgCoverage
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal manufacturerId As Guid, ByVal CompanyGroupId As Guid, ByVal riskType As Guid, ByVal model As String) As MfgCoverageSearchDV
+    Public Shared Function getList(manufacturerId As Guid, CompanyGroupId As Guid, riskType As Guid, model As String) As MfgCoverageSearchDV
         Try
             Dim dal As New MfgCoverageDAL
             Return New MfgCoverageSearchDV(dal.LoadList(manufacturerId, CompanyGroupId, riskType, model, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -287,7 +287,7 @@ Public Class MfgCoverage
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -334,7 +334,7 @@ Public Class MfgCoverage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -349,11 +349,11 @@ Public Class MfgCoverage
     Public NotInheritable Class ValidConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_MFG_COVERGAE_RISK_TYPE_AND_MODEL_ERROR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As MfgCoverage = CType(objectToValidate, MfgCoverage)
 
             If Not obj.RiskTypeId.Equals(Guid.Empty) AndAlso Not obj.Model Is Nothing Then
@@ -368,11 +368,11 @@ Public Class MfgCoverage
     Public NotInheritable Class RiskTypeOrMfgRequired
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_MFG_OR_RISK_TYPE_REQD_ERROR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As MfgCoverage = CType(objectToValidate, MfgCoverage)
 
             If obj.RiskTypeId.Equals(Guid.Empty) AndAlso obj.ManufacturerId.Equals(Guid.Empty) Then

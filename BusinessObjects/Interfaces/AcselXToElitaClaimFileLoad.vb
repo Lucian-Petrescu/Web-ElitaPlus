@@ -6,7 +6,7 @@ Public Class AcselXToElitaClaimFileLoad
     Inherits FileLoadBase(Of ClaimloadFileProcessed, ClaimloadReconWrk)
 
 #Region "Constructor"
-    Public Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer)
+    Public Sub New(threadCount As Integer, transactionSize As Integer)
         MyBase.New(True) '' Custom Save Constructor
         YesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
         NoId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
@@ -78,12 +78,12 @@ Public Class AcselXToElitaClaimFileLoad
 #End Region
 
 
-    Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
+    Protected Overrides Function CreateFileLoadHeader(fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
         ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
         Return ClaimLoadFileProcessed
     End Function
 
-    Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
+    Protected Overrides Function CreateFileLoadDetail(fileLoadDetailId As System.Guid, headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
         Dim returnValue As ClaimloadReconWrk
         returnValue = New ClaimloadReconWrk(fileLoadDetailId, headerRecord.Dataset)
         Return returnValue
@@ -94,7 +94,7 @@ Public Class AcselXToElitaClaimFileLoad
 
     End Sub
 
-    Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As ClaimloadReconWrk, ByVal familyDataSet As System.Data.DataSet) As ProcessResult
+    Protected Overrides Function ProcessDetailRecord(reconRecord As ClaimloadReconWrk, familyDataSet As System.Data.DataSet) As ProcessResult
         Try
             Dim claim As Claim
             Dim gClaimIssueResponseId As Guid = Guid.Empty
@@ -256,7 +256,7 @@ Public Class AcselXToElitaClaimFileLoad
         End Try
     End Function
 
-    Private Function GetClaimIssueResponseId(ByVal gSoftQuestionId As Guid, claimissue As ClaimIssue) As Guid
+    Private Function GetClaimIssueResponseId(gSoftQuestionId As Guid, claimissue As ClaimIssue) As Guid
         Dim gClaimIssueResponseId As Guid = Guid.Empty
         Dim gAnswerId As Guid = Guid.Empty
         For i As Integer = 0 To claimissue.ClaimIssueResponseList.Table.Rows.Count - 1
@@ -275,7 +275,7 @@ Public Class AcselXToElitaClaimFileLoad
         Return gClaimIssueResponseId
     End Function
 
-    Private Function SetClaimIssueStatus(ByVal claimIssue As ClaimIssue, claim As Claim, Optional ByVal bWaived As Boolean = False) As String
+    Private Function SetClaimIssueStatus(claimIssue As ClaimIssue, claim As Claim, Optional ByVal bWaived As Boolean = False) As String
         Dim sStatus As String = STATUS_PENDING
         Dim sOutcome As String = ""
         Dim gSupportsClaimId As Guid
@@ -317,7 +317,7 @@ Public Class AcselXToElitaClaimFileLoad
         Return sStatus 'LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, sStatus)
     End Function
 
-    Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
+    Protected Overrides Sub CustomSave(headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
         headerRecord.Save()
     End Sub

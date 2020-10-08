@@ -37,7 +37,7 @@ Public Class InterfaceCoverageLimitDs
         AddHandler Me.Relations.CollectionChanged, schemaChangedHandler
     End Sub
     
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New
         Dim strSchema As String = CType(info.GetValue("XmlSchema", GetType(System.String)),String)
         If (Not (strSchema) Is Nothing) Then
@@ -85,7 +85,7 @@ Public Class InterfaceCoverageLimitDs
         Return false
     End Function
     
-    Protected Overrides Sub ReadXmlSerializable(ByVal reader As XmlReader)
+    Protected Overrides Sub ReadXmlSerializable(reader As XmlReader)
         Me.Reset
         Dim ds As DataSet = New DataSet
         ds.ReadXml(reader)
@@ -131,13 +131,13 @@ Public Class InterfaceCoverageLimitDs
         Return false
     End Function
     
-    Private Sub SchemaChanged(ByVal sender As Object, ByVal e As System.ComponentModel.CollectionChangeEventArgs)
+    Private Sub SchemaChanged(sender As Object, e As System.ComponentModel.CollectionChangeEventArgs)
         If (e.Action = System.ComponentModel.CollectionChangeAction.Remove) Then
             Me.InitVars
         End If
     End Sub
     
-    Public Delegate Sub InterfaceCoverageLimitRowChangeEventHandler(ByVal sender As Object, ByVal e As InterfaceCoverageLimitRowChangeEvent)
+    Public Delegate Sub InterfaceCoverageLimitRowChangeEventHandler(sender As Object, e As InterfaceCoverageLimitRowChangeEvent)
     
     <System.Diagnostics.DebuggerStepThrough>  _
     Public Class InterfaceCoverageLimitDataTable
@@ -159,7 +159,7 @@ Public Class InterfaceCoverageLimitDs
             Me.InitClass
         End Sub
         
-        Friend Sub New(ByVal table As DataTable)
+        Friend Sub New(table As DataTable)
             MyBase.New(table.TableName)
             If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
                 Me.CaseSensitive = table.CaseSensitive
@@ -212,7 +212,7 @@ Public Class InterfaceCoverageLimitDs
             End Get
         End Property
         
-        Public Default ReadOnly Property Item(ByVal index As Integer) As InterfaceCoverageLimitRow
+        Public Default ReadOnly Property Item(index As Integer) As InterfaceCoverageLimitRow
             Get
                 Return CType(Me.Rows(index),InterfaceCoverageLimitRow)
             End Get
@@ -226,11 +226,11 @@ Public Class InterfaceCoverageLimitDs
         
         Public Event InterfaceCoverageLimitRowDeleting As InterfaceCoverageLimitRowChangeEventHandler
         
-        Public Overloads Sub AddInterfaceCoverageLimitRow(ByVal row As InterfaceCoverageLimitRow)
+        Public Overloads Sub AddInterfaceCoverageLimitRow(row As InterfaceCoverageLimitRow)
             Me.Rows.Add(row)
         End Sub
         
-        Public Overloads Function AddInterfaceCoverageLimitRow(ByVal car_code As Long, ByVal coverage_type_code As String, ByVal coverage_type_description As String, ByVal _coverage_km_mi As System.UInt64, ByVal coverage_months As System.UInt64) As InterfaceCoverageLimitRow
+        Public Overloads Function AddInterfaceCoverageLimitRow(car_code As Long, coverage_type_code As String, coverage_type_description As String, _coverage_km_mi As System.UInt64, coverage_months As System.UInt64) As InterfaceCoverageLimitRow
             Dim rowInterfaceCoverageLimitRow As InterfaceCoverageLimitRow = CType(Me.NewRow,InterfaceCoverageLimitRow)
             rowInterfaceCoverageLimitRow.ItemArray = New Object() {car_code, coverage_type_code, coverage_type_description, _coverage_km_mi, coverage_months}
             Me.Rows.Add(rowInterfaceCoverageLimitRow)
@@ -281,7 +281,7 @@ Public Class InterfaceCoverageLimitDs
             Return CType(Me.NewRow,InterfaceCoverageLimitRow)
         End Function
         
-        Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow
+        Protected Overrides Function NewRowFromBuilder(builder As DataRowBuilder) As DataRow
             Return New InterfaceCoverageLimitRow(builder)
         End Function
         
@@ -289,35 +289,35 @@ Public Class InterfaceCoverageLimitDs
             Return GetType(InterfaceCoverageLimitRow)
         End Function
         
-        Protected Overrides Sub OnRowChanged(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowChanged(e As DataRowChangeEventArgs)
             MyBase.OnRowChanged(e)
             If (Not (Me.InterfaceCoverageLimitRowChangedEvent) Is Nothing) Then
                 RaiseEvent InterfaceCoverageLimitRowChanged(Me, New InterfaceCoverageLimitRowChangeEvent(CType(e.Row,InterfaceCoverageLimitRow), e.Action))
             End If
         End Sub
         
-        Protected Overrides Sub OnRowChanging(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowChanging(e As DataRowChangeEventArgs)
             MyBase.OnRowChanging(e)
             If (Not (Me.InterfaceCoverageLimitRowChangingEvent) Is Nothing) Then
                 RaiseEvent InterfaceCoverageLimitRowChanging(Me, New InterfaceCoverageLimitRowChangeEvent(CType(e.Row,InterfaceCoverageLimitRow), e.Action))
             End If
         End Sub
         
-        Protected Overrides Sub OnRowDeleted(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowDeleted(e As DataRowChangeEventArgs)
             MyBase.OnRowDeleted(e)
             If (Not (Me.InterfaceCoverageLimitRowDeletedEvent) Is Nothing) Then
                 RaiseEvent InterfaceCoverageLimitRowDeleted(Me, New InterfaceCoverageLimitRowChangeEvent(CType(e.Row,InterfaceCoverageLimitRow), e.Action))
             End If
         End Sub
         
-        Protected Overrides Sub OnRowDeleting(ByVal e As DataRowChangeEventArgs)
+        Protected Overrides Sub OnRowDeleting(e As DataRowChangeEventArgs)
             MyBase.OnRowDeleting(e)
             If (Not (Me.InterfaceCoverageLimitRowDeletingEvent) Is Nothing) Then
                 RaiseEvent InterfaceCoverageLimitRowDeleting(Me, New InterfaceCoverageLimitRowChangeEvent(CType(e.Row,InterfaceCoverageLimitRow), e.Action))
             End If
         End Sub
         
-        Public Sub RemoveInterfaceCoverageLimitRow(ByVal row As InterfaceCoverageLimitRow)
+        Public Sub RemoveInterfaceCoverageLimitRow(row As InterfaceCoverageLimitRow)
             Me.Rows.Remove(row)
         End Sub
     End Class
@@ -328,7 +328,7 @@ Public Class InterfaceCoverageLimitDs
         
         Private tableInterfaceCoverageLimit As InterfaceCoverageLimitDataTable
         
-        Friend Sub New(ByVal rb As DataRowBuilder)
+        Friend Sub New(rb As DataRowBuilder)
             MyBase.New(rb)
             Me.tableInterfaceCoverageLimit = CType(Me.Table,InterfaceCoverageLimitDataTable)
         End Sub
@@ -387,7 +387,7 @@ Public Class InterfaceCoverageLimitDs
         
         Private eventAction As DataRowAction
         
-        Public Sub New(ByVal row As InterfaceCoverageLimitRow, ByVal action As DataRowAction)
+        Public Sub New(row As InterfaceCoverageLimitRow, action As DataRowAction)
             MyBase.New
             Me.eventRow = row
             Me.eventAction = action

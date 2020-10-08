@@ -21,7 +21,7 @@ Public Class GalaxySearchCertificate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GalaxyCertificateSearchDs)
+    Public Sub New(ds As GalaxyCertificateSearchDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -34,7 +34,7 @@ Public Class GalaxySearchCertificate
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GalaxyCertificateSearchDs)
+    Private Sub MapDataSet(ds As GalaxyCertificateSearchDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -56,7 +56,7 @@ Public Class GalaxySearchCertificate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GalaxyCertificateSearchDs)
+    Private Sub Load(ds As GalaxyCertificateSearchDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -74,7 +74,7 @@ Public Class GalaxySearchCertificate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GalaxyCertificateSearchDs)
+    Private Sub PopulateBOFromWebService(ds As GalaxyCertificateSearchDs)
         Try
             If ds.GalaxyCertificateSearch.Count = 0 Then Exit Sub
             With ds.GalaxyCertificateSearch.Item(0)
@@ -285,12 +285,12 @@ Public Class GalaxySearchCertificate
     Public NotInheritable Class ValidateParameters
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             'fields can not simultaneously be set at zero
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As GalaxySearchCertificate = CType(objectToValidate, GalaxySearchCertificate)
 
 

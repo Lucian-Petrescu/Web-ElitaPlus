@@ -8,7 +8,7 @@ Public Class BusinessObjectIteratorBase
 
 
 #Region "Constructors"
-    Public Sub New(ByVal table As DataTable, ByVal boType As Type)
+    Public Sub New(table As DataTable, boType As Type)
         _table = table
         _boType = boType
     End Sub
@@ -55,7 +55,7 @@ Public Class BusinessObjectIteratorBase
 #End Region
 
 #Region "Protected Methods"
-    Friend Function GetChild(ByVal row As DataRow) As BusinessObjectBase
+    Friend Function GetChild(row As DataRow) As BusinessObjectBase
         Dim bo As BusinessObjectBase = _boType.GetConstructor(New Type() {GetType(DataRow)}).Invoke(New Object() {row})
         Return bo
     End Function

@@ -15,7 +15,7 @@ Public Class GetClaimDetail
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimDetailDs)
+    Public Sub New(ds As GetClaimDetailDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -31,7 +31,7 @@ Public Class GetClaimDetail
     Private _company_id As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As GetClaimDetailDs)
+    Private Sub MapDataSet(ds As GetClaimDetailDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -53,7 +53,7 @@ Public Class GetClaimDetail
     Private Sub Initialize()
     End Sub
 
-    Private Sub ValidateInput(ByVal ds As GetClaimDetailDs)
+    Private Sub ValidateInput(ds As GetClaimDetailDs)
 
         With ds.GetClaimDetail.Item(0)
             If .IsClaim_IDNull Then
@@ -66,7 +66,7 @@ Public Class GetClaimDetail
 
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimDetailDs)
+    Private Sub Load(ds As GetClaimDetailDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -84,7 +84,7 @@ Public Class GetClaimDetail
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimDetailDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimDetailDs)
         Try
             If ds.GetClaimDetail.Count = 0 Then Exit Sub
             With ds.GetClaimDetail.Item(0)

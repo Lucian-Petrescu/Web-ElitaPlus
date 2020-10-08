@@ -6,7 +6,7 @@ Public Class SubscriberTask
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class SubscriberTask
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class SubscriberTask
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SubscriberTaskDAL
             If _isDSCreator Then
@@ -177,7 +177,7 @@ Public Class SubscriberTask
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal TaskID As Guid, ByVal SubscriberTypeID As Guid, ByVal SubscriberStatusID As Guid) As SubscriberTaskSearchDV
+    Public Shared Function getList(TaskID As Guid, SubscriberTypeID As Guid, SubscriberStatusID As Guid) As SubscriberTaskSearchDV
         Try
             Dim dal As New SubscriberTaskDAL
             Return New SubscriberTaskSearchDV(dal.LoadList(TaskID, SubscriberTypeID, SubscriberStatusID, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -204,13 +204,13 @@ Public Class SubscriberTask
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As SubscriberTaskSearchDV, ByVal NewBO As SubscriberTask)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As SubscriberTaskSearchDV, NewBO As SubscriberTask)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then

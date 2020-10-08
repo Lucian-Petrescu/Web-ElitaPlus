@@ -6,7 +6,7 @@ Public Class BillingPlan
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class BillingPlan
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class BillingPlan
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BillingPlanDAL
             If _isDSCreator Then
@@ -230,7 +230,7 @@ Public Class BillingPlan
     End Sub
 
 
-    Public Shared Sub DeleteBillingPlan(ByVal billing_plan_id As Guid)
+    Public Shared Sub DeleteBillingPlan(billing_plan_id As Guid)
 
         Dim dal As New BillingPlanDAL
         dal.Delete(billing_plan_id)
@@ -248,7 +248,7 @@ Public Class BillingPlan
 #Region "DataView Retrieveing Methods"
     
 
-    Public Shared Function getList(ByVal DealerId As Guid, ByVal dealer_group_id As Guid, ByVal billingPlan As String) As BillingPlanSearchDV ' , ByVal company_groupId As Guid
+    Public Shared Function getList(DealerId As Guid, dealer_group_id As Guid, billingPlan As String) As BillingPlanSearchDV ' , ByVal company_groupId As Guid
         Try
             Dim dal As New BillingPlanDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -259,7 +259,7 @@ Public Class BillingPlan
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As BillingPlanSearchDV, ByVal bo As BillingPlan) As BillingPlanSearchDV
+    Public Shared Function GetNewDataViewRow(dv As BillingPlanSearchDV, bo As BillingPlan) As BillingPlanSearchDV
 
         Dim dt As DataTable
         dt = dv.Table
@@ -302,7 +302,7 @@ Public Class BillingPlan
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

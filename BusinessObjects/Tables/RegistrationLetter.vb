@@ -6,7 +6,7 @@ Public Class RegistrationLetter
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class RegistrationLetter
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class RegistrationLetter
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RegistrationLetterDAL
             If _isDSCreator Then
@@ -289,7 +289,7 @@ Public Class RegistrationLetter
         End Try
     End Sub
 
-    Public Sub UpdateAttachment(ByVal RLId As Guid, ByVal AttachmentData As Byte())
+    Public Sub UpdateAttachment(RLId As Guid, AttachmentData As Byte())
         Dim dal As New RegistrationLetterDAL
         dal.UpdateAttachment(RLId, AttachmentData)
     End Sub
@@ -298,7 +298,7 @@ Public Class RegistrationLetter
         Public maxDay As Integer
         Public isLast As Boolean = False
 
-        Public Sub New(ByVal obj As RegistrationLetter)
+        Public Sub New(obj As RegistrationLetter)
             Try
                 Dim dal As New RegistrationLetterDAL
                 Dim maxDs As DataSet = dal.LoadMaxDay(obj.DealerId)
@@ -319,7 +319,7 @@ Public Class RegistrationLetter
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal compIds As ArrayList, ByVal dealerId As Guid) As RegistrationLetterSearchDV
+    Public Shared Function getList(compIds As ArrayList, dealerId As Guid) As RegistrationLetterSearchDV
         Try
             Dim dal As New RegistrationLetterDAL
             Return New RegistrationLetterSearchDV(dal.LoadList(compIds, dealerId).Tables(0))
@@ -328,7 +328,7 @@ Public Class RegistrationLetter
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getEmptyList(ByVal dv As RegistrationLetterSearchDV) As DataView
+    Public Shared Function getEmptyList(dv As RegistrationLetterSearchDV) As DataView
         Try
 
             Dim dsv As DataSet
@@ -361,7 +361,7 @@ Public Class RegistrationLetter
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

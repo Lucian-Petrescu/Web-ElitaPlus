@@ -6,7 +6,7 @@ Public Class AcctBusinessUnit
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class AcctBusinessUnit
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class AcctBusinessUnit
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctBusinessUnitDAL
             If _isDSCreator Then
@@ -224,14 +224,14 @@ Public Class AcctBusinessUnit
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal AcctCompanyMask As Guid, ByVal BusinessUnitNameMask As String) As AcctBusinessUnitSearchDV
+    Public Shared Function getList(AcctCompanyMask As Guid, BusinessUnitNameMask As String) As AcctBusinessUnitSearchDV
         Try
             Dim dal As New AcctBusinessUnitDAL
             Return New AcctBusinessUnitSearchDV(dal.LoadList(BusinessUnitNameMask, AcctCompanyMask).Tables(0))
@@ -240,7 +240,7 @@ Public Class AcctBusinessUnit
         End Try
     End Function
 
-    Public Shared Function LoadList(ByVal descriptionMask As String, ByVal acctCompany As Guid, ByVal myAcctCompany As ArrayList, Optional ByVal getCovTypeChidrens As Boolean = False) As DataView
+    Public Shared Function LoadList(descriptionMask As String, acctCompany As Guid, myAcctCompany As ArrayList, Optional ByVal getCovTypeChidrens As Boolean = False) As DataView
         Try
             Dim dal As New AcctBusinessUnitDAL
             Dim ds As Dataset
@@ -254,7 +254,7 @@ Public Class AcctBusinessUnit
     End Function
 
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As AcctBusinessUnit) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As AcctBusinessUnit) As DataView
 
         Dim dt As DataTable
         dt = dv.Table

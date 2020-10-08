@@ -19,7 +19,7 @@ Public MustInherit Class BusinessCommandBase(Of TType)
         End Set
     End Property
 
-    Protected Friend Sub New(ByVal businessObject As TType)
+    Protected Friend Sub New(businessObject As TType)
         Me.BusinessObject = businessObject
     End Sub
 

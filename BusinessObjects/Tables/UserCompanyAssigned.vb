@@ -17,7 +17,7 @@ Public Class UserCompanyAssigned
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -31,33 +31,33 @@ Public Class UserCompanyAssigned
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, ByVal oUserId As Guid, ByVal oCompanyId As Guid)
+    Public Sub New(familyDS As DataSet, oUserId As Guid, oCompanyId As Guid)
         MyBase.New(False)
         Dataset = familyDS
         LoadByUserIdCompanyId(oUserId, oCompanyId)
     End Sub
 
-    Protected Sub LoadByUserIdCompanyId(ByVal oUserId As Guid, ByVal oCompanyId As Guid)
+    Protected Sub LoadByUserIdCompanyId(oUserId As Guid, oCompanyId As Guid)
         Try
             Dim dal As New UserCompanyAssignedDAL
 
@@ -98,7 +98,7 @@ Public Class UserCompanyAssigned
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New UserCompanyAssignedDAL
             If _isDSCreator Then
@@ -256,53 +256,53 @@ Public Class UserCompanyAssigned
     Public Class UserCompanyAssignedDV
         Inherits DataView
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property UserId(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property UserId(row As DataRow) As String
             Get
                 Return row(COL_USER_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyId(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CompanyId(row As DataRow) As String
             Get
                 Return row(COL_COMPANY_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CompanyCode(row As DataRow) As String
             Get
                 Return row(COL_COMPANY_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property AuthorizationLimit(ByVal row As DataRow) As Decimal
+        Public Shared ReadOnly Property AuthorizationLimit(row As DataRow) As Decimal
             Get
                 Return row(COL_AUTHORIZATION_LIMIT).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property PaymentLimit(ByVal row As DataRow) As Decimal
+        Public Shared ReadOnly Property PaymentLimit(row As DataRow) As Decimal
             Get
                 Return row(COL_PAYMENT_LIMIT).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property LiabilityOverrideLimit(ByVal row As DataRow) As Decimal
+        Public Shared ReadOnly Property LiabilityOverrideLimit(row As DataRow) As Decimal
             Get
                 Return row(COL_LIABILITY_OVERRIDE_LIMIT).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property IsLoaded(ByVal row As DataRow) As Boolean
+        Public Shared ReadOnly Property IsLoaded(row As DataRow) As Boolean
             Get
                 Return If(row(COL_IS_LOADED).ToString = "Y", True, False)
             End Get

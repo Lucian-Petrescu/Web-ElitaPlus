@@ -21,14 +21,14 @@
 
 #Region "Constructors"
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 #End Region
 #Region "Load"
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New FileProcessedDAL
             If _isDSCreator Then
@@ -52,7 +52,7 @@
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal oFileProcessedData As FileProcessedData) As DataView
+    Public Shared Function LoadList(oFileProcessedData As FileProcessedData) As DataView
         Try
             Dim dal As New FileProcessedDAL
             Dim ds As DataSet

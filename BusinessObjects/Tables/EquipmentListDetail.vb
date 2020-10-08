@@ -6,7 +6,7 @@ Public Class EquipmentListDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class EquipmentListDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class EquipmentListDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EquipmentListDetailDAL
             If _isDSCreator Then
@@ -196,7 +196,7 @@ Public Class EquipmentListDetail
     End Sub
 
 
-    Public Sub AttachEquipments(ByVal selectedEquipmentGuidStrCollection As ArrayList)
+    Public Sub AttachEquipments(selectedEquipmentGuidStrCollection As ArrayList)
         Dim cmpEquipmentIdStr As String
         For Each cmpEquipmentIdStr In selectedEquipmentGuidStrCollection
             Dim newBO As EquipmentListDetail = New EquipmentListDetail(Dataset)
@@ -215,7 +215,7 @@ Public Class EquipmentListDetail
 #End Region
 
 #Region "Public Methods"
-    Public Shared Function IsChild(ByVal EquipListId As Guid, ByVal EquipId As Guid) As Byte()
+    Public Shared Function IsChild(EquipListId As Guid, EquipId As Guid) As Byte()
 
         Try
             Dim dal As New EquipmentListDetailDAL
@@ -237,7 +237,7 @@ Public Class EquipmentListDetail
         End Try
     End Function
 
-    Public Sub Copy(ByVal original As EquipmentListDetail)
+    Public Sub Copy(original As EquipmentListDetail)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
@@ -262,7 +262,7 @@ Public Class EquipmentListDetail
     '    Return False
     'End Function
 
-    Public Shared Function GetEquipmentsInList(ByVal EquipmentListId As Guid) As ArrayList
+    Public Shared Function GetEquipmentsInList(EquipmentListId As Guid) As ArrayList
 
         Try
             Dim dal As New EquipmentListDetailDAL
@@ -284,7 +284,7 @@ Public Class EquipmentListDetail
         End Try
     End Function
 
-    Public Shared Function GetEquipmentExpiration(ByVal EquipmentId As Guid) As DateTime
+    Public Shared Function GetEquipmentExpiration(EquipmentId As Guid) As DateTime
 
         Try
             Dim dal As New EquipmentListDetailDAL
@@ -307,7 +307,7 @@ Public Class EquipmentListDetail
     End Function
 
 
-    Public Shared Function GetEquipmentEffective(ByVal EquipmentId As Guid) As DateTime
+    Public Shared Function GetEquipmentEffective(EquipmentId As Guid) As DateTime
 
         Try
             Dim dal As New EquipmentListDetailDAL

@@ -29,7 +29,7 @@ Public NotInheritable Class ElitaPlusPrincipal
 #Region " Constructors "
 
 
-    Public Sub New(ByVal identity As ElitaPlusIdentity)
+    Public Sub New(identity As ElitaPlusIdentity)
         Initialize()
 
         If (Not identity Is Nothing) Then
@@ -103,7 +103,7 @@ Public NotInheritable Class ElitaPlusPrincipal
         Return CType(Identity, ElitaPlusIdentity).ActiveUser
     End Function
 
-    Public Function IsInRole(ByVal role As String) As Boolean Implements System.Security.Principal.IPrincipal.IsInRole
+    Public Function IsInRole(role As String) As Boolean Implements System.Security.Principal.IPrincipal.IsInRole
         Return CType(Identity, ElitaPlusIdentity).ActiveUser.isInRole(role)
     End Function
 

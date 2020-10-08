@@ -6,7 +6,7 @@ Public Class ServiceNetworkSvc
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,7 +20,7 @@ Public Class ServiceNetworkSvc
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -34,13 +34,13 @@ Public Class ServiceNetworkSvc
     'End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@ Public Class ServiceNetworkSvc
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceNetworkSvcDAL
             If _isDSCreator Then
@@ -87,7 +87,7 @@ Public Class ServiceNetworkSvc
     End Sub
 
 
-    Protected Sub LoadByServNetIdServId(ByVal oServNetId As Guid, ByVal oServCentId As Guid)
+    Protected Sub LoadByServNetIdServId(oServNetId As Guid, oServCentId As Guid)
         Try
             Dim dal As New ServiceNetworkSvcDAL
 
@@ -202,7 +202,7 @@ Public Class ServiceNetworkSvc
 #End Region
 #Region "Extended Functionality"
 
-    Public Shared Function GetNetworkServiceIDs(ByVal oServiceNetworkId As Guid) As DataView
+    Public Shared Function GetNetworkServiceIDs(oServiceNetworkId As Guid) As DataView
         Dim dal As New ServiceNetworkSvcDAL
         Dim ds As DataSet
 
@@ -218,7 +218,7 @@ Public Class ServiceNetworkSvc
         Return ds.Tables(dal.TABLE_NAME).DefaultView
     End Function
 
-    Public Function ServiceCentersIDs(ByVal isNetwork As Boolean, ByVal oMethodRepairId As Guid) As ArrayList
+    Public Function ServiceCentersIDs(isNetwork As Boolean, oMethodRepairId As Guid) As ArrayList
         Dim oSvcDv As DataView
         If moServiceCenterIDs Is Nothing Then
             If isNetwork Then

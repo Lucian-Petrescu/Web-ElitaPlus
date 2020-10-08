@@ -4,7 +4,7 @@ Public Class DepreciationScdDetails
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@ Public Class DepreciationScdDetails
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,7 +53,7 @@ Public Class DepreciationScdDetails
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             If _isDSCreator Then
                 If Not Row Is Nothing Then
@@ -247,7 +247,7 @@ Public Class DepreciationScdDetails
         Return LoadList(New Guid)
     End Function
 
-    Public Shared Function LoadList(ByVal depreciationScheduleId As Guid) As DataView
+    Public Shared Function LoadList(depreciationScheduleId As Guid) As DataView
         Try
             Dim dal As New DepreciationSchDetailsDal
             Dim ds As DataSet
@@ -261,7 +261,7 @@ Public Class DepreciationScdDetails
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As DepreciationScdDetails) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As DepreciationScdDetails) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -311,11 +311,11 @@ Public Class DepreciationScdDetails
     Public NotInheritable Class ValidDepreciationSchedule
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DepreciationScheduleForm005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DepreciationScdDetails = CType(objectToValidate, DepreciationScdDetails)
             Dim bValid As Boolean = True
 
@@ -333,7 +333,7 @@ Public Class DepreciationScdDetails
 
         End Function
 
-        Private Function ValidateRange(ByVal sNewLow As LongType, ByVal sNewHigh As LongType, ByVal oDepreciationSchedule As DepreciationScdDetails) As Boolean
+        Private Function ValidateRange(sNewLow As LongType, sNewHigh As LongType, oDepreciationSchedule As DepreciationScdDetails) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = sNewLow.Value
             Dim oNewHigh As Long = sNewHigh.Value
@@ -391,11 +391,11 @@ Public Class DepreciationScdDetails
         Dim _ar As New ArrayList
         Dim _bValidMonth As Boolean = False
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DepreciationScheduleForm007)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DepreciationScdDetails = CType(objectToValidate, DepreciationScdDetails)
             Dim bValid As Boolean = True
 
@@ -422,7 +422,7 @@ Public Class DepreciationScdDetails
 
         End Function
 
-        Private Function ValidateRange(ByVal oDepreciationSchedule As DepreciationScdDetails) As Boolean
+        Private Function ValidateRange(oDepreciationSchedule As DepreciationScdDetails) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = oDepreciationSchedule.LowMonth
             Dim oNewHigh As Long = oDepreciationSchedule.HighMonth
@@ -493,7 +493,7 @@ Public Class DepreciationScdDetails
 
         End Function
 
-        Public Function ValidateDepreciationSequence(ByVal oNewPercent As LongType, ByVal oPercent As LongType, ByVal oNewAmount As LongType, ByVal oAmount As LongType) As Boolean
+        Public Function ValidateDepreciationSequence(oNewPercent As LongType, oPercent As LongType, oNewAmount As LongType, oAmount As LongType) As Boolean
             Dim bValid As Boolean = False
 
             If (Not oNewPercent Is Nothing AndAlso Not oPercent Is Nothing) Then
@@ -554,7 +554,7 @@ Public Class DepreciationScdDetails
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

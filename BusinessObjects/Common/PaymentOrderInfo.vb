@@ -13,7 +13,7 @@
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -27,7 +27,7 @@
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -35,14 +35,14 @@
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
         'Me._userObj = userObj
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -64,7 +64,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BankInfoDAL
             If _isDSCreator Then
@@ -210,11 +210,11 @@
     Public NotInheritable Class ValidBankIDLengthFromCountry
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BANKID_LENGTH) 'INVALID_ACCTNO_LENGTH
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PaymentOrderInfo = CType(objectToValidate, PaymentOrderInfo)
             Dim i As Integer
 
@@ -266,11 +266,11 @@
     Public NotInheritable Class ValidateBankNameForbrasil
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BRANCHDIGIT_LENGTH) 'INVALID_ACCTNO_LENGTH
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PaymentOrderInfo = CType(objectToValidate, PaymentOrderInfo)
             Dim i As Integer
 
@@ -299,11 +299,11 @@
     Public NotInheritable Class ValidateBankIdForbrasil
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BRANCHDIGIT_LENGTH) 'INVALID_ACCTNO_LENGTH
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PaymentOrderInfo = CType(objectToValidate, PaymentOrderInfo)
             Dim i As Integer
 
@@ -356,7 +356,7 @@
         End Try
     End Sub
 
-    Private Function IsEmptyString(ByVal value As String)
+    Private Function IsEmptyString(value As String)
         Return (value Is Nothing OrElse value.Trim.Length = 0)
     End Function
 
@@ -364,8 +364,8 @@
 
 #Region "Shared Methods"
 
-    Public Shared Sub SetProcessCancellationData(ByVal oBankInfoData As BankInfoData, _
-                                              ByVal oPaymentOrderInfo As PaymentOrderInfo)
+    Public Shared Sub SetProcessCancellationData(oBankInfoData As BankInfoData, _
+                                              oPaymentOrderInfo As PaymentOrderInfo)
         With oBankInfoData
             .bankinfoId = oPaymentOrderInfo.Id
             If Not oPaymentOrderInfo.Account_Name Is Nothing Then

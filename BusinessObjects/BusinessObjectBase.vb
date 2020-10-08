@@ -38,6 +38,8 @@
 Imports Common = Assurant.ElitaPlus.Common
 Imports System.Reflection
 Imports System.Collections.Generic
+Imports System.Text
+Imports System.Text.RegularExpressions
 
 Public MustInherit Class BusinessObjectBase
     Implements IBusinessObjectBase
@@ -50,7 +52,7 @@ Public MustInherit Class BusinessObjectBase
         UniqueId = (Guid.NewGuid).ToString
     End Sub
 
-    Protected Sub New(ByVal isDSCreator As Boolean)
+    Protected Sub New(isDSCreator As Boolean)
         _isDSCreator = isDSCreator
         UniqueId = (Guid.NewGuid).ToString
     End Sub
@@ -142,15 +144,15 @@ Public MustInherit Class BusinessObjectBase
     End Sub
 
     'this overloaded version is used after using the DAL to load a DataTable
-    Protected Overloads Sub CheckDataNotFound(ByVal tableName As String)
+    Protected Overloads Sub CheckDataNotFound(tableName As String)
         If Dataset.Tables(tableName).Rows.Count = 0 Then
             Throw New DataNotFoundException
         End If
     End Sub
 
     'this generic method should be called by all BO's to set their properties
-    Protected Sub SetValue(ByVal columnName As String, ByVal newValue As Object)
-        If Not newValue Is Nothing AndAlso Row(columnName) Is DBNull.Value Then
+    Protected Sub SetValue(columnName As String, newValue As Object)
+        If newValue IsNot Nothing AndAlso Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then
                 '- BooleanType, special case - convert to string Y or N
@@ -175,7 +177,7 @@ Public MustInherit Class BusinessObjectBase
             Else
                 '- DateType, DecimalType, etc... all our other custome types
                 '- see if 'newValue Type' has a Value property (only our custom types do)
-                Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
+                Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
                 If Not (propInfo Is Nothing) Then
                     '- call the Value property to extract the native .NET type (double, decimal, etc...)
                     newValue = propInfo.GetValue(newValue, Nothing)
@@ -197,7 +199,7 @@ Public MustInherit Class BusinessObjectBase
                 '- create an array of types containing one type, the String type
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
-                Dim miMethodInfo As System.Reflection.MethodInfo = newValue.GetType.GetMethod("Parse", types)
+                Dim miMethodInfo As MethodInfo = newValue.GetType.GetMethod("Parse", types)
                 If Not miMethodInfo Is Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
@@ -220,7 +222,7 @@ Public MustInherit Class BusinessObjectBase
                 Else
                     '- DateType, DecimalType, etc... all our other custome types
                     '- see if 'newValue Type' has a Value property (only our custom types do)
-                    Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
+                    Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
                     If Not (propInfo Is Nothing) Then
                         '- call the Value property to extract the native .NET type (double, decimal, etc...)
                         newValue = propInfo.GetValue(newValue, Nothing)
@@ -236,16 +238,16 @@ Public MustInherit Class BusinessObjectBase
                 End If
                 Row(columnName) = newValue
             End If
-        ElseIf newValue Is Nothing AndAlso Not Row(columnName) Is DBNull.Value Then
+        ElseIf newValue Is Nothing AndAlso Row(columnName) IsNot DBNull.Value Then
             Row(columnName) = DBNull.Value
         End If
     End Sub
 
-    Protected Shared Sub SetCreatedAuditInfo(ByVal row As DataRow)
+    Protected Shared Sub SetCreatedAuditInfo(row As DataRow)
         row(DALBase.COL_NAME_CREATED_BY) = ElitaPlusIdentity.Current.ActiveUser.NetworkId
     End Sub
 
-    Protected Shared Sub SetModifiedAuditInfo(ByVal row As DataRow)
+    Protected Shared Sub SetModifiedAuditInfo(row As DataRow)
         row(DALBase.COL_NAME_MODIFIED_BY) = ElitaPlusIdentity.Current.ActiveUser.NetworkId
     End Sub
 
@@ -265,8 +267,8 @@ Public MustInherit Class BusinessObjectBase
         'End If
     End Sub
 
-    Protected Function BuildInClause(ByVal tableName As String, ByVal columnName As String) As String
-        Dim inClause As New System.Text.StringBuilder("0")
+    Protected Function BuildInClause(tableName As String, columnName As String) As String
+        Dim inClause As New StringBuilder("0")
         Dim row As DataRow
 
         For Each row In Dataset.Tables(tableName).Rows
@@ -289,7 +291,7 @@ Public MustInherit Class BusinessObjectBase
     End Function
 
     'This method returns true if a column in a datatable is different from value fetched from database
-    Protected Function CheckColumnChanged(ByVal colName As String, Optional ByVal targetVersion As DataRowVersion = DataRowVersion.Original) As Boolean
+    Protected Function CheckColumnChanged(colName As String, Optional ByVal targetVersion As DataRowVersion = DataRowVersion.Original) As Boolean
         Dim col As DataColumn
 
         col = Row.Table.Columns(colName)
@@ -357,7 +359,7 @@ Public MustInherit Class BusinessObjectBase
             End If
         End If
 
-        If col.DataType Is GetType(System.Byte()) Then
+        If col.DataType Is GetType(Byte()) Then
             Dim curB As Byte() = CType(Row(col, DataRowVersion.Current), Byte())
             Dim oldB As Byte() = CType(Row(col, targetVersion), Byte())
             If curB.Length <> 16 Then Throw New ApplicationException("BusinessObjectBase.CheckColumnChanged only supports Byte Arrays that represent GUIDs")
@@ -381,7 +383,7 @@ Public MustInherit Class BusinessObjectBase
             End If
         End If
 
-        If col.DataType Is GetType(System.Int16) Then
+        If col.DataType Is GetType(Int16) Then
             Dim cur As Int16 = CType(Row(col, DataRowVersion.Current), Int16)
             Dim old As Int16 = CType(Row(col, targetVersion), Int16)
             If cur = old Then
@@ -428,7 +430,7 @@ Public MustInherit Class BusinessObjectBase
 
 
     'It adds the Constraint only if is not already there
-    Public Shared Function FindRow(ByVal keyColValue As Object, ByVal keyColName As String, ByVal table As DataTable) As DataRow
+    Public Shared Function FindRow(keyColValue As Object, keyColName As String, table As DataTable) As DataRow
         'Do a full scan. This will work fine only for a few records. TODO Revise this logic
         Dim row As DataRow
         For Each row In table.Rows
@@ -457,8 +459,8 @@ Public MustInherit Class BusinessObjectBase
     End Function
 
     'It adds the Constraint only if is not already there
-    Public Shared Function FindRow(ByVal keyColValue1 As Object, ByVal keyColName1 As String, _
-                    ByVal keyColValue2 As Object, ByVal keyColName2 As String, ByVal table As DataTable) As DataRow
+    Public Shared Function FindRow(keyColValue1 As Object, keyColName1 As String, _
+                    keyColValue2 As Object, keyColName2 As String, table As DataTable) As DataRow
         'Do a full scan. This will work fine only for a few records. TODO Revise this logic
         Dim row As DataRow
         For Each row In table.Rows
@@ -490,7 +492,7 @@ Public MustInherit Class BusinessObjectBase
         'Return table.Rows.Find(CType(keyColValue, Guid).ToString)
     End Function
 
-    Public Shared Function FindRow(ByVal NameValuePairList As Generic.List(Of KeyValuePair(Of String, Object)), ByVal table As DataTable)
+    Public Shared Function FindRow(NameValuePairList As List(Of KeyValuePair(Of String, Object)), table As DataTable)
         'Do a full scan. This will work fine only for a few records. TODO Revise this logic
         Dim row As DataRow
         Dim isRowMatch As Boolean
@@ -521,9 +523,9 @@ Public MustInherit Class BusinessObjectBase
 
 
     'It adds the Constraint only if is not already there
-    Public Shared Function FindRow(ByVal keyColValue1 As Object, ByVal keyColName1 As String, _
-                    ByVal keyColValue2 As Object, ByVal keyColName2 As String, _
-                    ByVal keyColValue3 As Object, ByVal keyColName3 As String, ByVal table As DataTable) As DataRow
+    Public Shared Function FindRow(keyColValue1 As Object, keyColName1 As String, _
+                    keyColValue2 As Object, keyColName2 As String, _
+                    keyColValue3 As Object, keyColName3 As String, table As DataTable) As DataRow
         'Do a full scan. This will work fine only for a few records. TODO Revise this logic
         Dim row As DataRow
         For Each row In table.Rows
@@ -579,7 +581,7 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public Shared ReadOnly Property IsNew(ByVal row As DataRow) As Boolean
+    Public Shared ReadOnly Property IsNew(row As DataRow) As Boolean
         Get
             'Me.CheckDeleted()
             Return (row.RowState = DataRowState.Added)
@@ -663,7 +665,7 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public Shared ReadOnly Property IsDeleted(ByVal row As DataRow) As Boolean
+    Public Shared ReadOnly Property IsDeleted(row As DataRow) As Boolean
         Get
             'Return Me._isDeleted
             Return row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached
@@ -726,7 +728,7 @@ Public MustInherit Class BusinessObjectBase
     Public ReadOnly Property ModifiedDate As DateType
         Get
             If Row(DALBase.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
-            Return New DateType(CType(Row(DALBase.COL_NAME_MODIFIED_DATE), Date))
+            Return New DateType(Row(DALBase.COL_NAME_MODIFIED_DATE))
         End Get
     End Property
 
@@ -768,7 +770,7 @@ Public MustInherit Class BusinessObjectBase
 
 
     'collType must inherit from BusinessObjectListBase
-    Public Sub AddChildrenCollection(ByVal collType As Type)
+    Public Sub AddChildrenCollection(collType As Type)
         Dim columnName As String = SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name
         If Row.Table.Columns.IndexOf(columnName) < 0 Then
             Row.Table.Columns.Add(columnName, GetType(String))
@@ -789,11 +791,11 @@ Public MustInherit Class BusinessObjectBase
         Return result
     End Function
 
-    Public Function GetChildrenCollection(ByVal collType As Type) As BusinessObjectListBase
+    Public Function GetChildrenCollection(collType As Type) As BusinessObjectListBase
         Return GetChildrenCollection(SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name)
     End Function
 
-    Public Function IsChildrenCollectionLoaded(ByVal collType As Type) As Boolean
+    Public Function IsChildrenCollectionLoaded(collType As Type) As Boolean
         Dim columnName As String = SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name
         If Row.Table.Columns.IndexOf(columnName) >= 0 AndAlso Not Row(columnName) Is DBNull.Value Then
             Return True
@@ -802,16 +804,16 @@ Public MustInherit Class BusinessObjectBase
         End If
     End Function
 
-    Private Function GetChildrenCollection(ByVal columnName As String) As BusinessObjectListBase
+    Private Function GetChildrenCollection(columnName As String) As BusinessObjectListBase
         If Row.Table.Columns.IndexOf(columnName) < 0 OrElse Row(columnName) Is DBNull.Value Then
             Return Nothing
         End If
-        Dim fieldParsedContents() As String = System.Text.RegularExpressions.Regex.Split(Row(columnName), "\|")
+        Dim fieldParsedContents() As String = Regex.Split(Row(columnName), "\|")
         Dim assemblyName As String = fieldParsedContents(0)
         Dim typeName As String = fieldParsedContents(1)
-        Dim collAssembly As [Assembly] = System.Reflection.Assembly.Load(assemblyName)
+        Dim collAssembly As [Assembly] = Assembly.Load(assemblyName)
         Dim collType As Type = collAssembly.GetType(typeName)
-        Dim list As BusinessObjectListBase = collType.GetConstructor(New Type() {[GetType]}).Invoke(New Object() {Me})
+        Dim list = CType(collType.GetConstructor(New Type() {[GetType]}).Invoke(New Object() {Me}), BusinessObjectListBase)
         Return list
         'Dim objHandle As System.Runtime.Remoting.ObjectHandle = System.Activator.CreateInstance(assemblyName, typeName, New Object() {Me})
         'Return CType(objHandle.Unwrap, BusinessObjectListBase)
@@ -825,7 +827,7 @@ Public MustInherit Class BusinessObjectBase
 #Region "Public Methods"
     ' this method will make the BO dirty so the audit fields will be updated.
     Public Overridable Sub Touch()
-        Row.Item(DALBase.COL_NAME_MODIFIED_DATE) = System.DateTime.Now
+        Row.Item(DALBase.COL_NAME_MODIFIED_DATE) = DateTime.Now
     End Sub
 
     Public Overridable Sub Delete()
@@ -865,7 +867,7 @@ Public MustInherit Class BusinessObjectBase
         End If
     End Sub
 
-    Public Shared Sub UpdateFamily(ByVal ds As DataSet)
+    Public Shared Sub UpdateFamily(ds As DataSet)
         Dim dt As DataTable
 
         For Each dt In ds.Tables
@@ -902,7 +904,7 @@ Public MustInherit Class BusinessObjectBase
 
     End Sub
 
-    Public Shared Sub Save(ByVal row As DataRow)
+    Public Shared Sub Save(row As DataRow)
         If row.RowState = DataRowState.Detached Then
             Return 'Nothing to do. This is the case when something is added and delted before calling save
         End If
@@ -927,7 +929,7 @@ Public MustInherit Class BusinessObjectBase
         Return validator.Messages
     End Function
 
-    Public Sub VerifyConcurrency(ByVal sModifiedDate As String)
+    Public Sub VerifyConcurrency(sModifiedDate As String)
         Dim dtModifiedDate As DateType
 
         If (Not sModifiedDate = String.Empty AndAlso (Not ModifiedDate Is Nothing)) Then
@@ -946,7 +948,7 @@ Public MustInherit Class BusinessObjectBase
 
     'Copy all the Public properties with the same name in both objects that are in the class of the original. 
     'Properties named as "ID" are not copied either
-    Public Sub CopyFrom(ByVal original As BusinessObjectBase, Optional ByVal includeParentProperties As Boolean = False)
+    Public Sub CopyFrom(original As BusinessObjectBase, Optional ByVal includeParentProperties As Boolean = False)
         Dim fromType As Type = original.GetType
         Dim toType As Type = [GetType]
         Dim fromProp As PropertyInfo
@@ -970,7 +972,7 @@ Public MustInherit Class BusinessObjectBase
 
 
     'Copy all the Public properties with the same name in both objects that are in the class of the original.     
-    Public Sub Clone(ByVal original As BusinessObjectBase)
+    Public Sub Clone(original As BusinessObjectBase)
         Dim fromType As Type = original.GetType
         Dim toType As Type = [GetType]
         Dim fromProp As PropertyInfo
@@ -1017,7 +1019,7 @@ Public MustInherit Class BusinessObjectBase
         Row.CancelEdit()
     End Sub
 
-    Public Function GetShortDate(ByVal longDate As Date) As Date
+    Public Function GetShortDate(longDate As Date) As Date
 
         If (longDate = Nothing) Then
             Return Nothing
@@ -1031,7 +1033,7 @@ Public MustInherit Class BusinessObjectBase
     End Function
 
    
-    Protected Shared Function SplitDatasetForXML(ByVal DatasetInput As DataSet, ByVal GroupedColumn As String, Optional ByVal MaxRows As Integer = 100) As DataSet()
+    Protected Shared Function SplitDatasetForXML(DatasetInput As DataSet, GroupedColumn As String, Optional ByVal MaxRows As Integer = 100) As DataSet()
 
         Dim ds As DataSet
         Dim arrList As New ArrayList
@@ -1039,7 +1041,7 @@ Public MustInherit Class BusinessObjectBase
 
         If DatasetInput.Tables(0).Rows.Count > MaxRows Then
 
-            For i = 0 To System.Math.Ceiling(DatasetInput.Tables(0).Rows.Count / MaxRows)
+            For i = 0 To Math.Ceiling(DatasetInput.Tables(0).Rows.Count / MaxRows)
 
                 'create a new dataset as a clone of the original
                 ds = New DataSet(DatasetInput.DataSetName)
@@ -1087,7 +1089,7 @@ Public MustInherit Class BusinessObjectBase
 
     'Public Function created to allow for setting of the properties by specifying column name properties rather than BO Properties
     '  Used in data import routines
-    Public Function SetPropertyByColumnName(ByVal ColumnName As String, ByVal Value As Object) As Boolean
+    Public Function SetPropertyByColumnName(ColumnName As String, Value As Object) As Boolean
 
         'If column doesn't exist, return false.  
         If Row.Table.Columns(ColumnName) Is Nothing Then Return False
@@ -1101,7 +1103,7 @@ Public MustInherit Class BusinessObjectBase
 
     End Function
 
-    Public Function BuildWSResponseStatus(ByVal DisplayMessage As String, ByVal ErrorMessage As String, ByVal ErrorType As String) As DataTable
+    Public Function BuildWSResponseStatus(DisplayMessage As String, ErrorMessage As String, ErrorType As String) As DataTable
 
         Dim ResponseStatusTable As New DataTable("ResponseStatus")
 
@@ -1127,17 +1129,17 @@ Public MustInherit Class BusinessObjectBase
 #End Region
 
 #Region "Share Methods"
-    Public Shared Function GetHexStringFromGuid(ByVal id As Guid) As String
+    Public Shared Function GetHexStringFromGuid(id As Guid) As String
         Return DALBase.GuidToSQLString(id)
     End Function
 
-    Public Shared Function IsNothing(ByVal Value As Object) As Boolean
+    Public Shared Function IsNothing(Value As Object) As Boolean
         Return DALBase.IsNothing(Value)
     End Function
 
 
     '"Time Zone Related"
-    Public Shared Function LoadConvertedTime_From_DB_ServerTimeZone(ByVal dateToConvert As DateTime, ByVal toTimeZone As String) As DateTime
+    Public Shared Function LoadConvertedTime_From_DB_ServerTimeZone(dateToConvert As DateTime, toTimeZone As String) As DateTime
         Dim dalObj As New DALBase
         Dim dv As DataView = dalObj.LoadConvertedTime_From_DB_ServerTimeZone(dateToConvert, toTimeZone)
 
@@ -1149,7 +1151,7 @@ Public MustInherit Class BusinessObjectBase
 #End Region
 
 #Region "Iterator"
-    Public Function GetBusinessObjectIterator(ByVal boType As Type) As BusinessObjectIteratorBase
+    Public Function GetBusinessObjectIterator(boType As Type) As BusinessObjectIteratorBase
         Return New BusinessObjectIteratorBase(Row.Table, boType)
     End Function
 #End Region

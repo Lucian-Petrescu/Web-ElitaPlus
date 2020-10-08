@@ -94,7 +94,7 @@ Public Class SubmitClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As SubmitClaimDs)
+    Public Sub New(ds As SubmitClaimDs)
         MyBase.New()
         MapDataSet(ds)
         Load(ds)
@@ -523,7 +523,7 @@ Public Class SubmitClaim
 
 #Region "Member Methods"
 
-    Private Sub PopulateBOFromWebService(ByVal ds As SubmitClaimDs)
+    Private Sub PopulateBOFromWebService(ds As SubmitClaimDs)
         Try
             If ds.SubmitClaim.Count = 0 Then Exit Sub
             With ds.SubmitClaim.Item(0)
@@ -716,7 +716,7 @@ Public Class SubmitClaim
         End Try
     End Function
 
-    Private Sub MapDataSet(ByVal ds As SubmitClaimDs)
+    Private Sub MapDataSet(ds As SubmitClaimDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -734,7 +734,7 @@ Public Class SubmitClaim
 
     End Sub
 
-    Private Sub Load(ByVal ds As SubmitClaimDs)
+    Private Sub Load(ds As SubmitClaimDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow

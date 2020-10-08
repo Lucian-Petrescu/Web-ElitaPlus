@@ -7,7 +7,7 @@ Public Class DelayFactor
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class DelayFactor
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class DelayFactor
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DelayFactorDAL
             If _isDSCreator Then
@@ -80,7 +80,7 @@ Public Class DelayFactor
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal DealerId As Guid, ByVal effective As Date, ByVal expiration As Date) As DataView
+    Public Shared Function LoadList(DealerId As Guid, effective As Date, expiration As Date) As DataView
         Try
             Dim dal As New DelayFactorDAL
             Dim ds As DataSet
@@ -94,7 +94,7 @@ Public Class DelayFactor
 
     End Function
 
-    Public Shared Function GetDelayFactorList(ByVal DealerId As Guid, ByVal effective As Date, ByVal expiration As Date) As DataSet
+    Public Shared Function GetDelayFactorList(DealerId As Guid, effective As Date, expiration As Date) As DataSet
         Try
             Dim dal As New DelayFactorDAL
             Dim ds As DataSet
@@ -108,7 +108,7 @@ Public Class DelayFactor
 
     End Function
 
-    Public Shared Function LoadListByDealer(ByVal DealerId As Guid) As DataSet
+    Public Shared Function LoadListByDealer(DealerId As Guid) As DataSet
         Try
             Dim dal As New DelayFactorDAL
             Dim ds As DataSet
@@ -264,7 +264,7 @@ Public Class DelayFactor
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetDelayFactorByDealer(ByVal dealerID As Guid, ByVal compId As ArrayList) As DelayFactorSearchDV
+    Public Shared Function GetDelayFactorByDealer(dealerID As Guid, compId As ArrayList) As DelayFactorSearchDV
         Try
             Dim dal As New DelayFactorDAL
             Dim dv As New DelayFactorSearchDV(dal.GetDelayFactorByDealer(dealerID, compId).Tables(0))
@@ -276,7 +276,7 @@ Public Class DelayFactor
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As DelayFactor) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As DelayFactor) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -369,7 +369,7 @@ Public Class DelayFactor
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -382,11 +382,11 @@ Public Class DelayFactor
     Public NotInheritable Class ValidDelayFactor
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ERR_LOW_DAY_MORE_THAN_HIGH_DAY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DelayFactor = CType(objectToValidate, DelayFactor)
             Dim bValid As Boolean = True
 
@@ -408,7 +408,7 @@ Public Class DelayFactor
 
         End Function
 
-        Private Function ValidateRange(ByVal sNewLow As Assurant.Common.Types.LongType, ByVal sNewHigh As Assurant.Common.Types.LongType, ByVal oDelayFactor As DelayFactor) As Boolean
+        Private Function ValidateRange(sNewLow As Assurant.Common.Types.LongType, sNewHigh As Assurant.Common.Types.LongType, oDelayFactor As DelayFactor) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = sNewLow.Value
             Dim oNewHigh As Long = sNewHigh.Value
@@ -465,11 +465,11 @@ Public Class DelayFactor
 Public NotInheritable Class ValidDelayFactorPeriod
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVALID_DELAY_FACTOR_PERIOD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As DelayFactor = CType(objectToValidate, DelayFactor)
             Dim bValid As Boolean = True
@@ -536,11 +536,11 @@ Public NotInheritable Class ValidDelayFactorPeriod
         Dim ar As New ArrayList
         Dim bValidFactor As Boolean = False
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVALID_DELAY_FACTOR_PERCENT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DelayFactor = CType(objectToValidate, DelayFactor)
             Dim bValid As Boolean = True
 
@@ -568,7 +568,7 @@ Public NotInheritable Class ValidDelayFactorPeriod
 
         End Function
 
-        Private Function ValidateRange(ByVal oDelayFactor As DelayFactor) As Boolean
+        Private Function ValidateRange(oDelayFactor As DelayFactor) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = oDelayFactor.LowNumberOfDays
             Dim oNewHigh As Long = oDelayFactor.HighNumberOfDays
@@ -635,7 +635,7 @@ Public NotInheritable Class ValidDelayFactorPeriod
 
         End Function
 
-        Public Function ValidateDelayFactorSequence(ByVal oNewFactor As DecimalType, ByVal oFactor As DecimalType) As Boolean
+        Public Function ValidateDelayFactorSequence(oNewFactor As DecimalType, oFactor As DecimalType) As Boolean
             Dim bValid As Boolean = False
 
             If (Not oNewFactor Is Nothing AndAlso Not oFactor Is Nothing) Then

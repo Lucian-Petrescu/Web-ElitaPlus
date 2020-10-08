@@ -6,7 +6,7 @@ Public Class NewDictionaryItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class NewDictionaryItem
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class NewDictionaryItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New NewDictionaryItemDAL
             If _isDSCreator Then
@@ -293,7 +293,7 @@ Public Class NewDictionaryItem
         LabelID = oLabel.Id
     End Sub
 
-    Public Sub ChangeLabels(ByVal Id As Guid)
+    Public Sub ChangeLabels(Id As Guid)
         Dim oDictItemTrans As DictItemTranslation
         Dim oDictItem As DictionaryItem
         Dim oLabel As Label_Extended = New Label_Extended(Id, Dataset, True)
@@ -307,7 +307,7 @@ Public Class NewDictionaryItem
         Next
     End Sub
 
-    Public Sub RemoveLabels(ByVal Id As Guid)
+    Public Sub RemoveLabels(Id As Guid)
         'Dim oDictItemTrans As DictItemTranslation
         If Imported = "Y" Then
             Dim oDictItem As DictionaryItem = New DictionaryItem(Id, Dataset)
@@ -373,7 +373,7 @@ Public Class NewDictionaryItem
         End Try
     End Function
 
-    Public Shared Function LoadList(ByVal scNetworkId As Guid) As DataSet
+    Public Shared Function LoadList(scNetworkId As Guid) As DataSet
         Try
             Dim dal As New RouteDAL
             Return dal.LoadList(scNetworkId)
@@ -384,7 +384,7 @@ Public Class NewDictionaryItem
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal bo As NewDictionaryItem) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, bo As NewDictionaryItem) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -433,71 +433,71 @@ Public Class NewDictionaryItem
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_NEW_DICT_ITEM_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property UiprogCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property UiprogCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_UI_PROG_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EngTranslation(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property EngTranslation(row As DataRow) As String
             Get
                 Return row(COL_NAME_ENGLISH_TRANSLATION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Approved(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Approved(row As DataRow) As String
             Get
                 Return row(COL_NAME_APPROVED).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Impoted(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Impoted(row As DataRow) As String
             Get
                 Return row(COL_NAME_IMPORTED).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property DictItemId(ByVal row) As Guid
+        Public Shared ReadOnly Property DictItemId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_DICT_ITEM_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CreatedDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property CreatedDate(row As DataRow) As DateType
             Get
                 Return row(COL_NAME_CREATED_DATE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ModifiedDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property ModifiedDate(row As DataRow) As DateType
             Get
                 Return row(COL_NAME_MODIFIED_DATE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CreatedBy(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CreatedBy(row As DataRow) As String
             Get
                 Return row(COL_NAME_CREATED_BY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ModifiedBy(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ModifiedBy(row As DataRow) As String
             Get
                 Return row(COL_NAME_MODIFIED_BY).ToString
             End Get
         End Property
 
-        Public Function Find(ByVal Id As Guid) As NewDictionaryItem
+        Public Function Find(Id As Guid) As NewDictionaryItem
             Dim bo As NewDictionaryItem
             For Each bo In Me
                 If bo.Id.Equals(Id) Then Return bo

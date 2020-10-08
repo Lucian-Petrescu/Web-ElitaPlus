@@ -6,7 +6,7 @@ Public Class ServiceLevelDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ServiceLevelDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ServiceLevelDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceLevelDetailDAL
             If _isDSCreator Then
@@ -260,7 +260,7 @@ Public Class ServiceLevelDetail
         End Try
     End Sub
 
-    Public Shared Sub DeleteServiceLevelDetail(ByVal service_level_detail_id As Guid)
+    Public Shared Sub DeleteServiceLevelDetail(service_level_detail_id As Guid)
 
         Dim dal As New ServiceLevelDetailDAL
         dal.Delete(service_level_detail_id)
@@ -269,7 +269,7 @@ Public Class ServiceLevelDetail
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal ServiceLevelGroupId As Guid, ByVal svcLevelCode As String, ByVal svcLevelDesc As String, ByVal sDate As String) As ServiceLevelDetailSearchDV ' , ByVal company_groupId As Guid
+    Public Shared Function getList(ServiceLevelGroupId As Guid, svcLevelCode As String, svcLevelDesc As String, sDate As String) As ServiceLevelDetailSearchDV ' , ByVal company_groupId As Guid
         Try
             Dim dal As New ServiceLevelDetailDAL
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -280,7 +280,7 @@ Public Class ServiceLevelDetail
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As ServiceLevelDetailSearchDV, ByVal bo As ServiceLevelDetail) As ServiceLevelDetailSearchDV
+    Public Shared Function GetNewDataViewRow(dv As ServiceLevelDetailSearchDV, bo As ServiceLevelDetail) As ServiceLevelDetailSearchDV
 
         Dim dt As DataTable
         dt = dv.Table
@@ -317,7 +317,7 @@ Public Class ServiceLevelDetail
 
     End Function
 
-    Public Shared Function IsServiceLevelDetailValid(ByVal slgId As Guid, ByVal sCode As String, ByVal riskypeId As Guid, ByVal costTypeId As Guid, ByVal effectiveDate As Date) As Boolean
+    Public Shared Function IsServiceLevelDetailValid(slgId As Guid, sCode As String, riskypeId As Guid, costTypeId As Guid, effectiveDate As Date) As Boolean
         Dim dal As New ServiceLevelDetailDAL
         Dim ds As DataSet
         Dim isValid As Boolean = True
@@ -358,7 +358,7 @@ Public Class ServiceLevelDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

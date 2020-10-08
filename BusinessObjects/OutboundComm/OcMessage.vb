@@ -6,7 +6,7 @@ Public Class OcMessage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class OcMessage
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class OcMessage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New OcMessageDAL
             If _isDSCreator Then
@@ -268,7 +268,7 @@ Public Class OcMessage
 
 #Region "Public Members"
 
-    Public Function GetParameterChild(ByVal childId As Guid) As OcMessageParams
+    Public Function GetParameterChild(childId As Guid) As OcMessageParams
         Return MessageParametersList.Find(childId)
     End Function
 
@@ -278,7 +278,7 @@ Public Class OcMessage
         Return child
     End Function
 
-    Public Function GetMessageAttemptChild(ByVal childId As Guid) As OcMessageAttempts
+    Public Function GetMessageAttemptChild(childId As Guid) As OcMessageAttempts
         Return MessageAttemptsList.Find(childId)
     End Function
 
@@ -288,15 +288,15 @@ Public Class OcMessage
         Return child
     End Function
 
-    Public Sub SendAdhocMessage(ByVal dealer_id As Guid,
-                                ByVal msg_for As String,
-                                ByVal id As Guid,
-                                ByVal template_code As String,
-                                ByVal std_recipient As String,
-                                ByVal cst_recipient As String,
-                                ByVal std_parameter As String,
-                                ByVal cst_parameter As String,
-                                ByVal sender As String,
+    Public Sub SendAdhocMessage(dealer_id As Guid,
+                                msg_for As String,
+                                id As Guid,
+                                template_code As String,
+                                std_recipient As String,
+                                cst_recipient As String,
+                                std_parameter As String,
+                                cst_parameter As String,
+                                sender As String,
                                 ByRef message_id As Guid,
                                 ByRef err_no As Integer,
                                 ByRef err_msg As String)
@@ -347,15 +347,15 @@ Public Class OcMessage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
 
-    Shared Function GetMessageSearchDV(ByVal dealerId As Guid,
-                                       ByVal searchBy As String,
-                                       ByVal conditionMask As String,
-                                       ByVal languageId As Guid) As MessageSearchDV
+    Shared Function GetMessageSearchDV(dealerId As Guid,
+                                       searchBy As String,
+                                       conditionMask As String,
+                                       languageId As Guid) As MessageSearchDV
         Try
             Dim dal As New OcMessageDAL
             Dim ds As DataSet = dal.LoadList(dealerId, searchBy, conditionMask, languageId)
@@ -399,7 +399,7 @@ Public Class OcMessage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

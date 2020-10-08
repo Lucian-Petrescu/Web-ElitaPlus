@@ -6,7 +6,7 @@ Public Class DictItemTranslation
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class DictItemTranslation
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class DictItemTranslation
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DictItemTranslationDAL
             If _isDSCreator Then
@@ -195,7 +195,7 @@ Public Class DictItemTranslation
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetTranslationList(ByVal Language_Id As Guid, ByVal SearchMask As String, Optional ByVal OrderByTrans As Boolean = False) As TranslationSearchDV
+    Public Shared Function GetTranslationList(Language_Id As Guid, SearchMask As String, Optional ByVal OrderByTrans As Boolean = False) As TranslationSearchDV
         Try
             Dim dal As New DictItemTranslationDAL
             Dim ds As DataView
@@ -210,7 +210,7 @@ Public Class DictItemTranslation
         End Try
     End Function
 
-    Public Shared Function GetTranslationsList(ByVal dictItemId As Guid) As TranslationSearchDV
+    Public Shared Function GetTranslationsList(dictItemId As Guid) As TranslationSearchDV
         Try
             Dim dal As New DictItemTranslationDAL
             'Dim ds As DataSet
@@ -254,7 +254,7 @@ Public Class DictItemTranslation
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

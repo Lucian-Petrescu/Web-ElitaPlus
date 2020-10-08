@@ -6,7 +6,7 @@ Public Class DictionaryItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class DictionaryItem
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class DictionaryItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DictionaryItemDAL
             If _isDSCreator Then
@@ -131,7 +131,7 @@ Public Class DictionaryItem
 
 #Region "DataView Retrieveing Methods"
 
-    Public ReadOnly Property AssociatedTranslation(ByVal id As Guid, Optional ByVal isNew As Boolean = False) As DictItemTranslation
+    Public ReadOnly Property AssociatedTranslation(id As Guid, Optional ByVal isNew As Boolean = False) As DictItemTranslation
         Get
             If Not isNew Then
                 Return New DictItemTranslation(id, Dataset)
@@ -141,7 +141,7 @@ Public Class DictionaryItem
         End Get
     End Property
 
-    Public ReadOnly Property AssociatedLabel(ByVal id As Guid, Optional ByVal useFamilyId As Boolean = False, Optional ByVal isNew As Boolean = False) As Label_Extended
+    Public ReadOnly Property AssociatedLabel(id As Guid, Optional ByVal useFamilyId As Boolean = False, Optional ByVal isNew As Boolean = False) As Label_Extended
         Get
             If Not isNew Then
                 Return New Label_Extended(id, Dataset, useFamilyId)

@@ -6,7 +6,7 @@ Public Class QuestionList
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class QuestionList
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@ Public Class QuestionList
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New QuestionListDAL
             If _isDSCreator Then
@@ -207,7 +207,7 @@ Public Class QuestionList
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As QuestionList)
+    Public Sub Copy(original As QuestionList)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
@@ -227,8 +227,8 @@ Public Class QuestionList
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal code As String, _
-                                        ByVal description As String, ByVal activeOn As DateTimeType) As QuestionList.QuestionSearchDV
+    Public Shared Function GetList(code As String, _
+                                        description As String, activeOn As DateTimeType) As QuestionList.QuestionSearchDV
 
         Try
             Dim dal As New QuestionListDAL
@@ -264,35 +264,35 @@ Public Class QuestionList
         Public Const COL_NAME_EXPIRATION As String = QuestionListDAL.COL_NAME_EXPIRATION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property QuestionListId(ByVal row) As Guid
+        Public Shared ReadOnly Property QuestionListId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_QUESTION_LIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row) As Guid
+        Public Shared ReadOnly Property Effective(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EFFECTIVE), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row) As Guid
+        Public Shared ReadOnly Property Expiration(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EXPIRATION), Byte()))
             End Get
@@ -321,7 +321,7 @@ Public Class QuestionList
 
     ''------------------
 
-    Public Function GetChild(ByVal childId As Guid) As IssueQuestionList
+    Public Function GetChild(childId As Guid) As IssueQuestionList
         Return CType(BestQuestionListChildren.GetChild(childId), IssueQuestionList)
     End Function
 
@@ -333,7 +333,7 @@ Public Class QuestionList
         Return newQuestionListDetail
     End Function
 
-    Public Function GetDealerChild(ByVal childId As Guid) As Dealer
+    Public Function GetDealerChild(childId As Guid) As Dealer
         Return CType(BestDealerListChildren.GetChild(childId), Dealer)
     End Function
 
@@ -343,8 +343,8 @@ Public Class QuestionList
 
 #Region "Public Methods"
 
-    Public Shared Function CheckListCodeForOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeForOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New QuestionListDAL
@@ -370,8 +370,8 @@ Public Class QuestionList
     End Function
 
 
-    Public Shared Function CheckListCodeDurationOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeDurationOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New QuestionListDAL
@@ -397,8 +397,8 @@ Public Class QuestionList
     End Function
 
 
-    Public Shared Function ExpirePreviousList(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function ExpirePreviousList(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New QuestionListDAL
@@ -417,13 +417,13 @@ Public Class QuestionList
         Return False
     End Function
 
-    Public Function GetSelectedQuestionList(ByVal QuestionListID As Guid) As DataView
+    Public Function GetSelectedQuestionList(QuestionListID As Guid) As DataView
         Dim eqListDal As New IssueQuestionListDAL
         Return eqListDal.GetSelectedQuestionList(QuestionListID).Tables(0).DefaultView
 
     End Function
 
-    Public Function GetSelectedDealertList(ByVal QuestionListCode As String) As DataView
+    Public Function GetSelectedDealertList(QuestionListCode As String) As DataView
         Dim eqListDal As New IssueQuestionListDAL
         Return eqListDal.GetSelectedDealerList(QuestionListCode).Tables(0).DefaultView
 
@@ -446,11 +446,11 @@ Public Class QuestionList
     Public NotInheritable Class CheckDuplicate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM004)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As QuestionList = CType(objectToValidate, QuestionList)
             If (obj.CheckDuplicateQuestionListCode()) Then
                 Return False
@@ -464,11 +464,11 @@ Public Class QuestionList
     Public NotInheritable Class CheckListAssignedToDealer
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As QuestionList = CType(objectToValidate, QuestionList)
             If (obj.CheckIfListIsAssignedToDealer()) Then
                 Return False
@@ -482,11 +482,11 @@ Public Class QuestionList
     Public NotInheritable Class CheckListCodeDatesOverlaped
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As QuestionList = CType(objectToValidate, QuestionList)
             If (obj.CheckListCodeDatesForOverlap()) Then
                 Return False
@@ -555,7 +555,7 @@ Public Class QuestionList
         Return False
     End Function
 
-    Public Shared Function CheckIfListIsAssignedToDealer(ByVal vCode As String, ByVal vId As Guid) As Boolean
+    Public Shared Function CheckIfListIsAssignedToDealer(vCode As String, vId As Guid) As Boolean
         Dim EquipDal As New QuestionListDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
@@ -569,7 +569,7 @@ Public Class QuestionList
         Return False
     End Function
 
-    Public Shared Function CheckDuplicateQuestionListCode(ByVal vCode As String, ByVal vEffective As String, ByVal vId As Guid) As Boolean
+    Public Shared Function CheckDuplicateQuestionListCode(vCode As String, vEffective As String, vId As Guid) As Boolean
         Dim EquipDal As New QuestionListDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
@@ -592,7 +592,7 @@ Public Class QuestionList
         Return False
     End Function
 
-    Public Shared Function GetDropdownId(ByVal listCode As String) As Guid
+    Public Shared Function GetDropdownId(listCode As String) As Guid
         Dim EquipDal As New QuestionListDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
@@ -602,7 +602,7 @@ Public Class QuestionList
 
     End Function
 
-    Public Shared Function GetDropdownItemId(ByVal DropdownId As Guid, ByVal itemCode As String) As Guid
+    Public Shared Function GetDropdownItemId(DropdownId As Guid, itemCode As String) As Guid
         Dim EquipDal As New QuestionListDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList

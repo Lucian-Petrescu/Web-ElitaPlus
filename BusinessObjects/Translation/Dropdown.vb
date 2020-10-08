@@ -6,7 +6,7 @@ Public Class Dropdown
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -20,20 +20,20 @@ Public Class Dropdown
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Dropdown
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DropdownDAL
             If _isDSCreator Then
@@ -192,7 +192,7 @@ Public Class Dropdown
         End Try
     End Sub
 
-    Public Shared Function DGPageLocator(ByVal oDataView As DataView, ByVal sSearchValue As String, ByVal nPageSize As Integer, ByVal sColumnName As String) As Integer
+    Public Shared Function DGPageLocator(oDataView As DataView, sSearchValue As String, nPageSize As Integer, sColumnName As String) As Integer
 
         Dim i As Int16
         Dim nGridPage As Int16
@@ -223,22 +223,22 @@ Public Class Dropdown
 
     End Function
 
-    Public Function AddDropdown(ByVal code As String, ByVal maintainable_by_user As String, ByVal englishTranslation As String, ByVal userId As String) As Integer
+    Public Function AddDropdown(code As String, maintainable_by_user As String, englishTranslation As String, userId As String) As Integer
         Dim dal As New DropdownDAL
         Return dal.AddDropdown(code, maintainable_by_user, englishTranslation, userId)
     End Function
 
-    Public Function UpdateDropdown(ByVal listId As Guid, ByVal code As String, ByVal maintainable_by_user As String, ByVal englishTranslation As String, ByVal userId As String) As Integer
+    Public Function UpdateDropdown(listId As Guid, code As String, maintainable_by_user As String, englishTranslation As String, userId As String) As Integer
         Dim dal As New DropdownDAL
         Return dal.UpdateDropdown(listId, code, maintainable_by_user, englishTranslation, userId)
     End Function
 
-    Public Function UpdateTranslation(ByVal DictItemTranslationId As Guid, ByVal Translation As String, ByVal userId As String) As Integer
+    Public Function UpdateTranslation(DictItemTranslationId As Guid, Translation As String, userId As String) As Integer
         Dim dal As New DropdownDAL
         Return dal.UpdateTranslation(DictItemTranslationId, Translation, userId)
     End Function
 
-    Public Function DeleteDropdown(ByVal listId As Guid) As Integer
+    Public Function DeleteDropdown(listId As Guid) As Integer
         Dim dal As New DropdownDAL
         Return dal.DeleteDropdown(listId)
     End Function
@@ -247,7 +247,7 @@ Public Class Dropdown
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function AdminLoadList(ByVal LanguageId As Guid) As System.Data.DataView
+    Public Shared Function AdminLoadList(LanguageId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownDAL
             Dim ds As New DataSet
@@ -258,7 +258,7 @@ Public Class Dropdown
         End Try
     End Function
 
-     Public Shared Function DeviceLoadList(ByVal LanguageId As Guid) As System.Data.DataView
+     Public Shared Function DeviceLoadList(LanguageId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownDAL
             Dim ds As New DataSet
@@ -269,7 +269,7 @@ Public Class Dropdown
         End Try
     End Function
 
-    Public Shared Function AdminLoadListTranslation(ByVal ListId As Guid) As System.Data.DataView
+    Public Shared Function AdminLoadListTranslation(ListId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownDAL
             Dim ds As New DataSet
@@ -280,7 +280,7 @@ Public Class Dropdown
         End Try
     End Function
 
-    Public Function GetTranslation(ByVal LanguageId As Guid, ByVal DictItemId As Guid) As String
+    Public Function GetTranslation(LanguageId As Guid, DictItemId As Guid) As String
         Dim dal As New DropdownDAL
         Dim ds As New DataSet
         Dim dv As New DataView

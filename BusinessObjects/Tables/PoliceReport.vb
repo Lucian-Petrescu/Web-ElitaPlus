@@ -6,7 +6,7 @@ Public Class PoliceReport
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,32 +20,32 @@ Public Class PoliceReport
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
     ''Existing or New BO by claimid ???
-    Public Sub New(ByVal claimid As Guid, ByVal NewOrExisting As Boolean)
+    Public Sub New(claimid As Guid, NewOrExisting As Boolean)
         MyBase.New()
         Dataset = New Dataset
         Load(claimid, NewOrExisting)
     End Sub
     'Existing BO attaching to a BO family by claimid
-    Public Sub New(ByVal Claimid As Guid, ByVal familyDS As Dataset, ByVal NewOrExisting As Boolean)
+    Public Sub New(Claimid As Guid, familyDS As Dataset, NewOrExisting As Boolean)
         MyBase.New(False)
         Dataset = familyDS
         Load(ClaimId, NewOrExisting)
@@ -67,7 +67,7 @@ Public Class PoliceReport
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PoliceReportDAL
             If _isDSCreator Then
@@ -91,7 +91,7 @@ Public Class PoliceReport
         End Try
     End Sub
 
-    Protected Sub Load(ByVal Claimid As Guid, ByVal NewOrExist As Boolean)
+    Protected Sub Load(Claimid As Guid, NewOrExist As Boolean)
         ' load the police report by claim id which is not the primary key !
         Try
             Dim dal As New PoliceReportDAL
@@ -180,7 +180,7 @@ Public Class PoliceReport
         End Set
     End Property
 
-    Public ReadOnly Property ClaimNumber(ByVal mclaimid As Guid) As String
+    Public ReadOnly Property ClaimNumber(mclaimid As Guid) As String
         Get
             Dim claim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(mclaimid)
             'Me.SetValue(ClaimDAL.COL_NAME_CERTIFICATE_NUMBER, cert.CertNumber)
@@ -188,7 +188,7 @@ Public Class PoliceReport
         End Get
     End Property
 
-    Public ReadOnly Property CertificateNumber(ByVal mclaimid As Guid) As String
+    Public ReadOnly Property CertificateNumber(mclaimid As Guid) As String
         Get
             Dim claim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(mclaimid)
             Dim certItemCoverage As New certItemCoverage(claim.CertItemCoverageId)
@@ -198,7 +198,7 @@ Public Class PoliceReport
         End Get
     End Property
 
-    Public ReadOnly Property DealerName(ByVal mclaimid As Guid) As String
+    Public ReadOnly Property DealerName(mclaimid As Guid) As String
         Get
             Dim claim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(mclaimid)
             Dim certItemCoverage As New certItemCoverage(claim.CertItemCoverageId)
@@ -263,7 +263,7 @@ Public Class PoliceReport
         End Try
     End Sub
 
-    Public Shared Sub DeleteNewChildPoliceReport(ByVal parentClaim As Claim)
+    Public Shared Sub DeleteNewChildPoliceReport(parentClaim As Claim)
         Dim row As DataRow
         If parentClaim.Dataset.Tables.IndexOf(PoliceReportDAL.TABLE_NAME) >= 0 Then
             Dim rowIndex As Integer
@@ -295,7 +295,7 @@ Public Class PoliceReport
         End If
         Return blnInUser
     End Function
-    Public Shared Function IsReportNumberInUse(ByRef lstClaimNum As Collections.Generic.List(Of String), ByVal policeReportNumber As String, ByVal policeStationId As Guid) As Boolean
+    Public Shared Function IsReportNumberInUse(ByRef lstClaimNum As Collections.Generic.List(Of String), policeReportNumber As String, policeStationId As Guid) As Boolean
         Dim blnInUser As Boolean = False
         Dim dal As New PoliceReportDAL
         Dim ds As DataSet = dal.GetClaimsByPoliceRptNumber(policeStationId, policeReportNumber)
@@ -322,7 +322,7 @@ Public Class PoliceReport
         End Get
     End Property
 
-    Private Function IsEmptyString(ByVal value As String)
+    Private Function IsEmptyString(value As String)
         Return (value Is Nothing OrElse value.Trim.Length = 0)
     End Function
 

@@ -6,12 +6,12 @@ Public Class ApInvoiceHeader
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
-    Public Sub New(ByVal invoiceNumber As String)
+    Public Sub New(invoiceNumber As String)
         MyBase.New()
         Dataset = New DataSet
         Load(invoiceNumber)
@@ -25,20 +25,20 @@ Public Class ApInvoiceHeader
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -60,7 +60,7 @@ Public Class ApInvoiceHeader
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ApInvoiceHeaderDAL
             If _isDSCreator Then
@@ -83,7 +83,7 @@ Public Class ApInvoiceHeader
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal accountPayableInvoiceNumber As String)
+    Protected Sub Load(accountPayableInvoiceNumber As String)
         Try
             Dim dal As New ApInvoiceHeaderDAL
             If _isDSCreator Then
@@ -473,17 +473,17 @@ Public Class ApInvoiceHeader
         End Try
     End Sub
 
-    Public Shared Sub DeleteInvoices(ByVal invoiceIds As Generic.List(Of Guid))
+    Public Shared Sub DeleteInvoices(invoiceIds As Generic.List(Of Guid))
         Dim dal As New ApInvoiceHeaderDAL
         dal.DeleteInvoices(invoiceIds)
     End Sub
 
-    Public Shared Sub PayInvoices(ByVal strBatchNumber As String, ByVal invoiceIds As Generic.List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
+    Public Shared Sub PayInvoices(strBatchNumber As String, invoiceIds As Generic.List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
         Dim dal As New ApInvoiceHeaderDAL
         dal.PayInvoices(strBatchNumber, invoiceIds, errCode, errMsg)
     End Sub
 
-    Public Shared function MatchInvoice(ByVal invoiceId As Guid) As Integer
+    Public Shared function MatchInvoice(invoiceId As Guid) As Integer
         Dim dal As New ApInvoiceHeaderDAL, recordsMatched As Integer
         dal.MatchInvoice(invoiceId, recordsMatched)
         Return recordsMatched
@@ -492,10 +492,10 @@ Public Class ApInvoiceHeader
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As String,
-                                         ByVal source As String, ByVal invoiceDate As Date?,
-                                         ByVal dueDateFrom As Date?, ByVal dueDateTo As Date?,
-                                         ByVal rowCount As Integer
+    Public Shared Function GetAPInvoices(vendorCode As String, invoiceNum As String,
+                                         source As String, invoiceDate As Date?,
+                                         dueDateFrom As Date?, dueDateTo As Date?,
+                                         rowCount As Integer
                                          ) As APInvoiceSearchDV
 
         Dim dal As New ApInvoiceHeaderDAL
@@ -524,10 +524,10 @@ Public Class ApInvoiceHeader
         Return dsResults.Tables(0).DefaultView
     End Function
 
-    Public Function GetInvoiceLines(ByVal minLineNum  As Integer,
-                                    ByVal maxLineNum  As Integer,
-                                    ByVal UnMatchedLineOnly   As Boolean,
-                                    ByVal rowCountReturn As Integer) As ApInvoiceLines.APInvoiceLinesDV
+    Public Function GetInvoiceLines(minLineNum  As Integer,
+                                    maxLineNum  As Integer,
+                                    UnMatchedLineOnly   As Boolean,
+                                    rowCountReturn As Integer) As ApInvoiceLines.APInvoiceLinesDV
 
         Dim dal As New ApInvoiceHeaderDAL
         Dim dsResults As New DataSet
@@ -537,7 +537,7 @@ Public Class ApInvoiceHeader
         Return New ApInvoiceLines.APInvoiceLinesDV(dsResults.Tables(0))
 
     End Function
-    Public Function GetApInvoice(ByVal apInvoiceNumber As String, ByVal apInvoiceVendorId As Guid) As Dataview
+    Public Function GetApInvoice(apInvoiceNumber As String, apInvoiceVendorId As Guid) As Dataview
         
         Dim dal As New ApInvoiceHeaderDAL
         Dim dsResults As New DataSet
@@ -576,7 +576,7 @@ Public Class ApInvoiceHeader
         Public Const MSG_THE_VALUE_REQUIRED_DEALER As String = "MSG_THE_VALUE_REQUIRED_DEALER"
         Public Const MSG_THE_VALUE_REQUIRED_INVOICE_DATE As String = "MSG_THE_VALUE_REQUIRED_INVOICE_DATE"
         Public Const MSG_THE_VALUE_REQUIRED_INVOICE_TERM As String = "MSG_THE_VALUE_REQUIRED_INVOICE_TERM"
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

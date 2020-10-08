@@ -132,7 +132,7 @@ Public Class FelitaEngine
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As FelitaEngineDs)
+    Public Sub New(ds As FelitaEngineDs)
 
         MyBase.New()
         FileSet = New ArrayList
@@ -144,7 +144,7 @@ Public Class FelitaEngine
 
     End Sub
 
-    Public Sub New(ByVal AcctCompanyId As Guid)
+    Public Sub New(AcctCompanyId As Guid)
         MyBase.New()
         FileSet = New ArrayList
         StartDate = Now
@@ -262,7 +262,7 @@ Public Class FelitaEngine
 
     End Function
 
-    Public Function ResendFile(ByVal AcctTransmissionId As Guid) As String
+    Public Function ResendFile(AcctTransmissionId As Guid) As String
 
         Try
 
@@ -336,7 +336,7 @@ Public Class FelitaEngine
 
     End Function
 
-    Public Function ReverseAccountingEntries(ByVal AcctTransmissionId As Guid, ByVal AcctEventCode As String, ByVal ReversalDate As Date, ByVal DateMovement As DateFilter, Optional ByVal Comment As String = "") As String
+    Public Function ReverseAccountingEntries(AcctTransmissionId As Guid, AcctEventCode As String, ReversalDate As Date, DateMovement As DateFilter, Optional ByVal Comment As String = "") As String
 
         Try
 
@@ -506,7 +506,7 @@ Public Class FelitaEngine
 
 #Region "Private Members"
 
-    Private Function GetJournalType(ByVal inputXML As String, ByVal fileName As String, ByVal fileType As FelitaEngine.FileType, ByVal fileSubType As FelitaEngine.FileSubType) As String
+    Private Function GetJournalType(inputXML As String, fileName As String, fileType As FelitaEngine.FileType, fileSubType As FelitaEngine.FileSubType) As String
         Select Case fileType
             Case FelitaEngine.FileType.Journal
                 Select Case fileSubType
@@ -527,7 +527,7 @@ Public Class FelitaEngine
         End Select
     End Function
 
-    Private Sub MapDataSet(ByVal ds As FelitaEngineDs)
+    Private Sub MapDataSet(ds As FelitaEngineDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -553,7 +553,7 @@ Public Class FelitaEngine
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub Load(ByVal ds As FelitaEngineDs)
+    Private Sub Load(ds As FelitaEngineDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -569,7 +569,7 @@ Public Class FelitaEngine
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As FelitaEngineDs)
+    Private Sub PopulateBOFromWebService(ds As FelitaEngineDs)
         Try
             If ds.FelitaEngine.Count = 0 Then Exit Sub
             With ds.FelitaEngine.Item(0)
@@ -589,7 +589,7 @@ Public Class FelitaEngine
         End Try
     End Sub
 
-    Private Sub SetCompany(ByVal CompanyCode As String)
+    Private Sub SetCompany(CompanyCode As String)
 
         Dim dv As New Company.CompanySearchDV
 
@@ -605,7 +605,7 @@ Public Class FelitaEngine
     End Sub
 
     'This is the routine that builds the actual files and sends the data
-    Private Sub ProcessAccountingData(ByVal AccountingData_Dataset As DataSet, Optional ByVal Counter As Integer = 1)
+    Private Sub ProcessAccountingData(AccountingData_Dataset As DataSet, Optional ByVal Counter As Integer = 1)
 
         If Not AccountingData_Dataset.Tables(AcctTransLogDAL.Table_HEADER) Is Nothing _
             AndAlso AccountingData_Dataset.Tables(AcctTransLogDAL.Table_HEADER).Rows.Count > 0 Then
@@ -692,7 +692,7 @@ Public Class FelitaEngine
 
     End Sub
 
-    Private Function BuildFile(ByVal _FileType As FileType, ByVal AccountingData_DataSet As DataSet, ByVal BusinessUnit As String, ByVal beginDate As Date, ByVal endDate As Date) As Boolean
+    Private Function BuildFile(_FileType As FileType, AccountingData_DataSet As DataSet, BusinessUnit As String, beginDate As Date, endDate As Date) As Boolean
 
         'If filetype = journal, loop through the dataset and grab all the lineitem tables in case there are failures
         If _FileType = FileType.Journal Then
@@ -823,12 +823,12 @@ Public Class FelitaEngine
 
     End Function
 
-    Private Function BuildFileBody(ByVal _FileType As FileType,
-                                   ByVal _FileSubType As FileSubType,
-                                   ByVal AccountingData_DataSet As DataSet,
-                                   ByVal BusinessUnit As String,
-                                   ByVal beginDate As Date,
-                                   ByVal endDate As Date,
+    Private Function BuildFileBody(_FileType As FileType,
+                                   _FileSubType As FileSubType,
+                                   AccountingData_DataSet As DataSet,
+                                   BusinessUnit As String,
+                                   beginDate As Date,
+                                   endDate As Date,
                                    Optional ByVal TableName As String = "",
                                    Optional ByVal fileExtension As String = "") As Boolean
 
@@ -961,7 +961,7 @@ Public Class FelitaEngine
         End Try
     End Function
 
-    Private Function BuildFile(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal batchNumber As BatchId) As Boolean
+    Private Function BuildFile(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, batchNumber As BatchId) As Boolean
 
         Try
 
@@ -986,7 +986,7 @@ Public Class FelitaEngine
     End Function
 
     'Builds trigger file based on Journal file Name
-    Private Function BuildFile(ByVal FileName As String, ByVal BatchNumber As String) As Boolean
+    Private Function BuildFile(FileName As String, BatchNumber As String) As Boolean
 
         Try
 
@@ -1012,7 +1012,7 @@ Public Class FelitaEngine
     End Function
 
 
-    Private Function BuildFile(ByVal _FileType As FileType, ByVal BusinessUnit As String) As Boolean
+    Private Function BuildFile(_FileType As FileType, BusinessUnit As String) As Boolean
 
         Try
 
@@ -1705,7 +1705,7 @@ Public Class FelitaEngine
     End Sub
 
     'Gets the transformation xslt file
-    Private Function GetResource(ByVal ResourceName As String) As System.IO.Stream
+    Private Function GetResource(ResourceName As String) As System.IO.Stream
 
         Try
             Dim RName As String
@@ -1724,39 +1724,39 @@ Public Class FelitaEngine
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String) As String
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String) As String
         Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & StartDate.ToString("yyyy-MM-dd") & "-" & StartDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date) As String
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date) As String
         Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal IncludeBatch As Boolean, ByVal batchNumber As String) As String
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, IncludeBatch As Boolean, batchNumber As String) As String
         Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & batchNumber & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal IncludeBatch As Boolean, ByVal batchNumber As BatchId) As String
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, IncludeBatch As Boolean, batchNumber As BatchId) As String
         Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType(batchNumber.Event_Type) & batchNumber.Batch_Number & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal TableName As String) As String
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, TableName As String) As String
         Dim _filePrefix As String = System.Enum.GetName(GetType(FileType), _FileType)
         Return "E-" & _filePrefix & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetReversalFileName(ByVal FileName As String) As String
+    Private Function GetReversalFileName(FileName As String) As String
         BusinessUnit = FileName.Substring(FileName.IndexOf("-", 3) + 1, (FileName.IndexOf("-", FileName.IndexOf("-", 3) + 1) - FileName.IndexOf("-", 3) - 1))
         Return GetFileName(FileType.Journal, BusinessUnit, Today, Today)
     End Function
 
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal _FileSubType As FileSubType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date,
-                                 ByVal TableName As String, ByVal _AcctExt As String, ByVal JournalType As String) As String
+    Private Function GetFileName(_FileType As FileType, _FileSubType As FileSubType, BusinessUnit As String, MinDate As Date, MaxDate As Date,
+                                 TableName As String, _AcctExt As String, JournalType As String) As String
 
         If _AcctExt = FELITA_PREFIX Then
             If Not _FileSubType = FileSubType.CONTROL Then
@@ -1805,7 +1805,7 @@ Public Class FelitaEngine
 
     End Function
 
-    Private Function GetFileNameEntryType(ByVal _EventType As EventType) As String
+    Private Function GetFileNameEntryType(_EventType As EventType) As String
 
         Dim strCode As String = ""
 
@@ -1833,7 +1833,7 @@ Public Class FelitaEngine
     ''' <param name="AcctTrans"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Sub ProcessBalancingResponse(ByVal ret As Object, ByVal AcctTrans As AcctTransmission, Optional ByVal _fel As Felita.FelitaConnectServiceClient = Nothing)
+    Private Sub ProcessBalancingResponse(ret As Object, AcctTrans As AcctTransmission, Optional ByVal _fel As Felita.FelitaConnectServiceClient = Nothing)
 
 
         If ret.GetType Is GetType(SmartStream.BatchSummaryTypes) Then

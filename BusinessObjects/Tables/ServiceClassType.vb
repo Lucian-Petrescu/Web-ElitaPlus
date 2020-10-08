@@ -7,7 +7,7 @@ Public Class ServiceClassType
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@ Public Class ServiceClassType
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@ Public Class ServiceClassType
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceClassTypeDAL
             If _isDSCreator Then
@@ -312,7 +312,7 @@ Public Class ServiceCLassTypeList
         Return list
     End Function
 
-    Public Shared Function GetDetails(ByVal serviceClassCode As String, ByVal serviceTypeCode As String) As ServiceClassType
+    Public Shared Function GetDetails(serviceClassCode As String, serviceTypeCode As String) As ServiceClassType
         Dim record As ServiceClassType
         For Each item As ServiceClassType In Instance
             If (item.ServiceClassCode = serviceClassCode) And item.ServiceTypeCode = serviceTypeCode Then
@@ -323,7 +323,7 @@ Public Class ServiceCLassTypeList
         Return record
     End Function
 
-    Public Shared Function GetDetails(ByVal serviceClassId As Guid, ByVal serviceTypeId As Guid) As ServiceClassType
+    Public Shared Function GetDetails(serviceClassId As Guid, serviceTypeId As Guid) As ServiceClassType
         Dim record As ServiceClassType
         For Each item As ServiceClassType In Instance
             If (item.ServiceClassId = serviceClassId) And item.ServiceTypeId = serviceTypeId Then
@@ -334,7 +334,7 @@ Public Class ServiceCLassTypeList
         Return record
     End Function
 
-    Public Shared Function IsDeductibleApplicable(ByVal serviceClassId As Guid, ByVal serviceTypeId As Guid) As Boolean
+    Public Shared Function IsDeductibleApplicable(serviceClassId As Guid, serviceTypeId As Guid) As Boolean
         Dim serviceClassType as ServiceClassType = GetDetails(serviceClassId, serviceTypeId)
         If serviceClassType Is Nothing Then
             Return False

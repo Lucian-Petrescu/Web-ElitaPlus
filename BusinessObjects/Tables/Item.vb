@@ -16,7 +16,7 @@ Public Class Item
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -30,20 +30,20 @@ Public Class Item
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -65,7 +65,7 @@ Public Class Item
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ItemDAL
             If _isDSCreator Then
@@ -284,7 +284,7 @@ Public Class Item
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal dealerId As Guid, ByVal ProductCodeId As Guid, ByVal RiskTypeId As Guid) As DataView
+    Public Shared Function GetList(dealerId As Guid, ProductCodeId As Guid, RiskTypeId As Guid) As DataView
         Try
             Dim dal As New ItemDAL
             Return New DataView(dal.LoadList(ElitaPlusIdentity.Current.ActiveUser.Companies, dealerId, ProductCodeId, RiskTypeId).Tables(0))
@@ -294,7 +294,7 @@ Public Class Item
     End Function
 
     'Used by Olita Web Service 
-    Public Shared Function getDealerItemsInfo(ByRef ds As DataSet, ByVal dealerId As Guid) As DataSet
+    Public Shared Function getDealerItemsInfo(ByRef ds As DataSet, dealerId As Guid) As DataSet
         Try
             Dim dal As New ItemDAL
             Return dal.LoadDealerItemsInfo(ds, dealerId)
@@ -309,11 +309,11 @@ Public Class Item
     Public NotInheritable Class ValidOptionalItemRequired
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "CODE_REQUIRED_FOR_OPTIONAL_ITEM")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Item = CType(objectToValidate, Item)
 
             If LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y) = obj.OptionalItem AndAlso (obj.OptionalItemCode Is Nothing OrElse obj.OptionalItemCode.Trim = String.Empty) Then
@@ -327,11 +327,11 @@ Public Class Item
     Public NotInheritable Class ValidOptionalItemDuplicate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "DUPLICATE_OPTIONAL_ITEM_CODE")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Item = CType(objectToValidate, Item)
             If Not obj.OptionalItemCode Is Nothing AndAlso obj.OptionalItemCode.Trim <> String.Empty Then
                 Dim lngItemNum As Long = 0

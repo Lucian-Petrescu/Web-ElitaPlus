@@ -33,7 +33,7 @@ Public Class UpdateSCReceivedItems
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdateSCReceivedItemsDs)
+    Public Sub New(ds As UpdateSCReceivedItemsDs)
         MyBase.New()
         MapDataSet(ds)
         Load(ds)
@@ -43,7 +43,7 @@ Public Class UpdateSCReceivedItems
 
 #Region "Member Methods"
 
-    Private Sub PopulateBOFromWebService(ByVal ds As UpdateSCReceivedItemsDs)
+    Private Sub PopulateBOFromWebService(ds As UpdateSCReceivedItemsDs)
         Try
             If ds.UpdateSCReceivedItems.Count = 0 Then Exit Sub
             With ds.UpdateSCReceivedItems.Item(0)
@@ -88,7 +88,7 @@ Public Class UpdateSCReceivedItems
         End Try
     End Function
 
-    Private Sub MapDataSet(ByVal ds As UpdateSCReceivedItemsDs)
+    Private Sub MapDataSet(ds As UpdateSCReceivedItemsDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -106,7 +106,7 @@ Public Class UpdateSCReceivedItems
 
     End Sub
 
-    Private Sub Load(ByVal ds As UpdateSCReceivedItemsDs)
+    Private Sub Load(ds As UpdateSCReceivedItemsDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow

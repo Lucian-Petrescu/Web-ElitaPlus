@@ -17,7 +17,7 @@ Public Class GetCustomerFunctions
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetCustomerFunctionsDS)
+    Public Sub New(ds As GetCustomerFunctionsDS)
         MyBase.New()
 
         MapDataSet(ds)
@@ -30,7 +30,7 @@ Public Class GetCustomerFunctions
 #Region "Private Members"
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetCustomerFunctionsDS)
+    Private Sub MapDataSet(ds As GetCustomerFunctionsDS)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -52,7 +52,7 @@ Public Class GetCustomerFunctions
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetCustomerFunctionsDS)
+    Private Sub Load(ds As GetCustomerFunctionsDS)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -70,7 +70,7 @@ Public Class GetCustomerFunctions
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetCustomerFunctionsDS)
+    Private Sub PopulateBOFromWebService(ds As GetCustomerFunctionsDS)
         Try
             If ds.GetCustomerFunctions.Count = 0 Then Exit Sub
             With ds.GetCustomerFunctions.Item(0)
@@ -101,7 +101,7 @@ Public Class GetCustomerFunctions
 
     End Function
 
-    Private Function BuildWSCustomerFunctions(ByVal claimCount As Integer) As DataTable
+    Private Function BuildWSCustomerFunctions(claimCount As Integer) As DataTable
 
         Dim CustomerFunctionsTable As New DataTable(TABLE_NAME__GET_CUSTOMER_FUNCTIONS_RESPONSE)
 

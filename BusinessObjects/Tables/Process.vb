@@ -6,7 +6,7 @@ Public Class Process
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class Process
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class Process
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProcessDAL
             If _isDSCreator Then
@@ -194,8 +194,8 @@ Public Class Process
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal code As String, _
-                                    ByVal description As String, ByVal activeOn As String) As Process.ProcessSearchDV
+    Public Shared Function GetList(code As String, _
+                                    description As String, activeOn As String) As Process.ProcessSearchDV
         Try
             Dim dal As New ProcessDAL
             Dim oCompanyGroupIds As ArrayList
@@ -229,35 +229,35 @@ Public Class Process
         Public Const COL_NAME_EXPIRATION As String = ProcessDAL.COL_NAME_EXPIRATION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property IssueId(ByVal row) As Guid
+        Public Shared ReadOnly Property IssueId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PROCESS_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row) As Guid
+        Public Shared ReadOnly Property Effective(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EFFECTIVE), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row) As Guid
+        Public Shared ReadOnly Property Expiration(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EXPIRATION), Byte()))
             End Get

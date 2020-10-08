@@ -6,7 +6,7 @@ Public Class UserCompany
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,7 +20,7 @@ Public Class UserCompany
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -28,27 +28,27 @@ Public Class UserCompany
 
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal oAction As String)
+    Public Sub New(id As Guid, oAction As String)
         MyBase.New(False)
         Dataset = New Dataset
         LoadFromUser(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset, ByVal oUserId As Guid, ByVal oCompanyId As Guid)
+    Public Sub New(familyDS As Dataset, oUserId As Guid, oCompanyId As Guid)
         MyBase.New(False)
         Dataset = familyDS
         LoadByUserIdCompanyId(oUserId, oCompanyId)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -70,7 +70,7 @@ Public Class UserCompany
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New UserCompanyDAL
             If _isDSCreator Then
@@ -94,7 +94,7 @@ Public Class UserCompany
         End Try
     End Sub
 
-    Protected Sub LoadByUserIdCompanyId(ByVal oUserId As Guid, ByVal oCompanyId As Guid)
+    Protected Sub LoadByUserIdCompanyId(oUserId As Guid, oCompanyId As Guid)
         Try
             Dim dal As New UserCompanyDAL
 
@@ -120,7 +120,7 @@ Public Class UserCompany
     End Sub
 
 
-    Protected Sub LoadFromUser(ByVal oUserId As Guid)
+    Protected Sub LoadFromUser(oUserId As Guid)
         Try
             Dim dal As New UserCompanyDAL
 

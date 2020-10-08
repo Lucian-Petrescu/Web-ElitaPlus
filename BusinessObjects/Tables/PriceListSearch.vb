@@ -10,7 +10,7 @@
         End Set
     End Property
 
-    Public Function GetPriceList(ByVal oPriceListSearch As PriceListSearchDC) As DataSet
+    Public Function GetPriceList(oPriceListSearch As PriceListSearchDC) As DataSet
         Return action.GetPriceList(oPriceListSearch)
     End Function
 

@@ -24,8 +24,8 @@ Public Class GVSUpdateClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GVSUpdateClaimDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As GVSUpdateClaimDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = xml
         FuncToProc = functionToProcess

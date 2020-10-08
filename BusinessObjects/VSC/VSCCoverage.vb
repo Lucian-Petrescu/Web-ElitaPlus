@@ -12,13 +12,13 @@ Public Class VSCCoverage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -32,20 +32,20 @@ Public Class VSCCoverage
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -67,7 +67,7 @@ Public Class VSCCoverage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCCoverageDAL
             If _isDSCreator Then
@@ -344,7 +344,7 @@ Public Property Effective As String
 
 #Region "DataView Retrieveing Methods"
     '.PLANID, .DEALER_CODE, .DEALER_NAME, .DEALER_GROUP, .EFFECTIVE_DATE
-    Public Shared Function GetList(ByVal PLANID As Guid, ByVal DEALER_CODE As String, ByVal DEALER_NAME As String, ByVal DEALER_GROUP As String, ByVal EFFECTIVE_DATE As String, ByVal companygroupId As Guid) As VSCCoverageDV '
+    Public Shared Function GetList(PLANID As Guid, DEALER_CODE As String, DEALER_NAME As String, DEALER_GROUP As String, EFFECTIVE_DATE As String, companygroupId As Guid) As VSCCoverageDV '
         Try
             Dim dal As New VSCCoverageDAL
 
@@ -354,7 +354,7 @@ Public Property Effective As String
         End Try
     End Function
 
-    Public Shared Function GetCoverageRateList(ByVal PLANID As Guid) As VSCCoverageDV '
+    Public Shared Function GetCoverageRateList(PLANID As Guid) As VSCCoverageDV '
         Try
             Dim dal As New VSCCoverageDAL
 
@@ -364,7 +364,7 @@ Public Property Effective As String
         End Try
     End Function
 
-    Public Shared Function GetCoverageList(ByVal LanguageID As Guid, ByVal PlanID As Guid) As DataView
+    Public Shared Function GetCoverageList(LanguageID As Guid, PlanID As Guid) As DataView
         Try
             Dim dal As New VSCCoverageDAL
             Return dal.LoadListByPlanID(LanguageID, PlanID).Tables(0).DefaultView

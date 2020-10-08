@@ -6,7 +6,7 @@ Public Class FormCategory
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class FormCategory
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class FormCategory
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New FormCategoryDAL
             If _isDSCreator Then
@@ -217,7 +217,7 @@ Public Class FormCategory
         End Try
     End Sub
 
-    Public Sub SaveDelete(ByVal guidDictItemID As Guid)
+    Public Sub SaveDelete(guidDictItemID As Guid)
         Try
             MyBase.Save()
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
@@ -238,7 +238,7 @@ Public Class FormCategory
         End Try
     End Sub
 
-    Public Shared Sub AssignFormCategory(ByVal FormID As Guid, ByVal FormCategoryID As Guid)
+    Public Shared Sub AssignFormCategory(FormID As Guid, FormCategoryID As Guid)
         Dim dal As New FormCategoryDAL
         dal.UpdateForm_FormCategory(FormID, FormCategoryID)
     End Sub
@@ -259,7 +259,7 @@ Public Class FormCategory
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -289,7 +289,7 @@ Public Class FormCategory
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -306,7 +306,7 @@ Public Class FormCategory
         End Function
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As FormCategorySearchDV, ByVal NewFormCategoryBO As FormCategory)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As FormCategorySearchDV, NewFormCategoryBO As FormCategory)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -337,7 +337,7 @@ Public Class FormCategory
         End If
     End Sub
 
-    Public Shared Function getList(ByVal guidTab As Guid, ByVal strCode As String, ByVal strDescription As String) As FormCategorySearchDV
+    Public Shared Function getList(guidTab As Guid, strCode As String, strDescription As String) As FormCategorySearchDV
         Try
             Dim dal As New FormCategoryDAL
             Return New FormCategorySearchDV(dal.LoadList(Authentication.CurrentUser.LanguageId, guidTab, strCode, strDescription).Tables(0))
@@ -364,7 +364,7 @@ Public Class FormCategory
         End Try
     End Function
 
-    Public Shared Function getFormList(ByVal guidTab As Guid, ByVal guidCategory As Guid, ByVal strFormDesc As String) As FormSearchDV
+    Public Shared Function getFormList(guidTab As Guid, guidCategory As Guid, strFormDesc As String) As FormSearchDV
         Try
             Dim dal As New FormCategoryDAL
             Return New FormSearchDV(dal.LoadFormList(Authentication.CurrentUser.LanguageId, guidTab, guidCategory, strFormDesc).Tables(0))
@@ -373,7 +373,7 @@ Public Class FormCategory
         End Try
     End Function
 
-    Public Shared Function IsCodeInUse(ByVal strCode As String, Optional ByVal IsNew As Boolean = True) As Boolean
+    Public Shared Function IsCodeInUse(strCode As String, Optional ByVal IsNew As Boolean = True) As Boolean
         Dim blnInUse As Boolean = True
         Try
             Dim dal As New FormCategoryDAL
@@ -398,11 +398,11 @@ Public Class FormCategory
     Public NotInheritable Class ValidUniqueCode
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, CODE_MUST_UNIQUE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As FormCategory = CType(objectToValidate, FormCategory)
             If Not obj.IsDeleted Then 'when not deleting, New or save existing
                 If IsCodeInUse(obj.Code, obj.IsNew) Then
@@ -417,11 +417,11 @@ Public Class FormCategory
     Public NotInheritable Class ValueMandatoryWhenAddNew
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As FormCategory = CType(objectToValidate, FormCategory)
             If obj.IsNew Then
                 If obj.Description.Trim = String.Empty Then

@@ -28,7 +28,7 @@ Public Class ClaimValidation
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ClaimValidationDs)
+    Public Sub New(ds As ClaimValidationDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -37,7 +37,7 @@ Public Class ClaimValidation
         dsMyClaimValidation = ds
     End Sub
 
-    Public Sub New(ByVal ds As ClaimValidationDs, ByVal xml As String)
+    Public Sub New(ds As ClaimValidationDs, xml As String)
         MyBase.New()
 
         MapDataSet(ds)
@@ -57,7 +57,7 @@ Public Class ClaimValidation
     Dim claimBO As Claim
     Dim claimFamilyBO As Claim
 
-    Private Sub MapDataSet(ByVal ds As ClaimValidationDs)
+    Private Sub MapDataSet(ds As ClaimValidationDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -79,7 +79,7 @@ Public Class ClaimValidation
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ClaimValidationDs)
+    Private Sub Load(ds As ClaimValidationDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -98,7 +98,7 @@ Public Class ClaimValidation
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ClaimValidationDs)
+    Private Sub PopulateBOFromWebService(ds As ClaimValidationDs)
         Try
             If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
@@ -161,7 +161,7 @@ Public Class ClaimValidation
 
 #Region "Public Members"
 
-    Public Function CheckDBNull(ByVal obj As Object) As Object
+    Public Function CheckDBNull(obj As Object) As Object
         If DBNull.Value.Equals(obj) Then
             If obj.GetType Is GetType(DecimalType) Then
                 Return 0
@@ -173,7 +173,7 @@ Public Class ClaimValidation
         End If
     End Function
 
-    Private Sub ComposeResult(ByRef outputXml As XElement, ByVal parentItemNumber As String, ByVal itemNumber As String, ByVal claimNumber As String, Optional ByVal errorCode As String = "", Optional ByVal propertyName As String = "")
+    Private Sub ComposeResult(ByRef outputXml As XElement, parentItemNumber As String, itemNumber As String, claimNumber As String, Optional ByVal errorCode As String = "", Optional ByVal propertyName As String = "")
         Dim result As String = ""
         Dim errXml As XElement
         Dim userInfo As String

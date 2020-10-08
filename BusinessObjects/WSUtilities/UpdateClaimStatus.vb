@@ -22,7 +22,7 @@ Public Class UpdateClaimStatus
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdateClaimStatusDs)
+    Public Sub New(ds As UpdateClaimStatusDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -33,7 +33,7 @@ Public Class UpdateClaimStatus
 
 #Region "Member Methods"
 
-    Private Sub PopulateBOFromWebService(ByVal ds As UpdateClaimStatusDs)
+    Private Sub PopulateBOFromWebService(ds As UpdateClaimStatusDs)
         Try
 
             With ds.UpdateClaimStatus.Item(0)
@@ -51,7 +51,7 @@ Public Class UpdateClaimStatus
         End Try
     End Sub
 
-    Private Sub MapDataSet(ByVal ds As UpdateClaimStatusDs)
+    Private Sub MapDataSet(ds As UpdateClaimStatusDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -69,7 +69,7 @@ Public Class UpdateClaimStatus
 
     End Sub
 
-    Private Sub Load(ByVal ds As UpdateClaimStatusDs)
+    Private Sub Load(ds As UpdateClaimStatusDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow

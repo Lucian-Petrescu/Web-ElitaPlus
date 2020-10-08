@@ -20,21 +20,21 @@
         MyBase.New()
     End Sub
     'New BO
-    Public Sub New(ByVal dealerProcessedID As Guid)
+    Public Sub New(dealerProcessedID As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(dealerProcessedID)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal oRow As DataRow, ByVal ds As DataSet)
+    Public Sub New(oRow As DataRow, ds As DataSet)
         MyBase.New()
         Dataset = ds
         Row = oRow
     End Sub
 
 
-    Protected Sub Load(ByVal dealerFileProcessedID As Guid)
+    Protected Sub Load(dealerFileProcessedID As Guid)
         Try
             Dim dal As New DealerReconWrkBundlesDAL
             If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
@@ -191,7 +191,7 @@
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal DealerfileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(DealerfileProcessedId As Guid) As Guid
         Get
             Dim oDealerfileProcessed As New DealerFileProcessed(DealerfileProcessedId)
             Dim oDealer As New Dealer(oDealerfileProcessed.DealerId)
@@ -207,7 +207,7 @@
         'Only validating
         MyBase.Validate()
     End Sub
-    Public Function SaveBundles(ByVal ds As DataSet) As Integer
+    Public Function SaveBundles(ds As DataSet) As Integer
         Try
             Dim dal As New DealerReconWrkBundlesDAL
             Return dal.SaveBundles(ds)
@@ -219,7 +219,7 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerReconWrkId As Guid) As DataSet
+    Public Shared Function LoadList(dealerReconWrkId As Guid) As DataSet
         Try
             Dim dal As New DealerReconWrkBundlesDAL
             Dim ds As DataSet

@@ -8,7 +8,7 @@ Public Class Region
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -24,14 +24,14 @@ Public Class Region
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -48,7 +48,7 @@ Public Class Region
         setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Row = Nothing
         Dim dal As New RegionDAL
         If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
@@ -214,9 +214,9 @@ Public Class Region
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal descriptionMask As String, _
-                                    ByVal codeMask As String, _
-                                    ByVal countryID As Guid) As DataView
+    Public Shared Function LoadList(descriptionMask As String, _
+                                    codeMask As String, _
+                                    countryID As Guid) As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As Dataset
@@ -229,7 +229,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function LoadList(ByVal countryID As Guid) As Dataset
+    Public Shared Function LoadList(countryID As Guid) As Dataset
         Try
             Dim dal As New RegionDAL
             Return dal.LoadList(countryID)
@@ -240,7 +240,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function GetRegionsAndComunas(ByVal countryID As Guid, Optional regionCode As String = "") As DataView
+    Public Shared Function GetRegionsAndComunas(countryID As Guid, Optional regionCode As String = "") As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As DataSet
@@ -254,9 +254,9 @@ Public Class Region
 
     End Function
 
-    Public Shared Function LoadList(ByVal descriptionMask As String, _
-                                ByVal codeMask As String, _
-                                ByVal userCompanies As ArrayList) As DataView
+    Public Shared Function LoadList(descriptionMask As String, _
+                                codeMask As String, _
+                                userCompanies As ArrayList) As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As Dataset
@@ -276,7 +276,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -292,7 +292,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function LoadListForWS(ByVal oCountriesIds As ArrayList) As DataSet
+    Public Shared Function LoadListForWS(oCountriesIds As ArrayList) As DataSet
         Try
             Dim dal As New RegionDAL
             Return dal.LoadListForWS(oCountriesIds)
@@ -304,7 +304,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function GetRegionsByUserCountries(ByVal CountryId As Guid) As DataView
+    Public Shared Function GetRegionsByUserCountries(CountryId As Guid) As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As DataSet
@@ -323,11 +323,11 @@ Public Class Region
     Public NotInheritable Class RegionCodeValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.REGION_CODE_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Region = CType(objectToValidate, Region)
             Dim dal As New RegionDAL
 
@@ -347,11 +347,11 @@ Public Class Region
     Public NotInheritable Class RegionDescriptionValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.REGION_DESCRIPTION_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Region = CType(objectToValidate, Region)
             Dim dal As New RegionDAL
 
@@ -390,7 +390,7 @@ Public Class Region
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

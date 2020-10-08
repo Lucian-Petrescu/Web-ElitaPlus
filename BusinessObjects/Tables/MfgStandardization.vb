@@ -6,7 +6,7 @@ Public Class MfgStandardization
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -20,20 +20,20 @@ Public Class MfgStandardization
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class MfgStandardization
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New MfgStandardizationDAL
             If _isDSCreator Then
@@ -188,7 +188,7 @@ Public Class MfgStandardization
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function getEmptyList(dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -204,9 +204,9 @@ Public Class MfgStandardization
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetMfgAliasList(ByVal descriptionMask As String, _
-                                               ByVal MfgIdForSearch As Guid, _
-                                               ByVal companygroupId As Guid) As DataView
+    Public Shared Function GetMfgAliasList(descriptionMask As String, _
+                                               MfgIdForSearch As Guid, _
+                                               companygroupId As Guid) As DataView
         Try
             Dim dal As New MfgStandardizationDAL
             Dim ds As DataSet
@@ -219,7 +219,7 @@ Public Class MfgStandardization
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
         Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
         Dim companygroupId As Guid = company.CompanyGroupId
         Dim dt As DataTable
@@ -259,7 +259,7 @@ Public Class MfgStandardization
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

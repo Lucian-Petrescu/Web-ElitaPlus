@@ -6,7 +6,7 @@ Public Class DealerGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class DealerGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -45,7 +45,7 @@ Public Class DealerGroup
         Initialize()
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         'This code was added manually. Begin
         If _isDSCreator Then
             If Not Row Is Nothing Then
@@ -233,7 +233,7 @@ Public Class DealerGroup
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal descriptionMask As String, ByVal codeMask As String) As DataView
+    Public Shared Function LoadList(descriptionMask As String, codeMask As String) As DataView
         Try
             Dim dal As New DealerGroupDAL
             Dim ds As DataSet
@@ -248,7 +248,7 @@ Public Class DealerGroup
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As DealerGroup) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As DealerGroup) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -269,7 +269,7 @@ Public Class DealerGroup
 
     End Function
 
-    Public Shared Function CheckAllDealerObligor(ByVal DealerGrpId As Guid) As Boolean
+    Public Shared Function CheckAllDealerObligor(DealerGrpId As Guid) As Boolean
         Try
             Dim dal As New DealerGroupDAL, dv As DataView, oNoOfRecords As Integer
             Dim blnCheckAllDealerObligor As Boolean = False
@@ -287,7 +287,7 @@ Public Class DealerGroup
         End Try
     End Function
 
-    Public Shared Function GetUseClientDealerCodeYN(ByVal DealerGrpId As Guid) As String
+    Public Shared Function GetUseClientDealerCodeYN(DealerGrpId As Guid) As String
         Try
             Dim dal As New DealerGroupDAL, dv As DataView
             dv = New DataView(dal.GetUseClientDealerCodeYN(DealerGrpId).Tables(0))
@@ -322,7 +322,7 @@ Public Class DealerGroup
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

@@ -18,7 +18,7 @@ Public NotInheritable Class ImageAction
 
 #Region "Constructors"
 
-    Friend Sub New(ByVal workQueueItem As WorkQueueItem)
+    Friend Sub New(workQueueItem As WorkQueueItem)
         _workQueueItem = workQueueItem
         GenerateDisplayXML()
         LoadXSLTPath()
@@ -46,7 +46,7 @@ Public NotInheritable Class ImageAction
 #End Region
 
 #Region "Private Methods"
-    Private Function GetImageActionView(ByVal ImageId As Guid, ByVal ScanDate As Nullable(Of Date)) As ImageActionView
+    Private Function GetImageActionView(ImageId As Guid, ScanDate As Nullable(Of Date)) As ImageActionView
         Dim imageActionView As New ImageActionView()
         imageActionView.ImageId = ImageId
         imageActionView.ScanDate = If(ScanDate.HasValue, ScanDate.Value.ToString(), String.Empty)
@@ -58,7 +58,7 @@ Public NotInheritable Class ImageAction
 
     End Function
 
-    Private Function Serialize(ByVal item As ImageActionView) As String
+    Private Function Serialize(item As ImageActionView) As String
         Dim objXS As New XmlSerializer(item.GetType())
         Dim objSW As New StringWriter
 

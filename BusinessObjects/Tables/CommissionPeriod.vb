@@ -20,7 +20,7 @@ Public Class CommissionPeriod
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -34,20 +34,20 @@ Public Class CommissionPeriod
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -69,7 +69,7 @@ Public Class CommissionPeriod
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommissionPeriodDAL
             If _isDSCreator Then
@@ -185,7 +185,7 @@ Public Class CommissionPeriod
         End Set
     End Property
 
-    Public Sub AttachPeriodEntity(ByVal newEntityId As Guid, ByVal position As Integer, ByVal PayeeTypeId As Guid, Optional ByVal newObject As CommissionPeriodEntity = Nothing)
+    Public Sub AttachPeriodEntity(newEntityId As Guid, position As Integer, PayeeTypeId As Guid, Optional ByVal newObject As CommissionPeriodEntity = Nothing)
 
         Dim newBO As CommissionPeriodEntity = New CommissionPeriodEntity(Dataset)
         If Not newBO Is Nothing Then
@@ -198,7 +198,7 @@ Public Class CommissionPeriod
 
     End Sub
 
-    Public Sub DetachPeriodEntity(ByVal periodEntity As CommissionPeriodEntity)
+    Public Sub DetachPeriodEntity(periodEntity As CommissionPeriodEntity)
 
         If Not periodEntity Is Nothing Then
             periodEntity.Delete()
@@ -237,7 +237,7 @@ Public Class CommissionPeriod
 
     End Sub
 
-    Public Function AddCommTolerance(ByVal commToleranceID As Guid) As CommissionTolerance
+    Public Function AddCommTolerance(commToleranceID As Guid) As CommissionTolerance
         If commToleranceID.Equals(Guid.Empty) Then
             Dim objcommTolerance As New CommissionTolerance(Dataset)
             objcommTolerance.CommissionPeriodId = Id
@@ -248,7 +248,7 @@ Public Class CommissionPeriod
         End If
     End Function
 
-    Public Function AddAssocComm(ByVal assCommID As Guid) As AssociateCommissions
+    Public Function AddAssocComm(assCommID As Guid) As AssociateCommissions
         If assCommID.Equals(Guid.Empty) Then
             Dim objAssocComm As New AssociateCommissions(Dataset)
             Return objAssocComm
@@ -266,7 +266,7 @@ Public Class CommissionPeriod
 
 #Region "Properties-Expiration"
 
-    Public ReadOnly Property MaxExpiration(ByVal oData As Object) As Date
+    Public ReadOnly Property MaxExpiration(oData As Object) As Date
         Get
             Dim ds As Dataset
             Dim oExpiration As Date
@@ -290,7 +290,7 @@ Public Class CommissionPeriod
         End Get
     End Property
 
-    Public ReadOnly Property ExpirationCount(ByVal oData As Object) As Integer
+    Public ReadOnly Property ExpirationCount(oData As Object) As Integer
         Get
             Dim ds As Dataset
             Dim nExpiration As Integer
@@ -318,7 +318,7 @@ Public Class CommissionPeriod
 #End Region
 
 #Region "Public Members"
-    Public Sub Copy(ByVal original As CommissionPeriod)
+    Public Sub Copy(original As CommissionPeriod)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Dealer")
         End If
@@ -403,7 +403,7 @@ Public Class CommissionPeriod
 
     'End Function
 
-    Public Shared Function getList(ByVal oCommissionPeriodData As CommissionPeriodData) As CommissionPeriodSearchDV
+    Public Shared Function getList(oCommissionPeriodData As CommissionPeriodData) As CommissionPeriodSearchDV
         Try
             Dim dal As New CommissionPeriodDAL
             Return New CommissionPeriodSearchDV(dal.LoadList(oCommissionPeriodData).Tables(0))
@@ -412,7 +412,7 @@ Public Class CommissionPeriod
         End Try
     End Function
 
-    Public Shared Function getCommPrdList(ByVal oCommPrdData As CommPrdData) As CommPrdPeriodSearchDV
+    Public Shared Function getCommPrdList(oCommPrdData As CommPrdData) As CommPrdPeriodSearchDV
         Try
             Dim dal As New CommissionPeriodDAL
             Return New CommPrdPeriodSearchDV(dal.LoadListCommPrd(oCommPrdData).Tables(0))
@@ -420,7 +420,7 @@ Public Class CommissionPeriod
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetRestrictMarkup(ByVal oPeriodData As CommissionPeriodData, ByVal Optional loggedinuserspecific As Boolean = True) As Boolean
+    Public Shared Function GetRestrictMarkup(oPeriodData As CommissionPeriodData, ByVal Optional loggedinuserspecific As Boolean = True) As Boolean
         Dim oContract As Contract
         Dim oRestrictMarkupId, oYesRestrictMarkupId As Guid
 
@@ -495,7 +495,7 @@ Public Class CommissionPeriod
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -520,7 +520,7 @@ Public Class CommissionPeriod
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

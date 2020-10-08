@@ -58,7 +58,7 @@ Public Class CancelCertificate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CancelCertificateDs)
+    Public Sub New(ds As CancelCertificateDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -76,7 +76,7 @@ Public Class CancelCertificate
     Private _CommentBO As Comment
     Private _cancellation_code As String = String.Empty
 
-    Private Sub MapDataSet(ByVal ds As CancelCertificateDs)
+    Private Sub MapDataSet(ds As CancelCertificateDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -98,7 +98,7 @@ Public Class CancelCertificate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As CancelCertificateDs)
+    Private Sub Load(ds As CancelCertificateDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -117,7 +117,7 @@ Public Class CancelCertificate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CancelCertificateDs)
+    Private Sub PopulateBOFromWebService(ds As CancelCertificateDs)
         Try
             If ds.CancelCertificate.Count = 0 Then Exit Sub
             With ds.CancelCertificate.Item(0)
@@ -533,7 +533,7 @@ Public Class CancelCertificate
         End Get
     End Property
 
-    Public Function GetAccountTypeID(ByVal AccountType As String) As Guid
+    Public Function GetAccountTypeID(AccountType As String) As Guid
         Dim accountTypeID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetAccountTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -542,7 +542,7 @@ Public Class CancelCertificate
         Return accountTypeID
     End Function
 
-    Public Function GetCommentTypeID(ByVal CommentTypeCode As String) As Guid
+    Public Function GetCommentTypeID(CommentTypeCode As String) As Guid
         Dim CommentTypeID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetCommentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -803,8 +803,8 @@ Public Class CancelCertificate
 #End Region
 
 
-    Private Shared Function GetResponseXML(ByVal strcode As String, ByVal strMessage As String, ByVal RefundAmt As Decimal, _
-                                           ByVal InstallmentsPaid As Integer, ByVal AuthNumber As String) As String
+    Private Shared Function GetResponseXML(strcode As String, strMessage As String, RefundAmt As Decimal, _
+                                           InstallmentsPaid As Integer, AuthNumber As String) As String
 
         Dim objDoc As New Xml.XmlDocument
         Dim objRoot As Xml.XmlElement

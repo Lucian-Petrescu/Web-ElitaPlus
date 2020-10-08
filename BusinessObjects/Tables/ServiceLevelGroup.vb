@@ -6,7 +6,7 @@ Public Class ServiceLevelGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ServiceLevelGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ServiceLevelGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceLevelGroupDAL
             If _isDSCreator Then
@@ -177,7 +177,7 @@ Public Class ServiceLevelGroup
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal searchCode As String, ByVal searchDesc As String, ByVal oCountryId As Guid, Optional ByVal fromDate As String = Nothing, Optional ByVal toDate As String = Nothing) As ServiceLevelGroupSearchDV
+    Public Shared Function getList(searchCode As String, searchDesc As String, oCountryId As Guid, Optional ByVal fromDate As String = Nothing, Optional ByVal toDate As String = Nothing) As ServiceLevelGroupSearchDV
         Try
             Dim dal As New ServiceLevelGroupDAL
             Dim oCountryIds As ArrayList
@@ -198,7 +198,7 @@ Public Class ServiceLevelGroup
 
 
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As ServiceLevelGroupSearchDV, ByVal bo As ServiceLevelGroup) As ServiceLevelGroupSearchDV
+    Public Shared Function GetNewDataViewRow(dv As ServiceLevelGroupSearchDV, bo As ServiceLevelGroup) As ServiceLevelGroupSearchDV
 
         Dim dt As DataTable
         dt = dv.Table
@@ -231,23 +231,23 @@ Public Class ServiceLevelGroup
         Public Const COL_NAME_COUNTRY_ID As String = ServiceLevelGroupDAL.COL_NAME_COUNTRY_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ServiceLevelGroupId(ByVal row) As Guid
+        Public Shared ReadOnly Property ServiceLevelGroupId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ShortDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ShortDescription(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get

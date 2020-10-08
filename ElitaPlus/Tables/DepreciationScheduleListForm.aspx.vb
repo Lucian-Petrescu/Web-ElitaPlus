@@ -158,17 +158,15 @@ Namespace Tables
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
 
-                If dvRow IsNot Nothing Then
-                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
-                        btnEditItem = CType(e.Row.Cells(GridColDepreciationScheduleCode).FindControl("SelectAction"), LinkButton)
-                        btnEditItem.CommandArgument = e.Row.RowIndex.ToString
-                        btnEditItem.CommandName = "SelectRecord"
-                        btnEditItem.Text = dvRow(DepreciationScd.ColDepreciationScheduleCode).ToString
+                If dvRow IsNot Nothing AndAlso (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) Then
+                    btnEditItem = CType(e.Row.Cells(GridColDepreciationScheduleCode).FindControl("SelectAction"), LinkButton)
+                    btnEditItem.CommandArgument = e.Row.RowIndex.ToString
+                    btnEditItem.CommandName = "SelectRecord"
+                    btnEditItem.Text = dvRow(DepreciationScd.ColDepreciationScheduleCode).ToString
 
-                        e.Row.Cells(GridColDepreciationScheduleDescription).Text = dvRow(DepreciationScd.ColDepreciationScheduleDescription).ToString
-                        e.Row.Cells(GridColDepreciationScheduleActive).Text = dvRow(DepreciationScd.ColDepreciationScheduleActive).ToString
-                        e.Row.Cells(GridColDepreciationScheduleId).Text = GetGuidStringFromByteArray(CType(dvRow(DepreciationScd.ColDepreciationScheduleId), Byte()))
-                    End If
+                    e.Row.Cells(GridColDepreciationScheduleDescription).Text = dvRow(DepreciationScd.ColDepreciationScheduleDescription).ToString
+                    e.Row.Cells(GridColDepreciationScheduleActive).Text = dvRow(DepreciationScd.ColDepreciationScheduleActive).ToString
+                    e.Row.Cells(GridColDepreciationScheduleId).Text = GetGuidStringFromByteArray(CType(dvRow(DepreciationScd.ColDepreciationScheduleId), Byte()))
                 End If
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)

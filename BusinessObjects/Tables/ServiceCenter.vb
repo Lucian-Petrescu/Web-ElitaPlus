@@ -30,13 +30,13 @@ Public Class ServiceCenter
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
-    Public Sub New(ByVal code As String)
+    Public Sub New(code As String)
         MyBase.New()
         Dataset = New DataSet
         Load(code)
@@ -50,21 +50,21 @@ Public Class ServiceCenter
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
     'Existing BO 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -86,7 +86,7 @@ Public Class ServiceCenter
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceCenterDAL
             If _isDSCreator Then
@@ -110,7 +110,7 @@ Public Class ServiceCenter
         End Try
     End Sub
 
-    Protected Sub Load(ByVal code As String)
+    Protected Sub Load(code As String)
         Try
             Dim dal As New ServiceCenterDAL
             If _isDSCreator Then
@@ -140,7 +140,7 @@ Public Class ServiceCenter
         End Try
     End Sub
 
-    Public Shared Function GetServiceCenterID(ByVal code As String) As Guid
+    Public Shared Function GetServiceCenterID(code As String) As Guid
         Dim dal As New ServiceCenterDAL
         Dim serviceCenterId As Guid = Guid.Empty
         Dim ds As DataSet = New DataSet("ServiceCenterID")
@@ -1202,7 +1202,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ServiceCenter)
+    Public Sub Copy(original As ServiceCenter)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Center")
         End If
@@ -1298,7 +1298,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Sub UpdateManufacturers(ByVal selectedManufacturerGuidStrCollection As Hashtable)
+    Public Sub UpdateManufacturers(selectedManufacturerGuidStrCollection As Hashtable)
         If selectedManufacturerGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -1324,7 +1324,7 @@ Public Class ServiceCenter
             Next
         End If
     End Sub
-    Public Sub UpdateMethodOfRepair(ByVal selectedMethodOfRepairGuidStrCollection As Hashtable)
+    Public Sub UpdateMethodOfRepair(selectedMethodOfRepairGuidStrCollection As Hashtable)
         If selectedMethodOfRepairGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -1351,7 +1351,7 @@ Public Class ServiceCenter
         End If
     End Sub
 
-    Public Sub AttachManufacturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub AttachManufacturers(selectedManufacturerGuidStrCollection As ArrayList)
         Dim scManIdStr As String
         For Each scManIdStr In selectedManufacturerGuidStrCollection
             Dim scManBO As ServiceCenterManufacturer = ServiceCenterManufacturerChildren.GetNewChild
@@ -1361,7 +1361,7 @@ Public Class ServiceCenter
         Next
     End Sub
 
-    Public Sub DetachManufacturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub DetachManufacturers(selectedManufacturerGuidStrCollection As ArrayList)
         Dim scManIdStr As String
         For Each scManIdStr In selectedManufacturerGuidStrCollection
             Dim scManBO As ServiceCenterManufacturer = ServiceCenterManufacturerChildren.Find(New Guid(scManIdStr))
@@ -1392,7 +1392,7 @@ Public Class ServiceCenter
         Return dv
     End Function
 
-    Protected Function GetManufacturersLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetManufacturersLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim scManBO As ServiceCenterManufacturer
         Dim inClause As String = "(-1"
@@ -1421,7 +1421,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Sub AttachServiceNetworks(ByVal selectedServiceNetworkGuidStrCollection As ArrayList)
+    Public Sub AttachServiceNetworks(selectedServiceNetworkGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceNetworkGuidStrCollection
             Dim snSrvBO As ServiceNetworkSvc = ServiceCenterNetworkChildren.GetNewChild
@@ -1431,7 +1431,7 @@ Public Class ServiceCenter
         Next
     End Sub
 
-    Public Sub DetachServiceNetworks(ByVal selectedServiceNetworkGuidStrCollection As ArrayList)
+    Public Sub DetachServiceNetworks(selectedServiceNetworkGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceNetworkGuidStrCollection
             Dim snSrvBO As ServiceNetworkSvc = ServiceCenterNetworkChildren.FindSrvNetwork(New Guid(snSrvIdStr))
@@ -1463,7 +1463,7 @@ Public Class ServiceCenter
         Return dv
     End Function
 
-    Protected Function GetServiceNetworksLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetServiceNetworksLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim snSrvBO As ServiceNetworkSvc
         Dim inClause As String = "(-1"
@@ -1492,7 +1492,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Sub UpdateDealers(ByVal selectedDealerGuidStrCollection As Hashtable)
+    Public Sub UpdateDealers(selectedDealerGuidStrCollection As Hashtable)
         If selectedDealerGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -1521,7 +1521,7 @@ Public Class ServiceCenter
         End If
     End Sub
 
-    Public Sub AttachDealers(ByVal selectedDealerGuidStrCollection As ArrayList)
+    Public Sub AttachDealers(selectedDealerGuidStrCollection As ArrayList)
         Dim scDlrIdStr As String
         For Each scDlrIdStr In selectedDealerGuidStrCollection
             Dim scDlrBO As ServiceCenterDealer = ServiceCenterDealerChildren.GetNewChild
@@ -1533,7 +1533,7 @@ Public Class ServiceCenter
         Next
     End Sub
 
-    Public Sub DetachDealers(ByVal selectedDealerGuidStrCollection As ArrayList)
+    Public Sub DetachDealers(selectedDealerGuidStrCollection As ArrayList)
         Dim scDlrIdStr As String
         For Each scDlrIdStr In selectedDealerGuidStrCollection
             Dim scDlrBO As ServiceCenterDealer = ServiceCenterDealerChildren.Find(New Guid(scDlrIdStr))
@@ -1565,7 +1565,7 @@ Public Class ServiceCenter
         Return dv
     End Function
 
-    Protected Function GetDealersLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetDealersLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim scDlrBO As ServiceCenterDealer
         Dim inClause As String = "(-1"
@@ -1593,7 +1593,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Sub UpdateDistricts(ByVal selectedDistrictGuidStrCollection As Hashtable)
+    Public Sub UpdateDistricts(selectedDistrictGuidStrCollection As Hashtable)
         If selectedDistrictGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -1620,7 +1620,7 @@ Public Class ServiceCenter
         End If
     End Sub
 
-    Public Sub AttachDistricts(ByVal selectedDistrictGuidStrCollection As ArrayList)
+    Public Sub AttachDistricts(selectedDistrictGuidStrCollection As ArrayList)
         Dim scDstIdStr As String
         For Each scDstIdStr In selectedDistrictGuidStrCollection
             Dim scDstBO As ServiceCenterZipDistrict = ServiceCenterDistrictChildren.GetNewChild
@@ -1630,7 +1630,7 @@ Public Class ServiceCenter
         Next
     End Sub
 
-    Public Sub DetachDistricts(ByVal selectedDistrictGuidStrCollection As ArrayList)
+    Public Sub DetachDistricts(selectedDistrictGuidStrCollection As ArrayList)
         Dim scDstIdStr As String
         For Each scDstIdStr In selectedDistrictGuidStrCollection
             Dim scDstBO As ServiceCenterZipDistrict = ServiceCenterDistrictChildren.Find(New Guid(scDstIdStr))
@@ -1664,7 +1664,7 @@ Public Class ServiceCenter
         Return dv
     End Function
 
-    Protected Function GetDistrictsLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetDistrictsLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim scDstBO As ServiceCenterZipDistrict
         Dim inClause As String = "(-1"
@@ -1696,7 +1696,7 @@ Public Class ServiceCenter
         Return dv
 
     End Function
-    Protected Function GetMethodOfRepairsLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetMethodOfRepairsLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim scMrBO As ServCenterMethRepair
         Dim inClause As String = "(-1"
@@ -1739,7 +1739,7 @@ Public Class ServiceCenter
     '    Next
     'End Sub
 
-    Public Sub AttachMethodOfRepair(ByVal selectedMethodRepairGuidStrCollection As ArrayList)
+    Public Sub AttachMethodOfRepair(selectedMethodRepairGuidStrCollection As ArrayList)
         Dim snMorIdStr As String
         For Each snMorIdStr In selectedMethodRepairGuidStrCollection
             Dim snMorBO As ServCenterMethRepair = ServiceCenterMethoOfRepairsChildren.GetNewChild
@@ -1865,35 +1865,35 @@ Public Class ServiceCenter
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
 
-        Public Shared ReadOnly Property Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_SVC_PL_RECON_ID), Byte()))
             End Get
         End Property
-        Public Shared ReadOnly Property ServiceCenterId(ByVal row) As Guid
+        Public Shared ReadOnly Property ServiceCenterId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_SVC_PL_SERVICE_CENTER_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property PriceListId(ByVal row) As Guid
+        Public Shared ReadOnly Property PriceListId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_SVC_PL_PRICE_LIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Status_Xcd(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Status_Xcd(row As DataRow) As String
             Get
                 Return row(COL_SVC_PL_STATUS_XCD).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property RequestedBy(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property RequestedBy(row As DataRow) As String
             Get
                 Return row(COL_SVC_PL_REQUESTED_BY).ToString
             End Get
@@ -1941,10 +1941,10 @@ Public Class ServiceCenter
 #Region "DataView Retrieveing Methods"
     'Manually added method
     'If code, description, address, city and zip are empty, it will return all ServiceCenters for the specified Company
-    Public Shared Function getList(ByVal code As String, ByVal description As String,
-                                   ByVal address As String, ByVal city As String,
-                                   ByVal zip As String,
-                                   ByVal oCountryId As Guid) As ServiceCenterSearchDV
+    Public Shared Function getList(code As String, description As String,
+                                   address As String, city As String,
+                                   zip As String,
+                                   oCountryId As Guid) As ServiceCenterSearchDV
         Try
             Dim dal As New ServiceCenterDAL
             Dim oCountryIds As ArrayList
@@ -1985,23 +1985,23 @@ Public Class ServiceCenter
         Public Const COL_SERVICE_GROUP_DESC As String = ServiceCenterDAL.COL_NAME_SERVICE_GROUP_DESC
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ServiceCenterId(ByVal row) As Guid
+        Public Shared ReadOnly Property ServiceCenterId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_SERVICE_CENTER_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_CODE).ToString
             End Get
@@ -2037,26 +2037,26 @@ Public Class ServiceCenter
         Public Const COL_NAME_CODE_AND_DESC As String = "COL_NAME_CODE_AND_DESC"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
 
-    Public Shared Function GetLocateServiceCenterDetails(ByVal serviceCenterIds As ArrayList, ByVal dealerId As Guid, ByVal manufacturerId As Guid) As DataSet
+    Public Shared Function GetLocateServiceCenterDetails(serviceCenterIds As ArrayList, dealerId As Guid, manufacturerId As Guid) As DataSet
         Dim dal As New ServiceCenterDAL
         Dim ds As DataSet = dal.GetLocateServiceCenterDetails(serviceCenterIds, dealerId, manufacturerId)
         Return ds
     End Function
 
-    Public Shared Function LocateServiceCenterByZip(ByVal dealerId As Guid,
-                                                ByVal zipLocator As String,
-                                                ByVal riskTypeId As Guid,
-                                                ByVal manufacturerId As Guid,
-                                                ByVal covTypeCode As String,
-                                                ByVal oCountryIds As ArrayList,
-                                                ByVal ServiceNetWrkID As Guid,
-                                                ByVal isNetwork As Boolean,
-                                                ByVal MethodOfRepairId As Guid,
+    Public Shared Function LocateServiceCenterByZip(dealerId As Guid,
+                                                zipLocator As String,
+                                                riskTypeId As Guid,
+                                                manufacturerId As Guid,
+                                                covTypeCode As String,
+                                                oCountryIds As ArrayList,
+                                                ServiceNetWrkID As Guid,
+                                                isNetwork As Boolean,
+                                                MethodOfRepairId As Guid,
                                                 Optional ByVal UseZipDistrict As Boolean = True,
                                                 Optional ByVal dealerType As String = "",
                                                 Optional ByVal FlagMethodOfRepairRecovery As Boolean = False,
@@ -2104,7 +2104,7 @@ Public Class ServiceCenter
         dv.Sort = GetLocateServiceCenterResultsSortExp()
         Return dv
     End Function
-    Public Shared Function FilterView(ByVal ds As DataSet, ByVal covTypeCode As String, ByVal zipLocator As String, Optional ByVal filterByZyp As Boolean = True, Optional ByVal FlagMethodOfRepairRecovery As Boolean = False, Optional ByVal MethodOfRepairType As String = Nothing) As DataView
+    Public Shared Function FilterView(ds As DataSet, covTypeCode As String, zipLocator As String, Optional ByVal filterByZyp As Boolean = True, Optional ByVal FlagMethodOfRepairRecovery As Boolean = False, Optional ByVal MethodOfRepairType As String = Nothing) As DataView
         AddSpecialColumns(ds.Tables(0), zipLocator)
         Dim dv As New LocateServiceCenterResultsDv(ds.Tables(0))
 
@@ -2122,16 +2122,16 @@ Public Class ServiceCenter
         dv.Sort = GetLocateServiceCenterResultsSortExp()
         Return dv
     End Function
-    Public Shared Function LocateServiceCenterByCity(ByVal dealerId As Guid,
-                                            ByVal zipLocator As String,
-                                            ByVal city As String,
-                                            ByVal riskTypeId As Guid,
-                                            ByVal manufacturerId As Guid,
-                                            ByVal covTypeCode As String,
-                                            ByVal oCountryIds As ArrayList,
-                                            ByVal ServiceNetWrkID As Guid,
-                                            ByVal isNetwork As Boolean,
-                                             ByVal MethodOfRepairId As Guid,
+    Public Shared Function LocateServiceCenterByCity(dealerId As Guid,
+                                            zipLocator As String,
+                                            city As String,
+                                            riskTypeId As Guid,
+                                            manufacturerId As Guid,
+                                            covTypeCode As String,
+                                            oCountryIds As ArrayList,
+                                            ServiceNetWrkID As Guid,
+                                            isNetwork As Boolean,
+                                             MethodOfRepairId As Guid,
                                             Optional ByVal dealerType As String = "",
                                             Optional ByVal FlagMethodOfRepairRecovery As Boolean = False,
                                             Optional ByVal MethodOfRepairType As String = Nothing,
@@ -2142,7 +2142,7 @@ Public Class ServiceCenter
         dv = FilterView(ds, covTypeCode, zipLocator, False, FlagMethodOfRepairRecovery, MethodOfRepairType)
         Return dv
     End Function
-    Public Shared Function GetAllServiceCenter(ByVal oCountryIds As ArrayList, ByVal MethodOfRepairId As Guid,
+    Public Shared Function GetAllServiceCenter(oCountryIds As ArrayList, MethodOfRepairId As Guid,
                                                Optional ByVal blnCheckAcctSetting As Boolean = False) As DataView
         Dim MethodOfRepairType As String = LookupListNew.GetCodeFromId(LookupListNew.LK_METHODS_OF_REPAIR, MethodOfRepairId)
         Dim blnMethodOfRepairRLG As Boolean = False
@@ -2156,13 +2156,13 @@ Public Class ServiceCenter
         Return dv
     End Function
 
-    Public Shared Function GetServiceCenterForCountry(ByVal countryId As Guid) As DataView
+    Public Shared Function GetServiceCenterForCountry(countryId As Guid) As DataView
         Dim dal As New ServiceCenterDAL
         Dim dv As DataView = dal.LoadServiceCenterForCountry(countryId).Tables(0).DefaultView
         Return dv
     End Function
 
-    Public Shared Function GetServiceCenterForWS(ByVal ServiceCenterCode As String, ByVal oCountryId As Guid) As DataSet
+    Public Shared Function GetServiceCenterForWS(ServiceCenterCode As String, oCountryId As Guid) As DataSet
         Dim dal As New ServiceCenterDAL
         Return dal.GetServiceCenterForWS(ServiceCenterCode, oCountryId)
 
@@ -2176,7 +2176,7 @@ Public Class ServiceCenter
                 LocateServiceCenterResultsDv.COL_NAME_MAN_AUTH_FLAG & " DESC"
     End Function
 
-    Private Shared Sub AddSpecialColumns(ByVal table As DataTable, ByVal zipLocator As String)
+    Private Shared Sub AddSpecialColumns(table As DataTable, zipLocator As String)
         table.Columns.Add(LocateServiceCenterResultsDv.COL_NAME_SAME_ZIP_FLAG, GetType(String))
         Dim row As DataRow
         For Each row In table.Rows
@@ -2218,7 +2218,7 @@ Public Class ServiceCenter
     'End Function
 
 
-    Public Shared Function getUserCustCountries(ByVal CountryId As Guid) As ServiceCenterSearchDV
+    Public Shared Function getUserCustCountries(CountryId As Guid) As ServiceCenterSearchDV
         Try
             Dim dal As New ServiceCenterDAL
             Dim UserId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
@@ -2228,7 +2228,7 @@ Public Class ServiceCenter
         End Try
     End Function
 
-    Public Shared Function GetServiceCenterbyServiceNetwork(ByVal oSVCNetwotkId As Guid, ByVal CountryId As Guid) As DataView
+    Public Shared Function GetServiceCenterbyServiceNetwork(oSVCNetwotkId As Guid, CountryId As Guid) As DataView
         Dim dal As New ServiceCenterDAL
         Dim dv As DataView = dal.LoadSVCentersBySVNetwork(oSVCNetwotkId, CountryId).Tables(0).DefaultView
         Return dv
@@ -2268,7 +2268,7 @@ Public Class ServiceCenter
         End If
     End Sub
 
-    Private Function GetTransactionXML(ByVal transactionId As Guid) As String
+    Private Function GetTransactionXML(transactionId As Guid) As String
         Dim xml As String = ""
         Dim itemNumber As String = "1"
         Dim ds As DataSet = New DataSet("GVSUpdateSvc")
@@ -2308,11 +2308,11 @@ Public Class ServiceCenter
     Public NotInheritable Class ValidEmail
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_REQUIRED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
 
             If obj.DefaultToEmailFlag = True AndAlso ((obj.Email Is Nothing) OrElse obj.Email.Equals(String.Empty)) Then
@@ -2328,11 +2328,11 @@ Public Class ServiceCenter
     Public NotInheritable Class EmailAddress
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
 
             If obj.Email Is Nothing Then
@@ -2349,11 +2349,11 @@ Public Class ServiceCenter
     Public NotInheritable Class CcEmailAddress
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
 
             If obj.CcEmail Is Nothing Then
@@ -2369,11 +2369,11 @@ Public Class ServiceCenter
     Public NotInheritable Class ValidAmount
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
             'If obj.Shipping AndAlso (Not obj.ProcessingFee Is Nothing AndAlso obj.ProcessingFee.Value <= 0) Then
             If obj.Shipping AndAlso (Not obj.ProcessingFee Is Nothing AndAlso obj.ProcessingFee.Value < 0) Then
@@ -2389,11 +2389,11 @@ Public Class ServiceCenter
     Public NotInheritable Class ValueMandatoryConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
             If obj.Shipping AndAlso obj.ProcessingFee Is Nothing Then
                 Return False
@@ -2408,11 +2408,11 @@ Public Class ServiceCenter
     Public NotInheritable Class ValueMethodOfRepair
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_METHOD_OF_REPAIR_MUST_BE_SELECTED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
 
             If obj.MethodOfRepairCount <= 0 Then
@@ -2428,11 +2428,11 @@ Public Class ServiceCenter
     Public NotInheritable Class ValidPriceListCode
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PRICELISTCODE_IS_EXPIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             Dim obj As ServiceCenter = CType(context, ServiceCenter)
             Dim Statusdv As DataView = LookupListNew.GetPriceList(obj.CountryId)
 
@@ -2454,11 +2454,11 @@ Public Class ServiceCenter
     Public NotInheritable Class RequiredConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
 
             If Not obj Is Nothing Then
@@ -2473,7 +2473,7 @@ Public Class ServiceCenter
 
 #End Region
 
-    Shared Function LoadSelectedServiceCenter(ByVal SCId As Guid, ByVal DealerId As Guid, ByVal RisktypeId As Guid, ByVal ZipLocator As String, ByVal manf_id As Guid) As LocateServiceCenterResultsDv
+    Shared Function LoadSelectedServiceCenter(SCId As Guid, DealerId As Guid, RisktypeId As Guid, ZipLocator As String, manf_id As Guid) As LocateServiceCenterResultsDv
         Dim ds As New DataSet, dal As New ServiceCenterDAL
         ds = dal.LocateServiceCenterbyId(DealerId, ZipLocator, RisktypeId, manf_id, Guid.Empty, SCId)
 
@@ -2486,15 +2486,15 @@ Public Class ServiceCenter
     Public Class ServiceCenterDetailView
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As PriceList)
+        Public Sub New(parent As PriceList)
             MyBase.New(LoadTable(parent), GetType(ServiceCenter), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ServiceCenter).PriceListCode.Trim().Equals(CType(Parent, PriceList).Code.Trim())
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As PriceList) As DataTable
+        Private Shared Function LoadTable(parent As PriceList) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ServiceCenterDetailView)) Then
                     Dim dal As New ServiceCenterDAL
@@ -2517,7 +2517,7 @@ Public Class ServiceCenter
 
 #Region "Vendor_Contact"
 
-    Public Function AddVendorContact(ByVal VendorContactID As Guid) As VendorContact
+    Public Function AddVendorContact(VendorContactID As Guid) As VendorContact
         If VendorContactID.Equals(Guid.Empty) Then
             Dim objVendorContact As New VendorContact(Dataset)
             Return objVendorContact
@@ -2541,7 +2541,7 @@ Public Class ServiceCenter
         Public Const COL_NAME_SERVICE_CENTER_ID As String = VendorContactDAL.COL_NAME_SERVICE_CENTER_ID
         Public Const COL_NAME_VENDOR_CONTACT_ID As String = VendorContactDAL.COL_NAME_VENDOR_CONTACT_ID
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -2581,7 +2581,7 @@ Public Class ServiceCenter
 
 
 
-    Public Function GetContactsView(ByVal ServiceCenterId As Guid) As DataView
+    Public Function GetContactsView(ServiceCenterId As Guid) As DataView
         Dim dal As New ServiceCenterDAL
         Return New DataView(dal.GetContactsView(ServiceCenterId).Tables(0))
     End Function
@@ -2592,7 +2592,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Function GeChildContacts(ByVal childId As Guid) As VendorContact
+    Public Function GeChildContacts(childId As Guid) As VendorContact
         Return CType(ContactsChildren.GetChild(childId), VendorContact)
     End Function
 
@@ -2606,7 +2606,7 @@ Public Class ServiceCenter
 
 #Region "Contact_Info"
 
-    Public Function AddContactInfo(ByVal ContactInfoID As Guid) As ContactInfo
+    Public Function AddContactInfo(ContactInfoID As Guid) As ContactInfo
         If ContactInfoID.Equals(Guid.Empty) Then
             Dim objContactInfo As New ContactInfo(Dataset)
             Return objContactInfo
@@ -2630,7 +2630,7 @@ Public Class ServiceCenter
         Public Const COL_NAME_JOB_TITLE As String = ContactInfoDAL.COL_NAME_JOB_TITLE
         Public Const COL_NAME_COMPANY As String = ContactInfoDAL.COL_NAME_COMPANY
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -2672,22 +2672,22 @@ Public Class ServiceCenter
         Return New ContactInfoView(t)
     End Function
 
-    Public Function GetContactInfoView(ByVal ContctInfoId As Guid) As DataView
+    Public Function GetContactInfoView(ContctInfoId As Guid) As DataView
         Dim dal As New VendorContactDAL
         Return New DataView(dal.GetContactInfoView(ContctInfoId).Tables(0))
     End Function
 
-    Public ReadOnly Property ContactInfoChildren(ByVal obj As VendorContact) As IsContactInfoChildrenList
+    Public ReadOnly Property ContactInfoChildren(obj As VendorContact) As IsContactInfoChildrenList
         Get
             Return New IsContactInfoChildrenList(obj)
         End Get
     End Property
 
-    Public Function GeChildContactInfo(ByVal obj As VendorContact, ByVal childId As Guid) As ContactInfo
+    Public Function GeChildContactInfo(obj As VendorContact, childId As Guid) As ContactInfo
         Return CType(ContactInfoChildren(obj).GetChild(childId), ContactInfo)
     End Function
 
-    Public Function GetNewChildContactInfo(ByVal obj As VendorContact) As ContactInfo
+    Public Function GetNewChildContactInfo(obj As VendorContact) As ContactInfo
         Dim NewContactInfoList As ContactInfo = CType(ContactInfoChildren(obj).GetNewChild, ContactInfo)
         obj.ContactInfoId = NewContactInfoList.Id
         Return NewContactInfoList
@@ -2696,7 +2696,7 @@ Public Class ServiceCenter
 
 #Region "Address"
 
-    Public Function AddAddress(ByVal AddressID As Guid) As Address
+    Public Function AddAddress(AddressID As Guid) As Address
         If AddressID.Equals(Guid.Empty) Then
             Dim objAddress As New Address(Dataset)
             Return objAddress
@@ -2718,7 +2718,7 @@ Public Class ServiceCenter
         Public Const COL_NAME_ZIP_LOCATOR As String = AddressDAL.COL_NAME_ZIP_LOCATOR
         Public Const COL_NAME_ADDRESS3 As String = AddressDAL.COL_NAME_ADDRESS3
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -2756,22 +2756,22 @@ Public Class ServiceCenter
         Return New AddressView(t)
     End Function
 
-    Public Function GetAddressView(ByVal AddressId As Guid) As DataView
+    Public Function GetAddressView(AddressId As Guid) As DataView
         Dim dal As New ContactInfoDAL
         Return New DataView(dal.GetAddressView(AddressId).Tables(0))
     End Function
 
-    Public ReadOnly Property AddressChildren(ByVal obj As ContactInfo) As IsAddressChildrenList
+    Public ReadOnly Property AddressChildren(obj As ContactInfo) As IsAddressChildrenList
         Get
             Return New IsAddressChildrenList(obj)
         End Get
     End Property
 
-    Public Function GeChildAddress(ByVal obj As ContactInfo, ByVal childId As Guid) As Address
+    Public Function GeChildAddress(obj As ContactInfo, childId As Guid) As Address
         Return CType(AddressChildren(obj).GetChild(childId), Address)
     End Function
 
-    Public Function GetNewChildAddress(ByVal obj As ContactInfo) As Address
+    Public Function GetNewChildAddress(obj As ContactInfo) As Address
         Dim NewAddressList As Address = CType(AddressChildren(obj).GetNewChild, Address)
         obj.AddressId = NewAddressList.Id
         Return NewAddressList
@@ -2800,7 +2800,7 @@ Public Class ServiceCenter
         Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = VendorQuantityDAL.COL_NAME_PRICE_LIST_DETAIL_ID
         Public Const COL_NAME_VENDOR_QUANTITY_AVALIABLE As String = VendorQuantityDAL.COL_NAME_VENDOR_QUANTITY_AVALIABLE
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -2854,7 +2854,7 @@ Public Class ServiceCenter
         Return New QuantityView(t)
     End Function
 
-    Public Function GetQuantityView(ByVal ServiceCenterId As Guid) As DataView
+    Public Function GetQuantityView(ServiceCenterId As Guid) As DataView
         Dim dal As New ServiceCenterDAL
         Return New DataView(dal.GetQuantityView(ServiceCenterId).Tables(0))
     End Function
@@ -2865,7 +2865,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Function GeChildQuantity(ByVal childId As Guid) As VendorQuantity
+    Public Function GeChildQuantity(childId As Guid) As VendorQuantity
         Return CType(QuantityChildren.GetChild(childId), VendorQuantity)
     End Function
 
@@ -2893,7 +2893,7 @@ Public Class ServiceCenter
         Public Const COL_NAME_EFFECTIVE As String = ServiceScheduleDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = ServiceScheduleDAL.COL_NAME_EXPIRATION
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -2946,7 +2946,7 @@ Public Class ServiceCenter
         Return New ScheduleView(t)
     End Function
 
-    Public Function GetscheduleView(ByVal ServiceCenterId As Guid) As DataView
+    Public Function GetscheduleView(ServiceCenterId As Guid) As DataView
         Dim dal As New ServiceCenterDAL
         Return New DataView(dal.GetScheduleView(ServiceCenterId).Tables(0))
     End Function
@@ -2957,7 +2957,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Function GeChildSchedule(ByVal childId As Guid) As ServiceSchedule
+    Public Function GeChildSchedule(childId As Guid) As ServiceSchedule
         Return CType(scheduleChildren.GetChild(childId), ServiceSchedule)
     End Function
 
@@ -2975,7 +2975,7 @@ Public Class ServiceCenter
         Public Const COL_NAME_CODE As String = ScheduleDAL.COL_NAME_CODE
         Public Const COL_NAME_DESCRIPTION As String = ScheduleDAL.COL_NAME_DESCRIPTION
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -3001,22 +3001,22 @@ Public Class ServiceCenter
         Return New ScheduleTableView(t)
     End Function
 
-    Public Function GetscheduleTableView(ByVal ScheduleId As Guid) As DataView
+    Public Function GetscheduleTableView(ScheduleId As Guid) As DataView
         Dim dal As New ServiceScheduleDAL
         Return New DataView(dal.GetScheduleTableView(ScheduleId).Tables(0))
     End Function
 
-    Public ReadOnly Property scheduleTableChildren(ByVal obj As ServiceSchedule) As IsScheduleTableChildrenList
+    Public ReadOnly Property scheduleTableChildren(obj As ServiceSchedule) As IsScheduleTableChildrenList
         Get
             Return New IsScheduleTableChildrenList(obj)
         End Get
     End Property
 
-    Public Function GeChildScheduleTable(ByVal obj As ServiceSchedule, ByVal childId As Guid) As Schedule
+    Public Function GeChildScheduleTable(obj As ServiceSchedule, childId As Guid) As Schedule
         Return CType(scheduleTableChildren(obj).GetChild(childId), Schedule)
     End Function
 
-    Public Function GetNewChildScheduleTable(ByVal obj As ServiceSchedule) As Schedule
+    Public Function GetNewChildScheduleTable(obj As ServiceSchedule) As Schedule
         Dim NewScheduleTableList As Schedule = CType(scheduleTableChildren(obj).GetNewChild, Schedule)
         obj.ScheduleId = NewScheduleTableList.Id
         Return NewScheduleTableList
@@ -3032,7 +3032,7 @@ Public Class ServiceCenter
         Public Const COL_NAME_FROM_TIME As String = ScheduleDetailDAL.COL_NAME_FROM_TIME
         Public Const COL_NAME_TO_TIME As String = ScheduleDetailDAL.COL_NAME_TO_TIME
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -3067,22 +3067,22 @@ Public Class ServiceCenter
         Return New ScheduleView(t)
     End Function
 
-    Public Function GetscheduleDetailView(ByVal ScheduleId As Guid) As DataView
+    Public Function GetscheduleDetailView(ScheduleId As Guid) As DataView
         Dim dal As New ScheduleDAL
         Return New DataView(dal.GetScheduleDetailView(ScheduleId).Tables(0))
     End Function
 
-    Public ReadOnly Property scheduledDtailChildren(ByVal obj As Schedule, ByVal objParent As ServiceSchedule) As IsScheduleDetailChildrenList
+    Public ReadOnly Property scheduledDtailChildren(obj As Schedule, objParent As ServiceSchedule) As IsScheduleDetailChildrenList
         Get
             Return New IsScheduleDetailChildrenList(obj, objParent)
         End Get
     End Property
 
-    Public Function GeChildScheduleDetail(ByVal obj As Schedule, ByVal childId As Guid, ByVal objParent As ServiceSchedule) As ScheduleDetail
+    Public Function GeChildScheduleDetail(obj As Schedule, childId As Guid, objParent As ServiceSchedule) As ScheduleDetail
         Return CType(scheduledDtailChildren(obj, objParent).GetChildThird(childId, Dataset, "schedule_id"), ScheduleDetail)
     End Function
 
-    Public Function GetNewChildScheduleDetail(ByVal obj As Schedule, ByVal objParent As ServiceSchedule) As ScheduleDetail
+    Public Function GetNewChildScheduleDetail(obj As Schedule, objParent As ServiceSchedule) As ScheduleDetail
         Dim NewScheduleDetailList As ScheduleDetail = CType(scheduledDtailChildren(obj, objParent).GetNewChild, ScheduleDetail)
         NewScheduleDetailList.ScheduleId = obj.Id
         Return NewScheduleDetailList
@@ -3092,17 +3092,17 @@ Public Class ServiceCenter
 
 #Region "CRUD"
 
-    Public Function GetScheduleDetailCount(ByVal scheduleId As Guid) As Integer
+    Public Function GetScheduleDetailCount(scheduleId As Guid) As Integer
         Dim ScheduleDAL As New ScheduleDAL
         Return ScheduleDAL.GetScheduleDetailCount(scheduleId)
     End Function
 
-    Public Function GetScheduleDetailInfo(ByVal scheduleId As Guid) As DataSet
+    Public Function GetScheduleDetailInfo(scheduleId As Guid) As DataSet
         Dim ScheduleDAL As New ScheduleDAL
         Return ScheduleDAL.GetScheduleDetailInfo(scheduleId)
     End Function
 
-    Public Function GetScheduleInfo(ByVal scheduleId As Guid) As DataSet
+    Public Function GetScheduleInfo(scheduleId As Guid) As DataSet
         Dim ScheduleDAL As New ScheduleDAL
         Return ScheduleDAL.GetScheduleInfo(scheduleId)
     End Function
@@ -3116,12 +3116,12 @@ Public Class ServiceCenter
     Public NotInheritable Class DiscountPercentInValidRange
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, VENDOR_MANAGEMENT001)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
             If IsNumeric(obj.DiscountPct) Then
                 If CType(obj.DiscountPct, Integer) >= 0 And CType(obj.DiscountPct, Integer) <= 100 Then
@@ -3137,12 +3137,12 @@ Public Class ServiceCenter
     Public NotInheritable Class ValueIsAnInteger
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, VENDOR_MANAGEMENT002)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
             If IsNumeric(obj.DiscountPct) Then
                 If CType(obj.DiscountPct, Integer) >= 0 Then
@@ -3167,7 +3167,7 @@ Public Class ServiceCenter
         Private _minLengthSet As Int32
         Private _maxLengthSet As Int32
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.VALID_STRING_LENGTH_ERR)
             _minLength = 0
             _maxLength = 0
@@ -3194,7 +3194,7 @@ Public Class ServiceCenter
             End Set
         End Property
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             If (objectToCheck Is Nothing) Then
                 Return True
             End If
@@ -3242,7 +3242,7 @@ Public NotInheritable Class ValidateByteLengthAttribute
     Private _minLengthSet As Int32
     Private _maxLengthSet As Int32
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Messages.VALID_STRING_LENGTH_ERR)
         _minLength = 0
         _maxLength = 0
@@ -3269,7 +3269,7 @@ Public NotInheritable Class ValidateByteLengthAttribute
         End Set
     End Property
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
         If (objectToCheck Is Nothing) Then
             Return True
         End If

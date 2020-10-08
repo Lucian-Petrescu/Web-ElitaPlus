@@ -17,7 +17,7 @@ Public Class CustRegistration
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -31,20 +31,20 @@ Public Class CustRegistration
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -67,7 +67,7 @@ Public Class CustRegistration
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CustRegistrationDAL
             If _isDSCreator Then
@@ -174,7 +174,7 @@ Public Class CustRegistration
         End Get
     End Property
 
-    Public Shared Function GetCountryID(ByVal countryCode As String) As Guid
+    Public Shared Function GetCountryID(countryCode As String) As Guid
         Dim countryID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetCountryLookupList()
 
@@ -188,7 +188,7 @@ Public Class CustRegistration
         Return countryID
     End Function
 
-    Public Shared Function GetRegionID(ByVal regionCode As String, ByVal countryID As Guid) As Guid
+    Public Shared Function GetRegionID(regionCode As String, countryID As Guid) As Guid
         Dim regionID As Guid = Guid.Empty
         If Not regionCode.Trim = String.Empty Then
             Dim list As DataView = LookupListNew.GetRegionLookupList(countryID)
@@ -203,7 +203,7 @@ Public Class CustRegistration
         Return regionID
     End Function
 
-    Public Shared Function GetDealerID(ByVal dealerCode As String) As Guid
+    Public Shared Function GetDealerID(dealerCode As String) As Guid
         Dim dealerId As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
 
@@ -217,7 +217,7 @@ Public Class CustRegistration
         Return dealerId
     End Function
 
-    Public Shared Function GetAddressTypeID(ByVal addressTypeCode As String) As Guid
+    Public Shared Function GetAddressTypeID(addressTypeCode As String) As Guid
         Dim addressTypeId As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetAddressTypeList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -226,7 +226,7 @@ Public Class CustRegistration
         Return addressTypeId
     End Function
 
-    Public Shared Function IsEmailIDValid(ByVal emailId As String) As Boolean
+    Public Shared Function IsEmailIDValid(emailId As String) As Boolean
         If MiscUtil.EmailAddressValidation(emailId) = False Then
             Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR, GetType(CustRegistration), Nothing, "", Nothing)}
             Throw New BOValidationException(errors, GetType(CustRegistration).FullName)
@@ -235,7 +235,7 @@ Public Class CustRegistration
         End If
     End Function
 
-    Public Function IsEmailIDUsed(ByVal emailId As String, ByVal dealerId As Guid) As Boolean
+    Public Function IsEmailIDUsed(emailId As String, dealerId As Guid) As Boolean
         Dim dal As New CustRegistrationDAL
 
         Dim cnt As Integer
@@ -254,7 +254,7 @@ Public Class CustRegistration
 #End Region
 
 #Region "Public Members"
-    Public Function CreateRegistrationElements(ByVal customerRegistration As CustRegistrationDC) As String
+    Public Function CreateRegistrationElements(customerRegistration As CustRegistrationDC) As String
         Try
             Dim countryId As Guid
             Dim regionID As Guid
@@ -309,7 +309,7 @@ Public Class CustRegistration
         End Try
     End Function
 
-    Public Function UpdateRegistrationElements(ByVal customerRegistration As CustRegistrationDC) As String
+    Public Function UpdateRegistrationElements(customerRegistration As CustRegistrationDC) As String
         Try
             Dim countryId As Guid
             Dim regionID As Guid
@@ -392,7 +392,7 @@ Public Class CustRegistration
 #End Region
 
 #Region "Data Retrieveing Methods"
-    Public Shared Function GetRegistration(ByVal emailId As String, ByVal dealerId As Guid) As DataSet
+    Public Shared Function GetRegistration(emailId As String, dealerId As Guid) As DataSet
         Try
             Dim dal As New CustRegistrationDAL
             Dim ds As DataSet
@@ -414,7 +414,7 @@ Public Class CustRegistration
         End Try
     End Function
 
-    Public Shared Function GetRegistration(ByVal emailId As String, ByVal dealerCode As String) As Guid
+    Public Shared Function GetRegistration(emailId As String, dealerCode As String) As Guid
         Try
             'call methods to retrieve addressTypeId and dealerId from code
             Dim dealerId As Guid

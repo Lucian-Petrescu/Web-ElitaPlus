@@ -7,7 +7,7 @@ Public Class Role
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -23,7 +23,7 @@ Public Class Role
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -31,14 +31,14 @@ Public Class Role
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
         RolePermission = New RolePermissionList(Me)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class Role
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RoleDAL
             If _isDSCreator Then
@@ -343,7 +343,7 @@ Public Class Role
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Sub AddNewRowToRoleSearchDV(ByRef dv As RoleSearchDV, ByVal NewRoleBO As Role)
+    Public Shared Sub AddNewRowToRoleSearchDV(ByRef dv As RoleSearchDV, NewRoleBO As Role)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewRoleBO.IsNew Then
@@ -373,7 +373,7 @@ Public Class Role
         End If
     End Sub
 
-    Public Shared Function getList(ByVal strCode As String, ByVal strDescription As String) As RoleSearchDV
+    Public Shared Function getList(strCode As String, strDescription As String) As RoleSearchDV
         Try
             Dim dal As New RoleDAL
             Return New RoleSearchDV(dal.LoadList(strCode, strDescription).Tables(0))
@@ -413,17 +413,17 @@ Public Class Role
         ' Public Const COL_NAME_REMOTE_ROLE_ID As String = RoleDAL.COL_NAME_REMOTE_ROLE_ID  : DEF 3119 : (Removed from Database)
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property RoleId(ByVal row As DataRowView) As String
+        Public Shared ReadOnly Property RoleId(row As DataRowView) As String
             Get
                 Return New Guid(CType(row(COL_NAME_ROLE_ID), Byte())).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property IhqOnly(ByVal row As DataRowView) As String
+        Public Shared ReadOnly Property IhqOnly(row As DataRowView) As String
             Get
                 Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 Dim dvYesNo As DataView = LookupListNew.GetYesNoLookupList(languageId)
@@ -431,7 +431,7 @@ Public Class Role
             End Get
         End Property
 
-        Public Shared ReadOnly Property RoleProvider(ByVal row As DataRowView) As String
+        Public Shared ReadOnly Property RoleProvider(row As DataRowView) As String
             Get
                 If row(COL_NAME_ROLE_PROVIDER_ID) Is DBNull.Value Then
                     Return String.Empty

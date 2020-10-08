@@ -6,7 +6,7 @@ Public Class CancellationReason
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,14 +21,14 @@ Public Class CancellationReason
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -50,7 +50,7 @@ Public Class CancellationReason
 
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Row = Nothing
             Dim dal As New CancellationReasonDAL
@@ -304,7 +304,7 @@ Public Class CancellationReason
 
 
 
-    Public Sub Copy(ByVal original As CancellationReason)
+    Public Sub Copy(original As CancellationReason)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product")
         End If
@@ -327,7 +327,7 @@ Public Class CancellationReason
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String) As CancellationReasonSearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String) As CancellationReasonSearchDV
         Try
             Dim dal As New CancellationReasonDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -337,7 +337,7 @@ Public Class CancellationReason
         End Try
     End Function
 
-    Public Shared Function getListbyRoleExlusion(ByVal UserId As Guid, ByVal CompId As Guid) As CancellationReasonSearchDV
+    Public Shared Function getListbyRoleExlusion(UserId As Guid, CompId As Guid) As CancellationReasonSearchDV
         Try
             Dim dal As New CancellationReasonDAL
             Return New CancellationReasonSearchDV(dal.LoadListbyRoleExlusion(UserId, CompId).Tables(0))
@@ -365,7 +365,7 @@ Public Class CancellationReason
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -380,11 +380,11 @@ Public Class CancellationReason
     Public NotInheritable Class ValueMandatoryConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CancellationReason = CType(objectToValidate, CancellationReason)
 
             If Not obj.IsNew Then
@@ -409,7 +409,7 @@ Public Class CancellationReason
         End Get
     End Property
 
-    Public Sub UpdateRoles(ByVal selectedRolesGuidStrCollection As Hashtable)
+    Public Sub UpdateRoles(selectedRolesGuidStrCollection As Hashtable)
         If selectedRolesGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -435,7 +435,7 @@ Public Class CancellationReason
             Next
         End If
     End Sub
-    Public Sub AttachRoles(ByVal selectedRegionGuidStrCollection As ArrayList)
+    Public Sub AttachRoles(selectedRegionGuidStrCollection As ArrayList)
         Dim CancreasonRolestr As String
         For Each CancreasonRolestr In selectedRegionGuidStrCollection
             Dim Cancreasonrole As ExcludeCancReasonByRole = ExclCancelReasonByRoleChildren.GetNewChild
@@ -446,7 +446,7 @@ Public Class CancellationReason
     End Sub
 
 
-    Public Function AddRolesChild(ByVal Roleid As Guid) As ExcludeCancReasonByRole
+    Public Function AddRolesChild(Roleid As Guid) As ExcludeCancReasonByRole
         Dim oCancreasonrole As ExcludeCancReasonByRole
 
         oCancreasonrole = New ExcludeCancReasonByRole(Dataset)
@@ -455,7 +455,7 @@ Public Class CancellationReason
         Return oCancreasonrole
 
     End Function
-    Public Sub DetachRoles(ByVal selectedRegionGuidStrCollection As ArrayList)
+    Public Sub DetachRoles(selectedRegionGuidStrCollection As ArrayList)
         Dim CancreasonRolestr As String
         For Each CancreasonRolestr In selectedRegionGuidStrCollection
             Dim Cancreasonrole As ExcludeCancReasonByRole = ExclCancelReasonByRoleChildren.Find(New Guid(CancreasonRolestr))
@@ -498,7 +498,7 @@ Public Class CancellationReason
         Return dv
     End Function
 
-    Protected Function GetRolesLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetRolesLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim ProdRoleBO As ExcludeCancReasonByRole
         Dim inClause As String = "(-1"

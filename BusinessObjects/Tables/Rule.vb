@@ -8,7 +8,7 @@ Public Class Rule
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,20 +22,20 @@ Public Class Rule
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@ Public Class Rule
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RuleDAL
             If _isDSCreator Then
@@ -275,7 +275,7 @@ Public Class Rule
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As Assurant.ElitaPlus.BusinessObjectsNew.Rule)
+    Public Sub Copy(original As Assurant.ElitaPlus.BusinessObjectsNew.Rule)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Rule")
         End If
@@ -421,47 +421,47 @@ Public Class Rule
         Public Const COL_NAME_RULE_CATEGORY As String = "RULE_CATEGORY"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property RuleId(ByVal row) As Guid
+        Public Shared ReadOnly Property RuleId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_RULE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row) As String
+        Public Shared ReadOnly Property Effective(row) As String
             Get
                 Return row(COL_NAME_EFFECTIVE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row) As String
+        Public Shared ReadOnly Property Expiration(row) As String
             Get
                 Return row(COL_NAME_EXPIRATION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property RuleCategory(ByVal row) As String
+        Public Shared ReadOnly Property RuleCategory(row) As String
             Get
                 Return row(COL_NAME_RULE_CATEGORY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property RuleType(ByVal row) As String
+        Public Shared ReadOnly Property RuleType(row) As String
             Get
                 Return row(COL_NAME_RULE_TYPE).ToString
             End Get
@@ -471,8 +471,8 @@ Public Class Rule
 #End Region
 
 #Region "Load List"
-    Shared Function GetList(ByVal Code As String, ByVal Description As String, ByVal activeon As DateTimeType, _
-                                        ByVal ruleType As Guid, ByVal ruleCategory As Guid, ByVal lang_id As Guid) As RuleSearchDV
+    Shared Function GetList(Code As String, Description As String, activeon As DateTimeType, _
+                                        ruleType As Guid, ruleCategory As Guid, lang_id As Guid) As RuleSearchDV
         Try
             Dim dal As New RuleDAL
             Return New RuleSearchDV(dal.getList(Code, Description, activeon, ruleType, ruleCategory, lang_id))
@@ -482,7 +482,7 @@ Public Class Rule
 
     End Function
 
-    Public Shared Function GetRulesByDealerAndCompany(ByVal dealerId As Guid, ByVal companyId As Guid) As DataView
+    Public Shared Function GetRulesByDealerAndCompany(dealerId As Guid, companyId As Guid) As DataView
         Try
             Dim dal As New RuleDAL
             Return dal.LoadRulesByDealerAndCompnay(dealerId, companyId)
@@ -534,7 +534,7 @@ Public Class Rule
 
 
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -551,7 +551,7 @@ Public Class Rule
         End Function
     End Class
 
-    Public Function GetRuleDetailChild(ByVal childId As Guid) As RuleIssue
+    Public Function GetRuleDetailChild(childId As Guid) As RuleIssue
         Return CType(IssueRuleChildren.GetChild(childId), RuleIssue)
     End Function
 
@@ -565,7 +565,7 @@ Public Class Rule
         Return newRuleDetail
     End Function
 
-    Sub PopulateIssueList(ByVal issuelist As ArrayList)
+    Sub PopulateIssueList(issuelist As ArrayList)
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
@@ -653,7 +653,7 @@ Public Class Rule
 
 
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -670,7 +670,7 @@ Public Class Rule
         End Function
     End Class
 
-    Public Function GetRuleProcessChild(ByVal childId As Guid) As RuleProcess
+    Public Function GetRuleProcessChild(childId As Guid) As RuleProcess
         Return CType(ProcessRuleChildren.GetChild(childId), RuleProcess)
     End Function
 
@@ -684,7 +684,7 @@ Public Class Rule
         Return newRuleProcess
     End Function
 
-    Sub PopulateProcessList(ByVal processlist As ArrayList)
+    Sub PopulateProcessList(processlist As ArrayList)
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find

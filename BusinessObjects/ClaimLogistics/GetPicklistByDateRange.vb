@@ -12,7 +12,7 @@ Public Class GetPicklistByDateRange
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetPicklistByDateRangeDs)
+    Public Sub New(ds As GetPicklistByDateRangeDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -25,7 +25,7 @@ Public Class GetPicklistByDateRange
 #Region "Private Members"
     Private _claimId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetPicklistByDateRangeDs)
+    Private Sub MapDataSet(ds As GetPicklistByDateRangeDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -47,7 +47,7 @@ Public Class GetPicklistByDateRange
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetPicklistByDateRangeDs)
+    Private Sub Load(ds As GetPicklistByDateRangeDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -66,7 +66,7 @@ Public Class GetPicklistByDateRange
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetPicklistByDateRangeDs)
+    Private Sub PopulateBOFromWebService(ds As GetPicklistByDateRangeDs)
         Try
             If ds.GetPicklistByDateRange.Count = 0 Then Exit Sub
             With ds.GetPicklistByDateRange.Item(0)

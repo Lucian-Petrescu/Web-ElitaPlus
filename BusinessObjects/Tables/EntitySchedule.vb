@@ -18,7 +18,7 @@ Public Class EntitySchedule
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(id As Guid, entity As IEffecttiveExpiration)
         MyBase.New()
         EntityObject = entity
         Dataset = New DataSet
@@ -26,7 +26,7 @@ Public Class EntitySchedule
     End Sub
 
     'New BO
-    Public Sub New(ByVal entity As IEffecttiveExpiration)
+    Public Sub New(entity As IEffecttiveExpiration)
         MyBase.New()
         EntityObject = entity
         Dataset = New DataSet
@@ -34,7 +34,7 @@ Public Class EntitySchedule
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(id As Guid, familyDS As DataSet, entity As IEffecttiveExpiration)
         MyBase.New(False)
         EntityObject = entity
         Dataset = familyDS
@@ -42,14 +42,14 @@ Public Class EntitySchedule
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(familyDS As DataSet, entity As IEffecttiveExpiration)
         MyBase.New(False)
         EntityObject = entity
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(row As DataRow, entity As IEffecttiveExpiration)
         MyBase.New(False)
         EntityObject = entity
         Dataset = row.Table.DataSet
@@ -72,7 +72,7 @@ Public Class EntitySchedule
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EntityScheduleDAL
             If _isDSCreator Then
@@ -361,7 +361,7 @@ Public Class EntitySchedule
 #End Region
 
 #Region "Public Members"
-    Public Shared Function GetList(ByVal scheduleId As Guid, ByVal entityName As String) As DataTable
+    Public Shared Function GetList(scheduleId As Guid, entityName As String) As DataTable
         Try
             Dim dal As New EntityScheduleDAL
             Dim ds As New DataSet
@@ -391,7 +391,7 @@ Public Class EntitySchedule
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As EntitySchedule)
+    Public Sub Copy(original As EntitySchedule)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Object.")
         End If
@@ -413,7 +413,7 @@ Public Class EntitySchedule
         Public Const COL_NAME_SCHEDULE_ID As String = EntityScheduleDAL.COL_NAME_SCHEDULE_ID
         Public Const COL_NAME_IS_NEW As String = "IS_NEW"
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -438,7 +438,7 @@ Public Class EntityScheduleList
     Private parentId As Guid
     Private tableName As String
 
-    Public Sub New(ByVal parent As BusinessObjectBase)
+    Public Sub New(parent As BusinessObjectBase)
         MyBase.New(LoadTable(parent), GetType(EntitySchedule), parent)
         If (parent.GetType().Equals(GetType(WorkQueue))) Then
             tableName = EntitySchedule.TABLE_NAME_WORKQUEUE
@@ -449,7 +449,7 @@ Public Class EntityScheduleList
         End If
     End Sub
 
-    Friend Overrides Function GetChild(ByVal row As DataRow) As BusinessObjectBase
+    Friend Overrides Function GetChild(row As DataRow) As BusinessObjectBase
         Dim bo As BusinessObjectBase = BOType.GetConstructor(New Type() {GetType(DataRow), GetType(IEffecttiveExpiration)}).Invoke(New Object() {row, CType(Parent, IEffecttiveExpiration)})
         Return bo
     End Function
@@ -459,7 +459,7 @@ Public Class EntityScheduleList
         Return bo
     End Function
 
-    Public Overrides Function GetChild(ByVal childId As System.Guid) As BusinessObjectBase
+    Public Overrides Function GetChild(childId As System.Guid) As BusinessObjectBase
         Dim bo As BusinessObjectBase
         Try
             bo = MyBase.BOType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(IEffecttiveExpiration)}).Invoke(New Object() {childId, Table.DataSet, CType(Parent, IEffecttiveExpiration)})
@@ -473,11 +473,11 @@ Public Class EntityScheduleList
         Return bo
     End Function
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, EntitySchedule).EntityId.Equals(parentId)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As BusinessObjectBase) As DataTable
+    Private Shared Function LoadTable(parent As BusinessObjectBase) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(EntityScheduleList)) Then
                 Dim dal As New EntityScheduleDAL

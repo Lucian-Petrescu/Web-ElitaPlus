@@ -86,7 +86,7 @@ Public Class UpdateClaimData
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdateClaimDataDs)
+    Public Sub New(ds As UpdateClaimDataDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -101,7 +101,7 @@ Public Class UpdateClaimData
     Private _serviceNetworkID As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As UpdateClaimDataDs)
+    Private Sub MapDataSet(ds As UpdateClaimDataDs)
 
         Dim schema As String = ds.GetXmlSchema
         Dim t As Integer
@@ -121,7 +121,7 @@ Public Class UpdateClaimData
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As UpdateClaimDataDs)
+    Private Sub Load(ds As UpdateClaimDataDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -140,7 +140,7 @@ Public Class UpdateClaimData
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As UpdateClaimDataDs)
+    Private Sub PopulateBOFromWebService(ds As UpdateClaimDataDs)
         Try
             If ds.UpdateClaimData.Count = 0 Then Exit Sub
 
@@ -204,7 +204,7 @@ Public Class UpdateClaimData
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Function ProcessSpecialServiceClaim(ByVal oclaim As Claim) As Boolean
+    Private Function ProcessSpecialServiceClaim(oclaim As Claim) As Boolean
 
         Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
 
@@ -372,7 +372,7 @@ Public Class UpdateClaimData
         Return False
     End Function
 
-    Private Function GetcovergeSearchDV(ByVal oClaim As Claim, ByVal coveragetypeCode As String) As CertItemCoverage.CertItemCoverageSearchDV
+    Private Function GetcovergeSearchDV(oClaim As Claim, coveragetypeCode As String) As CertItemCoverage.CertItemCoverageSearchDV
         Dim searchCoverageDV As CertItemCoverage.CertItemCoverageSearchDV = Nothing
         If oClaim.InvoiceProcessDate Is Nothing Then
             searchCoverageDV = CertItemCoverage.GetClaimCoverageType(oClaim.CertificateId, oClaim.CertItemCoverageId, oClaim.LossDate, oClaim.StatusCode, Nothing)
@@ -731,7 +731,7 @@ Public Class UpdateClaimData
 
     End Function
 
-    Public Function IsValidFollowupDate(ByVal claimBO As Claim) As Boolean
+    Public Function IsValidFollowupDate(claimBO As Claim) As Boolean
         Dim obj As Claim = claimBO
 
         If ((obj.FollowupDate Is Nothing) OrElse

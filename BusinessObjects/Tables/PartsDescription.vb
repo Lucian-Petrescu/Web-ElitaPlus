@@ -6,7 +6,7 @@ Public Class PartsDescription
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class PartsDescription
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class PartsDescription
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PartsDescriptionDAL
             If _isDSCreator Then
@@ -219,7 +219,7 @@ Public Class PartsDescription
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal riskGroupID As Guid, ByVal description As String) As PartsDescriptionDV
+    Public Shared Function getList(riskGroupID As Guid, description As String) As PartsDescriptionDV
 
         Try
             Dim dal As New PartsDescriptionDAL
@@ -238,7 +238,7 @@ Public Class PartsDescription
 
     End Function
 
-    Public Shared Function getListForWS(ByVal riskGroupID As Guid) As DataTable
+    Public Shared Function getListForWS(riskGroupID As Guid) As DataTable
 
         Try
             Dim dal As New PartsDescriptionDAL
@@ -263,16 +263,16 @@ Public Class PartsDescription
 
     End Function
 
-    Public Shared Function IsValidCode(ByVal code As String) As Boolean
+    Public Shared Function IsValidCode(code As String) As Boolean
         Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
         Return dalParts.IsValidCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, code)
     End Function
 
-    Public Shared Function GetPartDescriptionByCode(ByVal code As String) As Guid
+    Public Shared Function GetPartDescriptionByCode(code As String) As Guid
         Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
         Return dalParts.GetPartDescriptionByCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, code)
     End Function
-    Public Shared Function GetPartDescriptionByCode(ByVal code As String, ByVal ClaimId As Guid) As Guid
+    Public Shared Function GetPartDescriptionByCode(code As String, ClaimId As Guid) As Guid
         Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
         Return dalParts.GetPartDescriptionByCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, code, ClaimId)
     End Function
@@ -291,29 +291,29 @@ Public Class PartsDescription
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PartsDescID(ByVal row) As Guid
+        Public Shared ReadOnly Property PartsDescID(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PARTS_DESCRIPTION_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property RiskGroup(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property RiskGroup(row As DataRow) As String
             Get
                 Return row(COL_NAME_RISK_GROUP).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property RiskGroupID(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property RiskGroupID(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_RISK_GROUP_ID), Byte()))
             End Get
@@ -321,7 +321,7 @@ Public Class PartsDescription
 
     End Class
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal partsDescId As Guid, ByVal riskGroupID As Guid, ByVal companyGrpID As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, partsDescId As Guid, riskGroupID As Guid, companyGrpID As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -344,11 +344,11 @@ Public Class PartsDescription
     Public NotInheritable Class PartCodeValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PART_CODE_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PartsDescription = CType(objectToValidate, PartsDescription)
             Dim dal As New PartsDescriptionDAL
 
@@ -367,11 +367,11 @@ Public Class PartsDescription
     Public NotInheritable Class EnglishDescriptionValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ENGLISH_DESCRIPTION_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PartsDescription = CType(objectToValidate, PartsDescription)
             Dim dal As New PartsDescriptionDAL
 

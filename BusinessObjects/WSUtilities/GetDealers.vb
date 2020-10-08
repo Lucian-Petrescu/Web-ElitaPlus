@@ -15,7 +15,7 @@ Public Class GetDealers
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetDealersDs)
+    Public Sub New(ds As GetDealersDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -28,7 +28,7 @@ Public Class GetDealers
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetDealersDs)
+    Private Sub MapDataSet(ds As GetDealersDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -50,7 +50,7 @@ Public Class GetDealers
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetDealersDs)
+    Private Sub Load(ds As GetDealersDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -69,7 +69,7 @@ Public Class GetDealers
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetDealersDs)
+    Private Sub PopulateBOFromWebService(ds As GetDealersDs)
         Try
             If ds.GetDealers.Count = 0 Then Exit Sub
             With ds.GetDealers.Item(0)

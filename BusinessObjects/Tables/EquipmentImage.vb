@@ -4,7 +4,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,7 +53,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EquipmentImageDAL
             If _isDSCreator Then
@@ -220,7 +220,7 @@
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As EquipmentImage)
+    Public Sub Copy(original As EquipmentImage)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
@@ -233,11 +233,11 @@
     Public NotInheritable Class CheckDuplicatePathAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Equipment.EQUIPMENT_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EquipmentImage = CType(objectToValidate, EquipmentImage)
             If (obj.CheckDuplicatePath()) Then
                 Return False
@@ -251,11 +251,11 @@
     Public NotInheritable Class CheckDuplicateCodeAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Equipment.EQUIPMENT_FORM002)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EquipmentImage = CType(objectToValidate, EquipmentImage)
             If (obj.CheckDuplicateCode()) Then
                 Return False
@@ -298,15 +298,15 @@
     Public Class EquipmentImageList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Equipment)
+        Public Sub New(parent As Equipment)
             MyBase.New(LoadTable(parent), GetType(EquipmentImage), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, EquipmentImage).EquipmentId.Equals(CType(Parent, Equipment).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Equipment) As DataTable
+        Private Shared Function LoadTable(parent As Equipment) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(EquipmentImageList)) Then
                     Dim dal As New EquipmentImageDAL

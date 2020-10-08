@@ -40,14 +40,14 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -62,14 +62,14 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -92,7 +92,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EquipmentReconDAL
             If _isDSCreator Then
@@ -115,7 +115,7 @@
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Shared Function LoadList(ByVal fileProcessedID As Guid) As DataView
+    Public Shared Function LoadList(fileProcessedID As Guid) As DataView
         Try
             Dim dal As New EquipmentReconDAL
             Dim ds As DataSet
@@ -129,7 +129,7 @@
         End Try
 
     End Function
-    Public Shared Function LoadRejectList(ByVal fileProcessedID As Guid) As DataView()
+    Public Shared Function LoadRejectList(fileProcessedID As Guid) As DataView()
         'Try
         '    Dim dal As New EquipmentReconDAL
         '    Dim ds As DataSet
@@ -597,7 +597,7 @@
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal fileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(fileProcessedId As Guid) As Guid
         Get
             '    Dim oDealerfileProcessed As New FileProcessed(fileProcessedId)
             '    Dim oDealer As New Dealer(oDealerfileProcessed.FileProcessId)
@@ -608,7 +608,7 @@
 #End Region
 
 #Region "Public Members"
-    Public Shared Function ValidateFile(ByVal fileProcessedId As Guid) As Guid
+    Public Shared Function ValidateFile(fileProcessedId As Guid) As Guid
         Dim interfaceStatusId As Guid
         Dim dal As New EquipmentReconDAL
         Try
@@ -620,7 +620,7 @@
         End Try
     End Function
 
-    Public Shared Function ProcessFile(ByVal fileProcessedId As Guid) As Guid
+    Public Shared Function ProcessFile(fileProcessedId As Guid) As Guid
         Dim interfaceStatusId As Guid
         Dim dal As New EquipmentReconDAL
         Try
@@ -632,7 +632,7 @@
         End Try
     End Function
 
-    Public Shared Function DeleteFile(ByVal fileProcessedId As Guid) As Guid
+    Public Shared Function DeleteFile(fileProcessedId As Guid) As Guid
         Dim interfaceStatusId As Guid
         Dim dal As New EquipmentReconDAL
         Try

@@ -39,7 +39,7 @@ Public Class CreditCardAuthVSCBrazil
 #End Region
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CreditCardAuthVSCBrazilDs)
+    Public Sub New(ds As CreditCardAuthVSCBrazilDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -48,7 +48,7 @@ Public Class CreditCardAuthVSCBrazil
 
 #End Region
 #Region "Private Members"
-    Private Sub MapDataSet(ByVal ds As CreditCardAuthVSCBrazilDs)
+    Private Sub MapDataSet(ds As CreditCardAuthVSCBrazilDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -66,7 +66,7 @@ Public Class CreditCardAuthVSCBrazil
 
     End Sub
 
-    Private Sub Load(ByVal ds As CreditCardAuthVSCBrazilDs)
+    Private Sub Load(ds As CreditCardAuthVSCBrazilDs)
         Try
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
             Row = newRow
@@ -84,7 +84,7 @@ Public Class CreditCardAuthVSCBrazil
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CreditCardAuthVSCBrazilDs)
+    Private Sub PopulateBOFromWebService(ds As CreditCardAuthVSCBrazilDs)
         Try
             If ds.CreditCardAuthVSCBrazil.Count = 0 Then Exit Sub
 
@@ -125,7 +125,7 @@ Public Class CreditCardAuthVSCBrazil
         End Try
     End Sub
 
-    Private Function MapCardType(ByVal strCardType As String) As String
+    Private Function MapCardType(strCardType As String) As String
         Dim strNewType As String
         strNewType = CodeMapping.GetCovertedCode(Authentication.CompId, "CCTYPE", strCardType)
         'Select Case strCardType
@@ -158,7 +158,7 @@ Public Class CreditCardAuthVSCBrazil
 
     End Sub
 
-    Private Shared Function GetEndPoint(ByVal url As String) As EndpointAddress
+    Private Shared Function GetEndPoint(url As String) As EndpointAddress
         Dim eab As EndpointAddressBuilder
 
         eab = New EndpointAddressBuilder
@@ -239,8 +239,8 @@ Public Class CreditCardAuthVSCBrazil
         Return (Convert.ToInt32(character) + increase)
     End Function
 
-    Private Function GetResponseXML(ByVal blnSuccess As Boolean, ByVal strAuthNum As String,
-                                    ByVal strRejectCode As String, ByVal strRejectMsg As String) As String
+    Private Function GetResponseXML(blnSuccess As Boolean, strAuthNum As String,
+                                    strRejectCode As String, strRejectMsg As String) As String
 
         Dim objDoc As New Xml.XmlDocument
         Dim objRoot As Xml.XmlElement

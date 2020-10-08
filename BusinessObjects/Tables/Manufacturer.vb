@@ -6,7 +6,7 @@ Public Class Manufacturer
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,7 +22,7 @@ Public Class Manufacturer
     End Sub
 
     'New BO
-    Public Sub New(ByVal sDesc As String, ByVal CompanyGroupID As Guid)
+    Public Sub New(sDesc As String, CompanyGroupID As Guid)
         MyBase.New()
         Dataset = New DataSet
         'Me.SetValue(ManufacturerDAL.COL_NAME_DESCRIPTION, sDesc.ToUpper)
@@ -32,14 +32,14 @@ Public Class Manufacturer
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -61,7 +61,7 @@ Public Class Manufacturer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ManufacturerDAL
             If _isDSCreator Then
@@ -85,7 +85,7 @@ Public Class Manufacturer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal sDesc As String, ByVal CompanyGroupID As Guid)
+    Protected Sub Load(sDesc As String, CompanyGroupID As Guid)
         Try
             Dim dal As New ManufacturerDAL
             If _isDSCreator Then
@@ -191,7 +191,7 @@ Public Class Manufacturer
         End Try
     End Sub
 
-    Public Shared Function ResolveManufacturer(ByVal manufacturerName As String, ByVal companyGroupId As Guid) As Guid
+    Public Shared Function ResolveManufacturer(manufacturerName As String, companyGroupId As Guid) As Guid
         Dim dal As New ManufacturerDAL
         Try
             Return dal.ResolveManufacturer(manufacturerName, companyGroupId)
@@ -202,8 +202,8 @@ Public Class Manufacturer
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal descriptionMask As String, _
-                                      ByVal companyGroupId As Guid) As DataView
+    Public Shared Function LoadList(descriptionMask As String, _
+                                      companyGroupId As Guid) As DataView
         Try
             Dim dal As New ManufacturerDAL
             Dim ds As Dataset
@@ -216,7 +216,7 @@ Public Class Manufacturer
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -235,7 +235,7 @@ Public Class Manufacturer
 #End Region
 
 #Region "Lookup Functions"
-    Public Shared Function GetDescription(ByVal pManufacturerId As Guid) As String
+    Public Shared Function GetDescription(pManufacturerId As Guid) As String
         If (pManufacturerId = Guid.Empty) Then
             Return String.Empty
         End If
@@ -278,7 +278,7 @@ Public Class Manufacturer
     '        Throw New ElitaWSException(ex.Message)
     '    End Try
     'End Function
-    Public Shared Function GetVSCMakes(ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function GetVSCMakes(CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New ManufacturerDAL
             Return dal.LoadVSCMakes(CompanyGroupId)
@@ -289,7 +289,7 @@ Public Class Manufacturer
 
     End Function
 
-    Public Shared Function GetMakesForWS(ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function GetMakesForWS(CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New ManufacturerDAL
             Return dal.LoadMakesForWS(CompanyGroupId)
@@ -300,7 +300,7 @@ Public Class Manufacturer
 
     End Function
 
-    Public Shared Function GetMakesForWSByWarrantyMaster(ByVal dealerId As Guid, ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function GetMakesForWSByWarrantyMaster(dealerId As Guid, CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New ManufacturerDAL
             Return dal.GetMakesForWSByWarrantyMaster(dealerId, CompanyGroupId)

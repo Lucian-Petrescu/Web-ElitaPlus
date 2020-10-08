@@ -6,7 +6,7 @@ Public Class CcBillingSchedule
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CcBillingSchedule
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CcBillingSchedule
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CcBillingScheduleDAL
             If _isDSCreator Then
@@ -171,7 +171,7 @@ Public Class CcBillingSchedule
 
 #Region "DataView Retrieveing Methods"
 
-    Private Shared Function GetGetCCSchedulingInfoList(ByVal parent As CompanyCreditCard, ByVal companyCreditCardId As Guid) As DataTable
+    Private Shared Function GetGetCCSchedulingInfoList(parent As CompanyCreditCard, companyCreditCardId As Guid) As DataTable
 
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(CCSchedulingDatesInfoList)) Then
@@ -186,7 +186,7 @@ Public Class CcBillingSchedule
         End Try
     End Function
 
-    Public Shared Function GetBillingYears(ByVal companyCreditCardId As Guid) As DataView
+    Public Shared Function GetBillingYears(companyCreditCardId As Guid) As DataView
         Try
             Dim dal As New CcBillingScheduleDAL
             Dim ds As DataSet
@@ -200,7 +200,7 @@ Public Class CcBillingSchedule
 
     End Function
 
-    Public Shared Function GetBillingYearsByUser(ByVal userId As Guid) As DataView
+    Public Shared Function GetBillingYearsByUser(userId As Guid) As DataView
         Try
             Dim dal As New CcBillingScheduleDAL
             Dim ds As DataSet
@@ -214,7 +214,7 @@ Public Class CcBillingSchedule
 
     End Function
 
-    Public Shared Function GetCCBillingScheduleDates(ByVal companyCreditCardId As Guid, ByVal Year As String) As DataView
+    Public Shared Function GetCCBillingScheduleDates(companyCreditCardId As Guid, Year As String) As DataView
         Try
             Dim dal As New CcBillingScheduleDAL
             Dim ds As DataSet
@@ -228,7 +228,7 @@ Public Class CcBillingSchedule
 
     End Function
     '
-    Public Shared Function GetLastBillingDate(ByVal companyCreditCardId As Guid) As CCSchedulingInfoSearchDV
+    Public Shared Function GetLastBillingDate(companyCreditCardId As Guid) As CCSchedulingInfoSearchDV
 
         Try
             Dim dal As New CcBillingScheduleDAL
@@ -242,7 +242,7 @@ Public Class CcBillingSchedule
 
     End Function
 
-    Public Shared Function GetCCSchedulingBillDate(ByVal companyCreditCardId As Guid, ByVal forThisDate As Date, Optional ByVal minCloseDate As Boolean = False) As Date
+    Public Shared Function GetCCSchedulingBillDate(companyCreditCardId As Guid, forThisDate As Date, Optional ByVal minCloseDate As Boolean = False) As Date
         Try
             Dim dal As New CcBillingScheduleDAL
             Dim dateRow As DataRow = dal.GetCCSchedulingBillDate(companyCreditCardId, forThisDate)
@@ -269,7 +269,7 @@ Public Class CcBillingSchedule
         End Try
 
     End Function
-    Public Shared Function GetMinCCSchedulingBillDate(ByVal companyCreditCardId As Guid) As Date
+    Public Shared Function GetMinCCSchedulingBillDate(companyCreditCardId As Guid) As Date
         Try
             Dim dal As New CcBillingScheduleDAL
             Dim dateRow As DataRow = dal.GetMinCCSchedulingBillDate(companyCreditCardId)
@@ -285,7 +285,7 @@ Public Class CcBillingSchedule
         End Try
 
     End Function
-    Public Shared Function GetAllCCSchedulingBillDates(ByVal companyCreditCardId As Guid) As DataView
+    Public Shared Function GetAllCCSchedulingBillDates(companyCreditCardId As Guid) As DataView
         Try
             Dim dal As New CcBillingScheduleDAL
             Dim ds As Dataset
@@ -312,7 +312,7 @@ Public Class CcBillingSchedule
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -334,7 +334,7 @@ Public Class CcBillingSchedule
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -344,15 +344,15 @@ Public Class CcBillingSchedule
 #Region "List Methods"
     Public Class CCSchedulingDatesInfoList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As CompanyCreditCard, ByVal companyCreditCardId As Guid)
+        Public Sub New(parent As CompanyCreditCard, companyCreditCardId As Guid)
             MyBase.New(GetGetCCSchedulingInfoList(parent, companyCreditCardId), GetType(CcBillingSchedule), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal CcBillingScheduleInfoId As Guid) As CcBillingSchedule
+        Public Function FindById(CcBillingScheduleInfoId As Guid) As CcBillingSchedule
             Dim bo As CcBillingSchedule
             For Each bo In Me
                 If bo.Id.Equals(CcBillingScheduleInfoId) Then Return bo
@@ -387,7 +387,7 @@ Public Class CcBillingSchedule
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

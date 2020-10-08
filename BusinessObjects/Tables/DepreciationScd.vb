@@ -5,7 +5,7 @@ Public Class DepreciationScd
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,20 +19,20 @@ Public Class DepreciationScd
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class DepreciationScd
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
 
             If _isDSCreator Then
@@ -198,7 +198,7 @@ Public Class DepreciationScd
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Shared Function LoadList(ByVal companyId As Guid) As DataView
+    Shared Function LoadList(companyId As Guid) As DataView
         Try
             Dim dal As New DepreciationScdDal
             Dim ds As DataSet
@@ -210,7 +210,7 @@ Public Class DepreciationScd
         End Try
     End Function
 
-    Public Shared Function CheckIfDepreciationScheduleCodeAlreadyExists(companyId As Guid, ByVal code As String) As Boolean
+    Public Shared Function CheckIfDepreciationScheduleCodeAlreadyExists(companyId As Guid, code As String) As Boolean
         Try
             Dim result As Boolean = False
             Dim dv As DataView
@@ -232,10 +232,10 @@ Public Class DepreciationScd
     Public NotInheritable Class ValidateDepreciationCode
         Inherits ValidBaseAttribute
         Implements IValidatorAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DepreciationScheduleCode001)
         End Sub
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             If objectToCheck Is Nothing Then Return True
             Dim obj As DepreciationScd = CType(objectToValidate, DepreciationScd)
             If obj.IsNew AndAlso CheckIfDepreciationScheduleCodeAlreadyExists(obj.CompanyId, obj.Code) Then

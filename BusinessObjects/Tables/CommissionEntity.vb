@@ -6,7 +6,7 @@ Public Class CommissionEntity
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CommissionEntity
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CommissionEntity
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommissionEntityDAL
             If _isDSCreator Then
@@ -467,7 +467,7 @@ Public Class CommissionEntity
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As CommissionEntity)
+    Public Sub Copy(original As CommissionEntity)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing commission entity")
         End If
@@ -492,14 +492,14 @@ Public Class CommissionEntity
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal phoneMask As String, ByVal CompanyGroupIdMask As Guid) As CommissionEntitySearchDV
+    Public Shared Function getList(descriptionMask As String, phoneMask As String, CompanyGroupIdMask As Guid) As CommissionEntitySearchDV
         Try
             Dim dal As New CommissionEntityDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -542,11 +542,11 @@ Public Class CommissionEntity
 Public NotInheritable Class EmailAddress
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CommissionEntity = CType(objectToValidate, CommissionEntity)
 
             If obj.Email Is Nothing Then

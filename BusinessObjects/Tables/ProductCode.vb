@@ -7,7 +7,7 @@ Public Class ProductCode
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,26 +21,26 @@ Public Class ProductCode
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
-    Public Sub New(ByVal dealerId As Guid, ByVal productCode As String, ByVal familyDS As DataSet)
+    Public Sub New(dealerId As Guid, productCode As String, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(dealerId, productCode)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@ Public Class ProductCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal dealerId As Guid, ByVal productCode As String)
+    Protected Sub Load(dealerId As Guid, productCode As String)
         Try
             Dim dal As New ProductCodeDAL
             If _isDSCreator Then
@@ -86,7 +86,7 @@ Public Class ProductCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductCodeDAL
             If _isDSCreator Then
@@ -1377,13 +1377,13 @@ Public Class ProductCode
         End Try
     End Sub
 
-    Public Shared Sub UpdateCoverageLiability(ByVal ProductCodeId As System.Guid)
+    Public Shared Sub UpdateCoverageLiability(ProductCodeId As System.Guid)
         If ProductCodeId <> Guid.Empty Then
             Dim dal As New ProductCodeDAL
             dal.UpdateCoverageLiability(ProductCodeId)
         End If
     End Sub
-    Public Shared Function UpdateCoverageReinsurance(ByVal ProductCodeId As System.Guid, Optional ByVal ModeOperation As String = Nothing) As Integer
+    Public Shared Function UpdateCoverageReinsurance(ProductCodeId As System.Guid, Optional ByVal ModeOperation As String = Nothing) As Integer
         If ProductCodeId <> Guid.Empty Then
             Dim dal As New ProductCodeDAL
             Return dal.UpdateCoverageReinsurance(ProductCodeId, ModeOperation)
@@ -1399,7 +1399,7 @@ Public Class ProductCode
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ProductCode)
+    Public Sub Copy(original As ProductCode)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product")
         End If
@@ -1440,7 +1440,7 @@ Public Class ProductCode
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetProductCode(ByVal dealerID As Guid, ByVal ProductCodeDate As Date) As ProductCode
+    Public Shared Function GetProductCode(dealerID As Guid, ProductCodeDate As Date) As ProductCode
 
         'Dim ProductCodeID As Guid
         'Dim dv As DataView = getList(dealerID)
@@ -1462,8 +1462,8 @@ Public Class ProductCode
         Return Nothing
     End Function
 
-    Public Shared Function getList(ByVal compIds As ArrayList, ByVal dealerId As Guid,
-                             ByVal RiskGroupId As Guid, ByVal productCodeMask As String, ByVal LanguageId As Guid) As ProductCodeSearchDV
+    Public Shared Function getList(compIds As ArrayList, dealerId As Guid,
+                             RiskGroupId As Guid, productCodeMask As String, LanguageId As Guid) As ProductCodeSearchDV
         Try
             Dim dal As New ProductCodeDAL
             Return New ProductCodeSearchDV(dal.LoadList(compIds, dealerId, RiskGroupId, productCodeMask, LanguageId).Tables(0))
@@ -1473,7 +1473,7 @@ Public Class ProductCode
         End Try
     End Function
 
-    Public Shared Function GetProductCodeIDs(ByVal dealerID As Guid) As ArrayList
+    Public Shared Function GetProductCodeIDs(dealerID As Guid) As ArrayList
 
         Dim dal As New ProductCodeDAL
         Dim ds As DataSet = dal.LoadProductCodeIDs(dealerID)
@@ -1496,7 +1496,7 @@ Public Class ProductCode
 
     End Function
 
-    Public Shared Function getListByDealer(ByVal dealerId As Guid, ByVal LanguageId As Guid, ByVal RiskGroupId As Guid) As ProductCodeSearchByDealerDV
+    Public Shared Function getListByDealer(dealerId As Guid, LanguageId As Guid, RiskGroupId As Guid) As ProductCodeSearchByDealerDV
         Try
             Dim dal As New ProductCodeDAL
             Return New ProductCodeSearchByDealerDV(dal.LoadListByDealer(dealerId, LanguageId, RiskGroupId).Tables(0))
@@ -1506,7 +1506,7 @@ Public Class ProductCode
         End Try
     End Function
 
-    Public Shared Function getListByDealer(ByVal dealerId As Guid, ByVal LanguageId As Guid) As ProductCodeSearchByDealerDV
+    Public Shared Function getListByDealer(dealerId As Guid, LanguageId As Guid) As ProductCodeSearchByDealerDV
         Try
             Dim dal As New ProductCodeDAL
             Return New ProductCodeSearchByDealerDV(dal.LoadListByDealer(dealerId, LanguageId).Tables(0))
@@ -1516,8 +1516,8 @@ Public Class ProductCode
         End Try
     End Function
 
-    Public Shared Function getListByDealerForWS(ByVal dealerId As Guid, ByVal WarrSalesDate As Date,
-                ByVal sort_by As Integer, ByVal asc_desc_order As String, ByVal productClassCode As String) _
+    Public Shared Function getListByDealerForWS(dealerId As Guid, WarrSalesDate As Date,
+                sort_by As Integer, asc_desc_order As String, productClassCode As String) _
                                 As ProductCodeSearchByDealerDVForWS
         Try
             Dim dal As New ProductCodeDAL
@@ -1540,7 +1540,7 @@ Public Class ProductCode
     End Function
 
     'Used by Olita Web Service 
-    Public Shared Function getDealerProductsInfo(ByRef ds As DataSet, ByVal dealerId As Guid) As DataSet
+    Public Shared Function getDealerProductsInfo(ByRef ds As DataSet, dealerId As Guid) As DataSet
         Try
             Dim dal As New ProductCodeDAL
             Dim objDealer As New Dealer(dealerId)
@@ -1557,7 +1557,7 @@ Public Class ProductCode
         End Try
     End Function
 
-    Public Shared Function GetProductCodeId(ByVal DealerId As Guid, ByVal product_code As String) As DataView
+    Public Shared Function GetProductCodeId(DealerId As Guid, product_code As String) As DataView
         Try
             Dim dal As New ProductCodeDAL
             Return New DataView(dal.GetProductCodeId(DealerId, product_code).Tables(0))
@@ -1566,7 +1566,7 @@ Public Class ProductCode
         End Try
     End Function
 
-    Public Shared Function MethodOfRepairByPriceRecords(ByVal ProductCodeId As Guid) As Boolean
+    Public Shared Function MethodOfRepairByPriceRecords(ProductCodeId As Guid) As Boolean
         Try
             Dim dal As New ProductCodeDAL, dv As DataView, oNoOfRecords As Integer
             Dim blnMethodOfRepairByPriceRecords As Boolean = False
@@ -1607,7 +1607,7 @@ Public Class ProductCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1628,7 +1628,7 @@ Public Class ProductCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1647,7 +1647,7 @@ Public Class ProductCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1671,7 +1671,7 @@ Public Class ProductCode
         End Get
     End Property
 
-    Public Sub UpdateRegions(ByVal selectedRegionGuidStrCollection As Hashtable)
+    Public Sub UpdateRegions(selectedRegionGuidStrCollection As Hashtable)
         If selectedRegionGuidStrCollection.Count = 0 Then
             If Not IsDeleted Then Delete()
         Else
@@ -1697,7 +1697,7 @@ Public Class ProductCode
             Next
         End If
     End Sub
-    Public Sub AttachRegions(ByVal selectedRegionGuidStrCollection As ArrayList)
+    Public Sub AttachRegions(selectedRegionGuidStrCollection As ArrayList)
         Dim Prdregionstr As String
         For Each Prdregionstr In selectedRegionGuidStrCollection
             Dim Prdregion As ProductRegion = ProductRegionChildren.GetNewChild
@@ -1708,7 +1708,7 @@ Public Class ProductCode
     End Sub
 
 
-    Public Function AddRegionsChild(ByVal RegionId As Guid) As ProductRegion
+    Public Function AddRegionsChild(RegionId As Guid) As ProductRegion
         Dim oPrdRegion As ProductRegion
 
         oPrdRegion = New ProductRegion(Dataset)
@@ -1717,7 +1717,7 @@ Public Class ProductCode
         Return oPrdRegion
 
     End Function
-    Public Sub DetachRegions(ByVal selectedRegionGuidStrCollection As ArrayList)
+    Public Sub DetachRegions(selectedRegionGuidStrCollection As ArrayList)
         Dim Prdregionstr As String
         For Each Prdregionstr In selectedRegionGuidStrCollection
             Dim Prdregion As ProductRegion = ProductRegionChildren.Find(New Guid(Prdregionstr))
@@ -1726,7 +1726,7 @@ Public Class ProductCode
         Next
     End Sub
 
-    Public Function GetAvailableRegions(ByVal countryId As Guid) As DataView
+    Public Function GetAvailableRegions(countryId As Guid) As DataView
         'Dim dv As DataView = LookupListNew.GetProductCodeByCompanyLookupList(ElitaPlusIdentity.Current.'ActiveUser.Companies)
         '       Dim sequenceCondition As String = GetProductCodesLookupListSelectedSequenceFilter(dv, False)
         Dim dv As DataView
@@ -1747,7 +1747,7 @@ Public Class ProductCode
         Return dv
     End Function
 
-    Public Function GetSelectedRegions(ByVal countryId As Guid) As DataView
+    Public Function GetSelectedRegions(countryId As Guid) As DataView
 
         Dim dv As DataView
         Dim sequenceCondition As String
@@ -1765,7 +1765,7 @@ Public Class ProductCode
         Return dv
     End Function
 
-    Protected Function GetRegionsLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetRegionsLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim ProdRegionBO As ProductRegion
         Dim inClause As String = "(-1"
@@ -1793,7 +1793,7 @@ Public Class ProductCode
         End Get
     End Property
 
-    Public Sub AttachDeviceTypes(ByVal selecteddeviceTypeGuidStrCollection As ArrayList)
+    Public Sub AttachDeviceTypes(selecteddeviceTypeGuidStrCollection As ArrayList)
         Dim Prddevicetypestr As String
         For Each Prddevicetypestr In selecteddeviceTypeGuidStrCollection
             Dim Prddevicetype As ProductEquipment = ProductDeviceTypeChildren.GetNewChild
@@ -1806,7 +1806,7 @@ Public Class ProductCode
     End Sub
 
 
-    Public Sub DetachDeviceTypes(ByVal selecteddeviceTypeGuidStrCollection As ArrayList)
+    Public Sub DetachDeviceTypes(selecteddeviceTypeGuidStrCollection As ArrayList)
         Dim Prddevicetypestr As String
         For Each Prddevicetypestr In selecteddeviceTypeGuidStrCollection
             Dim Prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(New Guid(Prddevicetypestr))
@@ -1817,7 +1817,7 @@ Public Class ProductCode
         Next
     End Sub
 
-    Public Function GetAvailableDeviceTypes(ByVal DeviceType As String) As DataView
+    Public Function GetAvailableDeviceTypes(DeviceType As String) As DataView
         'Dim dv As DataView = LookupListNew.GetProductCodeByCompanyLookupList(ElitaPlusIdentity.Current.'ActiveUser.Companies)
         '       Dim sequenceCondition As String = GetProductCodesLookupListSelectedSequenceFilter(dv, False)
         Dim dv As DataView
@@ -1839,7 +1839,7 @@ Public Class ProductCode
         Return dv
     End Function
 
-    Public Function GetSelectedDeviceTypes(ByVal DeviceType As String) As DataView
+    Public Function GetSelectedDeviceTypes(DeviceType As String) As DataView
 
         Dim dv As DataView
         Dim sequenceCondition As String
@@ -1858,7 +1858,7 @@ Public Class ProductCode
         Return dv
     End Function
 
-    Public Function GetDeviceTypesProdEquipList(ByVal deviceType As String) As Generic.List(Of ProductEquipment)
+    Public Function GetDeviceTypesProdEquipList(deviceType As String) As Generic.List(Of ProductEquipment)
         Dim dtList As New Generic.List(Of ProductEquipment)
 
         Dim i As Integer
@@ -1872,7 +1872,7 @@ Public Class ProductCode
         Next
         Return dtList
     End Function
-    Public Function AddDeviceTypesProdEquip(ByVal deviceTypeId As Guid) As ProductEquipment
+    Public Function AddDeviceTypesProdEquip(deviceTypeId As Guid) As ProductEquipment
 
         Dim prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(deviceTypeId)
         If prddevicetype Is Nothing Then
@@ -1886,7 +1886,7 @@ Public Class ProductCode
         prddevicetype.Save()
         Return (prddevicetype)
     End Function
-    Public Sub RemoveDeviceTypesProdEquip(ByVal deviceTypeId As Guid)
+    Public Sub RemoveDeviceTypesProdEquip(deviceTypeId As Guid)
 
         Dim prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(deviceTypeId)
         If Not prddevicetype Is Nothing Then
@@ -1894,19 +1894,19 @@ Public Class ProductCode
         End If
 
     End Sub
-    Public Sub SaveDeviceTypesProdEquip(ByVal workingItemPrddevicetype As ProductEquipment)
+    Public Sub SaveDeviceTypesProdEquip(workingItemPrddevicetype As ProductEquipment)
         Dim prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(workingItemPrddevicetype.DeviceTypeId)
         If Not prddevicetype Is Nothing Then
             prddevicetype.MethodOfRepairXcd = workingItemPrddevicetype.MethodOfRepairXcd
             prddevicetype.Save()
         End If
     End Sub
-    Public Function GetDeviceTypesProdEquip(ByVal deviceTypeId As Guid) As ProductEquipment
+    Public Function GetDeviceTypesProdEquip(deviceTypeId As Guid) As ProductEquipment
         Dim prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(deviceTypeId)
         Return (prddevicetype)
     End Function
 
-    Protected Function GetDeviceTypesLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetDeviceTypesLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim ProdDeviceTypeBO As ProductEquipment
         Dim inClause As String = "(-1"
@@ -1924,7 +1924,7 @@ Public Class ProductCode
 
     End Function
 
-    Public Function GetDeviceTypes(ByVal DeviceType As String) As DataView
+    Public Function GetDeviceTypes(DeviceType As String) As DataView
         Try
 
             Dim dv As DataView
@@ -1963,14 +1963,14 @@ Public Class ProductCode
     End Property
 
 
-    Public Function GetProductPolicyDetailChild(ByVal childId As Guid) As ProductPolicy
+    Public Function GetProductPolicyDetailChild(childId As Guid) As ProductPolicy
         Dim Prdpolicy As ProductPolicy = ProductPolicyDetailChildren.Find(childId)
         Return Prdpolicy
 
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
-    Public Function RemoveProductPolicyDetailChild(ByVal childId As Guid)
+    Public Function RemoveProductPolicyDetailChild(childId As Guid)
         ProductPolicyDetailChildren.Delete(childId)
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
@@ -1989,8 +1989,8 @@ Public Class ProductCode
     '    Return newParentProd
     'End Function
 
-    Public Sub CreateProductPolicyDetail(ByVal TypeOfEquipId As Guid, ByVal TypeEqip As String, ByVal ProdCodeId As Guid, ByVal ExtProdCodeId As Guid,
-                                        ByVal Extprodcode As String, ByVal policy As Long)
+    Public Sub CreateProductPolicyDetail(TypeOfEquipId As Guid, TypeEqip As String, ProdCodeId As Guid, ExtProdCodeId As Guid,
+                                        Extprodcode As String, policy As Long)
         Dim MyPymntGrpDetailChildBO As ProductPolicy
 
         MyPymntGrpDetailChildBO = GetNewProductPolicyDetailChild()
@@ -2019,14 +2019,14 @@ Public Class ProductCode
     End Property
 
 
-    Public Function GetProductRewardsDetailChild(ByVal childId As Guid) As ProductRewards
+    Public Function GetProductRewardsDetailChild(childId As Guid) As ProductRewards
         Dim Prdrewards As ProductRewards = ProductRewardsDetailChildren.Find(childId)
         Return Prdrewards
 
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
-    Public Function RemoveProductRewardsDetailChild(ByVal childId As Guid)
+    Public Function RemoveProductRewardsDetailChild(childId As Guid)
         ProductRewardsDetailChildren.Delete(childId)
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
@@ -2044,8 +2044,8 @@ Public Class ProductCode
     '    Return newParentProd
     'End Function
 
-    Public Sub CreateProductRewardsDetail(ByVal ProdCodeId As Guid, ByVal RewardName As String, ByVal RewardType As String, ByVal RewardAmount As Integer, ByVal MinPurchasePrice As Integer,
-                                        ByVal DaysToRedeem As Integer, ByVal EffectiveDate As Date, ByVal ExpirationDate As Date)
+    Public Sub CreateProductRewardsDetail(ProdCodeId As Guid, RewardName As String, RewardType As String, RewardAmount As Integer, MinPurchasePrice As Integer,
+                                        DaysToRedeem As Integer, EffectiveDate As Date, ExpirationDate As Date)
         Dim MyPymntGrpDetailChildBO As ProductRewards
 
         MyPymntGrpDetailChildBO = GetNewProductRewardsDetailChild()
@@ -2074,14 +2074,14 @@ Public Class ProductCode
     End Property
 
 
-    Public Function GetProductBenefitsDetailChild(ByVal childId As Guid) As ProductEquipment
+    Public Function GetProductBenefitsDetailChild(childId As Guid) As ProductEquipment
         Dim Prdbenefits As ProductEquipment = ProductBenefitsDetailChildren.Find(childId)
         Return Prdbenefits
 
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
-    Public Function RemoveProductBenefitsDetailChild(ByVal childId As Guid)
+    Public Function RemoveProductBenefitsDetailChild(childId As Guid)
         ProductBenefitsDetailChildren.Delete(childId)
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
@@ -2120,7 +2120,7 @@ Public Class ProductCode
         Return productDepreciationScd
     End Function
 
-    Public Sub AddProductDepreciationScdChild(ByVal depreciationScheduleId As Guid)
+    Public Sub AddProductDepreciationScdChild(depreciationScheduleId As Guid)
 
         Dim productDepreciationScd As DepreciationScdRelation = GetProductDepreciationScdChild()
 
@@ -2143,11 +2143,11 @@ Public Class ProductCode
     Public NotInheritable Class Valid_BillingFrequency
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BILLING_FREQ_REQD_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             If (Not obj.DealerId = Guid.Empty) Then
@@ -2169,11 +2169,11 @@ Public Class ProductCode
     Public NotInheritable Class Valid_Numb_Of_Installment
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NUMBER_OF_INSTALLMENT_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             If (Not obj.DealerId = Guid.Empty) Then
@@ -2202,11 +2202,11 @@ Public Class ProductCode
     Public NotInheritable Class MandatoryNoOfRepairClaimsAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
             If Not obj.NumOfClaims Is Nothing And obj.NumOfRepairClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
@@ -2221,11 +2221,11 @@ Public Class ProductCode
     Public NotInheritable Class ValidNoOfRepairClaims
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NO_OF_REPAIR_CLAIMS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfRepairClaims Is Nothing Then
@@ -2243,11 +2243,11 @@ Public Class ProductCode
     Public NotInheritable Class MandatoryNoOfReplacementClaimsAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
             If Not obj.NumOfClaims Is Nothing And obj.NumOfReplacementClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
@@ -2261,11 +2261,11 @@ Public Class ProductCode
     Public NotInheritable Class ValidNoOfReplacementClaims
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NO_OF_REPLACEMENT_CLAIMS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfReplacementClaims Is Nothing Then
@@ -2283,11 +2283,11 @@ Public Class ProductCode
     Public NotInheritable Class ListOfDeviceGroupsValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.LISTOFDEVICEGRPSVALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             If Not obj.AllowRegisteredItems Is Nothing And obj.AllowRegisteredItems = "YESNO-Y" Then
@@ -2302,11 +2302,11 @@ Public Class ProductCode
     Public NotInheritable Class UpdateReplaceRegItemsIdValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.UPDATEREPLACEREGITEMSIDVALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             Return (Not obj.AllowRegisteredItems Is Nothing) AndAlso
@@ -2321,11 +2321,11 @@ Public Class ProductCode
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidateProdLiabilityLimitPolicy
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_PRODLIABILITY_LIMIT_POLICY_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             ' When "Claim/Liability Limit Base On" is set to a value other than "Not Applicable", "Claim/Liability Limit Policy" is requied
@@ -2344,11 +2344,11 @@ Public Class ProductCode
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidateClaimLiabilityLimitAppliedTo
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CLAIM_LIABILITY_LIMIT_TO)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             REM When the " Claim/Liability limit Base On" flag is set to any value other than "Not Applicable",
@@ -2369,11 +2369,11 @@ Public Class ProductCode
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidateProdLiabilityLimitBaseOn
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_PROD_CLAIM_LIABILITY_LIMIT_BASEON_DEP)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             If ((Not obj Is Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) _
@@ -2408,11 +2408,11 @@ Public Class ProductCode
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidateNumOfClaims
         Inherits ValidBaseAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NUMOF_CLAIMS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
 
@@ -2457,11 +2457,11 @@ Public Class ProductCode
     Public NotInheritable Class BenefitEligibleActionValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BENEFIT_ELIGIBLE_FLAG_MUST_BE_YES)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
@@ -2477,7 +2477,7 @@ Public Class ProductCode
 
 #End Region
 
-    Private Sub CreateProductPolicyDetail(ByVal guid As Guid, ByVal EqiupDesc As String, ByVal guid1 As Guid, ByVal guid2 As Guid)
+    Private Sub CreateProductPolicyDetail(guid As Guid, EqiupDesc As String, guid1 As Guid, guid2 As Guid)
         Throw New NotImplementedException
     End Sub
 

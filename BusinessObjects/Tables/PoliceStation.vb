@@ -5,7 +5,7 @@ Public Class PoliceStation
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,20 +19,20 @@ Public Class PoliceStation
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -54,7 +54,7 @@ Public Class PoliceStation
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PoliceStationDAL
             If _isDSCreator Then
@@ -348,7 +348,7 @@ Public Class PoliceStation
 
     End Sub
 
-    Public Sub Copy(ByVal original As PoliceStation)
+    Public Sub Copy(original As PoliceStation)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing police station")
         End If
@@ -382,14 +382,14 @@ Public Class PoliceStation
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal CountryMask As Guid) As PoliceStationSearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String, CountryMask As Guid) As PoliceStationSearchDV
         Try
             Dim dal As New PoliceStationDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -406,11 +406,11 @@ Public Class PoliceStation
     Public NotInheritable Class DistrictCodeValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
             If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictCode) Then
@@ -427,11 +427,11 @@ Public Class PoliceStation
     Public NotInheritable Class DistrictNameValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
             If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictName) Then

@@ -12,7 +12,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 #End Region
 
 #Region "Constructor"
-    Public Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer)
+    Public Sub New(threadCount As Integer, transactionSize As Integer)
         MyBase.New(True) '' Custom Save Constructor
         YesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
         ServiceClassRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__REPAIR)
@@ -76,12 +76,12 @@ Public NotInheritable Class VendorAuthorizationFileLoad
     End Property
 #End Region
 
-    Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
+    Protected Overrides Function CreateFileLoadHeader(fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
         ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
         Return ClaimLoadFileProcessed
     End Function
 
-    Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
+    Protected Overrides Function CreateFileLoadDetail(fileLoadDetailId As System.Guid, headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
         Dim returnValue As ClaimloadReconWrk
         returnValue = New ClaimloadReconWrk(fileLoadDetailId, headerRecord.Dataset)
         Return returnValue
@@ -110,7 +110,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         Next
     End Sub
 
-    Private Function GetEquipmentTypeCode(ByVal device As String) As String
+    Private Function GetEquipmentTypeCode(device As String) As String
         If (device Is Nothing) Then
             Return Codes.EQUIPMENT_COND__NEWORUSED
         Else
@@ -127,7 +127,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         End If
     End Function
 
-    Private Sub InsertOrUpdateReplacementPart(ByVal sku As String, ByVal description As String, ByVal claim As ClaimBase)
+    Private Sub InsertOrUpdateReplacementPart(sku As String, description As String, claim As ClaimBase)
         If (sku Is Nothing OrElse sku.Trim().Length = 0) Then Return
         If (description Is Nothing OrElse description.Trim().Length = 0) Then Return
 
@@ -140,7 +140,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         oReplacementPart.Save()
     End Sub
 
-    Private Sub UpdateClaimAuthorization(ByVal claimAuthorization As ClaimAuthorization, ByVal reconRecord As ClaimloadReconWrk)
+    Private Sub UpdateClaimAuthorization(claimAuthorization As ClaimAuthorization, reconRecord As ClaimloadReconWrk)
         claimAuthorization.DeviceReceptionDate = reconRecord.DeviceReceptionDate
         claimAuthorization.ProblemFound = reconRecord.ProblemFound
         claimAuthorization.TechnicalReport = reconRecord.TechnicalReport
@@ -153,7 +153,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         End If
     End Sub
 
-    Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As ClaimloadReconWrk, ByVal familyDataSet As DataSet) As ProcessResult
+    Protected Overrides Function ProcessDetailRecord(reconRecord As ClaimloadReconWrk, familyDataSet As DataSet) As ProcessResult
         Try
             Dim claim As MultiAuthClaim
             Dim claimAuthorization As ClaimAuthorization
@@ -896,7 +896,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         End Try
     End Function
 
-    Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
+    Protected Overrides Sub CustomSave(headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
         headerRecord.Save(Claim)
     End Sub

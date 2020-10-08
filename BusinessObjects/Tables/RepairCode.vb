@@ -7,7 +7,7 @@ Public Class RepairCode
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -21,14 +21,14 @@ Public Class RepairCode
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -50,7 +50,7 @@ Public Class RepairCode
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RepairCodeDAL
             If _isDSCreator Then
@@ -168,8 +168,8 @@ Public Class RepairCode
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String, _
-                                         ByVal companyGroupId As Guid) As RepairCodeSearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String, _
+                                         companyGroupId As Guid) As RepairCodeSearchDV
         Try
             Dim dal As New RepairCodeDAL
             Return New RepairCodeSearchDV(dal.LoadList(descriptionMask, codeMask, companyGroupId).Tables(0))
@@ -178,7 +178,7 @@ Public Class RepairCode
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -213,7 +213,7 @@ Public Class RepairCode
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

@@ -19,7 +19,7 @@ Public Class UpdateSubscriberStatus
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdateSubscriberStatusDs)
+    Public Sub New(ds As UpdateSubscriberStatusDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -95,7 +95,7 @@ Public Class UpdateSubscriberStatus
 #End Region
 
 #Region "Private Members"
-    Private Sub MapDataSet(ByVal ds As UpdateSubscriberStatusDs)
+    Private Sub MapDataSet(ds As UpdateSubscriberStatusDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -116,7 +116,7 @@ Public Class UpdateSubscriberStatus
     'Initialization code for new objects
     Private Sub Initialize()
     End Sub
-    Private Sub Load(ByVal ds As UpdateSubscriberStatusDs)
+    Private Sub Load(ds As UpdateSubscriberStatusDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -134,7 +134,7 @@ Public Class UpdateSubscriberStatus
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As UpdateSubscriberStatusDs)
+    Private Sub PopulateBOFromWebService(ds As UpdateSubscriberStatusDs)
         Try
             If ds.UpdateSubscriberStatus.Count = 0 Then Exit Sub
             With ds.UpdateSubscriberStatus.Item(0)

@@ -90,7 +90,7 @@ Public Class GalaxyUpdateServiceCenter
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GalaxyUpdateServiceCenterDs)
+    Public Sub New(ds As GalaxyUpdateServiceCenterDs)
         MyBase.New()
         MapDataSet(ds)
         Load(ds)
@@ -239,7 +239,7 @@ Public Class GalaxyUpdateServiceCenter
 
 #Region "Private Members"
 
-    Private Sub MapDataSet(ByVal ds As GalaxyUpdateServiceCenterDs)
+    Private Sub MapDataSet(ds As GalaxyUpdateServiceCenterDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -265,7 +265,7 @@ Public Class GalaxyUpdateServiceCenter
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub Load(ByVal ds As GalaxyUpdateServiceCenterDs)
+    Private Sub Load(ds As GalaxyUpdateServiceCenterDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -283,7 +283,7 @@ Public Class GalaxyUpdateServiceCenter
         End Try
     End Sub
 
-    Public Function GetRegionID(ByVal regionCode As String, ByVal countryID As Guid) As Guid
+    Public Function GetRegionID(regionCode As String, countryID As Guid) As Guid
         Dim regionID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetRegionLookupList(countryID)
 
@@ -292,8 +292,8 @@ Public Class GalaxyUpdateServiceCenter
         Return regionID
     End Function
 
-    Public Sub SetAddress(ByVal address1 As String, ByVal address2 As String, ByVal city As String, _
-    ByVal regionCode As String, ByVal postalCode As String, ByVal countryID As Guid)
+    Public Sub SetAddress(address1 As String, address2 As String, city As String, _
+    regionCode As String, postalCode As String, countryID As Guid)
 
         Address = address1
         Me.City = city
@@ -305,7 +305,7 @@ Public Class GalaxyUpdateServiceCenter
 
     End Sub
 
-    Public Function GetYesOrNo(ByVal yesOrNoStr As String) As Boolean
+    Public Function GetYesOrNo(yesOrNoStr As String) As Boolean
         Dim yesOrNo As Boolean = False
 
         If (Not yesOrNoStr Is Nothing And yesOrNoStr.Equals("Y")) Then
@@ -315,7 +315,7 @@ Public Class GalaxyUpdateServiceCenter
         Return yesOrNo
     End Function
 
-    Public Function GetDealerID(ByVal originalDealerCode As String) As Guid
+    Public Function GetDealerID(originalDealerCode As String) As Guid
         Dim dealerId As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
 
@@ -324,7 +324,7 @@ Public Class GalaxyUpdateServiceCenter
         Return dealerId
     End Function
 
-    Public Function GetPaymentMethodID(ByVal paymentMethod As String) As Guid
+    Public Function GetPaymentMethodID(paymentMethod As String) As Guid
         Dim paymentMethodId As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetPaymentMethodLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -361,7 +361,7 @@ Public Class GalaxyUpdateServiceCenter
     '    Return serviceGroupID
     'End Function
 
-    Public Function GetCountryID(ByVal countryCode As String) As Guid
+    Public Function GetCountryID(countryCode As String) As Guid
         Dim countryID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetCountryLookupList()
 
@@ -370,7 +370,7 @@ Public Class GalaxyUpdateServiceCenter
         Return countryID
     End Function
 
-    Private Function GetAccountTypeID(ByVal AccountType As String) As Guid
+    Private Function GetAccountTypeID(AccountType As String) As Guid
         Dim accountTypeID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetAccountTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -379,7 +379,7 @@ Public Class GalaxyUpdateServiceCenter
         Return accountTypeID
     End Function
 
-    Public Function SetDataToNotNull(ByVal data As String, ByVal replaceWith As String) As String
+    Public Function SetDataToNotNull(data As String, replaceWith As String) As String
         Dim retStr As String
 
         If (data Is Nothing Or data = "") Then
@@ -391,7 +391,7 @@ Public Class GalaxyUpdateServiceCenter
         Return retStr
     End Function
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GalaxyUpdateServiceCenterDs)
+    Private Sub PopulateBOFromWebService(ds As GalaxyUpdateServiceCenterDs)
         Try
             If ds.GalaxyUpdateServiceCenter.Count = 0 Then Exit Sub
             With ds.GalaxyUpdateServiceCenter.Item(0)
@@ -971,7 +971,7 @@ Public Property RegistrationNumber As String
     End Property
 
     'Added for REQ-452
-    Public Function GetMethodOfRepairID(ByVal serviceType As String) As ArrayList
+    Public Function GetMethodOfRepairID(serviceType As String) As ArrayList
         Dim MethodOfRepairID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetMethodOfRepairLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 

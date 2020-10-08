@@ -6,7 +6,7 @@ Public Class CurrencyConversion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -25,20 +25,20 @@ Public Class CurrencyConversion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -60,7 +60,7 @@ Public Class CurrencyConversion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CurrencyConversionDAL
             If _isDSCreator Then
@@ -269,7 +269,7 @@ Public Class CurrencyConversion
         'End If
 
     End Sub
-    Public Sub Copy(ByVal original As CurrencyConversion)
+    Public Sub Copy(original As CurrencyConversion)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Object")
         End If
@@ -278,7 +278,7 @@ Public Class CurrencyConversion
 
     End Sub
 
-    Private Sub LoadLastRates(ByVal dealerId As Guid, ByVal currency1Id As Guid, ByVal currency2Id As Guid)
+    Private Sub LoadLastRates(dealerId As Guid, currency1Id As Guid, currency2Id As Guid)
         Dim dal As New CurrencyConversionDAL
         dal.GetLastRate(Me.DealerId, Me.Currency1Id, Me.Currency2Id)
     End Sub
@@ -298,7 +298,7 @@ Public Class CurrencyConversion
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal dealerId As Guid, ByVal FromDate As String, ByVal ToDate As String) As CurrencyRateDV
+    Public Shared Function GetList(dealerId As Guid, FromDate As String, ToDate As String) As CurrencyRateDV
         Dim dal As New CurrencyConversionDAL
         Dim ds As Dataset
         Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
@@ -310,7 +310,7 @@ Public Class CurrencyConversion
 
     End Function
 
-    Public Shared Function FindMaxdate(ByVal dealerId As Guid, ByVal currency1Id As Guid, ByVal currency2Id As Guid) As CurrencyRateDV
+    Public Shared Function FindMaxdate(dealerId As Guid, currency1Id As Guid, currency2Id As Guid) As CurrencyRateDV
 
         Try
             Dim dal As New CurrencyConversionDAL
@@ -323,7 +323,7 @@ Public Class CurrencyConversion
 
     End Function
 
-    Public Shared Function LoadLastRate(ByVal dealerId As Guid, ByVal currency1Id As Guid, ByVal currency2Id As Guid) As Guid
+    Public Shared Function LoadLastRate(dealerId As Guid, currency1Id As Guid, currency2Id As Guid) As Guid
 
         Try
             Dim dal As New CurrencyConversionDAL
@@ -359,7 +359,7 @@ Public Class CurrencyConversion
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -373,11 +373,11 @@ Public Class CurrencyConversion
        Public NotInheritable Class ValidEffectiveAndExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EFFECTIVE_BIGGER_EXPIRATION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CurrencyConversion = CType(objectToValidate, CurrencyConversion)
             'If obj.DealerId.Equals(Guid.Empty) Then Return True
             If obj.EffectiveDate Is Nothing OrElse obj.ExpirationDate Is Nothing Then Return True
@@ -395,11 +395,11 @@ Public Class CurrencyConversion
    Public NotInheritable Class ValidEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EFFECTIVE_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CurrencyConversion = CType(objectToValidate, CurrencyConversion)
             'If obj.DealerId.Equals(Guid.Empty) Then Return True
             If obj.EffectiveDate Is Nothing Then Return True
@@ -436,11 +436,11 @@ Public Class CurrencyConversion
    Public NotInheritable Class ValidCurrencies
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_INVALID_CURRENCY_COMBINATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CurrencyConversion = CType(objectToValidate, CurrencyConversion)
 
             If obj.Currency1Id.Equals(obj.Currency2Id) Then

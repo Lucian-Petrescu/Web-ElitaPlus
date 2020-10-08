@@ -38,7 +38,7 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Sub New(ByVal message As String, ByVal innerException As Exception)
+    Public Sub New(message As String, innerException As Exception)
 
         'MyBase.New("Elita Web Service Error: " & innerException.Message, message, innerException)
         MyBase.New(innerException.Message, message, innerException)
@@ -67,14 +67,14 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	9/19/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Sub New(ByVal sErrMsg As String, ByVal sErrCode As String)
+    Public Sub New(sErrMsg As String, sErrCode As String)
 
         MyBase.New(sErrMsg, sErrCode, Nothing)
         SourceException = SoapException.ClientFaultCode
 
     End Sub
 
-    Public Sub New(ByVal sErrMsg As String)
+    Public Sub New(sErrMsg As String)
 
         MyBase.New(sErrMsg, sErrMsg, Nothing)
         SourceException = SoapException.ClientFaultCode
@@ -110,7 +110,7 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Sub New(ByVal ex As ElitaPlusException)
+    Public Sub New(ex As ElitaPlusException)
 
         MyBase.New("Elita Web Service Error:" & ex.Message, ex.Code, ex.InnerException)
         SourceException = SoapException.ServerFaultCode
@@ -175,9 +175,9 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Private Function BuilErrorXML(ByVal errorCode As String, _
-                                  ByVal errorSource As String, _
-                                  ByVal ex As Exception, _
+    Private Function BuilErrorXML(errorCode As String, _
+                                  errorSource As String, _
+                                  ex As Exception, _
                                   Optional ByVal bTranslate As Boolean = True) As XmlNode
 
         ' Translate the error 
@@ -279,7 +279,7 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Private Function GetExceptionInfo(ByVal ex As Exception) As String
+    Private Function GetExceptionInfo(ex As Exception) As String
 
         If IsNothing(ex) Then Return String.Empty
 

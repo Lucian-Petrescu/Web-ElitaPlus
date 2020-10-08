@@ -13,7 +13,7 @@ Namespace Documents
 #Region "Constructors"
 
         'New BO attaching to a BO family
-        Friend Sub New(ByVal pDataTable As DataTable)
+        Friend Sub New(pDataTable As DataTable)
             MyBase.New(False)
             Dataset = pDataTable.DataSet
             Dim newRow As DataRow = pDataTable.NewRow
@@ -23,7 +23,7 @@ Namespace Documents
             Initialize()
         End Sub
 
-        Public Sub New(ByVal row As DataRow)
+        Public Sub New(row As DataRow)
             MyBase.New(False)
             Dataset = row.Table.DataSet
             Me.Row = row
@@ -150,11 +150,11 @@ Namespace Documents
         Public NotInheritable Class CheckDuplicateCode
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, DUPLICATE_FILE_TYPE_CODE)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As FileType = CType(objectToValidate, FileType)
                 If (DocumentManager.Current.FileTypes.Where(Function(ft) ft.Code = obj.Code AndAlso ft.Id <> obj.Id).Count() = 0) Then
                     Return True
@@ -168,11 +168,11 @@ Namespace Documents
         Public NotInheritable Class CheckDuplicateExtension
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, DUPLICATE_FILE_TYPE_EXTENSION)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As FileType = CType(objectToValidate, FileType)
                 If (DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = obj.Extension AndAlso ft.Id <> obj.Id).Count() = 0) Then
                     Return True

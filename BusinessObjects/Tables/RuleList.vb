@@ -6,7 +6,7 @@ Public Class RuleList
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class RuleList
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class RuleList
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RuleListDAL
             If _isDSCreator Then
@@ -206,7 +206,7 @@ Public Class RuleList
         End Try
     End Sub
 
-    Public Shared Function GetList(ByVal code As String, ByVal description As String, ByVal ActiveOn As DateTimeType) As RuleListSearchDV
+    Public Shared Function GetList(code As String, description As String, ActiveOn As DateTimeType) As RuleListSearchDV
 
         Try
             Return New RuleListSearchDV((New RuleListDAL).GetList(code, description, ActiveOn).Tables(0))
@@ -215,7 +215,7 @@ Public Class RuleList
         End Try
     End Function
 
-    Public Sub Copy(ByVal original As RuleList)
+    Public Sub Copy(original As RuleList)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Question")
         End If
@@ -294,35 +294,35 @@ Public Class RuleList
         Public Const COL_NAME_EXPIRATION As String = RuleListDAL.COL_NAME_EXPIRATION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property RuleListId(ByVal row) As Guid
+        Public Shared ReadOnly Property RuleListId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_RULE_LIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Effective(row As DataRow) As String
             Get
                 Return row(COL_NAME_EFFECTIVE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Expiration(row As DataRow) As String
             Get
                 Return row(COL_NAME_EXPIRATION).ToString
             End Get
@@ -365,7 +365,7 @@ Public Class RuleList
         Public Const COL_NAME_EFFECTIVE As String = RuleListDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = RuleListDAL.COL_NAME_EXPIRATION
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -381,7 +381,7 @@ Public Class RuleList
         End Function
     End Class
 
-    Public Function GetRuleListDetailChild(ByVal childId As Guid) As RuleListDetail
+    Public Function GetRuleListDetailChild(childId As Guid) As RuleListDetail
         Return CType(RuleChildren.GetChild(childId), RuleListDetail)
     End Function
 
@@ -395,7 +395,7 @@ Public Class RuleList
         Return newRuleListDetail
     End Function
 
-    Sub PopulateDealerList(ByVal dealerlist As ArrayList)
+    Sub PopulateDealerList(dealerlist As ArrayList)
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
@@ -438,7 +438,7 @@ Public Class RuleList
         End Try
     End Sub
 
-    Sub PopulateCompanyList(ByVal companylist As ArrayList)
+    Sub PopulateCompanyList(companylist As ArrayList)
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
@@ -512,7 +512,7 @@ Public Class RuleList
         Public Const COL_NAME_EFFECTIVE As String = DealerRuleListDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = DealerRuleListDAL.COL_NAME_EXPIRATION
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -528,7 +528,7 @@ Public Class RuleList
         End Function
     End Class
 
-    Public Function GetDealerRuleListChild(ByVal childId As Guid) As DealerRuleList
+    Public Function GetDealerRuleListChild(childId As Guid) As DealerRuleList
         Return CType(RuleChildren.GetChild(childId), DealerRuleList)
     End Function
 
@@ -542,7 +542,7 @@ Public Class RuleList
         Return newDealerRuleList
     End Function
 
-    Sub PopulateRuleList(ByVal RuleDetail As ArrayList)
+    Sub PopulateRuleList(RuleDetail As ArrayList)
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
@@ -614,7 +614,7 @@ Public Class RuleList
         Public Const COL_NAME_EFFECTIVE As String = CompanyRuleListDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = CompanyRuleListDAL.COL_NAME_EXPIRATION
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -630,7 +630,7 @@ Public Class RuleList
         End Function
     End Class
 
-    Public Function GetCompanyRuleListChild(ByVal childId As Guid) As CompanyRuleList
+    Public Function GetCompanyRuleListChild(childId As Guid) As CompanyRuleList
         Return CType(RuleChildren.GetChild(childId), CompanyRuleList)
     End Function
 

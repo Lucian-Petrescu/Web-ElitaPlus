@@ -12,7 +12,7 @@ Public Class VSCRateVersion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -26,20 +26,20 @@ Public Class VSCRateVersion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class VSCRateVersion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCRateVersionDAL
             If _isDSCreator Then
@@ -224,9 +224,9 @@ Public Class VSCRateVersion
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal SearchBy As VSCRateVersionDAL.SearchByType, ByVal companyGroupID As Guid,
-                                ByVal PlanID As Guid, ByVal Code As String, ByVal Name As String,
-                                ByVal EffectiveDate As Date, Optional ByVal HighestVersionOnly As Boolean = True,
+    Public Shared Function getList(SearchBy As VSCRateVersionDAL.SearchByType, companyGroupID As Guid,
+                                PlanID As Guid, Code As String, Name As String,
+                                EffectiveDate As Date, Optional ByVal HighestVersionOnly As Boolean = True,
                                 Optional ByVal iVersionNumber As Integer = 0) As DataView
         Try
             Dim dal As New VSCRateVersionDAL
@@ -253,11 +253,11 @@ Public Class VSCRateVersion
     Public NotInheritable Class ValidNewExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, MSG_INVALID_EXPIRATION_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As VSCRateVersion = CType(objectToValidate, VSCRateVersion)
 
             If obj.EffectiveDate.Value > obj.ExpirationDate.Value Then

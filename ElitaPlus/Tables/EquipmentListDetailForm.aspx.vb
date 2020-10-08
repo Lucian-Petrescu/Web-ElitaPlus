@@ -200,26 +200,31 @@
         Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 '#1 - Restrict to save backdated list in edit mode
-                If State.EffectiveDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
-                    If DateHelper.GetDateValue(State.MyBO.Effective.ToString) <> DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) Then
-                        If DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) < EquipmentListDetail.GetCurrentDateTime() Then
-                            State.IsInvalidEffective = True
-                        Else
-                            State.IsInvalidEffective = False
-                        End If
+                If _
+                    State.EffectiveDate IsNot Nothing AndAlso State.MyBO.IsNew = False AndAlso
+                    DateHelper.GetDateValue(State.MyBO.Effective.ToString) <>
+                    DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) Then
+                    If _
+                        DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) <
+                        EquipmentListDetail.GetCurrentDateTime() Then
+                        State.IsInvalidEffective = True
+                    Else
+                        State.IsInvalidEffective = False
                     End If
                 End If
 
                 '#2 - Restrict to save backdated list in edit mode
-                If State.ExpirationDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
-                    If DateHelper.GetDateValue(State.MyBO.Expiration.ToString) <> DateHelper.GetDateValue(moExpirationDateText.Text.ToString) Then
-                        If (State.MyBO.CheckIfListIsAssignedToDealer(State.MyBO.Code, State.MyBO.Id)) Then
-                            If DateHelper.GetDateValue(State.ExpirationDate.ToString) < EquipmentListDetail.GetCurrentDateTime() Then
-                                State.IsInvalidExpiration = True
-                            Else
-                                State.IsInvalidExpiration = False
-                            End If
-                        End If
+                If _
+                    State.ExpirationDate IsNot Nothing AndAlso State.MyBO.IsNew = False AndAlso
+                    (DateHelper.GetDateValue(State.MyBO.Expiration.ToString) <>
+                     DateHelper.GetDateValue(moExpirationDateText.Text.ToString) AndAlso
+                     State.MyBO.CheckIfListIsAssignedToDealer(State.MyBO.Code, State.MyBO.Id)) Then
+                    If _
+                        DateHelper.GetDateValue(State.ExpirationDate.ToString) <
+                        EquipmentListDetail.GetCurrentDateTime() Then
+                        State.IsInvalidExpiration = True
+                    Else
+                        State.IsInvalidExpiration = False
                     End If
                 End If
 
@@ -621,10 +626,13 @@
                     End If
 
                     '#3 - Effective date should be greater than Expiration Date
-                    If State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing Then
-                        If DateHelper.GetDateValue(State.EffectiveDate.ToString) > DateHelper.GetDateValue(State.ExpirationDate.ToString) Then
-                            Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EXPIRATION_DATE)
-                        End If
+                    If _
+                        State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing AndAlso
+                        DateHelper.GetDateValue(State.EffectiveDate.ToString) >
+                        DateHelper.GetDateValue(State.ExpirationDate.ToString) Then
+                        Throw _
+                            New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE,
+                                             Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EXPIRATION_DATE)
                     End If
 
                     '#4 - For new records, check for no backdated LIst code and no duplicate List code - Effective Date Combination

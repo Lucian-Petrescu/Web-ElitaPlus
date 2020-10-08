@@ -31,7 +31,7 @@ Public Class FormAuthorization
 
 #Region "DATA ACCESS ROUTINES"
 
-    Public Shared Function Load(ByVal sCODE As String) As DataView
+    Public Shared Function Load(sCODE As String) As DataView
         Dim oDs As DataSet
         
         Try
@@ -58,7 +58,7 @@ Public Class FormAuthorization
         End Try
     End Function
 
-    Public Shared Function LoadNavigation(ByVal sCODE As String) As DataView
+    Public Shared Function LoadNavigation(sCODE As String) As DataView
        Dim oDs As DataSet
 
         Try
@@ -78,7 +78,7 @@ Public Class FormAuthorization
     End Function
 
 
-    Public Shared Function AllowNavigation(ByVal sFormCode As String) As Boolean
+    Public Shared Function AllowNavigation(sFormCode As String) As Boolean
         Dim oView As DataView
         Dim bAllow As Boolean = True
         Dim sNav As String
@@ -95,7 +95,7 @@ Public Class FormAuthorization
 
     End Function
 
-    Public Shared Function GetPermissions(ByVal sFormName As String) As enumPermissionType
+    Public Shared Function GetPermissions(sFormName As String) As enumPermissionType
         Dim oView As DataView
 
         Dim oDS As DataSet = FormPermissions(sFormName)
@@ -119,7 +119,7 @@ Public Class FormAuthorization
 
     End Function
 
-    Private Shared Function FormPermissions(ByVal sCODE As String) As DataSet
+    Private Shared Function FormPermissions(sCODE As String) As DataSet
         Dim oDs As DataSet
 
         Try
@@ -150,7 +150,7 @@ Public Class FormAuthorization
 
 #Region "Control Authorization"
 
-    Public Shared Function GetControlAuthorization(ByVal sCODE As String, ByVal sNetworkID As String) As DataSet
+    Public Shared Function GetControlAuthorization(sCODE As String, sNetworkID As String) As DataSet
         Dim oDs As DataSet
 
         Try

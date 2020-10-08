@@ -6,7 +6,7 @@ Public Class TransallMapping
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class TransallMapping
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class TransallMapping
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TransallMappingDAL
             If _isDSCreator Then
@@ -275,7 +275,7 @@ Public Class TransallMapping
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal DealerId As Guid, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetList(DealerId As Guid, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -285,7 +285,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal FileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetList(FileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -295,7 +295,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetListByDirectory(ByVal DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByDirectory(DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -304,7 +304,7 @@ Public Class TransallMapping
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetListByDirectoryAndFile(ByVal DirectoryName As String, ByVal partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByDirectoryAndFile(DirectoryName As String, partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -314,7 +314,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetListByOutputDirectoryAndFile(ByVal DirectoryName As String, ByVal partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByOutputDirectoryAndFile(DirectoryName As String, partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -324,7 +324,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetListByOutputDirectory(ByVal DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByOutputDirectory(DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -338,7 +338,7 @@ Public Class TransallMapping
   
 
 #Region "Children Related"
-    Public Sub DetachTransMapOut(ByVal transMapOutIdGuidStrCollection As ArrayList)
+    Public Sub DetachTransMapOut(transMapOutIdGuidStrCollection As ArrayList)
         Dim transMapOutIdStr As Guid
         For Each transMapOutIdStr In transMapOutIdGuidStrCollection
             Dim tranMapOutBO As TransallMappingOut = New TransallMappingOut(transMapOutIdStr)
@@ -350,7 +350,7 @@ Public Class TransallMapping
     End Sub
 #End Region
 
-    Public Shared Sub LogTransallMessage(ByVal region As String, ByVal filename As String, ByVal code As String, ByVal log_details As String, ByVal created_by As String)
+    Public Shared Sub LogTransallMessage(region As String, filename As String, code As String, log_details As String, created_by As String)
         Try
             Dim dal As New TransAllMappingDAL
             dal.LogTransallErrors(region, filename, code, log_details, created_by)

@@ -27,7 +27,7 @@ Public Class AuthorizationServiceRoleProvider
     End Sub
 
     'Added for DEF:3119
-    Function GetRoleId(ByVal roleCode As String) As Guid Implements IRemoteRoleProvider.GetRoleId
+    Function GetRoleId(roleCode As String) As Guid Implements IRemoteRoleProvider.GetRoleId
         Dim remoteRoles As Auth.Group()
         Dim remoteRole As Auth.Group
         Dim count As Integer
@@ -57,7 +57,7 @@ Public Class AuthorizationServiceRoleProvider
     'DEF:3119 Completed 
 
 #Region "Role"
-    Function CreateRole(ByVal localSystemRoleId As Guid, ByVal roleName As String) As Guid Implements IRemoteRoleProvider.CreateRole
+    Function CreateRole(localSystemRoleId As Guid, roleName As String) As Guid Implements IRemoteRoleProvider.CreateRole
         Dim remoteRole As Auth.Group
         Dim remoteRoles As Auth.Group()
         Dim count As Integer
@@ -105,7 +105,7 @@ Public Class AuthorizationServiceRoleProvider
 
     End Function
 
-    Function UpdateRole(ByVal localSystemRoleId As Guid, ByVal remoteSystemRoleId As Guid, ByVal roleName As String) As Guid Implements IRemoteRoleProvider.UpdateRole
+    Function UpdateRole(localSystemRoleId As Guid, remoteSystemRoleId As Guid, roleName As String) As Guid Implements IRemoteRoleProvider.UpdateRole
         Dim remoteRole As Auth.Group
         Dim groups As Auth.Group()
 
@@ -135,7 +135,7 @@ Public Class AuthorizationServiceRoleProvider
         Return remoteRole.Id
     End Function
 
-    Sub DeleteRole(ByVal localSystemRoleId As Guid, ByVal remoteSystemRoleId As Guid, ByVal roleName As String) Implements IRemoteRoleProvider.DeleteRole
+    Sub DeleteRole(localSystemRoleId As Guid, remoteSystemRoleId As Guid, roleName As String) Implements IRemoteRoleProvider.DeleteRole
         Try
             Dim oGroupExt As Auth.ExtendedGroup
             Try
@@ -180,7 +180,7 @@ Public Class AuthorizationServiceRoleProvider
 #End Region
 
 #Region "Grant/Revoke"
-    Sub Grant(ByVal localSystemRoleId As Guid, ByVal remoteSystemRoleId As Guid, ByVal roleName As String, ByVal userId As Guid, ByVal networkId As String, ByVal userName As String) Implements IRemoteRoleProvider.Grant
+    Sub Grant(localSystemRoleId As Guid, remoteSystemRoleId As Guid, roleName As String, userId As Guid, networkId As String, userName As String) Implements IRemoteRoleProvider.Grant
         Dim users As Auth.User()
         Dim count As Integer
         Dim remoteUserId As Guid
@@ -211,7 +211,7 @@ Public Class AuthorizationServiceRoleProvider
         End Try
     End Sub
 
-    Sub Revoke(ByVal localSystemRoleId As Guid, ByVal remoteSystemRoleId As Guid, ByVal roleName As String, ByVal userId As Guid, ByVal networkId As String, ByVal userName As String) Implements IRemoteRoleProvider.Revoke
+    Sub Revoke(localSystemRoleId As Guid, remoteSystemRoleId As Guid, roleName As String, userId As Guid, networkId As String, userName As String) Implements IRemoteRoleProvider.Revoke
         Dim users As Auth.User()
         Dim count As Integer
         Dim remoteUserId As Guid
@@ -245,7 +245,7 @@ Public Class AuthorizationServiceRoleProvider
 #End Region
 
 #Region "User"
-    Function CreateUser(ByVal localSystemUserId As Guid, ByVal networkId As String, ByVal UserName As String, ByVal isActive As Boolean) As Guid Implements IRemoteRoleProvider.CreateUser
+    Function CreateUser(localSystemUserId As Guid, networkId As String, UserName As String, isActive As Boolean) As Guid Implements IRemoteRoleProvider.CreateUser
         Dim remoteUser As Auth.User
         Dim remoteUsers As Auth.User()
         Dim count As Integer
@@ -295,7 +295,7 @@ Public Class AuthorizationServiceRoleProvider
         Return remoteUser.Id
     End Function
 
-    Function UpdateUser(ByVal localSystemUserId As Guid, ByVal oldNetworkId As String, ByVal networkId As String, ByVal UserName As String, ByVal isActive As Boolean) As Guid Implements IRemoteRoleProvider.UpdateUser
+    Function UpdateUser(localSystemUserId As Guid, oldNetworkId As String, networkId As String, UserName As String, isActive As Boolean) As Guid Implements IRemoteRoleProvider.UpdateUser
         Dim remoteUser As Auth.User
         Dim remoteUsers As Auth.User()
         Dim count As Integer
@@ -340,7 +340,7 @@ Public Class AuthorizationServiceRoleProvider
         Return remoteUser.Id
     End Function
 
-    Sub DeleteUser(ByVal localSystemUserId As Guid, ByVal networkId As String, ByVal UserName As String) Implements IRemoteRoleProvider.DeleteUser
+    Sub DeleteUser(localSystemUserId As Guid, networkId As String, UserName As String) Implements IRemoteRoleProvider.DeleteUser
         Dim remoteUser As Auth.User
         Dim remoteUserExt As Auth.ExtendedUser
         Dim remoteUsers As Auth.User()

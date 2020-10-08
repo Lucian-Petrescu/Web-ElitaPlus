@@ -6,7 +6,7 @@ Public Class PartsInfo
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class PartsInfo
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class PartsInfo
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PartsInfoDAL
             If _isDSCreator Then
@@ -191,7 +191,7 @@ Public Class PartsInfo
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getTotalCost(ByVal claimID As Guid) As DecimalType
+    Public Shared Function getTotalCost(claimID As Guid) As DecimalType
         Dim retVal As Decimal = 0
         Try
             Dim dal As New PartsInfoDAL
@@ -211,7 +211,7 @@ Public Class PartsInfo
         End Try
     End Function
 
-    Public Shared Function getAvailList(ByVal riskGroupID As Guid, ByVal claimID As Guid) As PartsInfoDV
+    Public Shared Function getAvailList(riskGroupID As Guid, claimID As Guid) As PartsInfoDV
         Try
             Dim dal As New PartsInfoDAL
             Return New PartsInfoDV(dal.LoadAvailList(riskGroupID, claimID, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id).Tables(0))
@@ -223,7 +223,7 @@ Public Class PartsInfo
     End Function
 
     ' for populating the grid to edit,we make sure the part we are editing is populated in this data set we are returning.
-    Public Shared Function getAvailListWithCurrentPart(ByVal riskGroupID As Guid, ByVal claimID As Guid, ByVal partsDescId As Guid) As PartsInfoDV
+    Public Shared Function getAvailListWithCurrentPart(riskGroupID As Guid, claimID As Guid, partsDescId As Guid) As PartsInfoDV
         Try
             Dim dal As New PartsInfoDAL
 
@@ -235,7 +235,7 @@ Public Class PartsInfo
 
     End Function
 
-    Public Shared Function getSelectedList(ByVal claimID As Guid) As PartsInfoDV
+    Public Shared Function getSelectedList(claimID As Guid) As PartsInfoDV
 
         Try
             Dim dal As New PartsInfoDAL
@@ -262,36 +262,36 @@ Public Class PartsInfo
         Public Const COL_NAME_CODE As String = "code"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PartsDesc(ByVal row) As String
+        Public Shared ReadOnly Property PartsDesc(row) As String
             Get
                 Return row(COL_NAME_PARTS_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property InStockDesc(ByVal row) As String
+        Public Shared ReadOnly Property InStockDesc(row) As String
             Get
                 Return row(COL_NAME_IN_STOCK_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Cost(ByVal row As DataRow) As DecimalType
+        Public Shared ReadOnly Property Cost(row As DataRow) As DecimalType
             Get
                 Return New DecimalType(CType(row(COL_NAME_COST), Decimal))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row) As String
+        Public Shared ReadOnly Property Code(row) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
     End Class
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal partsInfoId As Guid, ByVal claimID As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, partsInfoId As Guid, claimID As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -310,7 +310,7 @@ Public Class PartsInfo
 
     End Function
 
-    Public Function AddTransactionLogHeader(ByVal tranLogHeaderId As Guid) As TransactionLogHeader
+    Public Function AddTransactionLogHeader(tranLogHeaderId As Guid) As TransactionLogHeader
         Dim objTranLogHeader As TransactionLogHeader
 
         If Not tranLogHeaderId.Equals(Guid.Empty) Then
@@ -322,7 +322,7 @@ Public Class PartsInfo
         Return objTranLogHeader
     End Function
 
-    Public Shared Sub AddNewRowToPartsInfoSearchDV(ByRef dv As PartsInfoDV, ByVal NewPartsInfoBO As PartsInfo)
+    Public Shared Sub AddNewRowToPartsInfoSearchDV(ByRef dv As PartsInfoDV, NewPartsInfoBO As PartsInfo)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewPartsInfoBO.IsNew Then

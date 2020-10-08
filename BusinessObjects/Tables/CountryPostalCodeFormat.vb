@@ -9,7 +9,7 @@ Public Class CountryPostalCodeFormat
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -23,20 +23,20 @@ Public Class CountryPostalCodeFormat
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -58,7 +58,7 @@ Public Class CountryPostalCodeFormat
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CountryPostalCodeFormatDAL
             If _isDSCreator Then
@@ -157,7 +157,7 @@ Public Class CountryPostalCodeFormat
 #End Region
 
 #Region "List Methods"
-    Public Shared Sub LoadList(ByVal ds As Dataset, ByVal countryID As Guid, ByVal reloadData As Boolean)
+    Public Shared Sub LoadList(ds As Dataset, countryID As Guid, reloadData As Boolean)
         Try
             If reloadData Then
                 Dim tableIdx As Integer = ds.Tables.IndexOf(CountryPostalCodeFormatDAL.TABLE_NAME)
@@ -173,7 +173,7 @@ Public Class CountryPostalCodeFormat
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Shared Function Find(ByVal ds As Dataset, ByVal countryID As Guid, ByVal postalCodeID As Guid) As CountryPostalCodeFormat
+    Public Shared Function Find(ds As Dataset, countryID As Guid, postalCodeID As Guid) As CountryPostalCodeFormat
         Dim i As Integer
         For i = 0 To ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows.Count - 1
             Dim row As DataRow = ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows(i)
@@ -187,7 +187,7 @@ Public Class CountryPostalCodeFormat
         Return Nothing
     End Function
 
-    Public Shared Function Find(ByVal ds As Dataset, ByVal countryID As Guid) As CountryPostalCodeFormat
+    Public Shared Function Find(ds As Dataset, countryID As Guid) As CountryPostalCodeFormat
         Dim row As DataRow = FindRow(countryID, CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID, ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME))
         If row Is Nothing Then
             Return Nothing
@@ -196,15 +196,15 @@ Public Class CountryPostalCodeFormat
         End If
     End Function
 
-    Public Shared Function GetSelectedPostalCodeFormat(ByVal ds As Dataset, ByVal countryID As Guid) As DataView
+    Public Shared Function GetSelectedPostalCodeFormat(ds As Dataset, countryID As Guid) As DataView
         Return GetFilteredPostalCodeFormat(ds, countryID, True)
     End Function
 
-    Public Shared Function GetAvailablePostalCodeFormat(ByVal ds As Dataset, ByVal countryID As Guid) As DataView
+    Public Shared Function GetAvailablePostalCodeFormat(ds As Dataset, countryID As Guid) As DataView
         Return GetFilteredPostalCodeFormat(ds, countryID, False)
     End Function
 
-    Protected Shared Function GetFilteredPostalCodeFormat(ByVal ds As Dataset, ByVal countryID As Guid, ByVal isFilterInclusive As Boolean) As DataView
+    Protected Shared Function GetFilteredPostalCodeFormat(ds As Dataset, countryID As Guid, isFilterInclusive As Boolean) As DataView
         Dim i As Integer
         Dim dv As New DataView(LookupListNew.GetPostalCodeFormatLookupList().Table)
         Dim inClause As String = "-1"
@@ -233,7 +233,7 @@ Public Class CountryPostalCodeFormat
         Return dv
     End Function
 
-    Public Shared Sub LoadFormatList(ByVal ds As Dataset, ByVal countryID As Guid)
+    Public Shared Sub LoadFormatList(ds As Dataset, countryID As Guid)
         Try
             Dim cntryPostalFormatDAL As New CountryPostalCodeFormatDAL
             If ds.Tables.IndexOf(CountryPostalCodeFormatDAL.TABLE_NAME) < 0 Then
@@ -244,7 +244,7 @@ Public Class CountryPostalCodeFormat
         End Try
     End Sub
 
-    Public Shared Function IsValidFormat(ByVal countryID As Guid, ByVal postalCode As String, Optional ByVal reformatFlag As Boolean = False) As PostalCodeFormatResult
+    Public Shared Function IsValidFormat(countryID As Guid, postalCode As String, Optional ByVal reformatFlag As Boolean = False) As PostalCodeFormatResult
         Dim retPostalCodeFormatResult As PostalCodeFormatResult = New PostalCodeFormatResult
         retPostalCodeFormatResult.IsValid = False
         retPostalCodeFormatResult.PostalCode = postalCode

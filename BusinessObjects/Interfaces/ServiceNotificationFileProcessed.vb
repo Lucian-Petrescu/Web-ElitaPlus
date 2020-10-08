@@ -24,7 +24,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -38,14 +38,14 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -67,7 +67,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceNotificationFileProcessedDAL
             If _isDSCreator Then
@@ -308,7 +308,7 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal oData As Object) As DataView
+    Public Shared Function LoadList(oData As Object) As DataView
 
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
@@ -337,8 +337,8 @@
         Public dealerName As String
     End Structure
 
-    Public Shared Function GetDealerLayout(ByVal dealerID As Guid, _
-    ByVal oInterfaceTypeCode As ServiceNotificationFileProcessedData.InterfaceTypeCode) As DealerInfo
+    Public Shared Function GetDealerLayout(dealerID As Guid, _
+    oInterfaceTypeCode As ServiceNotificationFileProcessedData.InterfaceTypeCode) As DealerInfo
         Dim retDealerInfo As DealerInfo
         Dim sLayout As String
         Dim oContract As Contract
@@ -380,7 +380,7 @@
 
 #Region "StoreProcedures Control"
 
-    Public Shared Sub ValidateFile(ByVal oData As Object)
+    Public Shared Sub ValidateFile(oData As Object)
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
             Dim dal As New ServiceNotificationFileProcessedDAL
@@ -393,7 +393,7 @@
         End Try
     End Sub
 
-    Public Shared Sub ProcessFileRecords(ByVal oData As Object)
+    Public Shared Sub ProcessFileRecords(oData As Object)
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
             Dim dal As New ServiceNotificationFileProcessedDAL
@@ -406,7 +406,7 @@
         End Try
     End Sub
 
-    Public Shared Sub DeleteFile(ByVal oData As Object)
+    Public Shared Sub DeleteFile(oData As Object)
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
             Dim dal As New ServiceNotificationFileProcessedDAL
@@ -423,7 +423,7 @@
 
 #Region "Validation"
 
-    Public Shared Sub ValidateFileName(ByVal fileLength As Integer)
+    Public Shared Sub ValidateFileName(fileLength As Integer)
         If fileLength = 0 Then
             Dim errors() As ValidationError = {New ValidationError(DEALERLOADFORM_FORM001, GetType(ServiceNotificationFileProcessed), Nothing, Nothing, Nothing)}
             Throw New BOValidationException(errors, GetType(ClaimFileProcessed).FullName)

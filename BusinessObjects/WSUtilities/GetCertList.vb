@@ -25,7 +25,7 @@ Public Class GetCertList
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetCertListDs)
+    Public Sub New(ds As GetCertListDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -38,7 +38,7 @@ Public Class GetCertList
 #Region "Private Members"
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetCertListDs)
+    Private Sub MapDataSet(ds As GetCertListDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -60,7 +60,7 @@ Public Class GetCertList
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetCertListDs)
+    Private Sub Load(ds As GetCertListDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -78,7 +78,7 @@ Public Class GetCertList
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetCertListDs)
+    Private Sub PopulateBOFromWebService(ds As GetCertListDs)
         Try
             If ds.GetCertList.Count = 0 Then Exit Sub
             With ds.GetCertList.Item(0)

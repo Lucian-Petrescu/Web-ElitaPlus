@@ -54,7 +54,7 @@ Public Class SvcNotificationReconWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -69,20 +69,20 @@ Public Class SvcNotificationReconWrk
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -104,7 +104,7 @@ Public Class SvcNotificationReconWrk
         End Try
     End Sub
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal NotificationfileProcessedID As Guid) As DataView
+    Public Shared Function LoadList(NotificationfileProcessedID As Guid) As DataView
         Try
             Dim dal As New SvcNotificationReconWrkDAL
             Dim ds As DataSet
@@ -121,7 +121,7 @@ Public Class SvcNotificationReconWrk
 
 #End Region
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SvcNotificationReconWrkDAL
             If _isDSCreator Then

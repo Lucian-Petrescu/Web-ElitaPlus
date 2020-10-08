@@ -6,7 +6,7 @@ Public Class CodeMapping
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CodeMapping
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CodeMapping
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CodeMappingDAL
             If _isDSCreator Then
@@ -151,7 +151,7 @@ Public Class CodeMapping
     End Property
 
 
-    Public ReadOnly Property AssociatedCodeMapping(ByVal id As Guid, Optional ByVal isNew As Boolean = False) As CodeMapping
+    Public ReadOnly Property AssociatedCodeMapping(id As Guid, Optional ByVal isNew As Boolean = False) As CodeMapping
         Get
             If Not isNew Then
                 Return New CodeMapping(id, Dataset)
@@ -204,7 +204,7 @@ Public Class CodeMapping
     '    End Try
     'End Function
 
-    Public Shared Function AdminLoadListItems(ByVal LanguageId As Guid, ByVal ListId As Guid, ByVal companyId As Guid) As ListItemSearchDV
+    Public Shared Function AdminLoadListItems(LanguageId As Guid, ListId As Guid, companyId As Guid) As ListItemSearchDV
         Try
             Dim dal As New CodeMappingDAL
             'Dim ds As DataSet
@@ -216,7 +216,7 @@ Public Class CodeMapping
         End Try
     End Function
 
-    Public Shared Function GetCovertedCode(ByVal companyID As Guid, ByVal strListCode As String, ByVal strListItemCode As String) As String
+    Public Shared Function GetCovertedCode(companyID As Guid, strListCode As String, strListItemCode As String) As String
         Dim dal As New CodeMappingDAL
         Return dal.LoadCovertedCode(companyID, strListCode, strListItemCode)
     End Function
@@ -239,7 +239,7 @@ Public Class CodeMapping
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

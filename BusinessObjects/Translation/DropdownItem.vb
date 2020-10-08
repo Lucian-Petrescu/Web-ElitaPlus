@@ -5,7 +5,7 @@ Public Class DropdownItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -19,20 +19,20 @@ Public Class DropdownItem
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -54,7 +54,7 @@ Public Class DropdownItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DropdownItemDAL
             If _isDSCreator Then
@@ -225,17 +225,17 @@ Public Class DropdownItem
         End Try
     End Sub
 
-    Public Function AddDropdownItem(ByVal code As String, ByVal maintainable_by_user As String, ByVal display_to_user As String, ByVal list_id As Guid, ByVal englishTranslation As String, ByVal userId As String) As Integer
+    Public Function AddDropdownItem(code As String, maintainable_by_user As String, display_to_user As String, list_id As Guid, englishTranslation As String, userId As String) As Integer
         Dim dal As New DropdownItemDAL
         Return dal.AddDropdownItem(code, maintainable_by_user, display_to_user, list_id, englishTranslation, userId)
     End Function
 
-    Public Function UpdateDropdownItem(ByVal listItemId As Guid, ByVal code As String, ByVal maintainable_by_user As String, ByVal display_to_user As String, ByVal englishTranslation As String, ByVal userId As String) As Integer
+    Public Function UpdateDropdownItem(listItemId As Guid, code As String, maintainable_by_user As String, display_to_user As String, englishTranslation As String, userId As String) As Integer
         Dim dal As New DropdownItemDAL
         Return dal.UpdateDropdownItem(listItemId, code, maintainable_by_user, display_to_user, englishTranslation, userId)
     End Function
 
-    Public Function DeleteDropdownItem(ByVal listItemId As Guid) As Integer
+    Public Function DeleteDropdownItem(listItemId As Guid) As Integer
         Dim dal As New DropdownItemDAL
         Return dal.DeleteDropdownItem(listItemId)
     End Function
@@ -244,7 +244,7 @@ Public Class DropdownItem
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function AdminLoadListItems(ByVal LanguageId As Guid, ByVal ListId As Guid) As System.Data.DataView
+    Public Shared Function AdminLoadListItems(LanguageId As Guid, ListId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownItemDAL
             Dim ds As New DataSet
@@ -255,7 +255,7 @@ Public Class DropdownItem
         End Try
     End Function
 
-     Public Shared Function DeviceLoadListItems(ByVal LanguageId As Guid, ByVal Code As String) As System.Data.DataView
+     Public Shared Function DeviceLoadListItems(LanguageId As Guid, Code As String) As System.Data.DataView
         Try
             Dim dal As New DropdownItemDAL
             Dim ds As New DataSet
@@ -266,7 +266,7 @@ Public Class DropdownItem
         End Try
     End Function
 
-    Public Shared Function AdminLoadListItemTranslation(ByVal ListItemId As Guid) As System.Data.DataView
+    Public Shared Function AdminLoadListItemTranslation(ListItemId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownItemDAL
             Dim ds As New DataSet

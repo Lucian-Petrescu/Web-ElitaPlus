@@ -8,7 +8,7 @@ Public Class Contract
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,14 +22,14 @@ Public Class Contract
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -51,7 +51,7 @@ Public Class Contract
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ContractDAL
             'This code was added manually. Begin
@@ -2183,7 +2183,7 @@ Public Class Contract
         Public IsFirst As Boolean = True
         Public IsLast As Boolean = True
 
-        Public Sub New(ByVal obj As Contract)
+        Public Sub New(obj As Contract)
             Try
                 Dim dal As New ContractDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(obj.DealerId)
@@ -2199,7 +2199,7 @@ Public Class Contract
             End Try
         End Sub
 
-        Public Sub New(ByVal dealerId As Guid)
+        Public Sub New(dealerId As Guid)
             Try
                 Dim dal As New ContractDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(dealerId)
@@ -2219,7 +2219,7 @@ Public Class Contract
         Public EndDate As Date
     End Class
 
-    Public Shared Function GetNewDefaultDates(ByVal dealerId As Guid) As StartEndDates
+    Public Shared Function GetNewDefaultDates(dealerId As Guid) As StartEndDates
         Dim minMaxDates As New Contract.MinEffectiveMaxExpiration(dealerId)
         Dim resultDates As New StartEndDates
         With minMaxDates
@@ -2247,7 +2247,7 @@ Public Class Contract
 
     End Function
 
-    Public Function AddDealer(ByVal dealerID As Guid) As Dealer
+    Public Function AddDealer(dealerID As Guid) As Dealer
         If dealerID.Equals(Guid.Empty) Then
             Dim objDealer As New Dealer(Dataset)
             Return objDealer
@@ -2257,7 +2257,7 @@ Public Class Contract
         End If
     End Function
 
-    Public Function ReturnUnUsedAutoGenSequenceNumber(ByVal seqNumToRestore As Long, ByVal autoGenSourceId As Guid, ByVal autoGenSequenceKey As String)
+    Public Function ReturnUnUsedAutoGenSequenceNumber(seqNumToRestore As Long, autoGenSourceId As Guid, autoGenSequenceKey As String)
 
         Try
 
@@ -2274,7 +2274,7 @@ Public Class Contract
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetContract(ByVal dealerID As Guid, ByVal contractDate As Date, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
+    Public Shared Function GetContract(dealerID As Guid, contractDate As Date, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
 
         Dim contractID As Guid
         Dim dv As DataView = getList(dealerID, loggedinuserspecific)
@@ -2293,7 +2293,7 @@ Public Class Contract
         Return Nothing
     End Function
 
-    Public Shared Function GetContractID(ByVal certID As Guid) As Guid
+    Public Shared Function GetContractID(certID As Guid) As Guid
 
         Dim contractID As Guid
         Try
@@ -2319,7 +2319,7 @@ Public Class Contract
         Return Nothing
     End Function
 
-    Public Shared Function GetContract(ByVal dealerID As Guid, ByVal effectiveDate As Date, ByVal expirationDate As Date) As Contract
+    Public Shared Function GetContract(dealerID As Guid, effectiveDate As Date, expirationDate As Date) As Contract
         ' JLR - Returns the contract that fully covers the specified date range
         ' JLR - Assumes that no contract overlaps another contract
 
@@ -2339,11 +2339,11 @@ Public Class Contract
         Return Nothing
     End Function
 
-    Public Shared Function GetCurrentContract(ByVal dealerID As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
+    Public Shared Function GetCurrentContract(dealerID As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
         Return GetContract(dealerID, System.DateTime.Now, loggedinuserspecific)
     End Function
 
-    Public Shared Function GetMaxExpirationContract(ByVal dealerID As Guid) As Contract
+    Public Shared Function GetMaxExpirationContract(dealerID As Guid) As Contract
         Dim dal As New ContractDAL
 
         Dim contractID As Guid
@@ -2360,7 +2360,7 @@ Public Class Contract
         End If
     End Function
 
-    Public Shared Function GetContracts(ByVal dealerID As Guid) As ContractSearchDV
+    Public Shared Function GetContracts(dealerID As Guid) As ContractSearchDV
 
         Dim contractID As Guid
         Dim dv As ContractSearchDV = getList(dealerID)
@@ -2369,7 +2369,7 @@ Public Class Contract
         Return dv
     End Function
 
-    Public Shared Function GetContractDropdownList(ByVal dealerID As Guid) As DataView
+    Public Shared Function GetContractDropdownList(dealerID As Guid) As DataView
         Dim dt As New DataTable
         dt.Columns.Add("ID", GetType(Byte()))
         dt.Columns.Add("Description", GetType(String))
@@ -2393,7 +2393,7 @@ Public Class Contract
 
     'Manually added method
     'If DealerId is empty Guid it will return all Contracts regardless of the Dealer they are associated to
-    Public Shared Function getList(ByVal dealerId As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As ContractSearchDV
+    Public Shared Function getList(dealerId As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As ContractSearchDV
         Try
             Dim dal As New ContractDAL
             If loggedinuserspecific Then
@@ -2406,7 +2406,7 @@ Public Class Contract
         End Try
     End Function
 
-    Public Shared Function HasContract(ByVal dealerId As Guid, ByVal warrantySalesDate As Date) As Boolean
+    Public Shared Function HasContract(dealerId As Guid, warrantySalesDate As Date) As Boolean
         Dim oContract As Contract
         oContract = Contract.GetContract(dealerId, warrantySalesDate)
 
@@ -2467,7 +2467,7 @@ Public Class Contract
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -2480,11 +2480,11 @@ Public Class Contract
     Public NotInheritable Class ValidEffectiveAndExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EFFECTIVE_EXPIRATION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If obj.DealerId.Equals(Guid.Empty) Then Return True
             If obj.Effective Is Nothing OrElse obj.Expiration Is Nothing Then Return True
@@ -2522,11 +2522,11 @@ Public Class Contract
     Public NotInheritable Class ValidDealerMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_DEALER_MAKUP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             'Req-1016 Start 
             Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
@@ -2549,11 +2549,11 @@ Public Class Contract
     Public NotInheritable Class ValidDealerMarkupAndRestrictMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_DEALER_MAKUP_RESTRICTED_MARKUP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
 
@@ -2569,11 +2569,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForMonthlyBillingAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             'Req-1016 Start 
             'Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
@@ -2597,11 +2597,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryAcselProdCodeAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If Not obj.DealerId.Equals(Guid.Empty) Then
                 Dim dealer As New Dealer(obj.DealerId)
@@ -2624,11 +2624,11 @@ Public Class Contract
     Public NotInheritable Class ValidCLIPPercent
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CLIP_PERCENT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If obj.DealerId.Equals(Guid.Empty) Then
                 Return True
@@ -2658,11 +2658,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForInstallmentPaymentAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If obj.DealerId.Equals(Guid.Empty) Then
                 Return True
@@ -2683,11 +2683,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryNoOfRepairClaimsAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If Not obj.NumOfClaims Is Nothing And obj.NumOfRepairClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
@@ -2702,11 +2702,11 @@ Public Class Contract
     Public NotInheritable Class ValidNoOfRepairClaims
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NO_OF_REPAIR_CLAIMS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfRepairClaims Is Nothing Then
@@ -2724,11 +2724,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryNoOfReplacementClaimsAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If Not obj.NumOfClaims Is Nothing And obj.NumOfReplacementClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
@@ -2742,11 +2742,11 @@ Public Class Contract
     Public NotInheritable Class ValidNoOfReplacementClaims
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NO_OF_REPLACEMENT_CLAIMS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfReplacementClaims Is Nothing Then
@@ -2765,11 +2765,11 @@ Public Class Contract
     Public NotInheritable Class ValidClaimLimitConfig
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "INVALID_CLAIM_LIMIT_CONFIG")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If (Not obj.NumOfClaims Is Nothing) AndAlso obj.NumOfClaims.Value > 0 Then
@@ -2785,11 +2785,11 @@ Public Class Contract
     Public NotInheritable Class NumOfClaimsValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_NUM_OF_CLAIMS_VALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If Not obj.ClaimLimitBasedOnId = Guid.Empty Then
@@ -2807,11 +2807,11 @@ Public Class Contract
     Public NotInheritable Class NumOfRepairClaimsValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_NUM_OF_REPAIR_CLAIMS_VALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If Not obj.ClaimLimitBasedOnId = Guid.Empty Then
@@ -2829,11 +2829,11 @@ Public Class Contract
     Public NotInheritable Class NumOfReplacementClaimsValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_NUM_OF_REPLACEMENT_CLAIMS_VALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If Not obj.ClaimLimitBasedOnId = Guid.Empty Then
@@ -2851,11 +2851,11 @@ Public Class Contract
     Public NotInheritable Class ValidWarrantyPeriod
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_WARRANTY_PERIOD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim SinglePremiumRenewable As String = "4"
 
@@ -2884,11 +2884,11 @@ Public Class Contract
     Public NotInheritable Class ValidOffSetBeforeDueDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_OFFSET_BEFORE_DUE_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If (Not obj Is Nothing) Then
@@ -2921,11 +2921,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForPaymentProcessingTypeThirdPartyNameAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim DealerTypeCode As Guid
 
@@ -2948,11 +2948,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForPaymentProcessingTypeThirdPartyTaxIdAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim DealerTypeCode As Guid
 
@@ -2977,11 +2977,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForRdoNameAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             Dim oDealer As New Dealer(obj.DealerId)
@@ -3017,11 +3017,11 @@ Public Class Contract
     Public NotInheritable Class ValueMandatoryOnAutoGeneratedPolicy
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_SELECT_LOB_WITH_AUTOGEN)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As Contract = CType(objectToValidate, Contract)
             If obj.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) AndAlso

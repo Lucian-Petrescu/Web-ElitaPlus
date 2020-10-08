@@ -10,7 +10,7 @@ Public Module LinqExtentions
     End Enum
 
     <Extension> _
-    Public Function OrderBy(Of TKey)(ByVal array As TKey(), ByVal propertyName As String, ByVal direction As SortDirection) As IOrderedEnumerable(Of TKey)
+    Public Function OrderBy(Of TKey)(array As TKey(), propertyName As String, direction As SortDirection) As IOrderedEnumerable(Of TKey)
         If (direction = SortDirection.Descending) Then
             Return array.OrderByDescending(Function(item) GetPropertyValueByName(item, propertyName))
         Else
@@ -18,7 +18,7 @@ Public Module LinqExtentions
         End If
     End Function
 
-    Private Function GetPropertyValueByName(ByVal item As Object, ByVal propertyName As String) As String
+    Private Function GetPropertyValueByName(item As Object, propertyName As String) As String
         Dim propInfo As PropertyInfo
         Try
             propInfo = item.GetType().GetProperty(propertyName)

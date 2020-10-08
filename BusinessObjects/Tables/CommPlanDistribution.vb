@@ -4,7 +4,7 @@ Public Class CommPlanDistribution
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@ Public Class CommPlanDistribution
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,7 +53,7 @@ Public Class CommPlanDistribution
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommPlanDistributionDAL
             If _isDSCreator Then
@@ -274,7 +274,7 @@ Public Class CommPlanDistribution
     
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal CommissionToleranceId As Guid) As SearchDV
+    Public Shared Function getList(CommissionToleranceId As Guid) As SearchDV
         Try
             Dim dal As New CommPlanDistributionDAL
 
@@ -284,7 +284,7 @@ Public Class CommPlanDistribution
         End Try
     End Function
 
-    Public Shared Function getPlanList(ByVal commPlanId As Guid) As DataView
+    Public Shared Function getPlanList(commPlanId As Guid) As DataView
         Try
             Dim dal As New CommPlanDistributionDAL
 
@@ -295,7 +295,7 @@ Public Class CommPlanDistribution
     End Function
 
 
-    Private Shared Function GetAssocCommList(ByVal parent As CommissionTolerance, ByVal id As Guid) As DataTable
+    Private Shared Function GetAssocCommList(parent As CommissionTolerance, id As Guid) As DataTable
 
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(CommPlanDistList)) Then
@@ -310,7 +310,7 @@ Public Class CommPlanDistribution
         End Try
     End Function
 
-    Public Shared Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+    Public Shared Function CommPaymentExist(pi_commmission_plan_id As Guid) As String
         Try
             Dim dal As New CommPlanDistributionDAL
             Return dal.CommPaymentExist(pi_commmission_plan_id)
@@ -320,7 +320,7 @@ Public Class CommPlanDistribution
 
     End Function
 
-    Public Shared Function CheckPositionExists(ByVal pi_position As Integer, ByVal pi_comm_plan_dist_id As Guid, ByVal pi_commmission_plan_id As Guid ) As String
+    Public Shared Function CheckPositionExists(pi_position As Integer, pi_comm_plan_dist_id As Guid, pi_commmission_plan_id As Guid ) As String
         Try
             Dim dal As New CommPlanDistributionDAL
             'Return dal.CheckDatesOverLap(pi_dealer_id ,pi_effective_date , pi_expiration_date )
@@ -349,52 +349,52 @@ Public Class CommPlanDistribution
         Public Const COL_NAME_POSITION As String = CommPlanDistributionDAL.COL_NAME_POSITION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CommissionPLanDistId(ByVal row) As Guid
+        Public Shared ReadOnly Property CommissionPLanDistId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_PLAN_DIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CommissionPlanId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CommissionPlanId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_PLAN_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property PayeeTypeXcd(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property PayeeTypeXcd(row As DataRow) As String
             Get
                 Return CType(row(COL_NAME_PAYEE_TYPE_XCD), String)
             End Get
         End Property
-        Public Shared ReadOnly Property EntityId(ByVal row) As Guid
+        Public Shared ReadOnly Property EntityId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMM_ENTITY_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CommissionAmount(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property CommissionAmount(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_COMM_AMT), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property CommissionPercent(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property CommissionPercent(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_COMMISSION_PERCENT), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property Comm_Source_Xcd(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Comm_Source_Xcd(row As DataRow) As String
             Get
                 Return CType(row(COL_NAME_COMMISSION_SOURCE_XCD), String)
             End Get
         End Property
 
-        Public Shared ReadOnly Property Position(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property Position(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_POSITION), LongType)
             End Get
@@ -412,7 +412,7 @@ Public Class CommPlanDistribution
 #Region "List Methods"
     Public Class CommPlanDistList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As Object, ByVal id As Guid)
+        Public Sub New(parent As Object, id As Guid)
             MyBase.New(GetAssocCommList(parent, id), GetType(CommPlanDistribution), parent)
         End Sub
 
@@ -420,11 +420,11 @@ Public Class CommPlanDistribution
         '    MyBase.New(GetAssocCommList(parent, parent.Id), GetType(CommPlanDistribution), parent)
         'End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal assocCommId As Guid) As CommPlanDistribution
+        Public Function FindById(assocCommId As Guid) As CommPlanDistribution
             Dim bo As CommPlanDistribution
             For Each bo In Me
                 If bo.Id.Equals(assocCommId) Then Return bo
@@ -446,11 +446,11 @@ Public Class CommPlanDistribution
         Public NotInheritable Class ValidMarkup
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COMM_BREAK_MARKUP_ERR)
             End Sub
 
-            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
                 Dim bIsOk As Boolean = True
                 Dim oBreakdown As CommissionBreakdown = CType(objectToValidate, CommissionBreakdown)
                 Dim nSumm As Double
@@ -477,7 +477,7 @@ Public Class CommPlanDistribution
 
             End Function
 
-            Private Function GetRestrictMarkup(ByVal oBreakdown As CommissionBreakdown) As Boolean
+            Private Function GetRestrictMarkup(oBreakdown As CommissionBreakdown) As Boolean
                 Dim oPeriodData As New CommissionPeriodData
                 Dim oPeriod As New CommissionPeriod(oBreakdown.CommissionPeriodId)
 
@@ -490,11 +490,11 @@ Public Class CommPlanDistribution
         Public NotInheritable Class ValidComm
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COMM_BREAK_COMM_PCT_ERR)
             End Sub
 
-            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
                 Dim bIsOk As Boolean = True
                 Dim oBreakdown As CommissionBreakdown = CType(objectToValidate, CommissionBreakdown)
                 Dim nSumm As Double
@@ -526,11 +526,11 @@ Public Class CommPlanDistribution
     Public NotInheritable Class ValidMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COMM_BREAK_MARKUP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
             Dim oAssocComm As CommPlanDistribution = CType(objectToValidate, CommPlanDistribution)
             'If oAssocComm.HasDealerConfiguredForAcctBucket(oAssocComm.CommissionToleranceId) = False Then
@@ -548,7 +548,7 @@ Public Class CommPlanDistribution
 
         End Function
 
-        Private Function GetRestrictMarkup(ByVal oAssocComm As CommPlanDistribution) As Boolean
+        Private Function GetRestrictMarkup(oAssocComm As CommPlanDistribution) As Boolean
             Dim oPeriodData As New CommissionPeriodData
             Dim oTolerance As New CommissionTolerance(oAssocComm.CommissionPlanId)
             Dim oPeriod As New CommissionPeriod(oTolerance.CommissionPeriodId)
@@ -563,11 +563,11 @@ Public Class CommPlanDistribution
     Public NotInheritable Class ValidComm
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_COMM_BREAK_COMM_PCT_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
             Dim oAssocComm As AssociateCommissions = CType(objectToValidate, AssociateCommissions)
             'If oAssocComm.HasDealerConfiguredForAcctBucket(oAssocComm.CommissionToleranceId) = False Then

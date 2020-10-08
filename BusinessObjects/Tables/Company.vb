@@ -6,7 +6,7 @@ Public Class Company
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,14 +20,14 @@ Public Class Company
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
@@ -45,7 +45,7 @@ Public Class Company
         Initialize()
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Row = Nothing
         Dim dal As New CompanyDAL
         If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
@@ -61,7 +61,7 @@ Public Class Company
         End If
     End Sub
 
-    Protected Sub LoadChildren(ByVal reloadData As Boolean)
+    Protected Sub LoadChildren(reloadData As Boolean)
         CountryPostalCodeFormat.LoadList(Dataset, Id, reloadData)
     End Sub
 
@@ -1031,7 +1031,7 @@ Public Class Company
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As Company)
+    Public Sub Copy(original As Company)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Company")
         End If
@@ -1105,7 +1105,7 @@ Public Class Company
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String) As CompanySearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String) As CompanySearchDV
         Try
             Dim dal As New CompanyDAL
             Return New CompanySearchDV(dal.LoadList(descriptionMask, codeMask).Tables(0))
@@ -1114,13 +1114,13 @@ Public Class Company
         End Try
     End Function
 
-    Public ReadOnly Property AssociatedAccCloseInfo(ByVal cmpId As Guid) As AccountingCloseInfo.AccountingCloseInfoList
+    Public ReadOnly Property AssociatedAccCloseInfo(cmpId As Guid) As AccountingCloseInfo.AccountingCloseInfoList
         Get
             Return New AccountingCloseInfo.AccountingCloseInfoList(Me, cmpId)
         End Get
     End Property
 
-    Public ReadOnly Property AssociatedAccCloseInfoCount(ByVal cmpId As Guid) As Integer
+    Public ReadOnly Property AssociatedAccCloseInfoCount(cmpId As Guid) As Integer
         Get
             Try
                 Dim acc As AccountingCloseInfo.AccountingCloseInfoListCount
@@ -1133,7 +1133,7 @@ Public Class Company
     End Property
 
 
-    Public Sub AttachAccCloseInfo(ByVal ClosingDate As DateType)
+    Public Sub AttachAccCloseInfo(ClosingDate As DateType)
 
         Dim newBO As AccountingCloseInfo = New AccountingCloseInfo(Dataset)
         If Not newBO Is Nothing Then
@@ -1144,7 +1144,7 @@ Public Class Company
 
     End Sub
 
-    Public Sub DetachAccCloseInfo(ByVal AccCloseInfo As AccountingCloseInfo)
+    Public Sub DetachAccCloseInfo(AccCloseInfo As AccountingCloseInfo)
 
         If Not AccCloseInfo Is Nothing Then
             AccCloseInfo.Delete()
@@ -1161,7 +1161,7 @@ Public Class Company
         End If
     End Sub
 
-    Public Shared Function GetComanies(ByVal groupId As Guid) As ArrayList
+    Public Shared Function GetComanies(groupId As Guid) As ArrayList
 
         Dim dal As New CompanyDAL
         Dim ds As DataSet = dal.LoadCompanies(groupId)
@@ -1198,7 +1198,7 @@ Public Class Company
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1208,7 +1208,7 @@ Public Class Company
 
 
 #Region "Countries"
-    Public Sub AttachCountries(ByVal selectedCountyGuidStrCollection As ArrayList)
+    Public Sub AttachCountries(selectedCountyGuidStrCollection As ArrayList)
         Dim cmpCountryIdStr As String
         For Each cmpCountryIdStr In selectedCountyGuidStrCollection
             'update to new CompanyCountry GUID
@@ -1222,7 +1222,7 @@ Public Class Company
 
     End Sub
 
-    Public Sub DetachCountries(ByVal selectedCountyGuidStrCollection As ArrayList)
+    Public Sub DetachCountries(selectedCountyGuidStrCollection As ArrayList)
         Dim cmpCountryIdStr As String
         For Each cmpCountryIdStr In selectedCountyGuidStrCollection
             'update to new CompanyCountry GUID
@@ -1242,7 +1242,7 @@ Public Class Company
         Next
     End Sub
 
-    Public Shared Function GetAvailableCountries(ByVal companyId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetAvailableCountries(companyId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -1252,7 +1252,7 @@ Public Class Company
     End Function
 
 
-    Public Shared Function GetSelectedCountries(ByVal companyId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetSelectedCountries(companyId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -1262,21 +1262,21 @@ Public Class Company
     End Function
 
     'REQ-1295 : Returns count of Dealers having  company = passed company and at coverage level no Agent 
-    Public Shared Function GetCompanyDealerWithoutAgent(ByVal companyId As Guid) As DataSet
+    Public Shared Function GetCompanyDealerWithoutAgent(companyId As Guid) As DataSet
         Dim ds As DataSet = New DataSet
         Dim cpDAL As CompanyDAL = New CompanyDAL
         cpDAL.GetCompanyDealerWithoutAgent(ds, companyId)
         Return ds
     End Function
 
-    Public Shared Function GetCompanyAgentFlagForDealer(ByVal dealerID As Guid) As DataSet
+    Public Shared Function GetCompanyAgentFlagForDealer(dealerID As Guid) As DataSet
         Dim ds As DataSet = New DataSet
         Dim cpDAL As CompanyDAL = New CompanyDAL
         cpDAL.GetCompanyAgentFlagForDealer(ds, dealerID)
         Return ds
     End Function
 
-    Public Shared Function GetDealerFromCompany(ByVal CompanyId As Guid, ByVal DealerCode As String) As DataSet
+    Public Shared Function GetDealerFromCompany(CompanyId As Guid, DealerCode As String) As DataSet
         Try
             Dim dal As New CompanyDAL
             Dim ds As DataSet
@@ -1287,7 +1287,7 @@ Public Class Company
         End Try
     End Function
 
-    Public Shared Function CheckIfCompanyCodeAlreadyExists(ByVal Code As String, ByVal Id As Guid) As Boolean
+    Public Shared Function CheckIfCompanyCodeAlreadyExists(Code As String, Id As Guid) As Boolean
         Try
             Dim dal As New CompanyDAL
             Dim ds As DataSet
@@ -1313,11 +1313,11 @@ End Class
         Public NotInheritable Class PostalCodeChecker
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_ZIP_CODE_FORMAT)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
 
         If valueToCheck Is Nothing Or valueToCheck Is String.Empty Then
@@ -1335,11 +1335,11 @@ End Class
 Public NotInheritable Class FollowupdaysMax
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_MAX_FOLLOWUP_DAYS)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
 
         If obj.MaxFollowupDays Is String.Empty OrElse obj.MaxFollowupDays Is Nothing Then
@@ -1364,11 +1364,11 @@ End Class
 Public NotInheritable Class EmailAddress
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
 
         If obj.Email Is String.Empty OrElse obj.Email Is Nothing Then
@@ -1385,11 +1385,11 @@ End Class
 Public NotInheritable Class ValidOffsetMax
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.CLAIM_NUMBER_OFFSET_IS_TOO_LARGE)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
         Dim d As Date = Today
         Dim yearInteger As Integer = CType(d.Year.ToString.Substring(2, 2), Integer)
@@ -1412,11 +1412,11 @@ End Class
 Public NotInheritable Class CheckDoublicatePREFIX
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FOUND_DEALERS_HAVING_DUPLICATE_CERTIFICATES_AUTONUMBER_PREFIX)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
         Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
 
@@ -1437,11 +1437,11 @@ End Class
 Public NotInheritable Class CheckIfCompanyCodeAlreadyExists
     Inherits ValidBaseAttribute
 
-    Public Sub New(ByVal fieldDisplayName As String)
+    Public Sub New(fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_MSG_COMPANY_CODE_ALREADY_EXISTS)
     End Sub
 
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
         Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
 

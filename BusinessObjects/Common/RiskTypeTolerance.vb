@@ -120,13 +120,13 @@
         Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
-    public Sub New (ByVal id As Guid, ByVal key As Guid)
+    public Sub New (id As Guid, key As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id,key)
@@ -148,7 +148,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RiskTypeToleranceDAL
             If _isDSCreator Then
@@ -171,7 +171,7 @@
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal searchid As Guid,ByVal key As Guid)
+    Protected Sub Load(searchid As Guid,key As Guid)
         Try
             Dim dal As New RiskTypeToleranceDAL
             If _isDSCreator Then
@@ -228,7 +228,7 @@
 
     End Function
 
-    Public Function ValidateNewRiskTypeTolerance(ByVal DealerInflations As RiskTypeToleranceDV) As Boolean
+    Public Function ValidateNewRiskTypeTolerance(DealerInflations As RiskTypeToleranceDV) As Boolean
 
         Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_RISK_TYPE & "=" & "'" & RiskType & "'")
                                
@@ -256,7 +256,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -264,7 +264,7 @@
 #End Region
 
 #Region "Grid Data Related"
-    Public Shared Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function GetEmptyList(dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -283,7 +283,7 @@
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As RiskTypeToleranceDV, ByVal NewBO As RiskTypeTolerance)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As RiskTypeToleranceDV, NewBO As RiskTypeTolerance)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -319,11 +319,11 @@
     Public NotInheritable Class ValueMandatoryRiskTypeTolerance
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.VALUE_REQUIRED_RISK_TOLERANCE_PERCENTAGE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As RiskTypeTolerance = CType(objectToValidate, RiskTypeTolerance)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False

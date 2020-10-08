@@ -6,7 +6,7 @@ Public Class AcctCovEntity
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class AcctCovEntity
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class AcctCovEntity
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctCovEntityDAL
             If _isDSCreator Then
@@ -210,7 +210,7 @@ Public Class AcctCovEntity
 
     Public Const COL_COVERAGE_TYPE As String = "coverage_type"
 
-    Public Shared Function LoadList(ByVal acctCompany As Guid, ByVal RegionId As Guid, ByVal CoverageTypeId As Guid, ByVal BusinessUnitId As Guid) As DataView
+    Public Shared Function LoadList(acctCompany As Guid, RegionId As Guid, CoverageTypeId As Guid, BusinessUnitId As Guid) As DataView
         Try
             Dim dal As New AcctCovEntityDAL
             Dim ds As DataSet
@@ -223,11 +223,11 @@ Public Class AcctCovEntity
         End Try
     End Function
 
-    Public Shared Function GetRegions(ByVal CoverageTypeId As Guid, ByVal BusinessEntityId As Guid, ByVal AcctBusinessUnitId As Guid, ByVal RegionId As Guid)
+    Public Shared Function GetRegions(CoverageTypeId As Guid, BusinessEntityId As Guid, AcctBusinessUnitId As Guid, RegionId As Guid)
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As AcctCovEntity) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As AcctCovEntity) As DataView
 
         Dim dt As DataTable
         dt = dv.Table

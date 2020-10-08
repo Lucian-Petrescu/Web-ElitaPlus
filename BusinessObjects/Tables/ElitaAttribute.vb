@@ -19,7 +19,7 @@ Public Class ElitaAttribute
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -33,20 +33,20 @@ Public Class ElitaAttribute
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -68,7 +68,7 @@ Public Class ElitaAttribute
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AttributeDAL
             If _isDSCreator Then
@@ -227,14 +227,14 @@ Public Class ElitaAttribute
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetTableList(ByVal tableName As String, ByVal sortExpression As String) As DataView
+    Public Shared Function GetTableList(tableName As String, sortExpression As String) As DataView
         Dim dal As New AttributeDAL
         Dim ds As DataSet
         ds = dal.LoadTableList(tableName, sortExpression)
         Return ds.Tables(0).DefaultView
     End Function
 
-    Shared Function GetTableAttributes(ByVal pTableName As String) As DataSet
+    Shared Function GetTableAttributes(pTableName As String) As DataSet
         Dim dal As New AttributeDAL
         Dim ds As DataSet
         ds = dal.LoadAttributeList(pTableName)
@@ -247,11 +247,11 @@ Public Class ElitaAttribute
     Public NotInheritable Class CheckDuplicateAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_ELITA_ATTRIBUTE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ElitaAttribute = CType(objectToValidate, ElitaAttribute)
             For Each dr As DataRow In obj.Row.Table.Rows
                 Dim oEa As ElitaAttribute = New ElitaAttribute(dr)

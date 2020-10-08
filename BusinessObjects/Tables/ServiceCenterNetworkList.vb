@@ -1,16 +1,16 @@
 Public Class ServiceCenterNetworkList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceCenter)
+    Public Sub New(parent As ServiceCenter)
         MyBase.New(LoadTable(parent), GetType(ServiceNetworkSvc), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ServiceNetworkSvc).ServiceCenterId.Equals(CType(Parent, ServiceCenter).Id)
     End Function
 
-    Public Function Find(ByVal serviceCenterId As Guid) As ServiceNetworkSvc
+    Public Function Find(serviceCenterId As Guid) As ServiceNetworkSvc
         Dim bo As ServiceNetworkSvc
         For Each bo In Me
             If bo.ServiceCenterId.Equals(serviceCenterId) Then Return bo
@@ -19,7 +19,7 @@ Public Class ServiceCenterNetworkList
     End Function
 
 
-    Public Function FindSrvNetwork(ByVal serviceNetworkId As Guid) As ServiceNetworkSvc
+    Public Function FindSrvNetwork(serviceNetworkId As Guid) As ServiceNetworkSvc
         Dim bo As ServiceNetworkSvc
         For Each bo In Me
             If bo.ServiceNetworkId.Equals(serviceNetworkId) Then Return bo
@@ -28,7 +28,7 @@ Public Class ServiceCenterNetworkList
     End Function
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ServiceCenter) As DataTable
+    Private Shared Function LoadTable(parent As ServiceCenter) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ServiceCenterNetworkList)) Then
                 Dim dal As New ServiceNetworkSvcDAL

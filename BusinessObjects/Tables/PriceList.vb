@@ -8,7 +8,7 @@ Public Class PriceList
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,20 +22,20 @@ Public Class PriceList
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@ Public Class PriceList
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PriceListDAL
             If _isDSCreator Then
@@ -259,7 +259,7 @@ Public Class PriceList
         End Try
     End Sub
 
-    Public Sub ProcessPriceListByStatus(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal userNetworkID As String, ByVal status_xcd As String)
+    Public Sub ProcessPriceListByStatus(PriceListID As Guid, PriceListDetailIDList As String, userNetworkID As String, status_xcd As String)
         Try
             Dim dal As New PriceListDAL
             dal.ProcessPriceListByStatus(PriceListID, PriceListDetailIDList, userNetworkID, status_xcd)
@@ -275,7 +275,7 @@ Public Class PriceList
         End Try
     End Sub
 
-    Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid) As DataSet
+    Public Function ViewPriceListDetailHistory(Pricelistdetaild As Guid, languageId As Guid) As DataSet
         Try
             Dim dal As New PriceListDetailDAL
             Return dal.ViewPriceListDetailHistory(Pricelistdetaild, languageId)
@@ -285,12 +285,12 @@ Public Class PriceList
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal code As String,
-                                   ByVal description As String,
-                                   ByVal serviceType As Guid,
-                                   ByVal countryList As String,
-                                   ByVal serviceCenter As String,
-                                   ByVal activeOn As DateType) As PriceListSearchDV
+    Public Shared Function GetList(code As String,
+                                   description As String,
+                                   serviceType As Guid,
+                                   countryList As String,
+                                   serviceCenter As String,
+                                   activeOn As DateType) As PriceListSearchDV
 
 
         Try
@@ -329,7 +329,7 @@ Public Class PriceList
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As PriceList)
+    Public Sub Copy(original As PriceList)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing List")
         End If
@@ -376,7 +376,7 @@ Public Class PriceList
         End Try
     End Function
 
-    Function PopulateVendorList(ByVal vendorlist As ArrayList) As String
+    Function PopulateVendorList(vendorlist As ArrayList) As String
         Try
             Dim returnString As String = String.Empty
             'compare with what we have and what is there in the user control
@@ -445,41 +445,41 @@ Public Class PriceList
         Public Const COL_NAME_EXPIRATION As String = PriceListDAL.COL_NAME_EXPIRATION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PriceListId(ByVal row) As Guid
+        Public Shared ReadOnly Property PriceListId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PRICE_LIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CountryId(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CountryId(row As DataRow) As String
             Get
                 Return row(COL_NAME_COUNTRY_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Effective(row As DataRow) As String
             Get
                 Return row(COL_NAME_EFFECTIVE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Expiration(row As DataRow) As String
             Get
                 Return row(COL_NAME_EXPIRATION).ToString
             End Get
@@ -536,11 +536,11 @@ Public Class PriceList
     Public NotInheritable Class ValidateDuplicatePriceListDetail
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_DUPLICATE_PRICE_LIST_DETAILS_FOR_PRICE_LIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceList = CType(objectToValidate, PriceList)
             'check for duplicate records.
             For Each oPriceListDetail As PriceListDetail In obj.PriceListDetailChildren.Where(Function(i) i.IsNew)
@@ -572,11 +572,11 @@ Public Class PriceList
     Public NotInheritable Class ValidateOverlappingDates
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_DATE_OVERLAPPING_IN_PRICE_LIST_DETAIL)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceList = CType(objectToValidate, PriceList)
             For Each oPriceListDetail As PriceListDetail In obj.PriceListDetailChildren
                 ''''check for overlapping dates
@@ -608,11 +608,11 @@ Public Class PriceList
     Public NotInheritable Class ValidateOverlappingPrices
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_PRICE_OVERLAPPING_IN_PRICE_LIST_DETAIL)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceList = CType(objectToValidate, PriceList)
             For Each oPriceListDetail As PriceListDetail In obj.PriceListDetailChildren
                 ''''check for overlapping prices
@@ -679,7 +679,7 @@ Public Class PriceList
         Public Const COL_NAME_SERVICE_CENTER_DESC As String = ServiceCenterDAL.COL_NAME_DESCRIPTION
         Public Const COL_NAME_PRICE_LIST_CODE As String = ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -693,7 +693,7 @@ Public Class PriceList
     End Class
 #End Region
 
-    Public Function GetServiceCenterChild(ByVal childId As Guid) As ServiceCenter
+    Public Function GetServiceCenterChild(childId As Guid) As ServiceCenter
         Return CType(ServiceCenterChildren.GetChild(childId), ServiceCenter)
     End Function
 
@@ -873,7 +873,7 @@ Public Class PriceList
         Public Const COL_NAME_STATUS_DATE As String = PriceListDetailDAL.COL_NAME_STATUS_DATE
         Public Const COL_NAME_REQUESTED_BY As String = PriceListDetailDAL.COL_NAME_REQUESTED_BY
         Public Const COL_NAME_REQUESTED_DATE As String = PriceListDetailDAL.COL_NAME_REQUESTED_DATE
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -937,7 +937,7 @@ Public Class PriceList
     End Class
 #End Region
 
-    Public Function GetPriceListDetailChild(ByVal childId As Guid) As PriceListDetail
+    Public Function GetPriceListDetailChild(childId As Guid) As PriceListDetail
         Return CType(PriceListDetailChildren.GetChild(childId), PriceListDetail)
     End Function
 

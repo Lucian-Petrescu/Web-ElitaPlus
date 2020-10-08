@@ -17,7 +17,7 @@ Public Class GetSpecialService
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetSpecialServiceDs)
+    Public Sub New(ds As GetSpecialServiceDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -30,7 +30,7 @@ Public Class GetSpecialService
 #Region "Private Members"
     Private _CoverageTypeId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetSpecialServiceDs)
+    Private Sub MapDataSet(ds As GetSpecialServiceDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -56,7 +56,7 @@ Public Class GetSpecialService
     Private Shared Sub CheckDeleted()
     End Sub
 
-    Private Sub Load(ByVal ds As GetSpecialServiceDs)
+    Private Sub Load(ds As GetSpecialServiceDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -74,7 +74,7 @@ Public Class GetSpecialService
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetSpecialServiceDs)
+    Private Sub PopulateBOFromWebService(ds As GetSpecialServiceDs)
         Try
             If ds.GetSpecialService.Count = 0 Then Exit Sub
             With ds.GetSpecialService.Item(0)

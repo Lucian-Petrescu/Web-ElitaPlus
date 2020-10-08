@@ -8,7 +8,7 @@ Public Class ClaimBonusSettings
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -22,20 +22,20 @@ Public Class ClaimBonusSettings
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -57,7 +57,7 @@ Public Class ClaimBonusSettings
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimBonusSettingsDAL
             If _isDSCreator Then
@@ -363,7 +363,7 @@ Public Class ClaimBonusSettings
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ClaimBonusSettings)
+    Public Sub Copy(original As ClaimBonusSettings)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Bonus Structure")
         End If
@@ -371,7 +371,7 @@ Public Class ClaimBonusSettings
         CopyFrom(original)
     End Sub
 
-    Public Shared Sub DeleteBonusSettings(ByVal bonussettingid As Guid)
+    Public Shared Sub DeleteBonusSettings(bonussettingid As Guid)
         Dim dal As New ClaimBonusSettingsDAL
         dal.Delete(bonussettingid)
     End Sub
@@ -438,60 +438,60 @@ Public Class ClaimBonusSettings
 
 
 #End Region
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property BonusSettingsId(ByVal row) As Guid
+        Public Shared ReadOnly Property BonusSettingsId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_CLAIM_BONUS_SETTINGS_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Dealer(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Dealer(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER_NAME).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ServiceCenter(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ServiceCenter(row As DataRow) As String
             Get
                 Return row(COL_NAME_SERVICE_CENTER).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ProductCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ProductCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_PRODUCT_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property BonuscomputationMethod(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property BonuscomputationMethod(row As DataRow) As String
             Get
                 Return row(COL_NAME_BONUS_COMPUTE_METHOD).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property SCReplacementPercentage(ByVal row) As String
+        Public Shared ReadOnly Property SCReplacementPercentage(row) As String
             Get
                 Return row(COL_NAME_SC_REPLACEMENT_PCT).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property SCAvgTurnAroundTime(ByVal row) As String
+        Public Shared ReadOnly Property SCAvgTurnAroundTime(row) As String
             Get
                 Return row(COL_NAME_SC_AVG_TAT).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property BonusAmountPeriod(ByVal row) As String
+        Public Shared ReadOnly Property BonusAmountPeriod(row) As String
             Get
                 Return row(COL_NAME_BONUS_AMOUNT_PERIOD).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property EffectiveDate(ByVal row) As String
+        Public Shared ReadOnly Property EffectiveDate(row) As String
             Get
                 Return row(COL_NAME_EFFECTIVE_DATE).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ExpirationDate(ByVal row) As String
+        Public Shared ReadOnly Property ExpirationDate(row) As String
             Get
                 Return row(COL_NAME_EXPIRATION_DATE).ToString
             End Get
@@ -499,7 +499,7 @@ Public Class ClaimBonusSettings
 
     End Class
 
-    Shared Function GetList(ByVal dealerId As Guid, ByVal servicecenterId As Guid, ByVal productcodeId As Guid) As BonusSettingsDV
+    Shared Function GetList(dealerId As Guid, servicecenterId As Guid, productcodeId As Guid) As BonusSettingsDV
         Try
             Dim dal As New ClaimBonusSettingsDAL
             Dim companyIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -511,7 +511,7 @@ Public Class ClaimBonusSettings
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As BonusSettingsDV, ByVal bo As ClaimBonusSettings) As BonusSettingsDV
+    Public Shared Function GetNewDataViewRow(dv As BonusSettingsDV, bo As ClaimBonusSettings) As BonusSettingsDV
 
         Dim dt As DataTable
         dt = dv.Table
@@ -546,7 +546,7 @@ Public Class ClaimBonusSettings
 
     End Function
 
-    Public Shared Function GetClaimBonusSettingCount(ByVal dealerId As Guid, ByVal servicecenterId As Guid, ByVal productcodeId As Guid, ByVal bonussettingsId As Guid) As Integer
+    Public Shared Function GetClaimBonusSettingCount(dealerId As Guid, servicecenterId As Guid, productcodeId As Guid, bonussettingsId As Guid) As Integer
 
         Dim dal As New ClaimBonusSettingsDAL
 
@@ -565,11 +565,11 @@ Public Class ClaimBonusSettings
         Inherits ValidBaseAttribute
         Private Const DUPLICATE_BONUS_STRUCTURE As String = "DUPLICATE_BONUS_STRUCTURE"
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_BONUS_STRUCTURE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimBonusSettings = CType(objectToValidate, ClaimBonusSettings)
             If (obj.CheckDuplicateBonusStructure()) Then
                 Return False

@@ -6,7 +6,7 @@ Public Class CoverageByCompanyGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class CoverageByCompanyGroup
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class CoverageByCompanyGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageByCompanyGroupDAL
             If _isDSCreator Then
@@ -162,7 +162,7 @@ Public Class CoverageByCompanyGroup
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal compGrpId As Guid) As SearchDV
+    Public Shared Function getList(compGrpId As Guid) As SearchDV
         Try
             Dim dal As New CoverageByCompanyGroupDAL
             Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -173,7 +173,7 @@ Public Class CoverageByCompanyGroup
         End Try
     End Function
 
-    Private Shared Function GetCovCompGrpList(ByVal parent As CompanyGroup) As DataTable
+    Private Shared Function GetCovCompGrpList(parent As CompanyGroup) As DataTable
 
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(CovCompGrpList)) Then
@@ -229,35 +229,35 @@ Public Class CoverageByCompanyGroup
         Public Const COL_NAME_COVERAGE_TYPE_ID As String = CoverageByCompanyGroupDAL.COL_NAME_COVERAGE_TYPE_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CoverageByCompanyGroup_id(ByVal row) As Guid
+        Public Shared ReadOnly Property CoverageByCompanyGroup_id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COVERAGE_BY_COMPANY_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ShortDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ShortDescription(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyGroupGd(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CompanyGroupGd(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMPANY_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CoverageTypeId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CoverageTypeId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End Get
@@ -269,15 +269,15 @@ Public Class CoverageByCompanyGroup
 #Region "List Methods"
     Public Class CovCompGrpList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As CompanyGroup)
+        Public Sub New(parent As CompanyGroup)
             MyBase.New(GetCovCompGrpList(parent), GetType(CoverageByCompanyGroup), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal covTypeId As Guid) As CoverageByCompanyGroup
+        Public Function FindById(covTypeId As Guid) As CoverageByCompanyGroup
             Dim bo As CoverageByCompanyGroup
             For Each bo In Me
                 If bo.CoverageTypeId.Equals(covTypeId) Then Return bo

@@ -20,7 +20,7 @@ Public Class Address
     Private _addressID As Guid
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -34,7 +34,7 @@ Public Class Address
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IAddressUser)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IAddressUser)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
@@ -42,7 +42,7 @@ Public Class Address
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IAddressUser, ByVal Flg As Boolean)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IAddressUser, Flg As Boolean)
         MyBase.New(Flg)
         Dataset = familyDS
         Load(id)
@@ -50,20 +50,20 @@ Public Class Address
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, ByVal userObj As IAddressUser)
+    Public Sub New(familyDS As DataSet, userObj As IAddressUser)
         MyBase.New(False)
         Dataset = familyDS
         Load()
         _userObj = userObj
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Sub New(ByVal familyDS As Data.DataSet)
+    Sub New(familyDS As Data.DataSet)
         ' TODO: Complete member initialization 
         '_dataSet = dataSet
         MyBase.New(False)
@@ -71,7 +71,7 @@ Public Class Address
         Load()
     End Sub
 
-    Sub New(ByVal addressid As Guid, ByVal dataset As Data.DataSet)
+    Sub New(addressid As Guid, dataset As Data.DataSet)
         ' todo: complete member initialization 
 
         MyBase.New(False)
@@ -99,7 +99,7 @@ Public Class Address
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AddressDAL
             If _isDSCreator Then
@@ -485,7 +485,7 @@ Public Class Address
         End Get
     End Property
 
-    Private Function IsEmptyString(ByVal value As String)
+    Private Function IsEmptyString(value As String)
         Return (value Is Nothing OrElse value.Trim.Length = 0)
     End Function
 #End Region
@@ -499,11 +499,11 @@ Public Class Address
 Public NotInheritable Class MandatoryForVscAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.AddressIsRequire Then
@@ -530,11 +530,11 @@ Public NotInheritable Class MandatoryForVscAttribute
 Public NotInheritable Class MandatoryForServCenterAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.AddressRequiredServCenter Then
@@ -558,11 +558,11 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class MandatoryCountryAddressFormatAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.AddressRequiredServCenter Then
@@ -598,11 +598,11 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class ValidUserCountry
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_USER_COUNTRY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
             Dim valid As Boolean = False
 
@@ -637,7 +637,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class RequiredFieldBySetting
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String, ByVal x As String, ByVal shortName As String)
+        Public Sub New(fieldDisplayName As String, x As String, shortName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
             propertyShortName = shortName
         End Sub
@@ -652,7 +652,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             End Set
         End Property
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.InforceFieldValidation = False Then Return True
@@ -677,11 +677,11 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class MandatoryForDartyGiftCardAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If (Not obj.PayeeId.Equals(Guid.Empty) And Not obj.PaymentMethodId.Equals(Guid.Empty)) Then
@@ -713,7 +713,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             _ItemName = String.Empty
             _Required = True
         End Sub
-        Public Sub New(ByVal ItemName As String, Optional ByVal Required As Boolean = True)
+        Public Sub New(ItemName As String, Optional ByVal Required As Boolean = True)
             _ItemName = ItemName
             _Required = Required
         End Sub
@@ -734,7 +734,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             End Set
         End Property
     End Class
-    Public Shared Sub SplitMailingAddressFormatString(ByVal MailAddrFmtStr As String, ByRef AddressComponents As Collections.Generic.List(Of MailAddressItem))
+    Public Shared Sub SplitMailingAddressFormatString(MailAddrFmtStr As String, ByRef AddressComponents As Collections.Generic.List(Of MailAddressItem))
         MailAddrFmtStr = MailAddrFmtStr.Trim
         'MailAddrFmtStr = "[ADR1][-][\n][ADR2][\n][ZIP][Space][CITY][Space][COU][\n][RGNAME]*[,][Space][RGCODE]"
         If MailAddrFmtStr.Trim <> "" Then
@@ -750,7 +750,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             End While
         End If
     End Sub
-    Public Shared Function IsAddressComponentRequired(ByVal MailAddrFmtStr As String, ByVal strComponent As String) As Boolean
+    Public Shared Function IsAddressComponentRequired(MailAddrFmtStr As String, strComponent As String) As Boolean
         Dim blnRequired As Boolean = False
         MailAddrFmtStr = MailAddrFmtStr.Trim
         If MailAddrFmtStr.Trim <> "" Then

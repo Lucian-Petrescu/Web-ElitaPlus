@@ -31,7 +31,7 @@ Public Class OlitaInsertCert
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As OlitaInsertCertDs)
+    Public Sub New(ds As OlitaInsertCertDs)
         MyBase.New()
         _certAddController = New CertAddController
         MapDataSet(ds)
@@ -44,7 +44,7 @@ Public Class OlitaInsertCert
 
 #Region "Member Methods"
 
-    Public Function GetDealerID(ByVal originalDealerCode As String) As Guid
+    Public Function GetDealerID(originalDealerCode As String) As Guid
         Dim dealerId As Guid = Guid.Empty
         Dim index As Integer
         Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
@@ -58,7 +58,7 @@ Public Class OlitaInsertCert
 
         Return dealerId
     End Function
-    Public Function GetSalutationDesc(ByVal originalSalutationCode As String) As String
+    Public Function GetSalutationDesc(originalSalutationCode As String) As String
         Dim salutationDesc As String
         Dim list As DataView = LookupListNew.GetSalutationLookupList (ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -67,7 +67,7 @@ Public Class OlitaInsertCert
         Return salutationDesc
     End Function
 
-    Private Sub PopulateBOFromWebService(ByVal ds As OlitaInsertCertDs)
+    Private Sub PopulateBOFromWebService(ds As OlitaInsertCertDs)
         Try
             If ds.OlitaInsertCert.Count = 0 Then Exit Sub
             With ds.OlitaInsertCert.Item(0)
@@ -232,7 +232,7 @@ Public Class OlitaInsertCert
         End Try
     End Function
 
-    Private Sub MapDataSet(ByVal ds As OlitaInsertCertDs)
+    Private Sub MapDataSet(ds As OlitaInsertCertDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -250,7 +250,7 @@ Public Class OlitaInsertCert
 
     End Sub
 
-    Private Sub Load(ByVal ds As OlitaInsertCertDs)
+    Private Sub Load(ds As OlitaInsertCertDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow

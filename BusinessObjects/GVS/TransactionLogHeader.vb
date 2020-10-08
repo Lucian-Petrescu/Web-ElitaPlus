@@ -6,7 +6,7 @@ Public Class TransactionLogHeader
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class TransactionLogHeader
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -58,7 +58,7 @@ Public Class TransactionLogHeader
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TransactionLogHeaderDAL
             If _isDSCreator Then
@@ -82,7 +82,7 @@ Public Class TransactionLogHeader
         End Try
     End Sub
 
-    Public Function AddTransactionLogHeader(ByVal transactionLogHeaderId As Guid) As TransactionLogHeader
+    Public Function AddTransactionLogHeader(transactionLogHeaderId As Guid) As TransactionLogHeader
         Dim objTransLogHeader As TransactionLogHeader
 
         If Not transactionLogHeaderId.Equals(Guid.Empty) Then
@@ -586,7 +586,7 @@ Public Property TransactionStatusID As Guid
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -619,7 +619,7 @@ Public Property TransactionStatusID As Guid
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -667,7 +667,7 @@ Public Property TransactionStatusID As Guid
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -766,7 +766,7 @@ Public Property TransactionStatusID As Guid
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
@@ -785,7 +785,7 @@ Public Property TransactionStatusID As Guid
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -821,7 +821,7 @@ Public Property TransactionStatusID As Guid
 
     End Class
 
-    Public Shared Function IsTransactionExist(ByVal gvsOriginalTransID As String) As Boolean
+    Public Shared Function IsTransactionExist(gvsOriginalTransID As String) As Boolean
         Dim objTransactionLogHeaderDAL As New TransactionLogHeaderDAL
         Dim ds As DataSet = objTransactionLogHeaderDAL.IsTransactionExist(gvsOriginalTransID)
         If Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
@@ -940,7 +940,7 @@ Public Property TransactionStatusID As Guid
 
     End Function
 
-    Public Shared Function GetExceptionList(ByVal claimNumber As String, ByVal authNumber As String, ByVal svcCode As String, ByVal transDateFrom As Date, ByVal transDateTo As Date, ByVal errorCode As String) As ExceptionSearchDV
+    Public Shared Function GetExceptionList(claimNumber As String, authNumber As String, svcCode As String, transDateFrom As Date, transDateTo As Date, errorCode As String) As ExceptionSearchDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New ExceptionSearchDV(dal.GetExceptionList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, claimNumber, authNumber, svcCode, transDateFrom, transDateTo, errorCode).Tables(0))
@@ -949,7 +949,7 @@ Public Property TransactionStatusID As Guid
         End Try
     End Function
 
-    Public Shared Function GetStatusList(ByVal transactionLogHeaderId As String) As TransactionStatusDV
+    Public Shared Function GetStatusList(transactionLogHeaderId As String) As TransactionStatusDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionStatusDV(dal.GetStatusList(transactionLogHeaderId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -958,7 +958,7 @@ Public Property TransactionStatusID As Guid
         End Try
     End Function
 
-    Public Shared Function GetPartList(ByVal transactionLogHeaderId As String) As TransactionPartDV
+    Public Shared Function GetPartList(transactionLogHeaderId As String) As TransactionPartDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionPartDV(dal.GetPartList(transactionLogHeaderId).Tables(0))
@@ -967,7 +967,7 @@ Public Property TransactionStatusID As Guid
         End Try
     End Function
 
-    Public Shared Function GetFollowUpList(ByVal transactionLogHeaderId As String) As TransactionFollowUpDV
+    Public Shared Function GetFollowUpList(transactionLogHeaderId As String) As TransactionFollowUpDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionFollowUpDV(dal.GetFollowUpList(transactionLogHeaderId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -976,7 +976,7 @@ Public Property TransactionStatusID As Guid
         End Try
     End Function
 
-    Public Shared Function GetTransactionData(ByVal transactionLogHeaderId As String) As TransactionDataDV
+    Public Shared Function GetTransactionData(transactionLogHeaderId As String) As TransactionDataDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionDataDV(dal.GetTransactionData(transactionLogHeaderId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -985,7 +985,7 @@ Public Property TransactionStatusID As Guid
         End Try
     End Function
 
-    Public Shared Function ResendOrHideTransaction(ByVal cmd As String, ByVal transLogHeaderId As Guid, Optional ByVal newComunaValue As String = Nothing, Optional ByVal newServiceTypeValue As String = Nothing) As DBHelper.DBHelperParameter()
+    Public Shared Function ResendOrHideTransaction(cmd As String, transLogHeaderId As Guid, Optional ByVal newComunaValue As String = Nothing, Optional ByVal newServiceTypeValue As String = Nothing) As DBHelper.DBHelperParameter()
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return dal.ResendOrHideTransaction(cmd, transLogHeaderId, newComunaValue, newServiceTypeValue)
@@ -994,7 +994,7 @@ Public Property TransactionStatusID As Guid
         End Try
     End Function
 
-    Public Shared Function ProcessRecords(ByVal cmd As String, ByVal transLogHeaderIds As String) As DBHelper.DBHelperParameter()
+    Public Shared Function ProcessRecords(cmd As String, transLogHeaderIds As String) As DBHelper.DBHelperParameter()
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return dal.ProcessRecords(cmd, transLogHeaderIds)
@@ -1003,7 +1003,7 @@ Public Property TransactionStatusID As Guid
         End Try
     End Function
 
-    Public Shared Function GetRejectionMessage(ByVal compGroupId As Guid, ByVal transLogHeaderId As Guid) As String
+    Public Shared Function GetRejectionMessage(compGroupId As Guid, transLogHeaderId As Guid) As String
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return dal.GetRejectionMessage(compGroupId, transLogHeaderId)

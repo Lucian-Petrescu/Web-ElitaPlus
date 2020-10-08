@@ -24,7 +24,7 @@ Namespace DocAdminImaging
 
 #Region "DataView Retrieveing Methods"
 
-        Public Shared Function GetRepositoryList(ByVal RepositoriesName As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date)) As DocumentRepository()
+        Public Shared Function GetRepositoryList(RepositoriesName As String, actionCode As String, activeOn As Nullable(Of Date)) As DocumentRepository()
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList() As DocumentRepository = New DocumentRepository() {}
             Try
@@ -37,7 +37,7 @@ Namespace DocAdminImaging
             Return resultList
         End Function
 
-        Public Shared Function GetDocumentFormats(ByVal RepositoriesName As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date)) As DocumentFormat()
+        Public Shared Function GetDocumentFormats(RepositoriesName As String, actionCode As String, activeOn As Nullable(Of Date)) As DocumentFormat()
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList() As DocumentFormat = New DocumentFormat() {}
             Try
@@ -50,7 +50,7 @@ Namespace DocAdminImaging
             Return resultList
         End Function
 
-        Public Shared Function GetDocumentFormat(ByVal RepositoriesName As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date), ByVal id As Guid) As DocumentFormat
+        Public Shared Function GetDocumentFormat(RepositoriesName As String, actionCode As String, activeOn As Nullable(Of Date), id As Guid) As DocumentFormat
             Try
                 Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 Dim resultList As DocumentFormat = New DocumentFormat()
@@ -69,7 +69,7 @@ Namespace DocAdminImaging
             End Try
         End Function
 
-        Public Shared Function GetRepositoryById(ByVal RepositoriesName As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date), ByVal id As Guid) As DocumentRepository
+        Public Shared Function GetRepositoryById(RepositoriesName As String, actionCode As String, activeOn As Nullable(Of Date), id As Guid) As DocumentRepository
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList As DocumentRepository = New DocumentRepository
             Try
@@ -84,7 +84,7 @@ Namespace DocAdminImaging
             Return resultList
         End Function
 
-        Public Shared Function GetRepositoryByName(ByVal RepositoriesName As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date), ByVal RepoName As String) As DocumentRepository
+        Public Shared Function GetRepositoryByName(RepositoriesName As String, actionCode As String, activeOn As Nullable(Of Date), RepoName As String) As DocumentRepository
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList As DocumentRepository = New DocumentRepository
             Try

@@ -6,7 +6,7 @@ Public Class AcctEventDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class AcctEventDetail
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class AcctEventDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctEventDetailDAL
             If _isDSCreator Then
@@ -721,11 +721,11 @@ Public Class AcctEventDetail
     Public NotInheritable Class ValidPayeeSettings
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BUSINESS_UNIT_VENDOR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
 
             Try
@@ -754,11 +754,11 @@ Public Class AcctEventDetail
     Public NotInheritable Class ValidAccountNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_TOO_SHORT_OR_TOO_LONG)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
 
             Try
@@ -786,11 +786,11 @@ Public Class AcctEventDetail
     Public NotInheritable Class ValidInclusionExclusionConfig
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "AT_LEAST_ONE_INC_EXC_CONFIG_REQUIRED")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim oAcctEventDetail As AcctEventDetail = CType(objectToValidate, AcctEventDetail)
 
             If oAcctEventDetail.IsNew = False AndAlso oAcctEventDetail.IncludeExcludeInd = "I" Then ' validation for existing object only, new object validation are done in form
@@ -827,14 +827,14 @@ Public Class AcctEventDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal AcctEventMask As Guid) As AcctEventDetailSearchDV
+    Public Shared Function getList(AcctEventMask As Guid) As AcctEventDetailSearchDV
         Try
             Dim dal As New AcctEventDetailDAL
             Return New AcctEventDetailSearchDV(dal.LoadList(AcctEventMask, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))

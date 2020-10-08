@@ -12,15 +12,15 @@ Public Class KeyValueDictionary
         Me.New(DEFAULT_KEY_VALUE_SEPERATOR, DEFAULT_PAIR_SEPERATOR, DEFAULT_DELIMITER, String.Empty)
     End Sub
 
-    Public Sub New(ByVal keyValueSeperator As Char, ByVal pairSeperator As Char, ByVal delimiter As Char)
+    Public Sub New(keyValueSeperator As Char, pairSeperator As Char, delimiter As Char)
         Me.New(keyValueSeperator, pairSeperator, delimiter, String.Empty)
     End Sub
 
-    Public Sub New(ByVal input As String)
+    Public Sub New(input As String)
         Me.New(DEFAULT_KEY_VALUE_SEPERATOR, DEFAULT_PAIR_SEPERATOR, DEFAULT_DELIMITER, input)
     End Sub
 
-    Public Sub New(ByVal keyValueSeperator As Char, ByVal pairSeperator As Char, ByVal delimiter As Char, ByVal input As String)
+    Public Sub New(keyValueSeperator As Char, pairSeperator As Char, delimiter As Char, input As String)
         MyBase.New()
         Me.KeyValueSeperator = keyValueSeperator
         Me.PairSeperator = pairSeperator
@@ -74,7 +74,7 @@ Public Class KeyValueDictionary
         Return ToString(False)
     End Function
 
-    Public Overloads Function ToString(ByVal useDelimiter As Boolean) As String
+    Public Overloads Function ToString(useDelimiter As Boolean) As String
         Dim sb As New StringBuilder
         Dim delimiter As String = String.Empty
         Dim notFirstEntry As Boolean = False

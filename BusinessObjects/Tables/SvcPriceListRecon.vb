@@ -7,7 +7,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -21,20 +21,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -56,7 +56,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SvcPriceListReconDAL
             If _isDSCreator Then
@@ -260,7 +260,7 @@
     End Sub
 
 
-    Public Function Add(ByVal svc_price_list_recon_id As Guid, ByVal servicenterId As Guid, ByVal price_list_id As Guid, ByVal status_xcd As String, ByVal Requested_By As String) As Integer
+    Public Function Add(svc_price_list_recon_id As Guid, servicenterId As Guid, price_list_id As Guid, status_xcd As String, Requested_By As String) As Integer
         Dim dal As New SvcPriceListReconDAL
         Return dal.Add(svc_price_list_recon_id, servicenterId, price_list_id, status_xcd, Requested_By)
     End Function
@@ -291,51 +291,51 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_SVC_PRICE_LIST_RECON_ID), Byte()))
             End Get
         End Property
-        Public Shared ReadOnly Property ServiceCenterId(ByVal row) As Guid
+        Public Shared ReadOnly Property ServiceCenterId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_SERVICE_CENTER_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property PriceListId(ByVal row) As Guid
+        Public Shared ReadOnly Property PriceListId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_PRICE_LIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Status_Xcd(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Status_Xcd(row As DataRow) As String
             Get
                 Return row(COL_STATUS_XCD).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property RequestedBy(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property RequestedBy(row As DataRow) As String
             Get
                 Return row(COL_REQUESTED_BY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Statusy(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Statusy(row As DataRow) As String
             Get
                 Return row(COL_STATUS_BY).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property RequestedDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property RequestedDate(row As DataRow) As DateType
             Get
                 Return New DateType(DateHelper.GetDateValue(row(COL_REQUESTED_DATE).ToString()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property StatusDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property StatusDate(row As DataRow) As DateType
             Get
                 Return New DateType(DateHelper.GetDateValue(row(COL_STATUS_DATE).ToString()))
             End Get
@@ -345,7 +345,7 @@
 
 #End Region
 
-    Public Shared Function LoadList(ByVal ServiceCenterCode As String, ByVal PriceListCode As String, ByVal CountryID As Guid) As DataView
+    Public Shared Function LoadList(ServiceCenterCode As String, PriceListCode As String, CountryID As Guid) As DataView
         Try
             Dim dal As New SvcPriceListReconDAL
             Dim ds As DataSet
@@ -358,7 +358,7 @@
         End Try
     End Function
 
-    Public Shared Function LoadListBySvc(ByVal servicecenterid As Guid) As DataView
+    Public Shared Function LoadListBySvc(servicecenterid As Guid) As DataView
         Try
             Dim dal As New SvcPriceListReconDAL
             Dim ds As New DataSet
@@ -371,7 +371,7 @@
         End Try
     End Function
 
-    Public Shared Function LoadLatestStatusList(ByVal servicecenterid As Guid) As DataSet
+    Public Shared Function LoadLatestStatusList(servicecenterid As Guid) As DataSet
         Try
             Dim dal As New SvcPriceListReconDAL
             Dim ds As New DataSet
@@ -383,7 +383,7 @@
     End Function
 
 
-    Public Shared Function GetList(ByVal DealerId As Guid, ByVal ProductData As DataSet) As DataView
+    Public Shared Function GetList(DealerId As Guid, ProductData As DataSet) As DataView
         Try
             Dim dal As New SvcPriceListReconDAL
             Dim ds As New DataSet
@@ -396,7 +396,7 @@
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As SvcPriceListRecon) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As SvcPriceListRecon) As DataView
 
         Dim dt As DataTable
         dt = dv.Table

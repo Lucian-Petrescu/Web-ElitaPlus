@@ -11,7 +11,7 @@ Public Class RegionTax
 
 #Region "Constructors"
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -25,21 +25,21 @@ Public Class RegionTax
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
     'New with DataRow
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -61,7 +61,7 @@ Public Class RegionTax
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RegionTaxDAL
             If _isDSCreator Then
@@ -230,7 +230,7 @@ Public Class RegionTax
         End Set
     End Property
 
-    Public Property RegionTaxDetail(ByVal taxBucket As Long) As RegionTaxDetail
+    Public Property RegionTaxDetail(taxBucket As Long) As RegionTaxDetail
         Get
             CheckDeleted()
 
@@ -357,7 +357,7 @@ Public Class RegionTax
         ExpirationDate = NewExpirationDate
     End Sub
 
-    Public Sub Copy(ByVal original As RegionTax)
+    Public Sub Copy(original As RegionTax)
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing region tax")
         End If
@@ -365,7 +365,7 @@ Public Class RegionTax
         CopyProperties(original)
     End Sub
 
-    Public Sub Clone(ByVal original As RegionTax)
+    Public Sub Clone(original As RegionTax)
         'Copy include unique key
         CopyProperties(original, True)
     End Sub
@@ -386,7 +386,7 @@ Public Class RegionTax
 
 #Region "Private Members"
 
-    Private Sub CopyProperties(ByVal original As RegionTax, Optional ByVal KeyIncluded As Boolean = False)
+    Private Sub CopyProperties(original As RegionTax, Optional ByVal KeyIncluded As Boolean = False)
         Dim oRTD As RegionTaxDetail
         With original
             If KeyIncluded Then SetValue(RegionTaxDAL.COL_NAME_REGION_ID, .Id)
@@ -408,8 +408,8 @@ Public Class RegionTax
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal RegionID As Guid, ByVal TaxTypeId As Guid, _
-                                   ByVal oProductTaxTypeId As Guid, ByVal DealerId As Guid) As System.Data.DataView
+    Public Shared Function getList(RegionID As Guid, TaxTypeId As Guid, _
+                                   oProductTaxTypeId As Guid, DealerId As Guid) As System.Data.DataView
         Try
             Dim dal As New RegionTaxDAL
             Return New System.Data.DataView(dal.LoadList(RegionID, TaxTypeId, oProductTaxTypeId, DealerId).Tables(0))
@@ -436,11 +436,11 @@ Public Class RegionTax
     Public NotInheritable Class ValidLastEntryForDelete
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, CountryTax.LAST_ENTRY_ONLY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As RegionTax = CType(objectToValidate, RegionTax)
 
             If obj.IsDeleted Then 'when deleting
@@ -459,11 +459,11 @@ Public Class RegionTax
     Public NotInheritable Class ValidNewEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, CountryTax.EFFECTIVE_DATE_NOT_GREATER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As RegionTax = CType(objectToValidate, RegionTax)
 
             If obj.IsNew Then ' when add new 
@@ -485,11 +485,11 @@ Public Class RegionTax
     Public NotInheritable Class ValidEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, CountryTax.INVALID_EFFECTIVE_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As RegionTax = CType(objectToValidate, RegionTax)
 
             If Not obj.IsDeleted Then 'Edit or add new

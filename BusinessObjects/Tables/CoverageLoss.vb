@@ -6,7 +6,7 @@ Public Class CoverageLoss
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,27 +20,27 @@ Public Class CoverageLoss
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
     'New BO Load not avialable
-    Public Sub New(ByVal causeOfLossId As Guid, ByVal coverageTypeId As Guid)
+    Public Sub New(causeOfLossId As Guid, coverageTypeId As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(causeOfLossId, coverageTypeId)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -62,7 +62,7 @@ Public Class CoverageLoss
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageLossDAL
             If _isDSCreator Then
@@ -86,7 +86,7 @@ Public Class CoverageLoss
         End Try
     End Sub
 
-    Protected Sub Load(ByVal causeOfLossId As Guid, ByVal coverageTypeId As Guid)
+    Protected Sub Load(causeOfLossId As Guid, coverageTypeId As Guid)
         Try
             Dim dal As New CoverageLossDAL
             Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -236,7 +236,7 @@ Public Class CoverageLoss
         End Try
     End Sub
 
-    Public Function getCoverageLossForSpecialService(ByVal splsvcCode As String, ByVal DealerCode As String) As DataView
+    Public Function getCoverageLossForSpecialService(splsvcCode As String, DealerCode As String) As DataView
         Dim dal As New CoverageLossDAL
         Try
             Dim dealerid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALERS, DealerCode)
@@ -256,7 +256,7 @@ Public Class CoverageLoss
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal coverageTypeId As Guid) As SearchDV
+    Public Shared Function getList(coverageTypeId As Guid) As SearchDV
         Try
             Dim dal As New CoverageLossDAL
             'Dim oCompany As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
@@ -269,7 +269,7 @@ Public Class CoverageLoss
         End Try
     End Function
 
-    Private Shared Function GetCovLossList(ByVal parent As CoverageType) As DataTable
+    Private Shared Function GetCovLossList(parent As CoverageType) As DataTable
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
         Try
@@ -286,7 +286,7 @@ Public Class CoverageLoss
     End Function
 
 
-    Private Shared Function GetCovLoss(ByVal parent As CoverageType, ByVal coverageLossId As Guid) As DataTable
+    Private Shared Function GetCovLoss(parent As CoverageType, coverageLossId As Guid) As DataTable
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
         Try
@@ -302,7 +302,7 @@ Public Class CoverageLoss
         End Try
     End Function
 
-    Public Function LoadCauseOfLossInUse(ByVal causeOfLossIds As ArrayList) As Boolean
+    Public Function LoadCauseOfLossInUse(causeOfLossIds As ArrayList) As Boolean
         Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
         Dim dal As New CoverageLossDAL
 
@@ -316,7 +316,7 @@ Public Class CoverageLoss
 
     End Function
 
-    Public Shared Function LoadSelectedCovLossFromCovandCauseOfLoss(ByVal CauseOfLossId As Guid, ByVal coverageTypeId As Guid) As DataSet
+    Public Shared Function LoadSelectedCovLossFromCovandCauseOfLoss(CauseOfLossId As Guid, coverageTypeId As Guid) As DataSet
         Dim grpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim dal As New CoverageLossDAL
 
@@ -325,7 +325,7 @@ Public Class CoverageLoss
         Return ds
     End Function
 
-    Public Shared Function LoadCauseOfLossByCov(ByVal coverageTypeId As Guid) As DataSet
+    Public Shared Function LoadCauseOfLossByCov(coverageTypeId As Guid) As DataSet
         Dim grpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim language_Id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Dim dal As New CoverageLossDAL
@@ -335,7 +335,7 @@ Public Class CoverageLoss
         Return ds
     End Function
 
-    Public Shared Function LoadDefaultCauseOfLossByCov(ByVal coverageTypeId As Guid) As DataSet
+    Public Shared Function LoadDefaultCauseOfLossByCov(coverageTypeId As Guid) As DataSet
         Dim grpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim language_Id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Dim dal As New CoverageLossDAL
@@ -363,53 +363,53 @@ Public Class CoverageLoss
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CoverageLossId(ByVal row) As Guid
+        Public Shared ReadOnly Property CoverageLossId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COVERAGE_LOSS_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ShortDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ShortDescription(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyGroupGd(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CompanyGroupGd(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMPANY_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CoverageTypeId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CoverageTypeId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CauseOfLossId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CauseOfLossId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_CAUSE_OF_LOSS_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property DefaultFlag(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property DefaultFlag(row As DataRow) As String
             Get
                 Return CType(row(COL_NAME_DEFAULT_FLAG), String)
             End Get
         End Property
 
-        Public Shared ReadOnly Property Active(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Active(row As DataRow) As String
             Get
                 Return CType(row(COL_NAME_ACTIVE), String)
             End Get
@@ -422,17 +422,17 @@ Public Class CoverageLoss
 #Region "List Methods"
     Public Class CovLossList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As CoverageType)
+        Public Sub New(parent As CoverageType)
             MyBase.New(GetCovLossList(parent), GetType(CoverageLoss), parent)
         End Sub
-        Public Sub New(ByVal parent As CoverageType, ByVal coverageLossId As Guid)
+        Public Sub New(parent As CoverageType, coverageLossId As Guid)
             MyBase.New(GetCovLoss(parent, coverageLossId), GetType(CoverageLoss), parent)
         End Sub
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal CauseOfLossId As Guid) As CoverageLoss
+        Public Function FindById(CauseOfLossId As Guid) As CoverageLoss
             Dim bo As CoverageLoss
             For Each bo In Me
                 If bo.CauseOfLossId.Equals(CauseOfLossId) Then Return bo

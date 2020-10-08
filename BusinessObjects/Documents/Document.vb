@@ -20,7 +20,7 @@ Namespace Documents
 #Region "Constructors"
 
         'Exiting BO
-        Friend Sub New(ByVal id As Guid)
+        Friend Sub New(id As Guid)
             MyBase.New()
             Dataset = New DataSet
             Load(id)
@@ -34,20 +34,20 @@ Namespace Documents
         End Sub
 
         'Exiting BO attaching to a BO family
-        Friend Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+        Friend Sub New(id As Guid, familyDS As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load(id)
         End Sub
 
         'New BO attaching to a BO family
-        Friend Sub New(ByVal familyDS As DataSet)
+        Friend Sub New(familyDS As DataSet)
             MyBase.New(False)
             Dataset = familyDS
             Load()
         End Sub
 
-        Friend Sub New(ByVal row As DataRow)
+        Friend Sub New(row As DataRow)
             MyBase.New(False)
             Dataset = row.Table.DataSet
             Me.Row = row
@@ -69,7 +69,7 @@ Namespace Documents
             End Try
         End Sub
 
-        Protected Sub Load(ByVal id As Guid)
+        Protected Sub Load(id As Guid)
             Try
                 Dim dal As New DocumentDAL
                 If _isDSCreator Then
@@ -311,11 +311,11 @@ Namespace Documents
         Public NotInheritable Class CheckFileType
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, INVALID_FILE_TYPE)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Document = CType(objectToValidate, Document)
                 If (DocumentManager.Current.FileTypes.Where(Function(ft) ft.Code = obj.FileType).Count() = 1) Then
                     Return True
@@ -329,11 +329,11 @@ Namespace Documents
         Public NotInheritable Class CheckRepository
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, INVALID_REPOSITORY)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Document = CType(objectToValidate, Document)
                 If (DocumentManager.Current.Repositories.Where(Function(r) r.Code = obj.RepositoryCode).Count() = 1) Then
                     Return True
@@ -347,11 +347,11 @@ Namespace Documents
         Public NotInheritable Class CheckFileSize
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, FILE_SIZE_MISMATCH)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Document = CType(objectToValidate, Document)
                 If (Not obj.IsNew) Then
                     Return True
@@ -364,11 +364,11 @@ Namespace Documents
         Public NotInheritable Class CheckData
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, FILE_SIZE_ZERO)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Document = CType(objectToValidate, Document)
                 If (Not obj.IsNew) Then
                     Return True
@@ -380,11 +380,11 @@ Namespace Documents
         Public NotInheritable Class CheckMaxData
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, FILE_SIZE_CAN_NOT_EXCEED_10_MB)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Document = CType(objectToValidate, Document)
                 If (Not obj.IsNew) Then
                     Return True

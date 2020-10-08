@@ -125,13 +125,13 @@
         Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
     End Sub
 
-    public Sub New (ByVal id As Guid, ByVal key As Guid)
+    public Sub New (id As Guid, key As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id,key)
@@ -153,7 +153,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerInflationDAL
             If _isDSCreator Then
@@ -177,7 +177,7 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal searchid As Guid,ByVal key As Guid)
+    Protected Sub Load(searchid As Guid,key As Guid)
         Try
             Dim dal As New DealerInflationDAL
             If _isDSCreator Then
@@ -234,7 +234,7 @@
 
     End Function
 
-    Public Function ValidateNewDealerInflation(ByVal DealerInflations As DealerInflationDV) As Boolean
+    Public Function ValidateNewDealerInflation(DealerInflations As DealerInflationDV) As Boolean
 
         Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_INFLATION_YEAR & "=" & InflationYear &  " And " & COL_NAME_INFLATION_MONTH  &"=" & InflationMonth)
                                
@@ -264,7 +264,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -272,7 +272,7 @@
 #End Region
 
 #Region "Grid Data Related"
-    Public Shared Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function GetEmptyList(dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -292,7 +292,7 @@
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As DealerInflationDV, ByVal NewBO As DealerInflation)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As DealerInflationDV, NewBO As DealerInflation)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -328,11 +328,11 @@
     Public NotInheritable Class ValueMandatoryDealerInflationPct
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.VALUE_REQUIRED_DEALER_INFLATION__PERCENTAGE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DealerInflation = CType(objectToValidate, DealerInflation)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False

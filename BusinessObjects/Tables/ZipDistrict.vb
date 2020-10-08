@@ -18,7 +18,7 @@ Public Class ZipDistrict
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(id)
@@ -32,20 +32,20 @@ Public Class ZipDistrict
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -67,7 +67,7 @@ Public Class ZipDistrict
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ZipDistrictDAL
             If _isDSCreator Then
@@ -224,8 +224,8 @@ Public Class ZipDistrict
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal searchCode As String, ByVal searchDesc As String, _
-                                    ByVal oCountryId As Guid) As ZipDistrictSearchDV
+    Public Shared Function getList(searchCode As String, searchDesc As String, _
+                                    oCountryId As Guid) As ZipDistrictSearchDV
         Try
             Dim dal As New ZipDistrictDAL
             Dim oCountryIds As ArrayList
@@ -256,7 +256,7 @@ Public Class ZipDistrict
         Public Const COL_NAME_ZIP_DISTRICT_ID As String = ZipDistrictDAL.COL_NAME_ZIP_DISTRICT_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -289,7 +289,7 @@ Public Class ZipDistrict
         Public Const COL_NAME_DETAIL_ID As String = "DetailId"
         Public Const COL_NAME_ZIP_CODE As String = "RiskTypeDescription"
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -301,7 +301,7 @@ Public Class ZipDistrict
         End Function
     End Class
 
-    Public Function GetChild(ByVal childId As Guid) As ZipDistrictDetail
+    Public Function GetChild(childId As Guid) As ZipDistrictDetail
         Return CType(ZipCodeChildren.GetChild(childId), ZipDistrictDetail)
     End Function
 
@@ -311,14 +311,14 @@ Public Class ZipDistrict
         Return newZdDetail
     End Function
 
-    Public Sub AddZipCode(ByVal zipCode As String)
+    Public Sub AddZipCode(zipCode As String)
         ValidateZipCode(zipCode)
         Dim newzipDistrictDetail As ZipDistrictDetail = GetNewChild
         newzipDistrictDetail.ZipCode = zipCode
         newzipDistrictDetail.Save()
     End Sub
 
-    Public Sub AddZipCodeRangeNew(ByVal startZipCode As String, ByVal endZipCode As String)
+    Public Sub AddZipCodeRangeNew(startZipCode As String, endZipCode As String)
         Dim startZc, endZc As Integer
         Try
             startZc = Integer.Parse(startZipCode)
@@ -361,7 +361,7 @@ Public Class ZipDistrict
         End Try
     End Sub
 
-    Public Sub AddZipCodeRange(ByVal startZipCode As String, ByVal endZipCode As String)
+    Public Sub AddZipCodeRange(startZipCode As String, endZipCode As String)
         Dim startZc, endZc As Integer
         Try
             startZc = Integer.Parse(startZipCode)
@@ -404,7 +404,7 @@ Public Class ZipDistrict
         End Try
     End Sub
 
-    Public Sub DeleteZipCodes(ByVal zcIdList() As String)
+    Public Sub DeleteZipCodes(zcIdList() As String)
         If Not zcIdList Is Nothing AndAlso zcIdList.Length > 0 Then
             Dim zipCodeId As String
             For Each zipCodeId In zcIdList
@@ -426,7 +426,7 @@ Public Class ZipDistrict
     End Property
 
 
-    public Sub ValidateZipCode(ByVal zipCode As String)
+    public Sub ValidateZipCode(zipCode As String)
         If Not ZipCodeChildren.Find(zipCode) Is Nothing Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_DUPLICATE_ZIP_CODE, GetType(ZipDistrictDetail), Nothing, "ZipCode", zipCode)
             Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)

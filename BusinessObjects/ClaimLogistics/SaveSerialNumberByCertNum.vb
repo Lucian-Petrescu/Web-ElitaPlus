@@ -17,7 +17,7 @@ Public Class SaveSerialNumberByCertNum
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As SaveSerialNumberByCertNumDs)
+    Public Sub New(ds As SaveSerialNumberByCertNumDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -32,7 +32,7 @@ Public Class SaveSerialNumberByCertNum
     Private _serviceNetworkID As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As SaveSerialNumberByCertNumDs)
+    Private Sub MapDataSet(ds As SaveSerialNumberByCertNumDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -54,7 +54,7 @@ Public Class SaveSerialNumberByCertNum
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As SaveSerialNumberByCertNumDs)
+    Private Sub Load(ds As SaveSerialNumberByCertNumDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -73,7 +73,7 @@ Public Class SaveSerialNumberByCertNum
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As SaveSerialNumberByCertNumDs)
+    Private Sub PopulateBOFromWebService(ds As SaveSerialNumberByCertNumDs)
         Try
             If ds.SaveSerialNumberByCertNum.Count = 0 Then Exit Sub
             With ds.SaveSerialNumberByCertNum.Item(0)

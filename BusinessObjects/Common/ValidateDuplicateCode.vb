@@ -4,10 +4,10 @@
 Public NotInheritable Class ValidateDuplicateCode
     Inherits ValidBaseAttribute
     Implements IValidatorAttribute
-    Public Sub New(ByVal FieldDisplayName As String)
+    Public Sub New(FieldDisplayName As String)
         MyBase.New(FieldDisplayName, Messages.DUPLICATE_CODE_SAME_EFFECTIVE)
     End Sub
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
         If objectToCheck Is Nothing Then Return True
 
         'check if the same code and effective date exist if found then its a duplicate

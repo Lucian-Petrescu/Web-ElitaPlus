@@ -13,7 +13,7 @@ Public Class OlitaGetNonBusinessDates
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Public Sub New(ds As OlitaGetNonBusinessDatesDs)
         MyBase.New()
         MapDataSet(ds)
         Load(ds)
@@ -22,7 +22,7 @@ Public Class OlitaGetNonBusinessDates
 #End Region
 
 #Region "Private Members"
-    Private Sub MapDataSet(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Private Sub MapDataSet(ds As OlitaGetNonBusinessDatesDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -39,7 +39,7 @@ Public Class OlitaGetNonBusinessDates
         Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
     End Sub
 
-    Private Sub Load(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Private Sub Load(ds As OlitaGetNonBusinessDatesDs)
         Try
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
             Row = newRow
@@ -57,7 +57,7 @@ Public Class OlitaGetNonBusinessDates
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Private Sub PopulateBOFromWebService(ds As OlitaGetNonBusinessDatesDs)
         Try
             If ds.OlitaGetNonBusinessDates.Count = 0 Then Exit Sub
             With ds.OlitaGetNonBusinessDates.Item(0)

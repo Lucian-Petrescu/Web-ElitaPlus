@@ -5,11 +5,11 @@ Public NotInheritable Class NonPastDateValidation
     Inherits ValidBaseAttribute
     Implements IValidatorAttribute
 
-    Public Sub New(ByVal FieldDisplayName As String)
+    Public Sub New(FieldDisplayName As String)
         MyBase.New(FieldDisplayName, Messages.NO_PAST_DATE)
 
     End Sub
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
 
         Dim TodaysDate As DateTime = DateTime.Today
 

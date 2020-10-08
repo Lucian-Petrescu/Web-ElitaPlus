@@ -103,7 +103,7 @@ Public Class SVCUpdateClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As SVCUpdateClaimDs)
+    Public Sub New(ds As SVCUpdateClaimDs)
         MyBase.New()
 
         ' dsCoverageInfo = New DataSet
@@ -307,7 +307,7 @@ Public Class SVCUpdateClaim
 
 #Region "Member Methods"
 
-    Private Sub ValidateInput(ByVal ds As SVCUpdateClaimDs)
+    Private Sub ValidateInput(ds As SVCUpdateClaimDs)
 
         ' ''With ds.SVCUpdateClaim.Item(0)
 
@@ -320,7 +320,7 @@ Public Class SVCUpdateClaim
         ' ''End With
 
     End Sub
-    Protected Sub CheckClaimPaymentInProgress(ByVal Id As Guid)
+    Protected Sub CheckClaimPaymentInProgress(Id As Guid)
         Dim ds As New DataSet
         Dim blockInvoice As String
         Dim oCompany As New Company(ClaimBO.Company.Id)
@@ -338,7 +338,7 @@ Public Class SVCUpdateClaim
         End If
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As SVCUpdateClaimDs, ByVal pos As Integer)
+    Private Sub PopulateBOFromWebService(ds As SVCUpdateClaimDs, pos As Integer)
         Try
             If ds.SVCUpdateClaim.Count = 0 Then Exit Sub
             With ds.SVCUpdateClaim.Item(pos)
@@ -445,7 +445,7 @@ Public Class SVCUpdateClaim
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As SVCUpdateClaimDs)
+    Private Sub PopulateBOFromWebService(ds As SVCUpdateClaimDs)
         Try
             'Dim j As Integer
             If ds.SVCUpdateClaim.Count = 0 Then Exit Sub
@@ -548,7 +548,7 @@ Public Class SVCUpdateClaim
         End Try
     End Sub
 
-    Private Sub NewPartsList(ByVal PartCode As String, ByVal PartAmount As Decimal, ByVal InStock As String, ByVal IsInStockNull As Boolean, ByVal ClaimId As Guid)
+    Private Sub NewPartsList(PartCode As String, PartAmount As Decimal, InStock As String, IsInStockNull As Boolean, ClaimId As Guid)
         Dim objPartDescriptionId As Guid = PartsDescription.GetPartDescriptionByCode(PartCode, ClaimId)
         If objPartDescriptionId.Equals(Guid.Empty) Then
             Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.INVALID_PART_CODE)
@@ -573,7 +573,7 @@ Public Class SVCUpdateClaim
 
     End Sub
 
-    Private Sub NewClaimExtendedStatus(ByVal Claim_Extended_Status_Code As String, ByVal Claim_Extended_Status_Date As DateTimeType, ByVal Claim_Extended_Status_Comment As String, ByVal IsClaim_Extended_Status_CommentNull As Boolean)
+    Private Sub NewClaimExtendedStatus(Claim_Extended_Status_Code As String, Claim_Extended_Status_Date As DateTimeType, Claim_Extended_Status_Comment As String, IsClaim_Extended_Status_CommentNull As Boolean)
         Dim oClaimStatus As ClaimStatus = Nothing
         Dim ClaimStatusByGroupID As Guid
         ClaimStatusByGroupID = ClaimStatusByGroup.GetClaimStatusByGroupID(Claim_Extended_Status_Code)
@@ -761,7 +761,7 @@ Public Class SVCUpdateClaim
 
     End Function
 
-    Private Sub MapDataSet(ByVal ds As SVCUpdateClaimDs)
+    Private Sub MapDataSet(ds As SVCUpdateClaimDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -779,7 +779,7 @@ Public Class SVCUpdateClaim
 
     End Sub
 
-    Private Sub Load(ByVal ds As SVCUpdateClaimDs, ByVal pos As Integer)
+    Private Sub Load(ds As SVCUpdateClaimDs, pos As Integer)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -796,7 +796,7 @@ Public Class SVCUpdateClaim
             Throw New ElitaPlusException("Claim Loading Data", Common.ErrorCodes.UNEXPECTED_ERROR)
         End Try
     End Sub
-    Private Sub Load(ByVal ds As SVCUpdateClaimDs)
+    Private Sub Load(ds As SVCUpdateClaimDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -821,7 +821,7 @@ Public Class SVCUpdateClaim
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Public Function IsValidFollowupDate(ByVal claimBO As Claim) As Boolean
+    Public Function IsValidFollowupDate(claimBO As Claim) As Boolean
         Dim obj As Claim = claimBO
 
         If ((obj.FollowupDate Is Nothing) OrElse _

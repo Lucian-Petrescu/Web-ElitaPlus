@@ -4,7 +4,7 @@ Public Class RoleAuthTabsExclusion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,27 +18,27 @@ Public Class RoleAuthTabsExclusion
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal oTabId As Guid, ByVal oRoleId As Guid)
+    Public Sub New(oTabId As Guid, oRoleId As Guid)
         MyBase.New()
         Dataset = New Dataset
         Load(oTabId, oRoleId)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -60,7 +60,7 @@ Public Class RoleAuthTabsExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RoleAuthTabsExclusionDAL
             If _isDSCreator Then
@@ -84,7 +84,7 @@ Public Class RoleAuthTabsExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal oTabId As Guid, ByVal oRoleId As Guid)
+    Protected Sub Load(oTabId As Guid, oRoleId As Guid)
         Try
             Dim dal As New RoleAuthTabsExclusionDAL
             If _isDSCreator Then
@@ -193,7 +193,7 @@ Public Class RoleAuthTabsExclusion
 
 #Region "DATA ACCESS ROUTINES"
 
-    Public Shared Function PopulateList(ByVal oLanguageID As Guid) As DataView
+    Public Shared Function PopulateList(oLanguageID As Guid) As DataView
         Dim oDs As DataSet
         Try
             Dim dal As New RoleAuthTabsExclusionDAL
@@ -205,7 +205,7 @@ Public Class RoleAuthTabsExclusion
         End Try
     End Function
 
-    Public Shared Function GetTabList(ByVal oLanguageID As Guid) As DataView
+    Public Shared Function GetTabList(oLanguageID As Guid) As DataView
         Dim oDs As DataSet
         Try
             Dim dal As New RoleAuthTabsExclusionDAL
@@ -216,7 +216,7 @@ Public Class RoleAuthTabsExclusion
         End Try
     End Function
 
-    Public Shared Function GetPermissionsByTabID(ByVal TabID As Guid) As DataView
+    Public Shared Function GetPermissionsByTabID(TabID As Guid) As DataView
         Dim oDs As DataSet
         Try
             Dim dal As New RoleAuthTabsExclusionDAL

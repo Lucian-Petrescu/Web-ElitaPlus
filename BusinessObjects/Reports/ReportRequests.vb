@@ -6,7 +6,7 @@ Public Class ReportRequests
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class ReportRequests
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,7 +55,7 @@ Public Class ReportRequests
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ReportRequestsDAL
             If _isDSCreator Then
@@ -311,7 +311,7 @@ Public Class ReportRequests
         End Try
     End Sub
 
-    Public Sub CreateReportRequest(ByVal ScheduledDate As DateTime)
+    Public Sub CreateReportRequest(ScheduledDate As DateTime)
         Try
             Dim dal As New ReportRequestsDAL
             dal.CreateReportRequest(ReportType, Requester, FtpFilename, ReportParameters, UserEmailAddress, ReportProc, ScheduledDate)
@@ -320,7 +320,7 @@ Public Class ReportRequests
         End Try
     End Sub
 
-    Public Shared Function GetAccessCountByUser(ByVal userId As String) As Integer
+    Public Shared Function GetAccessCountByUser(userId As String) As Integer
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -333,7 +333,7 @@ Public Class ReportRequests
 
     End Function
 
-    Public Shared Function GetReportsByUser(ByVal userId As String) As DataTable
+    Public Shared Function GetReportsByUser(userId As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -345,7 +345,7 @@ Public Class ReportRequests
         End Try
 
     End Function
-    Public Shared Function LoadRequestsByUser(ByVal userId As String, ByVal reportType As String) As DataTable
+    Public Shared Function LoadRequestsByUser(userId As String, reportType As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -357,7 +357,7 @@ Public Class ReportRequests
         End Try
 
     End Function
-    Public Shared Function LoadRequestsByReportKey(ByVal userId As String, ByVal requestId As String) As DataTable
+    Public Shared Function LoadRequestsByReportKey(userId As String, requestId As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -370,7 +370,7 @@ Public Class ReportRequests
 
     End Function
 
-    Public Shared Function LoadRequests(ByVal requestId As String, ByVal userId As String) As DataTable
+    Public Shared Function LoadRequests(requestId As String, userId As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -386,18 +386,18 @@ Public Class ReportRequests
     Public Class ReportRequestsDV
         Inherits DataView
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Function CheckExchaneRate(ByVal reprortingmonthyear As String,
-                                            ByVal companyCode As String,
-                                            ByVal dealerCode As String,
-                                            ByVal groupid As String,
-                                            ByVal dealerwithcurrency As String,
-                                            ByVal currencyid As String) As String
+    Public Shared Function CheckExchaneRate(reprortingmonthyear As String,
+                                            companyCode As String,
+                                            dealerCode As String,
+                                            groupid As String,
+                                            dealerwithcurrency As String,
+                                            currencyid As String) As String
         Try
             Dim dal As New ReportRequestsDAL
 
@@ -408,7 +408,7 @@ Public Class ReportRequests
         End Try
     End Function
 
-    Public Shared Function GetReportParams(ByVal reporttype As String) As DataTable
+    Public Shared Function GetReportParams(reporttype As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL

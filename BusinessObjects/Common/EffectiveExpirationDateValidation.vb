@@ -3,12 +3,12 @@
 Public NotInheritable Class EffectiveExpirationDateValidation
     Inherits ValidBaseAttribute
     Implements IValidatorAttribute
-    Public Sub New(ByVal FieldNamestring As String)
+    Public Sub New(FieldNamestring As String)
         MyBase.New(FieldNamestring, Messages.INVALID_EXP_DATE)
 
     End Sub
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
 
         Dim Iface As IExpirable = DirectCast(context, IExpirable)
 

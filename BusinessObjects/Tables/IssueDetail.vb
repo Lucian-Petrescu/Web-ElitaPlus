@@ -4,15 +4,15 @@
 Public Class IssueNotesChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As Issue)
+    Public Sub New(parent As Issue)
         MyBase.New(LoadTable(parent), GetType(IssueComment), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, IssueComment).IssueId.Equals(CType(Parent, Issue).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As Issue) As DataTable
+    Private Shared Function LoadTable(parent As Issue) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IssueNotesChildrenList)) Then
                 Dim dal As New IssueCommentDAL
@@ -33,19 +33,19 @@ End Class
 Public Class IssueQuestionsChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As Issue)
+    Public Sub New(parent As Issue)
         MyBase.New(LoadTable(parent), GetType(IssueQuestion), parent)
     End Sub
 
-    Public Sub New(ByVal parent As Issue, issueId As Guid, dealerId As Guid)
+    Public Sub New(parent As Issue, issueId As Guid, dealerId As Guid)
         MyBase.New(LoadTable(parent, issueId, dealerId), GetType(IssueQuestion), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, IssueQuestion).IssueId.Equals(CType(Parent, Issue).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As Issue) As DataTable
+    Private Shared Function LoadTable(parent As Issue) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IssueQuestionsChildrenList)) Then
                 Dim dal As New IssueQuestionDAL
@@ -58,7 +58,7 @@ Public Class IssueQuestionsChildrenList
         End Try
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As Issue, issueId As Guid, dealerId As Guid) As DataTable
+    Private Shared Function LoadTable(parent As Issue, issueId As Guid, dealerId As Guid) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IssueQuestionsChildrenList)) Then
                 Dim dal As New IssueQuestionDAL
@@ -79,15 +79,15 @@ End Class
 Public Class IssueRulesChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As Issue)
+    Public Sub New(parent As Issue)
         MyBase.New(LoadTable(parent), GetType(RuleIssue), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, RuleIssue).IssueId.Equals(CType(Parent, Issue).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As Issue) As DataTable
+    Private Shared Function LoadTable(parent As Issue) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IssueRulesChildrenList)) Then
                 Dim dal As New RuleIssueDAL
