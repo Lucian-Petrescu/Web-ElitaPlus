@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports AjaxControlToolkit
 
 Partial Public Class ClaimAdjusterInboxForm
     
@@ -20,7 +21,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
     
     '''<summary>
     '''ScriptManager1 control.
@@ -29,7 +30,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.AjaxControlToolkit.ToolkitScriptManager
+    Protected WithEvents ScriptManager1 As ToolkitScriptManager
     
     '''<summary>
     '''LabelTables control.
@@ -38,7 +39,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTables As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTables As Label
     
     '''<summary>
     '''Label1a control.
@@ -47,7 +48,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1a As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1a As Label
     
     '''<summary>
     '''WorkingPanel control.
@@ -56,7 +57,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
     
     '''<summary>
     '''lblClaimNumber control.
@@ -65,7 +66,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimNumber As Label
     
     '''<summary>
     '''txtClaimNumber control.
@@ -74,7 +75,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtClaimNumber As TextBox
     
     '''<summary>
     '''lblAuthorizationNumber control.
@@ -83,7 +84,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAuthorizationNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAuthorizationNumber As Label
     
     '''<summary>
     '''txtAuthorizationNumber control.
@@ -92,7 +93,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtAuthorizationNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtAuthorizationNumber As TextBox
     
     '''<summary>
     '''lblClaimStatus control.
@@ -101,7 +102,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimStatus As Label
     
     '''<summary>
     '''cboClaimStatus control.
@@ -110,7 +111,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboClaimStatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboClaimStatus As DropDownList
     
     '''<summary>
     '''lblClaimType control.
@@ -119,7 +120,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimType As Label
     
     '''<summary>
     '''cboClaimType control.
@@ -128,7 +129,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboClaimType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboClaimType As DropDownList
     
     '''<summary>
     '''lblClaimExtendedStatus control.
@@ -137,7 +138,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimExtendedStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimExtendedStatus As Label
     
     '''<summary>
     '''cboClaimExtendedStatus control.
@@ -146,7 +147,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboClaimExtendedStatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboClaimExtendedStatus As DropDownList
     
     '''<summary>
     '''lblStatusOwner control.
@@ -155,7 +156,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblStatusOwner As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblStatusOwner As Label
     
     '''<summary>
     '''cboStatusOwner control.
@@ -164,7 +165,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboStatusOwner As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboStatusOwner As DropDownList
     
     '''<summary>
     '''lblSCTurnAroundTime control.
@@ -173,7 +174,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSCTurnAroundTime As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSCTurnAroundTime As Label
     
     '''<summary>
     '''cboSCTurnAroundTime control.
@@ -182,7 +183,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSCTurnAroundTime As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSCTurnAroundTime As DropDownList
     
     '''<summary>
     '''lblServiceCenterName control.
@@ -191,7 +192,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblServiceCenterName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblServiceCenterName As Label
     
     '''<summary>
     '''txtServiceCenterName control.
@@ -200,7 +201,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtServiceCenterName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtServiceCenterName As TextBox
     
     '''<summary>
     '''lblExt_Sts_Date_From control.
@@ -209,7 +210,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblExt_Sts_Date_From As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblExt_Sts_Date_From As Label
     
     '''<summary>
     '''txtExt_Sts_Date_From control.
@@ -218,7 +219,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtExt_Sts_Date_From As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtExt_Sts_Date_From As TextBox
     
     '''<summary>
     '''BtnBeginDate control.
@@ -227,7 +228,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents BtnBeginDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents BtnBeginDate As ImageButton
     
     '''<summary>
     '''lblExt_Sts_Date_To control.
@@ -236,7 +237,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblExt_Sts_Date_To As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblExt_Sts_Date_To As Label
     
     '''<summary>
     '''txtExt_Sts_Date_To control.
@@ -245,7 +246,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtExt_Sts_Date_To As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtExt_Sts_Date_To As TextBox
     
     '''<summary>
     '''BtnEndDate control.
@@ -254,7 +255,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents BtnEndDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents BtnEndDate As ImageButton
     
     '''<summary>
     '''lblAutoApproved control.
@@ -263,7 +264,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAutoApproved As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAutoApproved As Label
     
     '''<summary>
     '''cboAutoApproved control.
@@ -272,7 +273,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboAutoApproved As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboAutoApproved As DropDownList
     
     '''<summary>
     '''lblClaimAdjuster control.
@@ -281,7 +282,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimAdjuster As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimAdjuster As Label
     
     '''<summary>
     '''txtClaimAdjuster control.
@@ -290,7 +291,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtClaimAdjuster As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtClaimAdjuster As TextBox
     
     '''<summary>
     '''lblCreatedBy control.
@@ -299,7 +300,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCreatedBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCreatedBy As Label
     
     '''<summary>
     '''txtCreatedBy control.
@@ -308,7 +309,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCreatedBy As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCreatedBy As TextBox
     
     '''<summary>
     '''lblSortBy control.
@@ -317,7 +318,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSortBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSortBy As Label
     
     '''<summary>
     '''cboSortBy control.
@@ -326,7 +327,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSortBy As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSortBy As DropDownList
     
     '''<summary>
     '''lblSortOrder control.
@@ -335,7 +336,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSortOrder As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSortOrder As Label
     
     '''<summary>
     '''cboSortOrder control.
@@ -344,7 +345,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSortOrder As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSortOrder As DropDownList
     
     '''<summary>
     '''btnClearSearch control.
@@ -353,7 +354,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
     
     '''<summary>
     '''btnSearch control.
@@ -362,7 +363,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
     
     '''<summary>
     '''trPageSize control.
@@ -371,7 +372,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
     
     '''<summary>
     '''tDDataGrid control.
@@ -380,7 +381,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tDDataGrid As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tDDataGrid As HtmlTableCell
     
     '''<summary>
     '''lblPageSize control.
@@ -389,7 +390,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
     
     '''<summary>
     '''cboPageSize control.
@@ -398,7 +399,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
     
     '''<summary>
     '''HiddenSavePagePromptResponse control.
@@ -407,7 +408,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSavePagePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSavePagePromptResponse As HtmlInputHidden
     
     '''<summary>
     '''HiddenIsPageDirty control.
@@ -416,7 +417,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenIsPageDirty As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenIsPageDirty As HtmlInputHidden
     
     '''<summary>
     '''lblRecordCount control.
@@ -425,7 +426,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
     
     '''<summary>
     '''tDDataGrid1 control.
@@ -434,7 +435,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tDDataGrid1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tDDataGrid1 As HtmlTableCell
     
     '''<summary>
     '''modataGrid control.
@@ -443,7 +444,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents modataGrid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents modataGrid As GridView
     
     '''<summary>
     '''CheckBoxIDsArray control.
@@ -452,7 +453,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CheckBoxIDsArray As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents CheckBoxIDsArray As Literal
     
     '''<summary>
     '''ApproveButton_WRITE control.
@@ -461,7 +462,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ApproveButton_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents ApproveButton_WRITE As Button
     
     '''<summary>
     '''RejectButton_WRITE control.
@@ -470,7 +471,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents RejectButton_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents RejectButton_WRITE As Button
     
     '''<summary>
     '''Panel1 control.
@@ -479,7 +480,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Panel1 As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents Panel1 As Panel
     
     '''<summary>
     '''checkRecords control.
@@ -488,7 +489,7 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents checkRecords As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents checkRecords As HtmlInputHidden
     
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -497,5 +498,5 @@ Partial Public Class ClaimAdjusterInboxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 End Class

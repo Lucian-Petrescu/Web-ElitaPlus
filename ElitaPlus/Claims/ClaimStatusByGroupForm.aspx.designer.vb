@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 
 Partial Public Class ClaimStatusByGroupForm
 
@@ -20,7 +21,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''Label5 control.
@@ -29,7 +30,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label5 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label5 As Label
 
     '''<summary>
     '''Label6 control.
@@ -38,7 +39,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label6 As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -47,7 +48,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''ErrorControl control.
@@ -56,7 +57,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ErrorControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
+    Protected WithEvents ErrorControl As ErrorController
 
     '''<summary>
     '''multipleDropControl control.
@@ -65,7 +66,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents multipleDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl
+    Protected WithEvents multipleDropControl As MultipleColumnDDLabelControl
 
     '''<summary>
     '''lblCompanyGroup control.
@@ -74,7 +75,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCompanyGroup As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCompanyGroup As Label
 
     '''<summary>
     '''txtCompanyGroup control.
@@ -83,7 +84,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCompanyGroup As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCompanyGroup As TextBox
 
     '''<summary>
     '''DataGridDropdowns control.
@@ -92,7 +93,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents DataGridDropdowns As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents DataGridDropdowns As DataGrid
 
     '''<summary>
     '''btnBack control.
@@ -101,7 +102,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''btnSave control.
@@ -110,7 +111,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave As Button
 
     '''<summary>
     '''btnCancel control.
@@ -119,7 +120,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancel As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancel As Button
 
     '''<summary>
     '''btnButtomNew_WRITE control.
@@ -128,7 +129,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnButtomNew_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnButtomNew_WRITE As Button
 
     '''<summary>
     '''btnCopy_WRITE control.
@@ -137,7 +138,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCopy_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCopy_WRITE As Button
 
     '''<summary>
     '''btnActionSettings control.
@@ -146,7 +147,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnActionSettings As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnActionSettings As Button
 
     '''<summary>
     '''btnDefaultStatuses control.
@@ -155,7 +156,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDefaultStatuses As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnDefaultStatuses As Button
 
     '''<summary>
     '''CMD control.
@@ -164,7 +165,7 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CMD As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents CMD As HtmlInputHidden
 
     '''<summary>
     '''CopyDealerId control.
@@ -173,5 +174,5 @@ Partial Public Class ClaimStatusByGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CopyDealerId As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents CopyDealerId As HtmlInputHidden
 End Class

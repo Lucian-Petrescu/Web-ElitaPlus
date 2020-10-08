@@ -1,7 +1,7 @@
 ﻿Public Partial Class ClaimHistoryListForm
-    Inherits System.Web.UI.Page
+    Inherits Page
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
 

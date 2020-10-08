@@ -76,7 +76,7 @@ Partial Class PreInvoiceListForm
 #End Region
 
 #Region "Page event handlers"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         MasterPage.MessageController.Clear()
 
@@ -163,7 +163,7 @@ Partial Class PreInvoiceListForm
         Dim dv As DataView = LookupListNew.GetUserCompaniesLookupList()
 
         moMultipleColumnDrop.NothingSelected = True
-        moMultipleColumnDrop.SetControl(True, moMultipleColumnDrop.MODES.NEW_MODE, True, dv, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, False)
+        moMultipleColumnDrop.SetControl(True, MultipleColumnDDLabelControl_New.MODES.NEW_MODE, True, dv, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, False)
         If dv.Count.Equals(1) Then
             moMultipleColumnDrop.SelectedIndex = 1
             moMultipleColumnDrop.Visible = False
@@ -188,7 +188,7 @@ Partial Class PreInvoiceListForm
 #End Region
 
 #Region "Button event handlers"
-    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             State.searchBtnClicked = True
             State.PageIndex = 0
@@ -209,7 +209,7 @@ Partial Class PreInvoiceListForm
         Try
             'Validating the Company selection
             If moMultipleColumnDrop.SelectedGuid.Equals(Guid.Empty) Then
-                ElitaPlusPage.SetLabelError(moMultipleColumnDrop.CaptionLabel)
+                SetLabelError(moMultipleColumnDrop.CaptionLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
@@ -263,12 +263,12 @@ Partial Class PreInvoiceListForm
         End Try
     End Sub
 
-    Private Sub btnNewInvCycle_Click(sender As Object, e As System.EventArgs) Handles btnNewInvCycle.Click
+    Private Sub btnNewInvCycle_Click(sender As Object, e As EventArgs) Handles btnNewInvCycle.Click
         Try
             Dim oCompanyCode As String = moMultipleColumnDrop.SelectedCode
             'Validating the Company selection
             If moMultipleColumnDrop.SelectedGuid.Equals(Guid.Empty) Then
-                ElitaPlusPage.SetLabelError(moMultipleColumnDrop.CaptionLabel)
+                SetLabelError(moMultipleColumnDrop.CaptionLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
@@ -396,11 +396,11 @@ Partial Class PreInvoiceListForm
     '    End If
     'End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             State.PageIndex = e.NewPageIndex
 
@@ -410,7 +410,7 @@ Partial Class PreInvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim index As Integer
             If e.CommandName = SELECT_ACTION_COMMAND Then
@@ -432,13 +432,13 @@ Partial Class PreInvoiceListForm
                 callPage(PreinvoiceDetailForm.URL, New PreinvoiceDetailForm.Parameters(State.selectedCompanycode, State.selectedCompanyDesc, State.selectedPreInvoiceID, State.selectedBatchNumber, State.status, State.createDate, State.displayDate, State.claims, State.totalBonusAmount, State.totalAmount, State.Deductible))
             End If
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnEditItem As LinkButton
@@ -460,7 +460,7 @@ Partial Class PreInvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -478,7 +478,7 @@ Partial Class PreInvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)

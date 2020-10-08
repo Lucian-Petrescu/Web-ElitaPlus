@@ -1,6 +1,10 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Diagnostics
+Imports System.Threading
+Imports Assurant.ElitaPlus.DALObjects
+
 Partial Class PartsInfoForm
     Inherits ElitaPlusSearchPage
 
@@ -86,16 +90,16 @@ Partial Class PartsInfoForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-    Protected WithEvents SearchDescriptionLabel As System.Web.UI.WebControls.Label
+    Protected WithEvents SearchDescriptionLabel As Label
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -125,7 +129,7 @@ Partial Class PartsInfoForm
 
 #Region "Button Click Handlers"
 
-    Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
+    Private Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
 
         Try
             Dim desc As DropDownList = New DropDownList
@@ -135,9 +139,9 @@ Partial Class PartsInfoForm
                 AddNewPartsInfo()
             Else
                 If State.PartsAdded Then
-                    DisplayMessage(Message.MSG_NO_MORE_PARTSDESC_FOUND, "", ElitaPlusPage.MSG_BTN_OK, ElitaPlusPage.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_NO_MORE_PARTSDESC_FOUND, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                 Else
-                    DisplayMessage(Message.MSG_NO_PARTSDESC_FOUND, "", ElitaPlusPage.MSG_BTN_OK, ElitaPlusPage.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_NO_PARTSDESC_FOUND, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                 End If
                 ReturnFromEditing()
             End If
@@ -147,17 +151,17 @@ Partial Class PartsInfoForm
         End Try
 
     End Sub
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             'Me.ReturnToCallingPage()
             NavController.Navigate(Me, "back")
-        Catch exT As System.Threading.ThreadAbortException
+        Catch exT As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
 
         Try
             PopulateBOFromForm()
@@ -176,7 +180,7 @@ Partial Class PartsInfoForm
 
     End Sub
 
-    Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles CancelButton.Click
         Try
             CancelEditing()
         Catch ex As Exception
@@ -222,7 +226,7 @@ Partial Class PartsInfoForm
         End If
     End Sub
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         ErrController.Clear_Hide()
@@ -348,9 +352,9 @@ Partial Class PartsInfoForm
                 End Try
                 If State.PartsInfoBO.InStockID.Equals(Guid.Empty) Then
                     Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-                    YESNOdv.RowFilter = DALObjects.LookupListDALNew.COL_NAME_CODE & "='Y'"
+                    YESNOdv.RowFilter = LookupListDALNew.COL_NAME_CODE & "='Y'"
                     If YESNOdv IsNot Nothing AndAlso YESNOdv.Count > 0 Then
-                        State.PartsInfoBO.InStockID = New Guid(CType(YESNOdv(0)(DALObjects.LookupListDALNew.COL_NAME_ID), Byte()))
+                        State.PartsInfoBO.InStockID = New Guid(CType(YESNOdv(0)(LookupListDALNew.COL_NAME_ID), Byte()))
                     End If
                 End If
             End With
@@ -419,7 +423,7 @@ Partial Class PartsInfoForm
 
 #Region "Datagrid Related "
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
 
         Try
             If (Not (State.IsEditMode)) Then
@@ -434,7 +438,7 @@ Partial Class PartsInfoForm
 
     End Sub
 
-    Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
 
         Try
             Dim index As Integer = e.Item.ItemIndex

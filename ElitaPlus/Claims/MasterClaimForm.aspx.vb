@@ -1,20 +1,24 @@
+Imports System.Diagnostics
+Imports System.Threading
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
+
 Partial Class MasterClaimForm
     Inherits ElitaPlusSearchPage
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -100,7 +104,7 @@ Partial Class MasterClaimForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
         ErrorCtrl.Clear_Hide()
@@ -282,7 +286,7 @@ Partial Class MasterClaimForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
@@ -306,7 +310,7 @@ Partial Class MasterClaimForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -316,7 +320,7 @@ Partial Class MasterClaimForm
         End Try
     End Sub
 
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectRecord" Then
                 Grid.SelectedIndex = e.Item.ItemIndex
@@ -329,18 +333,18 @@ Partial Class MasterClaimForm
                 End If
                 EnableDisableButtons()
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = e.NewPageIndex
             Grid.CurrentPageIndex = State.PageIndex
@@ -351,7 +355,7 @@ Partial Class MasterClaimForm
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles Grid.SortCommand
 
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
@@ -377,47 +381,47 @@ Partial Class MasterClaimForm
 
 #Region "Button Clicks"
 
-    Private Sub btnClaimDetail_Click(sender As Object, e As System.EventArgs) Handles btnClaimDetail.Click
+    Private Sub btnClaimDetail_Click(sender As Object, e As EventArgs) Handles btnClaimDetail.Click
         Try
             callPage(ClaimForm.URL, State.selectedClaimId)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnInvoiceDetail_Click(sender As Object, e As System.EventArgs) Handles btnInvoiceDetail.Click
+    Private Sub btnInvoiceDetail_Click(sender As Object, e As EventArgs) Handles btnInvoiceDetail.Click
         Try
             If (Not State.selectedClaimInvoiceId.Equals(Guid.Empty)) Then
                 callPage(PayClaimForm.URL, New PayClaimForm.Parameters(State.selectedClaimInvoiceId))
             Else
                 DisplayMessage(Message.MSG_NO_INVOICE_FOUND, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnCertificate_Click(sender As Object, e As System.EventArgs) Handles btnCertificate.Click
+    Private Sub btnCertificate_Click(sender As Object, e As EventArgs) Handles btnCertificate.Click
         Try
-            callPage(Certificates.CertificateForm.URL, State.selectedCertId)
-        Catch ex As Threading.ThreadAbortException
+            callPage(CertificateForm.URL, State.selectedCertId)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Back(ElitaPlusPage.DetailPageCommand.Back)
-        Catch ex As Threading.ThreadAbortException
+            Back(DetailPageCommand.Back)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.claimId)
         Dim retObj As ReturnType = New ReturnType(cmd, ClaimBO, False)
         NavController = Nothing

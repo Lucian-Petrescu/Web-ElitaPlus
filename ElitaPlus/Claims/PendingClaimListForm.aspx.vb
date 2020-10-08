@@ -1,6 +1,9 @@
 
+Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.Security
 
@@ -11,16 +14,16 @@ Partial Class PendingClaimListForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     ' Protected WithEvents ErrControllerMaster As ErrorController
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -69,7 +72,7 @@ Partial Class PendingClaimListForm
         Public selectedDealer As String = String.Empty
         'Public selectedSortById As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, Codes.PENDING_CLAIM_SORT_COLUMN__CLAIM_NUMBER)
         Public selectedSortById As Guid = Guid.Empty
-        Public selectedPageSize As Int32 = ElitaPlusSearchPage.DEFAULT_PAGE_SIZE
+        Public selectedPageSize As Int32 = DEFAULT_PAGE_SIZE
         Public IsGridVisible As Boolean = False
         Public searchDV As Claim.PendingClaimSearchDV = Nothing
         Public SearchClicked As Boolean
@@ -119,7 +122,7 @@ Partial Class PendingClaimListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
@@ -182,7 +185,7 @@ Partial Class PendingClaimListForm
     Sub PopulateDealerDropDown()
         Try
 
-            Dim oDealerList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = GetDealerListByCompanyForUser()
+            Dim oDealerList As ListItem() = GetDealerListByCompanyForUser()
             cboSearchDealer.Populate(oDealerList, New PopulateOptions() With
                                                    {
                                                    .AddBlankItem = True
@@ -196,18 +199,18 @@ Partial Class PendingClaimListForm
 
 
 
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             'UserCompanyList &= ",'" & GuidControl.GuidToHexString(UserCompanyies(Index))
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
                 If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
@@ -359,7 +362,7 @@ Partial Class PendingClaimListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             PendingGrid.PageIndex = NewCurrentPageIndex(PendingGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
@@ -370,7 +373,7 @@ Partial Class PendingClaimListForm
     End Sub
 
 
-    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
 
         Try
             Dim index As Integer = Nothing
@@ -384,18 +387,18 @@ Partial Class PendingClaimListForm
                 NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
                 NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles PendingGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles PendingGrid.PageIndexChanging
         Try
             State.PageIndex = e.NewPageIndex
             State.selectedClaimId = Guid.Empty
@@ -408,7 +411,7 @@ Partial Class PendingClaimListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
             State.SearchClicked = True
@@ -426,7 +429,7 @@ Partial Class PendingClaimListForm
     '    Me.callPage(ClaimForm.URL)
     'End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception

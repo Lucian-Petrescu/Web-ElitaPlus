@@ -1,4 +1,6 @@
-﻿Namespace Claims
+﻿Imports System.Threading
+
+Namespace Claims
     Partial Public Class PendingApprovalClaimListForm
         Inherits ElitaPlusSearchPage
         'Implements IStateController
@@ -39,7 +41,7 @@
             Public certificate As String
             Public serviceCenterName As String
             Public selectedSortById As Guid = Guid.Empty
-            Public selectedPageSize As Int32 = ElitaPlusSearchPage.DEFAULT_PAGE_SIZE
+            Public selectedPageSize As Int32 = DEFAULT_PAGE_SIZE
             Public IsGridVisible As Boolean = False
             Public searchDV As Claim.PendingApprovalClaimSearchDV = Nothing
             Public SearchClicked As Boolean
@@ -69,7 +71,7 @@
 #Region "Page_Events"
 
 
-        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
             ErrControllerMaster.Clear_Hide()
             Try
@@ -255,7 +257,7 @@
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
                 State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
@@ -266,7 +268,7 @@
         End Sub
 
 
-        Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer = Nothing
@@ -287,18 +289,18 @@
                     callPage(ClaimForm.URL, State.selectedClaimId)
 
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 State.PageIndex = e.NewPageIndex
                 State.selectedClaimId = Guid.Empty
@@ -311,7 +313,7 @@
 
 #Region " Button Clicks "
 
-        Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
                 State.SearchClicked = True
                 State.PageIndex = 0
@@ -324,7 +326,7 @@
             End Try
         End Sub
 
-        Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
                 ClearSearch()
             Catch ex As Exception

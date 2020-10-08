@@ -23,7 +23,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moClaimNumberLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moClaimNumberLabel As Label
 
         '''<summary>
         '''moClaimNumberText control.
@@ -32,7 +32,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moClaimNumberText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moClaimNumberText As TextBox
 
         '''<summary>
         '''moCertificateLabel control.
@@ -41,7 +41,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCertificateLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moCertificateLabel As Label
 
         '''<summary>
         '''moCertificateText control.
@@ -50,7 +50,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCertificateText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moCertificateText As TextBox
 
         '''<summary>
         '''moDealerLabel control.
@@ -59,7 +59,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealerLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moDealerLabel As Label
 
         '''<summary>
         '''moDealerText control.
@@ -68,7 +68,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealerText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moDealerText As TextBox
 
         '''<summary>
         '''moProductCodeLabel control.
@@ -77,7 +77,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moProductCodeLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moProductCodeLabel As Label
 
         '''<summary>
         '''moProductCodeText control.
@@ -86,7 +86,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moProductCodeText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moProductCodeText As TextBox
 
         '''<summary>
         '''moMakeLabel control.
@@ -95,7 +95,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moMakeLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moMakeLabel As Label
 
         '''<summary>
         '''moMakeText control.
@@ -104,7 +104,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moMakeText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moMakeText As TextBox
 
         '''<summary>
         '''moModelLabel control.
@@ -113,7 +113,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moModelLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moModelLabel As Label
 
         '''<summary>
         '''moModelText control.
@@ -122,7 +122,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moModelText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moModelText As TextBox
 
         '''<summary>
         '''moCustomerNameLabel control.
@@ -131,7 +131,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCustomerNameLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moCustomerNameLabel As Label
 
         '''<summary>
         '''moCustomerNameText control.
@@ -140,7 +140,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCustomerNameText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moCustomerNameText As TextBox
 
         '''<summary>
         '''moAddressLabe control.
@@ -149,7 +149,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAddressLabe As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moAddressLabe As Label
 
         '''<summary>
         '''moAddressText control.
@@ -158,7 +158,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAddressText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moAddressText As TextBox
 
         '''<summary>
         '''moAddressLabe2 control.
@@ -167,7 +167,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAddressLabe2 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moAddressLabe2 As Label
 
         '''<summary>
         '''moAddressText2 control.
@@ -176,7 +176,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAddressText2 As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moAddressText2 As TextBox
 
         '''<summary>
         '''moCityLabel control.
@@ -185,7 +185,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCityLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moCityLabel As Label
 
         '''<summary>
         '''moCityText control.
@@ -194,7 +194,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCityText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moCityText As TextBox
 
         '''<summary>
         '''moStateLabel control.
@@ -203,7 +203,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moStateLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moStateLabel As Label
 
         '''<summary>
         '''moStateText control.
@@ -212,7 +212,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moStateText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moStateText As TextBox
 
         '''<summary>
         '''moZipLabel control.
@@ -221,7 +221,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moZipLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moZipLabel As Label
 
         '''<summary>
         '''moZipText control.
@@ -230,7 +230,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moZipText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moZipText As TextBox
 
         '''<summary>
         '''btnBack_WRITE control.
@@ -239,7 +239,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnBack_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnBack_WRITE As Button
 
         '''<summary>
         '''btnNext_WRITE control.
@@ -248,6 +248,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnNext_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnNext_WRITE As Button
     End Class
 End Namespace

@@ -1,19 +1,22 @@
+Imports System.Diagnostics
+Imports System.Threading
+
 Partial Class RedoListForm
     Inherits ElitaPlusSearchPage
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     Protected WithEvents ErrorCtrl As ErrorController
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -168,7 +171,7 @@ Partial Class RedoListForm
 
     'End Sub
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         ErrorCtrl.Clear_Hide()
 
@@ -303,7 +306,7 @@ Partial Class RedoListForm
     End Property
 
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
@@ -317,7 +320,7 @@ Partial Class RedoListForm
         End If
     End Sub
 
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As GridViewCommandEventArgs)
         Try
             If e.CommandName = "SelectRecord" Then
                 Dim index As Integer = CInt(e.CommandArgument)
@@ -326,18 +329,18 @@ Partial Class RedoListForm
                 State.selectedMasterClaim = Grid.Rows(index).Cells(GRID_COL_MASTER_CALIM_NUMBERX).Text
             End If
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             PopulateGrid()
@@ -346,7 +349,7 @@ Partial Class RedoListForm
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
@@ -368,7 +371,7 @@ Partial Class RedoListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             State.PageIndex = e.NewPageIndex
             State.ClaimId = Guid.Empty
@@ -380,11 +383,11 @@ Partial Class RedoListForm
 #End Region
 
 #Region "Button Clicks "
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             NavController.Navigate(Me, "back")
             'Me.ReturnToCallingPage()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
@@ -434,7 +437,7 @@ Partial Class RedoListForm
 #End Region
 
 
-    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         If (Grid.SelectedIndex > -1) Then
             'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
 

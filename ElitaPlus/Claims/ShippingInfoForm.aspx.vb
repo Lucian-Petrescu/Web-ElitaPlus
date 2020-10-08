@@ -1,6 +1,10 @@
 Option Strict On
 Option Explicit On
+
+Imports System.Diagnostics
+Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 
 Partial Class ShippingInfoForm
@@ -9,21 +13,21 @@ Partial Class ShippingInfoForm
     Protected WithEvents ErrController As ErrorController
 
 #Region "Member Variables"
-    Protected WithEvents SearchDescriptionLabel As System.Web.UI.WebControls.Label
+    Protected WithEvents SearchDescriptionLabel As Label
 #End Region
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -136,7 +140,7 @@ Partial Class ShippingInfoForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         ErrController.Clear_Hide()
@@ -182,9 +186,9 @@ Partial Class ShippingInfoForm
 
     Protected Sub PopulateDropdowns(Optional ByVal blnRegionListOnly As Boolean = False)
 
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = State.MyBO.CountryId
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -192,7 +196,7 @@ Partial Class ShippingInfoForm
 
         If Not blnRegionListOnly Then
 
-            Dim oCountryList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
+            Dim oCountryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
             moCountryDrop_WRITE.Populate(oCountryList, New PopulateOptions() With
                                             {
                                             .AddBlankItem = True
@@ -240,18 +244,18 @@ Partial Class ShippingInfoForm
     Protected Sub CheckIfComingFromSaveConfirm()
         Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.IsComingFromClaimDetail Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr AndAlso State.IsComingFromClaimDetail Then
                 State.MyBO.Save()
             End If
             NavController.Navigate(Me, "back")
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.IsComingFromClaimDetail Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr AndAlso State.IsComingFromClaimDetail Then
                 NavController.Navigate(Me, "back")
             End If
         End If
 
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenSaveChangesPromptResponse.Value = ""
 
     End Sub
@@ -261,27 +265,27 @@ Partial Class ShippingInfoForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             PopulateBOFormFrom()
             If (State.IsComingFromClaimDetail) Then    'Button is Save
                 If (State.MyBO.IsDirty) Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
                     NavController.Navigate(Me, "back")
                 End If
             Else    'Button is Next
                 If (State.MyBO.IsDirty) Then
                     DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_CHANGES, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
                     NavController.Navigate(Me, "back")
                 End If
             End If
 
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrController)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
@@ -290,7 +294,7 @@ Partial Class ShippingInfoForm
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
 
         Try
             PopulateBOFormFrom()
@@ -313,7 +317,7 @@ Partial Class ShippingInfoForm
 
     End Sub
 
-    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         Try
             If Not State.MyBO.IsNew AndAlso State.ScreenSnapShotBO IsNot Nothing Then
                 State.MyBO.Clone(State.ScreenSnapShotBO)
@@ -325,11 +329,11 @@ Partial Class ShippingInfoForm
     End Sub
 
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
 
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = GetSelectedItem(moCountryDrop_WRITE)
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True

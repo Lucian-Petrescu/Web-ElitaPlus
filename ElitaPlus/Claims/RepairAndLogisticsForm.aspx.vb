@@ -1,4 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BOEditingWebFormCodeBehind.cst (11/2/2004)  ********************
+Imports System.Diagnostics
+Imports Assurant.ElitaPlus.DALObjects
 Imports Codes = Assurant.ElitaPlus.BusinessObjectsNew.Codes
 
 
@@ -11,25 +13,25 @@ Partial Class RepairAndLogisticsForm
     Private mbIsFirstPass As Boolean = True
 
     'Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents EditPanel_WRITE As System.Web.UI.WebControls.Panel
-    Protected WithEvents LabelDaysLimitExceeded As System.Web.UI.WebControls.Label
-    Protected WithEvents Label4 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label6 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label7 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label8 As System.Web.UI.WebControls.Label
-    Protected WithEvents btnCancelEdit_WRITE As System.Web.UI.WebControls.Button
-    Protected WithEvents ServiceCenterPanel3 As System.Web.UI.WebControls.Panel
+    Protected WithEvents EditPanel_WRITE As Panel
+    Protected WithEvents LabelDaysLimitExceeded As Label
+    Protected WithEvents Label4 As Label
+    Protected WithEvents Label6 As Label
+    Protected WithEvents Label7 As Label
+    Protected WithEvents Label8 As Label
+    Protected WithEvents btnCancelEdit_WRITE As Button
+    Protected WithEvents ServiceCenterPanel3 As Panel
 
 #End Region
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -147,8 +149,8 @@ Partial Class RepairAndLogisticsForm
         End If
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
-        Dim claimAuthorizationBO As Assurant.ElitaPlus.BusinessObjectsNew.ClaimAuthorization
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Dim claimAuthorizationBO As ClaimAuthorization
         Dim cssClassName As String
 
         Try
@@ -188,7 +190,7 @@ Partial Class RepairAndLogisticsForm
                     'If claimBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple Then
                     If Me.State.selectedLvl = SelectedLevel.Authorization Then
 
-                        claimAuthorizationBO = New Assurant.ElitaPlus.BusinessObjectsNew.ClaimAuthorization(State.authorizationId)
+                        claimAuthorizationBO = New ClaimAuthorization(State.authorizationId)
 
                         With claimAuthorizationBO
                             AuthorizationNumberTD.InnerText = .AuthorizationNumber
@@ -228,7 +230,7 @@ Partial Class RepairAndLogisticsForm
     Public Sub PopulateGrid()
         Try
 
-            Dim myDALObject As New Assurant.ElitaPlus.DALObjects.RepairAndLogisticsDAL
+            Dim myDALObject As New RepairAndLogisticsDAL
             Dim defaultSelectedCodeId As New Guid
 
             ds = myDALObject.GetReplacementParts(State.MyBO.Id)
@@ -369,23 +371,23 @@ Partial Class RepairAndLogisticsForm
 #End Region
 
 #Region "Button Clicks"
-    Private Sub btnSaveUC_Click(sender As System.Object, e As System.EventArgs)
+    Private Sub btnSaveUC_Click(sender As Object, e As EventArgs)
         State.MyBO.Save()
     End Sub
-    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Dim VerificationNumber As Long
         Try
             'START DEF-2726
             PopulateBOsFromForm()
             If State.MyBO.IsDirty Then
                 If (State.MyBO.ClaimVerificationNumLength IsNot Nothing) AndAlso (TextboxVerificationNumber.Text.Length <> State.MyBO.ClaimVerificationNumLength) Then
-                    Dim errors() As ValidationError = {New ValidationError(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_VERIFICATION_NUM_MUST_BE_IN_POSITIONS), State.MyBO.ClaimVerificationNumLength.ToString()), GetType(RepairAndLogistics), Nothing, "VerificationNumber", Nothing)}
+                    Dim errors() As ValidationError = {New ValidationError(String.Format(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_VERIFICATION_NUM_MUST_BE_IN_POSITIONS), State.MyBO.ClaimVerificationNumLength.ToString()), GetType(RepairAndLogistics), Nothing, "VerificationNumber", Nothing)}
                     Throw New BOValidationException(errors, GetType(RepairAndLogistics).FullName)
                 Else
                     'START DEF-2726 Convert Me.TextboxVerificationNumber.Text to Long instead of INT 
                     If Not String.IsNullOrEmpty(TextboxVerificationNumber.Text) Then
                         If (State.MyBO.Company) = TelefonicaArgentina AndAlso ((Long.TryParse(TextboxVerificationNumber.Text, VerificationNumber) = False) OrElse (CType(TextboxVerificationNumber.Text, Long) <= ArgentinaVerificationNum)) Then
-                            Dim errors() As ValidationError = {New ValidationError(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_VERIFICATION_NUM_MUST_BE_GREATER), ArgentinaVerificationNum.ToString()), GetType(RepairAndLogistics), Nothing, "VerificationNumber", Nothing)}
+                            Dim errors() As ValidationError = {New ValidationError(String.Format(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_VERIFICATION_NUM_MUST_BE_GREATER), ArgentinaVerificationNum.ToString()), GetType(RepairAndLogistics), Nothing, "VerificationNumber", Nothing)}
                             Throw New BOValidationException(errors, GetType(RepairAndLogistics).FullName)
                         End If
                     End If
@@ -418,19 +420,19 @@ Partial Class RepairAndLogisticsForm
     Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
 
-            Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
+            Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
             ReturnToCallingPage(retType)
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         NavController = Nothing
         ReturnToCallingPage(True)
     End Sub
 
-    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         'Get out of Edit mode
         Try
             UndoChanges()
@@ -451,7 +453,7 @@ Partial Class RepairAndLogisticsForm
         MasterPage.MessageController.Clear()
 
     End Sub
-    Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
+    Private Sub btnEdit_WRITE_Click(sender As Object, e As EventArgs) Handles btnEdit_WRITE.Click
 
         'Introduce the logic to Enable/Disable the Editable fields here
         'Also make the relevant buttons Disabled/Invisible when in Edit mode - set a flag carried in the State
@@ -469,7 +471,7 @@ Partial Class RepairAndLogisticsForm
         End Try
     End Sub
 
-    Private Sub btnChangeCoverage_Click(sender As Object, e As System.EventArgs) Handles btnChangeCoverage.Click
+    Private Sub btnChangeCoverage_Click(sender As Object, e As EventArgs) Handles btnChangeCoverage.Click
         Dim claimBO As ClaimBase
         Try
             If (Not (State.claimId.Equals(Guid.Empty))) Then

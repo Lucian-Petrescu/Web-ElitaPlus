@@ -1,3 +1,5 @@
+Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
@@ -12,17 +14,17 @@ Partial Class ClaimListForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -146,7 +148,7 @@ Partial Class ClaimListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -206,7 +208,7 @@ Partial Class ClaimListForm
             Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
             If retObj IsNot Nothing Then
                 Select Case retObj.LastOperation
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
                                 State.selectedClaimId = retObj.EditingBo.Id
@@ -259,18 +261,18 @@ Partial Class ClaimListForm
         End Try
     End Sub
 
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             'UserCompanyList &= ",'" & GuidControl.GuidToHexString(UserCompanyies(Index))
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
                 If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
@@ -523,7 +525,7 @@ Partial Class ClaimListForm
                     Return False
                 Else
                     State.authorizedAmountCulture = TextBoxSearchAuthorizedAmount.Text
-                    State.authorizedAmount = dblAmount.ToString(System.Threading.Thread.CurrentThread.CurrentCulture.InvariantCulture)
+                    State.authorizedAmount = dblAmount.ToString(Thread.CurrentThread.CurrentCulture.InvariantCulture)
                 End If
             Else
                 State.authorizedAmount = TextBoxSearchAuthorizedAmount.Text
@@ -586,7 +588,7 @@ Partial Class ClaimListForm
 
 #Region " Datagrid Related "
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -605,7 +607,7 @@ Partial Class ClaimListForm
 
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -615,7 +617,7 @@ Partial Class ClaimListForm
     End Sub
 
     'The Binding LOgic is here
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         'Dim itemType As ListItemType = CType(e.Row.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditClaimItem As LinkButton
@@ -657,7 +659,7 @@ Partial Class ClaimListForm
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
@@ -668,7 +670,7 @@ Partial Class ClaimListForm
         End Try
     End Sub
 
-    Public Sub Grid_RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Public Sub Grid_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim rowIndex As Integer = 0
         Dim claimid As String = String.Empty
         Try
@@ -704,14 +706,14 @@ Partial Class ClaimListForm
 
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -719,7 +721,7 @@ Partial Class ClaimListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             State.selectedClaimId = Guid.Empty
@@ -732,7 +734,7 @@ Partial Class ClaimListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             PopulateStateFromSearchFields()
             State.SearchClicked = True
@@ -748,7 +750,7 @@ Partial Class ClaimListForm
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
             ClearState()

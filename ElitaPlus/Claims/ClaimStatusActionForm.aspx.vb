@@ -1,5 +1,7 @@
 ﻿Option Strict On
 Option Explicit On
+
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
@@ -41,7 +43,7 @@ Partial Class ClaimStatusActionForm
 #Region "Page State"
     Class MyState
         Public PageIndex As Integer = 0
-        Public ClaimStatusAction As BusinessObjectsNew.ClaimStatusAction
+        Public ClaimStatusAction As ClaimStatusAction
 
         Public ClaimStatusActionId As Guid
         Public IsGridVisible As Boolean
@@ -76,15 +78,15 @@ Partial Class ClaimStatusActionForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -149,7 +151,7 @@ Partial Class ClaimStatusActionForm
 
 #Region "Private Methods"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         Try
@@ -219,7 +221,7 @@ Partial Class ClaimStatusActionForm
 
         Dim dv As DataView
 
-        State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+        State.searchDV = ClaimStatusAction.LoadList()
         State.searchDV.Sort = Grid.DataMember()
 
         Return (State.searchDV)
@@ -230,9 +232,9 @@ Partial Class ClaimStatusActionForm
 
     Private Sub AddNewClaimStatusAction()
 
-        State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+        State.searchDV = ClaimStatusAction.LoadList()
 
-        State.ClaimStatusAction = New Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction
+        State.ClaimStatusAction = New ClaimStatusAction
         State.ClaimStatusActionId = State.ClaimStatusAction.Id
 
         State.searchDV = State.ClaimStatusAction.GetNewDataViewRow(State.searchDV, State.ClaimStatusActionId)
@@ -253,7 +255,7 @@ Partial Class ClaimStatusActionForm
 
         If (State.searchDV.Count = 0) Then
 
-            dv = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+            dv = ClaimStatusAction.LoadList()
 
             State.bnoRow = True
             dv = ClaimStatusAction.getEmptyList(dv)
@@ -367,7 +369,7 @@ Partial Class ClaimStatusActionForm
 
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -394,7 +396,7 @@ Partial Class ClaimStatusActionForm
 
     End Sub
 
-    Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
+    Private Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
 
         Try
             State.IsEditMode = True
@@ -409,7 +411,7 @@ Partial Class ClaimStatusActionForm
 
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
 
         Try
             PopulateBOFromForm()
@@ -430,7 +432,7 @@ Partial Class ClaimStatusActionForm
 
     End Sub
 
-    Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles CancelButton.Click
 
         Try
             Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
@@ -457,7 +459,7 @@ Partial Class ClaimStatusActionForm
         End Set
     End Property
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
 
         Try
             If (Not (State.IsEditMode)) Then
@@ -472,7 +474,7 @@ Partial Class ClaimStatusActionForm
 
     End Sub
 
-    Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As GridViewCommandEventArgs)
 
         Try
             Dim index As Integer
@@ -485,7 +487,7 @@ Partial Class ClaimStatusActionForm
 
                 State.ClaimStatusActionId = New Guid(CType(Grid.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
 
-                State.ClaimStatusAction = New Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction(State.ClaimStatusActionId)
+                State.ClaimStatusAction = New ClaimStatusAction(State.ClaimStatusActionId)
 
                 PopulateGrid()
 
@@ -511,7 +513,7 @@ Partial Class ClaimStatusActionForm
 
                 State.ClaimStatusActionId = New Guid(CType(Grid.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
 
-                State.ClaimStatusAction = New Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction(State.ClaimStatusActionId)
+                State.ClaimStatusAction = New ClaimStatusAction(State.ClaimStatusActionId)
                 Try
                     State.ClaimStatusAction.Delete()
                     'Call the Save() method in the ClaimStatusAction Business Object here
@@ -549,7 +551,7 @@ Partial Class ClaimStatusActionForm
         End Try
     End Sub
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -620,7 +622,7 @@ Partial Class ClaimStatusActionForm
 
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
@@ -658,20 +660,20 @@ Partial Class ClaimStatusActionForm
 
 #End Region
 
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Back(ElitaPlusPage.DetailPageCommand.Back)
-        Catch ex As Threading.ThreadAbortException
+            Back(DetailPageCommand.Back)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         If State.searchBy = SearchByType.CompanyGroup Then
-            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Nothing, ReturnType.TargetType.CompanyGroup, False))
+            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, Nothing, ReturnType.TargetType.CompanyGroup, False))
         Else
-            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.dealerId, ReturnType.TargetType.Dealer, False))
+            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.dealerId, ReturnType.TargetType.Dealer, False))
         End If
     End Sub
 End Class

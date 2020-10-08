@@ -1,5 +1,6 @@
 ﻿Imports Assurant.ElitaPlus.DALObjects
 Imports System.Globalization
+Imports System.Web.Script.Services
 Imports System.Web.Services
 
 Public Class InvoiceSearchForm
@@ -71,7 +72,7 @@ Public Class InvoiceSearchForm
             ReturnObject = returnObj
 
             Select Case returnObj.LastOperation
-                Case ElitaPlusPage.DetailPageCommand.Delete
+                Case DetailPageCommand.Delete
                     MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION)
             End Select
         Catch ex As Exception
@@ -79,7 +80,7 @@ Public Class InvoiceSearchForm
         End Try
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim updatePageIndex As Boolean = False
         Try
             If (IsReturningFromChild) Then
@@ -125,7 +126,7 @@ Public Class InvoiceSearchForm
         End Try
     End Sub
 
-    Protected Sub btnClear_Click(sender As Object, e As System.EventArgs) Handles btnClear.Click
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         Try
             moInvoiceNumber.Clear()
             moInvoiceAmount.Clear()
@@ -140,12 +141,12 @@ Public Class InvoiceSearchForm
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             If (moInvoiceNumber.IsEmpty AndAlso moInvoiceAmount.IsEmpty AndAlso moInvoiceDate.IsEmpty AndAlso moBatchNumber.IsEmpty AndAlso _
                 moClaimNumber.IsEmpty AndAlso moDateCreated.IsEmpty AndAlso moAuthorizationNumber.IsEmpty AndAlso _
                 moServiceCenter.Text.Trim() = String.Empty) Then
-                MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
                 Exit Sub
             End If
             Dim hasErrors As Boolean = False
@@ -167,7 +168,7 @@ Public Class InvoiceSearchForm
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As Object, e As EventArgs) Handles btnAdd_WRITE.Click
         Try
             Dim returnType As InvoiceReturnType = New InvoiceReturnType()
             With returnType
@@ -209,7 +210,7 @@ Public Class InvoiceSearchForm
         End Try
     End Sub
 
-    Private Sub moInvoiceRepeater_ItemCommand(source As Object, e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles moInvoiceRepeater.ItemCommand
+    Private Sub moInvoiceRepeater_ItemCommand(source As Object, e As RepeaterCommandEventArgs) Handles moInvoiceRepeater.ItemCommand
         Select Case e.CommandName
             Case SORT_COMMAND_NAME
                 If State.SortExpression.StartsWith(e.CommandArgument.ToString()) Then
@@ -229,7 +230,7 @@ Public Class InvoiceSearchForm
         Select Case e.Item.ItemType
             Case ListItemType.Item, ListItemType.AlternatingItem
                 Dim label As Label
-                Dim invoiceDr As DataRow = DirectCast(e.Item.DataItem, System.Data.DataRowView).Row
+                Dim invoiceDr As DataRow = DirectCast(e.Item.DataItem, DataRowView).Row
                 DirectCast(e.Item.FindControl("moServiceCenter"), Label).Text = Invoice.InvoiceSearchDV.ServiceCenterDescription(invoiceDr)
                 With DirectCast(e.Item.FindControl("moInvoiceNumber"), LinkButton)
                     .Text = Invoice.InvoiceSearchDV.InvoiceNumber(invoiceDr)
@@ -309,7 +310,7 @@ Public Class InvoiceSearchForm
 #End Region
 
 #Region "Web Methods"
-    <WebMethod(), Script.Services.ScriptMethod()> _
+    <WebMethod(), ScriptMethod()> _
     Public Shared Function GetAuthorizations(invoiceId As String) As String
         Try
             Dim invoiceAuthorizations As Invoice.InvoiceAuthorizationSearchDV

@@ -141,7 +141,7 @@ Namespace Claims
 #End Region
 
 #Region "Page Events"
-        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             MasterPage.MessageController.Clear()
 
             Try
@@ -181,19 +181,19 @@ Namespace Claims
         Protected Sub CheckIfComingFromDeleteConfirm()
             Dim confResponse As String = HiddenDeletePromptResponse.Value
             If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-                If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
+                If Me.State.ActionInProgress = DetailPageCommand.Delete Then
                     DoDelete()
                 End If
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Delete
+                    Case DetailPageCommand.Delete
                 End Select
             ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Delete
+                    Case DetailPageCommand.Delete
                 End Select
             End If
             'Clean after consuming the action
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            State.ActionInProgress = DetailPageCommand.Nothing_
             HiddenDeletePromptResponse.Value = ""
         End Sub
 
@@ -346,7 +346,7 @@ Namespace Claims
                 State.IsGridAddNew = True
                 State.IsGridVisible = False
                 If blnShowErr Then
-                    MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 End If
             Else
                 State.bnoRow = False
@@ -375,7 +375,7 @@ Namespace Claims
 
         End Sub
 
-        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles Grid.PageIndexChanged
             Try
                 If (Not (State.IsEditMode)) Then
                     State.PageIndex = Grid.PageIndex
@@ -387,7 +387,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
@@ -396,7 +396,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_Sorting(sender As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
             Try
                 Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
@@ -418,7 +418,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Protected Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
                 State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
@@ -429,7 +429,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -497,7 +497,7 @@ Namespace Claims
 
         End Sub
 
-        Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer
@@ -521,7 +521,7 @@ Namespace Claims
                     index = CInt(e.CommandArgument)
                     State.DefaultClaimStatusID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_DEFAULT_CLAIM_STATUS_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_DEFAULT_CLAIM_STATUS_ID), Label).Text)
                     DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.ActionInProgress = DetailPageCommand.Delete
 
                 End If
             Catch ex As Exception
@@ -530,7 +530,7 @@ Namespace Claims
 
         End Sub
 
-        Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
@@ -630,20 +630,20 @@ Namespace Claims
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                Back(ElitaPlusPage.DetailPageCommand.Back)
-            Catch ex As Threading.ThreadAbortException
+                Back(DetailPageCommand.Back)
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+        Protected Sub Back(cmd As DetailPageCommand)
             If State.searchBy = SearchByType.CompanyGroup Then
-                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Nothing, ReturnType.TargetType.CompanyGroup, False))
+                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, Nothing, ReturnType.TargetType.CompanyGroup, False))
             Else
-                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.dealerId, ReturnType.TargetType.Dealer, False))
+                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.dealerId, ReturnType.TargetType.Dealer, False))
             End If
         End Sub
 #End Region

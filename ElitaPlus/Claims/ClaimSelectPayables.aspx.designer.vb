@@ -20,7 +20,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
 
     '''<summary>
     '''lblServiceCenter control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblServiceCenter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblServiceCenter As Label
 
     '''<summary>
     '''moServiceCenter control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceCenter As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moServiceCenter As TextBox
 
     '''<summary>
     '''lblInvoiceGroupNumber control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvoiceGroupNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvoiceGroupNumber As Label
 
     '''<summary>
     '''moInvoiceGroupNumber control.
@@ -56,7 +56,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceGroupNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceGroupNumber As TextBox
 
     '''<summary>
     '''lblInvoiceNumber control.
@@ -65,7 +65,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvoiceNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvoiceNumber As Label
 
     '''<summary>
     '''moInvoiceNumber control.
@@ -74,7 +74,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceNumber As TextBox
 
     '''<summary>
     '''moInvoiceDateRange control.
@@ -83,7 +83,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceDateRange As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moInvoiceDateRange As FieldSearchCriteriaControl
 
     '''<summary>
     '''lblAccountNumber control.
@@ -92,7 +92,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAccountNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAccountNumber As Label
 
     '''<summary>
     '''moAccountNumber control.
@@ -101,7 +101,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAccountNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAccountNumber As TextBox
 
     '''<summary>
     '''lblMobileNumber control.
@@ -110,7 +110,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMobileNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblMobileNumber As Label
 
     '''<summary>
     '''moMobileNumber control.
@@ -119,7 +119,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moMobileNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moMobileNumber As TextBox
 
     '''<summary>
     '''lblClaimNumber control.
@@ -128,7 +128,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimNumber As Label
 
     '''<summary>
     '''moClaimNumber control.
@@ -137,7 +137,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moClaimNumber As TextBox
 
     '''<summary>
     '''lblAuthNumber control.
@@ -146,7 +146,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAuthNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAuthNumber As Label
 
     '''<summary>
     '''moAuthNumber control.
@@ -155,7 +155,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAuthNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAuthNumber As TextBox
 
     '''<summary>
     '''btnClearSearch control.
@@ -164,7 +164,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -173,7 +173,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''divDataContainer control.
@@ -182,7 +182,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents divDataContainer As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divDataContainer As HtmlGenericControl
 
     '''<summary>
     '''Grid control.
@@ -191,7 +191,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 
     '''<summary>
     '''btnBack control.
@@ -200,7 +200,7 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''btnContinue control.
@@ -209,5 +209,5 @@ Partial Public Class ClaimSelectPayables
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnContinue As Button
 End Class

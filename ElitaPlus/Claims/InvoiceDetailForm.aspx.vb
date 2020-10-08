@@ -1,10 +1,13 @@
-﻿Imports System.Web.Services
+﻿Imports System.Diagnostics
+Imports System.Web.Services
 Imports System.Web.Script.Services
 Imports Microsoft.VisualBasic
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.DALObjects
 
 Public Class InvoiceDetailForm
     Inherits ElitaPlusSearchPage
@@ -13,12 +16,12 @@ Public Class InvoiceDetailForm
 
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <DebuggerStepThrough()>
     Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -43,7 +46,7 @@ Public Class InvoiceDetailForm
 #Region "Ajax State"
     Private Shared ReadOnly Property AjaxState() As MyState
         Get
-            Return CType(NavPage.ClientNavigator.PageState, MyState)
+            Return CType(ClientNavigator.PageState, MyState)
         End Get
     End Property
 #End Region
@@ -152,7 +155,7 @@ Public Class InvoiceDetailForm
             End If
             'Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading_Certificates")
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -177,7 +180,7 @@ Public Class InvoiceDetailForm
         ' BindListControlToDataView(moRiskType, LookupListNew.GetRiskTypeLookupList(companyGroupId))
         Dim oListContext As New ListContext
         oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-        Dim riskList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RiskTypeByCompanyGroup", context:=oListContext)
+        Dim riskList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RiskTypeByCompanyGroup", context:=oListContext)
         moRiskType.Populate(riskList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -191,7 +194,7 @@ Public Class InvoiceDetailForm
             })
         ' BindListControlToDataView(moEquipment, LookupListNew.GetEquipmentLookupList(companyGroupId))
         oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-        Dim equipmentList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="EquipmentByCompanyGroup", context:=oListContext)
+        Dim equipmentList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="EquipmentByCompanyGroup", context:=oListContext)
         moEquipment.Populate(equipmentList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -296,7 +299,7 @@ Public Class InvoiceDetailForm
         Else
             oRegionList = LookupListNew.GetRegionLookupList(State.MyBO.ServiceCenter.CountryId)
         End If
-        ElitaPlusPage.BindListControlToDataView(moPerceptionIibbProvince, oRegionList, , , True)
+        BindListControlToDataView(moPerceptionIibbProvince, oRegionList, , , True)
         moPerceptionIibbProvince.ClearSelection()
     End Sub
 
@@ -396,55 +399,55 @@ Public Class InvoiceDetailForm
     Protected Sub CheckIfComingFromSaveConfirm()
         Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
-                AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> DetailPageCommand.Delete _
+                AndAlso State.ActionInProgress <> DetailPageCommand.Expire Then
                 State.MyBO.Save()
             End If
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.New_
+                Case DetailPageCommand.Back
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
+                Case DetailPageCommand.New_
                     MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     State.MyBO = New Invoice()
                     PopulateFormFromBOs()
                     EnableDisableFields()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.Delete
+                Case DetailPageCommand.BackOnErr
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
+                Case DetailPageCommand.Delete
                     State.MyBO.Delete.Execute()
-                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
             End Select
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.New_
+                Case DetailPageCommand.Back
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
+                Case DetailPageCommand.New_
                     State.MyBO = New Invoice()
                     PopulateFormFromBOs()
                     EnableDisableFields()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
 
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 #End Region
 
 #Region "Events"
-    Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
         Try
             DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
-        Catch ex As Threading.ThreadAbortException
+            State.ActionInProgress = DetailPageCommand.Delete
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnAddRepairDate_Click(sender As Object, e As System.EventArgs) Handles btnAddRepairDate.Click
+    Private Sub btnAddRepairDate_Click(sender As Object, e As EventArgs) Handles btnAddRepairDate.Click
         Dim strRepairDt As String = moRepairDate.Text.Trim()
         Dim dtRepair As Date
         Dim blnValid As Boolean = True
@@ -507,7 +510,7 @@ Public Class InvoiceDetailForm
     Protected Sub moInvoiceRepeater_ItemDataBound(sender As Object, e As RepeaterItemEventArgs) Handles moInvoiceRepeater.ItemDataBound
         Select Case e.Item.ItemType
             Case ListItemType.Item, ListItemType.AlternatingItem
-                Dim authorizationDr As DataRow = DirectCast(e.Item.DataItem, System.Data.DataRowView).Row
+                Dim authorizationDr As DataRow = DirectCast(e.Item.DataItem, DataRowView).Row
                 Dim moExpandCollapse As Label = DirectCast(e.Item.FindControl("moExpandCollapse"), Label)
                 Dim moRepairDate As TextBox = DirectCast(e.Item.FindControl("moRepairDate"), TextBox)
                 Dim btnRepairDate As ImageButton = DirectCast(e.Item.FindControl("btnRepairDate"), ImageButton)
@@ -618,7 +621,7 @@ Public Class InvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub btnBalance_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnBalance_WRITE.Click
+    Private Sub btnBalance_WRITE_Click(sender As Object, e As EventArgs) Handles btnBalance_WRITE.Click
         Try
             If (State.MyBO.Balance.CanExecute) Then
                 State.MyBO.Balance.Execute()
@@ -630,7 +633,7 @@ Public Class InvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub btnUndoBalance_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndoBalance_WRITE.Click
+    Private Sub btnUndoBalance_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndoBalance_WRITE.Click
         Try
             If (State.MyBO.UndoBalance.CanExecute) Then
                 State.MyBO.UndoBalance.Execute()
@@ -642,7 +645,7 @@ Public Class InvoiceDetailForm
         End Try
     End Sub
 
-    Public Sub moSelectAllChecked(sender As Object, e As System.EventArgs)
+    Public Sub moSelectAllChecked(sender As Object, e As EventArgs)
         Try
 
         Catch ex As Exception
@@ -650,7 +653,7 @@ Public Class InvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         Try
             If Not State.MyBO.IsNew Then
                 'Reload from the DB
@@ -671,25 +674,25 @@ Public Class InvoiceDetailForm
             State.InvoiceReturnObject.InvoiceId = State.MyBO.Id
             If State.MyBO.IsFamilyDirty Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = DetailPageCommand.Back
             Else
-                ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
+                ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
         Try
             PopulateBOsFormFrom()
             If State.MyBO.IsDirty Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                State.ActionInProgress = DetailPageCommand.New_
             Else
                 State.MyBO = New Invoice()
                 PopulateFormFromBOs()
@@ -700,7 +703,7 @@ Public Class InvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub moBatchNumber_TextChanged(sender As Object, e As System.EventArgs) Handles moBatchNumber.TextChanged
+    Private Sub moBatchNumber_TextChanged(sender As Object, e As EventArgs) Handles moBatchNumber.TextChanged
         If (State.MyBO.InvoiceItemChildren.Count = 0) Then
             PopulateBOProperty(State.MyBO, "BatchNumber", moBatchNumber)
         End If
@@ -817,13 +820,13 @@ Public Class InvoiceDetailForm
         dtHeaders.Rows.Add(New String() {"PRICE", TranslationBase.TranslateLabelOrMessage("PRICE")})
         dtHeaders.Rows.Add(New String() {"MSG_RECORDS_FOUND", TranslationBase.TranslateLabelOrMessage("MSG_RECORDS_FOUND")})
 
-        If (ds.Tables.Contains(DALObjects.PriceListDetailDAL.TABLE_NAME)) Then
-            If (ds.Tables(DALObjects.PriceListDetailDAL.TABLE_NAME).Rows.Count = 0) Then
+        If (ds.Tables.Contains(PriceListDetailDAL.TABLE_NAME)) Then
+            If (ds.Tables(PriceListDetailDAL.TABLE_NAME).Rows.Count = 0) Then
                 oPriceListSearchResponse.message = TranslationBase.TranslateLabelOrMessage(Message.MSG_NO_RECORDS_FOUND)
-            ElseIf (ds.Tables(DALObjects.PriceListDetailDAL.TABLE_NAME).Rows.Count = 100) Then
+            ElseIf (ds.Tables(PriceListDetailDAL.TABLE_NAME).Rows.Count = 100) Then
                 oPriceListSearchResponse.message = TranslationBase.TranslateLabelOrMessage(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA)
             End If
-            ds.Tables(DALObjects.PriceListDetailDAL.TABLE_NAME).TableName = "PriceListDetail"
+            ds.Tables(PriceListDetailDAL.TABLE_NAME).TableName = "PriceListDetail"
         End If
 
         oPriceListSearchResponse.xml = ds.GetXml()

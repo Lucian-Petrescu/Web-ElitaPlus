@@ -1,4 +1,6 @@
 ﻿Imports System.Collections.Generic
+Imports System.Reflection
+Imports System.Threading
 
 Public Class ClaimAuthHistoryForm
     Inherits ElitaPlusSearchPage
@@ -81,15 +83,15 @@ Public Class ClaimAuthHistoryForm
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             MasterPage.MessageController.Clear()
             If Not IsPostBack Then
                 InitializeUI()
                 PopulateFormFromBO()
             End If
-        Catch ex As Threading.ThreadAbortException
-            System.Threading.Thread.ResetAbort()
+        Catch ex As ThreadAbortException
+            Thread.ResetAbort()
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -136,7 +138,7 @@ Public Class ClaimAuthHistoryForm
 
     End Sub
 
-    Private Sub GridClaimAuthorization_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridClaimAuthorization.PageIndexChanged
+    Private Sub GridClaimAuthorization_PageIndexChanged(sender As Object, e As EventArgs) Handles GridClaimAuthorization.PageIndexChanged
         Try
             State.PageIndex = GridClaimAuthorization.PageIndex
             State.selectedClaimAuthorizationHistoryId = Guid.Empty
@@ -146,7 +148,7 @@ Public Class ClaimAuthHistoryForm
         End Try
     End Sub
 
-    Private Sub GridClaimAuthorization_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridClaimAuthorization.PageIndexChanging
+    Private Sub GridClaimAuthorization_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridClaimAuthorization.PageIndexChanging
         Try
             GridClaimAuthorization.PageIndex = e.NewPageIndex
             State.PageIndex = GridClaimAuthorization.PageIndex
@@ -155,7 +157,7 @@ Public Class ClaimAuthHistoryForm
         End Try
     End Sub
 
-    Private Sub GridClaimAuthorization_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowCreated
+    Private Sub GridClaimAuthorization_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridClaimAuthorization.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -163,7 +165,7 @@ Public Class ClaimAuthHistoryForm
         End Try
     End Sub
 
-    Private Sub GridClaimAuthorization_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowDataBound
+    Private Sub GridClaimAuthorization_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridClaimAuthorization.RowDataBound
         Try
             Dim item As ClaimAuthHistory = CType(e.Row.DataItem, ClaimAuthHistory)
             Dim btnEditItem As LinkButton
@@ -182,7 +184,7 @@ Public Class ClaimAuthHistoryForm
         End Try
     End Sub
 
-    Private Sub GridClaimAuthorization_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridClaimAuthorization.RowCommand
+    Private Sub GridClaimAuthorization_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridClaimAuthorization.RowCommand
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
@@ -190,15 +192,15 @@ Public Class ClaimAuthHistoryForm
                     NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso _
-           (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
+            If (TypeOf ex Is TargetInvocationException) AndAlso _
+           (TypeOf ex.InnerException Is ThreadAbortException) Then Return
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(GridClaimAuthorization, State.MyBO.ClaimAuthorizationHistoryChildren.Count, State.PageSize)
@@ -209,7 +211,7 @@ Public Class ClaimAuthHistoryForm
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridClaimAuthorization.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles GridClaimAuthorization.Sorting
         Try
 
             GridClaimAuthorization.DataSource = Sort(State.MyBO.ClaimAuthorizationHistoryChildren.ToList, e.SortExpression, e.SortDirection)
@@ -220,10 +222,10 @@ Public Class ClaimAuthHistoryForm
         End Try
 
     End Sub
-    Private Function Sort(list As List(Of ClaimAuthHistory), sortBy As String, sortDirection As WebControls.SortDirection) As List(Of ClaimAuthHistory)
-        Dim propInfo As Reflection.PropertyInfo = list.GetType().GetGenericArguments()(0).GetProperty(sortBy)
+    Private Function Sort(list As List(Of ClaimAuthHistory), sortBy As String, sortDirection As SortDirection) As List(Of ClaimAuthHistory)
+        Dim propInfo As PropertyInfo = list.GetType().GetGenericArguments()(0).GetProperty(sortBy)
 
-        If sortDirection = WebControls.SortDirection.Ascending Then
+        If sortDirection = SortDirection.Ascending Then
             Return list.OrderBy(Function(i) propInfo.GetValue(i, Nothing)).ToList()
         Else
             Return list.OrderByDescending(Function(i) propInfo.GetValue(i, Nothing)).ToList()

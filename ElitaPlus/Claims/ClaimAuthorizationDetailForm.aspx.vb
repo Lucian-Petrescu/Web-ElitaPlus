@@ -5,6 +5,7 @@ Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
@@ -134,7 +135,7 @@ Partial Class ClaimAuthorizationDetailForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             MasterPage.MessageController.Clear()
             If Not IsPostBack Then
@@ -166,8 +167,8 @@ Partial Class ClaimAuthorizationDetailForm
             End If
 
             lblNewSCError.Visible = False
-        Catch ex As Threading.ThreadAbortException
-            System.Threading.Thread.ResetAbort()
+        Catch ex As ThreadAbortException
+            Thread.ResetAbort()
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -377,19 +378,19 @@ Partial Class ClaimAuthorizationDetailForm
 
 
     Private Sub PopulateDropDowns()
-        Dim ocboWhoPays As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("WPAYS", Thread.CurrentPrincipal.GetLanguageCode())
+        Dim ocboWhoPays As ListItem() = CommonConfigManager.Current.ListManager.GetList("WPAYS", Thread.CurrentPrincipal.GetLanguageCode())
         cboWhoPays.Populate(ocboWhoPays, New PopulateOptions() With
                                           {
                                             .AddBlankItem = False
                                            })
-        Dim authTypeLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("AUTH_TYPE", Thread.CurrentPrincipal.GetLanguageCode())
+        Dim authTypeLst As ListItem() = CommonConfigManager.Current.ListManager.GetList("AUTH_TYPE", Thread.CurrentPrincipal.GetLanguageCode())
         cboAuthTypeXcd.Populate(authTypeLst, New PopulateOptions() With
                                           {
                                             .AddBlankItem = False,
                                             .TextFunc = AddressOf .GetDescription,
                                             .ValueFunc = AddressOf .GetExtendedCode
                                            })
-        Dim partyTypeLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("PARTY_TYPE", Thread.CurrentPrincipal.GetLanguageCode())
+        Dim partyTypeLst As ListItem() = CommonConfigManager.Current.ListManager.GetList("PARTY_TYPE", Thread.CurrentPrincipal.GetLanguageCode())
         cboPartyTypeXcd.Populate(partyTypeLst, New PopulateOptions() With
                                           {
                                             .AddBlankItem = False,
@@ -401,29 +402,29 @@ Partial Class ClaimAuthorizationDetailForm
     Protected Sub CheckIfComingFromSaveConfirm()
         Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
-                AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> DetailPageCommand.Delete _
+                AndAlso State.ActionInProgress <> DetailPageCommand.Expire Then
                 State.MyBO.Save()
                 State.ClaimBO.Save()
             End If
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
+                Case DetailPageCommand.Back
                     ReturnBackToCallingPage()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     ReturnBackToCallingPage()
             End Select
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
+                Case DetailPageCommand.Back
                     UndoChanges()
                     ReturnBackToCallingPage()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
 
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
@@ -435,7 +436,7 @@ Partial Class ClaimAuthorizationDetailForm
 
 #Region "Button Handlers"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
 
             Try
@@ -443,15 +444,15 @@ Partial Class ClaimAuthorizationDetailForm
                 'Me.PopulateBOFromForm()
                 If State.MyBO.IsDirty OrElse State.MyBO.ClaimAuthorizationItemChildren.IsDirty Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
                     ReturnBackToCallingPage()
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
                 DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.ActionInProgress = DetailPageCommand.BackOnErr
                 State.LastErrMsg = MasterPage.MessageController.Text
             End Try
 
@@ -461,7 +462,7 @@ Partial Class ClaimAuthorizationDetailForm
         ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Try
             State.IsEditMode = False
             State.IsUpdateRepairDate = False
@@ -498,7 +499,7 @@ Partial Class ClaimAuthorizationDetailForm
         End With
     End Function
 
-    Private Sub btnEdit__Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
+    Private Sub btnEdit__Click(sender As Object, e As EventArgs) Handles btnEdit_WRITE.Click
         Try
             if IsUpdateRepairDateAllowed then
                 state.IsUpdateRepairDate = True
@@ -513,7 +514,7 @@ Partial Class ClaimAuthorizationDetailForm
         ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub btnUndo__Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo__Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         Try
             State.IsEditMode = False
             state.IsUpdateRepairDate = False
@@ -526,21 +527,21 @@ Partial Class ClaimAuthorizationDetailForm
         ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub btnServiceCenterInfo_Click(sender As System.Object, e As System.EventArgs) Handles btnServiceCenterInfo.Click
+    Private Sub btnServiceCenterInfo_Click(sender As Object, e As EventArgs) Handles btnServiceCenterInfo.Click
         Try
             NavController.Navigate(Me, "service_center_info_multi_auth", New ServiceCenterInfoForm.Parameters(State.MyBO.ServiceCenterId))
             'Me.callPage(ServiceCenterInfoForm.URL, New ServiceCenterInfoForm.Parameters(Me.State.MyBO.ServiceCenterId))
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Private Sub btnRefundFee_Click(sender As System.Object, e As System.EventArgs) Handles btnRefundFee.Click
+    Private Sub btnRefundFee_Click(sender As Object, e As EventArgs) Handles btnRefundFee.Click
         Try
 
-            Dim refundReason As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("ADJ_RESN", Thread.CurrentPrincipal.GetLanguageCode())
+            Dim refundReason As ListItem() = CommonConfigManager.Current.ListManager.GetList("ADJ_RESN", Thread.CurrentPrincipal.GetLanguageCode())
             cboRefundReason.Populate(refundReason, New PopulateOptions() With
                                         {
                                         .AddBlankItem = True
@@ -549,23 +550,23 @@ Partial Class ClaimAuthorizationDetailForm
             'Me.PopulateBOProperty(Me.State.MyBO, "DeniedReasonId", Me.cboRefundReason)
             Dim x As String = "<script language='JavaScript'> revealModal('ModalRefundFee') </script>"
             RegisterStartupScript("Startup", x)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClaimAuthHistory_Click(sebder As System.Object, e As System.EventArgs) Handles btnClaimAuthHistory.Click
+    Private Sub btnClaimAuthHistory_Click(sebder As Object, e As EventArgs) Handles btnClaimAuthHistory.Click
         Try
             NavController.Navigate(Me, "claim_auth_hist", New ClaimAuthHistoryForm.Parameters(State.ClaimBO, State.MyBO.Id))
             ' Me.callPage(ClaimAuthHistoryForm.URL, New ClaimAuthHistoryForm.Parameters(Me.State.ClaimBO, Me.State.MyBO.Id))
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnPrint_Click(sender As System.Object, e As System.EventArgs) Handles btnPrint.Click
+    Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
         Try
             If (Not (State.ClaimBO.GetLatestServiceOrder(State.InputParameters.ClaimAuthorizationId) Is Nothing)) Then
                 NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) = State.ClaimBO.GetLatestServiceOrder(State.InputParameters.ClaimAuthorizationId)
@@ -582,14 +583,14 @@ Partial Class ClaimAuthorizationDetailForm
                     DisplayMessage(Message.MSG_SERVICE_ORDER_RECORD_NOT_FOUND, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Try
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnCancelShipment_Click(sender As System.Object, e As System.EventArgs) Handles btnCancelShipment.Click
+    Private Sub btnCancelShipment_Click(sender As Object, e As EventArgs) Handles btnCancelShipment.Click
         Try
             If (State.MyBO IsNot Nothing AndAlso Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Paid) Then
                 DisplayMessage(Message.MSG_PROMPT_CANCEL_SHIPMENT_NOT_ALLOWED, "", MSG_BTN_OK, MSG_TYPE_INFO)
@@ -599,7 +600,7 @@ Partial Class ClaimAuthorizationDetailForm
             End If
             UndoChanges()
             PopulateFormFromBO()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -631,7 +632,7 @@ Partial Class ClaimAuthorizationDetailForm
 
         wsRequest.CompanyCode = State.ClaimBO.Company.Code
         wsRequest.ClaimNumber = State.MyBO.ClaimNumber
-        wsRequest.CultureCode = Threading.Thread.CurrentThread.CurrentCulture.Name
+        wsRequest.CultureCode = Thread.CurrentThread.CurrentCulture.Name
         wsRequest.AuthorizationNumber = State.MyBO.AuthorizationNumber
         
         Dim wsAuthDetailOptions() As AuthDetailOptions = {AuthDetailOptions.HistoryFlat, AuthDetailOptions.Issues}
@@ -640,7 +641,7 @@ Partial Class ClaimAuthorizationDetailForm
         Try
             Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, GetAuthorizationDetailsResponse)(
                                                         GetClient(),
-                                                        New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                                         Function(c As FulfillmentServiceClient)
                                                             Return c.GetAuthorizationDetails(wsRequest)
                                                         End Function)
@@ -656,7 +657,7 @@ Partial Class ClaimAuthorizationDetailForm
                 End If
             End If
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 
@@ -680,7 +681,7 @@ Partial Class ClaimAuthorizationDetailForm
         Try
             Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, ProcessServiceOrderResponse)(
                                                         GetClient(),
-                                                        New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                                         Function(c As FulfillmentServiceClient)
                                                             Return c.UpdateServiceOrder(wsRequest)
                                                         End Function)
@@ -695,7 +696,7 @@ Partial Class ClaimAuthorizationDetailForm
                 End If
             End If
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
     End Sub
@@ -712,7 +713,7 @@ Partial Class ClaimAuthorizationDetailForm
         Try
             Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, ProcessServiceOrderResponse)(
                                                         GetClient(),
-                                                        New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                                         Function(c As FulfillmentServiceClient)
                                                             Return c.CancelServiceOrderAndUpdateAuthorization(wsRequest)
                                                         End Function)
@@ -726,7 +727,7 @@ Partial Class ClaimAuthorizationDetailForm
                 End If
             End If
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
     End Sub
@@ -747,14 +748,14 @@ Partial Class ClaimAuthorizationDetailForm
     End Function
     Private Sub LoadFulFillmentStatusHistory(wsResponseList As GetAuthorizationDetailsResponse)
         State.FulFillmentStatusHistoryTable = CreateTableFulFillmentStatusHistory()
-        For Each itemStatusHistory As ClaimFulfillmentService.AuthorizationInfo In wsResponseList.Authorization.StatusHistoryFlat
+        For Each itemStatusHistory As AuthorizationInfo In wsResponseList.Authorization.StatusHistoryFlat
             Dim tableRow As DataRow = State.FulFillmentStatusHistoryTable.NewRow()
             tableRow("StatusDescription") = itemStatusHistory.StatusDescription
             tableRow("SubStatusDescription") = itemStatusHistory.SubStatusDescription
             tableRow("SubStatusCode") = itemStatusHistory.SubStatusCode
             tableRow("SubStatusDate") = GetLongDateFormattedStringNullable(If(itemStatusHistory.SubStatusDate Is Nothing, itemStatusHistory.StatusDate, itemStatusHistory.SubStatusDate))
             Dim builder As New StringBuilder
-            For Each SubStatusReason As ClaimFulfillmentService.Reason In itemStatusHistory.SubStatusReasons
+            For Each SubStatusReason As Reason In itemStatusHistory.SubStatusReasons
                 builder.Append(SubStatusReason.Description).AppendLine()
             Next
             tableRow("SubStatusReasonDescription") = builder.ToString
@@ -910,7 +911,7 @@ Partial Class ClaimAuthorizationDetailForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub GridViewClaimAuthFulfillmentIssues_RowCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridViewClaimAuthFulfillmentIssues.RowCommand
+    Private Sub GridViewClaimAuthFulfillmentIssues_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles GridViewClaimAuthFulfillmentIssues.RowCommand
         Try
             If Not String.IsNullOrEmpty(e.CommandName) _
                 AndAlso Not String.IsNullOrEmpty(e.CommandArgument.ToString()) _
@@ -932,7 +933,7 @@ Partial Class ClaimAuthorizationDetailForm
 #End Region
 
 #Region "Reshipment"
-    Private Sub btnReshipment_Click(sender As System.Object, e As System.EventArgs) Handles btnReshipment.Click
+    Private Sub btnReshipment_Click(sender As Object, e As EventArgs) Handles btnReshipment.Click
         Try
             State.MyBO.SubStatusReason = String.Empty
 
@@ -945,13 +946,13 @@ Partial Class ClaimAuthorizationDetailForm
             Dim x As String = "<script language='JavaScript'> revealModal('ModalReshipment') </script>"
             RegisterStartupScript("Startup", x)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnReshipmentProceed_Click(sender As System.Object, e As System.EventArgs) Handles btnReshipmentProceed.Click
+    Private Sub btnReshipmentProceed_Click(sender As Object, e As EventArgs) Handles btnReshipmentProceed.Click
         Try
             PopulateBOFromFormForSubStatus()
             Dim oguid As String = "00000000-0000-0000-0000-000000000000"
@@ -963,7 +964,7 @@ Partial Class ClaimAuthorizationDetailForm
                 DisplayMessage(Message.MSG_PROMPT_RESHIPMENT_REASON, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
             InventoryDeduction()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1047,7 +1048,7 @@ Partial Class ClaimAuthorizationDetailForm
         Try
             wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, CheckVendorInventoryAndBestReplacementResponse)(
                                                         GetClient(),
-                                                        New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                                         Function(c As FulfillmentServiceClient)
                                                             Return c.CheckVendorInventoryAndBestReplacement(wsRequest)
                                                         End Function)
@@ -1067,7 +1068,7 @@ Partial Class ClaimAuthorizationDetailForm
                 End If
             End If
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
     End Sub
@@ -1207,7 +1208,7 @@ Partial Class ClaimAuthorizationDetailForm
         Dim errCode As Integer
         Dim errMsg As String
         If GetSelectedItem(cboRefundReason).Equals(Guid.Empty) Then
-            ElitaPlusPage.SetLabelError(lblRefundReason)
+            SetLabelError(lblRefundReason)
             MasterPage.MessageController.AddError("Refund Reason is Required")
             Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DENIED_REASON_IS_REQUIRED_ERR)
         Else
@@ -1221,7 +1222,7 @@ Partial Class ClaimAuthorizationDetailForm
                 PopulateFormFromBO()
                 EnableDisablePageControls()
                 MasterPage.MessageController.AddSuccess("AMT_REFUNDED_NEW_AUTH_ITEM_ADD")
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                State.ActionInProgress = DetailPageCommand.Nothing_
 
             Catch ex As Exception
                 State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(State.ClaimBO.Id)
@@ -1263,15 +1264,15 @@ Partial Class ClaimAuthorizationDetailForm
                                                     Return TranslationBase.TranslateLabelOrMessage(value)
                                                 End Function
 
-        ucSelectServiceCenter.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
+        ucSelectServiceCenter.TranslateGridHeaderFunc = Sub(grid As GridView)
                                                             TranslateGridHeader(grid)
                                                         End Sub
 
-        ucSelectServiceCenter.HighLightSortColumnFunc = Sub(grid As System.Web.UI.WebControls.GridView, sortExp As String)
+        ucSelectServiceCenter.HighLightSortColumnFunc = Sub(grid As GridView, sortExp As String)
                                                             HighLightSortColumn(grid, sortExp, False)
                                                         End Sub
 
-        ucSelectServiceCenter.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, intRecordCount As Integer, intNewPageSize As Integer)
+        ucSelectServiceCenter.NewCurrentPageIndexFunc = Function(grid As GridView, intRecordCount As Integer, intNewPageSize As Integer)
                                                             Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
                                                         End Function
         'Set up the service center end
@@ -1288,25 +1289,25 @@ Partial Class ClaimAuthorizationDetailForm
         ucSelectServiceCenter.MethodOfRepairXcd = "METHR-" + State.ClaimBO.MethodOfRepairCode
         ucSelectServiceCenter.InitializeComponent()
     End Sub
-    Private Sub btnNewServiceCenter_Click(sender As System.Object, e As System.EventArgs) Handles btnNewServiceCenter.Click
+    Private Sub btnNewServiceCenter_Click(sender As Object, e As EventArgs) Handles btnNewServiceCenter.Click
         Try
             InitNewServiceCenterUserControl()
 
             'show the div in Modal mode
             HiddenFieldShowNewSC.Value = "Y"
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnRepairCodeProcess_Click(sender As System.Object, e As System.EventArgs) Handles btnRepairCodeProcess.Click
+    Private Sub btnRepairCodeProcess_Click(sender As Object, e As EventArgs) Handles btnRepairCodeProcess.Click
         Try
             InitRepairCodeProcess()
             HiddenFieldRepairCodeProcess.Value = "Y"
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1389,12 +1390,12 @@ Partial Class ClaimAuthorizationDetailForm
 #End Region
 
     #Region "Void Claim Authorization"
-    Private Sub btnVoidAuthorization_Click(sender As System.Object, e As System.EventArgs) Handles btnVoidAuthorization.Click
+    Private Sub btnVoidAuthorization_Click(sender As Object, e As EventArgs) Handles btnVoidAuthorization.Click
         Try
             InitVoidAuthorization()
             HiddenFieldVoidAuth.Value = "Y"
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1547,7 +1548,7 @@ Partial Class ClaimAuthorizationDetailForm
     Private Sub btnResendShippingLabel_Click(sender As Object, e As EventArgs) Handles btnResendShippingLabel.Click
         Try
             ResendShippingLabel()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1555,7 +1556,7 @@ Partial Class ClaimAuthorizationDetailForm
     Private Sub btnCancelServiceOrder_Click(sender As Object, e As EventArgs) Handles btnCancelServiceOrder.Click
         Try
             CancelServiceOrder()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1607,14 +1608,14 @@ Partial Class ClaimAuthorizationDetailForm
 
                     costlist.Add(New costInfo() With {.Type = CostType.RepairCost, .Amount = CDbl(txtRepairQuote.Text)})
 
-                    .AdditionalInfo = New ClaimFulfillmentService.AdditionalInfo()
+                    .AdditionalInfo = New AdditionalInfo()
                     .AdditionalInfo.FinancialInfo = costlist.ToArray()
 
                 End With
 
                 Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, OrderStatusResponse)(
                     GetClient(),
-                    New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                    New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                     Function(c As FulfillmentServiceClient)
                         Return c.UpdateOrderStatus(wsRequest)
                     End Function)
@@ -1666,7 +1667,7 @@ Partial Class ClaimAuthorizationDetailForm
 
 
             Catch ex As Exception
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
                 Throw
             End Try
 

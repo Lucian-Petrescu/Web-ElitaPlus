@@ -1,5 +1,5 @@
 ﻿Public Class UserControlLogisticalInfo
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     'Public Delegate Sub RequestData(ByVal sender As Object, ByRef e As RequestDataEventArgs)
 
@@ -90,7 +90,7 @@
     End Property
 
 #End Region
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
 
@@ -124,7 +124,7 @@
         End Try
 
     End Sub
-    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles LogisticsGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles LogisticsGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -132,7 +132,7 @@
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles LogisticsGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles LogisticsGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -177,7 +177,7 @@
 
     End Sub
 
-    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles LogisticsGrid.RowCommand
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs) Handles LogisticsGrid.RowCommand
 
         Try
             Dim index As Integer

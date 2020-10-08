@@ -44,7 +44,7 @@ Partial Public Class ClaimPaymentGroupListForm
         Public PymntGrpTotalInSearch As DecimalType = Nothing
         'Public PymntGrpFromDateInSearch As DateType = Nothing
         'Public PymntGrpToDateInSearch As DateType = Nothing
-        Public PaymentGroupDateRange As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+        Public PaymentGroupDateRange As FieldSearchCriteriaControl
 
         Public SortExpression As String = ClaimPaymentGroup.PaymentGroupSearchDV.COL_NAME_PAYMENT_GROUP_DATE & " DESC"
         'Public SortExpression As String = String.Empty
@@ -85,7 +85,7 @@ Partial Public Class ClaimPaymentGroupListForm
         End If
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
         Form.DefaultButton = btnSearch.UniqueID
         Try
@@ -126,9 +126,9 @@ Partial Public Class ClaimPaymentGroupListForm
         'Me.BindListControlToDataView(Me.ddlCountryDropDown, userCountriesDv, , "COUNTRY_ID")
         'Me.BindListControlToDataView(PmntGrpStatusDropDown, LookupListNew.GetPaymentStatusLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
 
-        Dim countryList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
+        Dim countryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
 
-        Dim filteredCountryList As DataElements.ListItem() = (From x In countryList
+        Dim filteredCountryList As ListItem() = (From x In countryList
                                                               Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(x.ListItemId)
                                                               Select x).ToArray()
 
@@ -146,7 +146,7 @@ Partial Public Class ClaimPaymentGroupListForm
                                    })
     End Sub
 
-    Public Sub SetSvcCentersForCountry(sender As Object, e As System.EventArgs) Handles ddlCountryDropDown.SelectedIndexChanged
+    Public Sub SetSvcCentersForCountry(sender As Object, e As EventArgs) Handles ddlCountryDropDown.SelectedIndexChanged
         Dim oUser As New User(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Dim oSvcCenter As New ServiceCenter
         Dim userCountriesDv As DataView = oUser.GetUserCountries(ElitaPlusIdentity.Current.ActiveUser.Id)
@@ -176,7 +176,7 @@ Partial Public Class ClaimPaymentGroupListForm
 
 
 
-    Private Sub ddlSvcCenterDropDown_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlSvcCenterDropDown.SelectedIndexChanged
+    Private Sub ddlSvcCenterDropDown_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSvcCenterDropDown.SelectedIndexChanged
         'Get the selected Service Center
         State.ServiceCenterIdInSearch = GetSelectedItem(ddlSvcCenterDropDown)
 
@@ -308,16 +308,16 @@ Partial Public Class ClaimPaymentGroupListForm
     End Function
 
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
             If isSearchClear() AndAlso Not GetSelectedItem(ddlCountryDropDown).Equals(Guid.Empty) Then
-                MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR, True)
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR, True)
                 Exit Sub
             End If
 
             If isSearchClear() Then
-                MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
                 Exit Sub
             End If
 
@@ -333,7 +333,7 @@ Partial Public Class ClaimPaymentGroupListForm
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception
@@ -354,12 +354,12 @@ Partial Public Class ClaimPaymentGroupListForm
         End Try
     End Sub
 
-    Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
+    Private Sub BtnNew_WRITE_Click(sender As Object, e As EventArgs) Handles BtnNew_WRITE.Click
         Try
             If Not PopulateStateFromSearchFields() Then Exit Sub
             State.selectedPaymentGroupId = Guid.Empty
             callPage(ClaimPaymentGroupForm.URL, State.selectedPaymentGroupId)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -369,7 +369,7 @@ Partial Public Class ClaimPaymentGroupListForm
 
 #Region "Grid related"
 
-    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -377,7 +377,7 @@ Partial Public Class ClaimPaymentGroupListForm
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim pmntGrpStatusId As Guid
         Dim PymntGroupStatusLabel As Label = CType(e.Row.FindControl(GRID_COL_PMNT_GRP_STATUS_CTRL), Label)
         Try
@@ -398,7 +398,7 @@ Partial Public Class ClaimPaymentGroupListForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
@@ -406,13 +406,13 @@ Partial Public Class ClaimPaymentGroupListForm
                     callPage(ClaimPaymentGroupForm.URL, State.selectedPaymentGroupId)
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
@@ -423,7 +423,7 @@ Partial Public Class ClaimPaymentGroupListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             State.selectedPaymentGroupId = Guid.Empty
@@ -433,7 +433,7 @@ Partial Public Class ClaimPaymentGroupListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -442,7 +442,7 @@ Partial Public Class ClaimPaymentGroupListForm
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then

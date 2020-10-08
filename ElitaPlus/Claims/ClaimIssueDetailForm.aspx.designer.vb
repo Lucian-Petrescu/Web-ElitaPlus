@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports AjaxControlToolkit
 
 Partial Public Class ClaimIssueDetailForm
     
@@ -20,7 +21,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimNumber As Label
     
     '''<summary>
     '''Label_ClaimNumber control.
@@ -29,7 +30,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_ClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_ClaimNumber As Label
     
     '''<summary>
     '''lblIssueCode control.
@@ -38,7 +39,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblIssueCode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblIssueCode As Label
     
     '''<summary>
     '''Label_IssueCode control.
@@ -47,7 +48,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_IssueCode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_IssueCode As Label
     
     '''<summary>
     '''lblCreatedBy control.
@@ -56,7 +57,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCreatedBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCreatedBy As Label
     
     '''<summary>
     '''Label_CreatedBy control.
@@ -65,7 +66,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_CreatedBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_CreatedBy As Label
     
     '''<summary>
     '''lblProcessedBy control.
@@ -74,7 +75,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblProcessedBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblProcessedBy As Label
     
     '''<summary>
     '''Label_ProcessedBy control.
@@ -83,7 +84,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_ProcessedBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_ProcessedBy As Label
     
     '''<summary>
     '''tdIssueStatus control.
@@ -92,7 +93,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdIssueStatus As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdIssueStatus As HtmlTableCell
     
     '''<summary>
     '''lblIssueStatus control.
@@ -101,7 +102,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblIssueStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblIssueStatus As Label
     
     '''<summary>
     '''tdLabelIssueStatus control.
@@ -110,7 +111,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdLabelIssueStatus As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdLabelIssueStatus As HtmlTableCell
     
     '''<summary>
     '''Label_IssueStatus control.
@@ -119,7 +120,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_IssueStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_IssueStatus As Label
     
     '''<summary>
     '''lblIssueDescription control.
@@ -128,7 +129,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblIssueDescription As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblIssueDescription As Label
     
     '''<summary>
     '''Label_IssueDescription control.
@@ -137,7 +138,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_IssueDescription As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_IssueDescription As Label
     
     '''<summary>
     '''lblCreatedDate control.
@@ -146,7 +147,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCreatedDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCreatedDate As Label
     
     '''<summary>
     '''Label_CreatedDate control.
@@ -155,7 +156,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_CreatedDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_CreatedDate As Label
     
     '''<summary>
     '''lblProcessedDate control.
@@ -164,7 +165,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblProcessedDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblProcessedDate As Label
     
     '''<summary>
     '''Label_ProcessedDate control.
@@ -173,7 +174,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label_ProcessedDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label_ProcessedDate As Label
     
     '''<summary>
     '''ToolkitScriptManager1 control.
@@ -182,7 +183,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ToolkitScriptManager1 As Global.AjaxControlToolkit.ToolkitScriptManager
+    Protected WithEvents ToolkitScriptManager1 As ToolkitScriptManager
     
     '''<summary>
     '''lblModalTitle control.
@@ -191,7 +192,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblModalTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblModalTitle As Label
     
     '''<summary>
     '''Img1 control.
@@ -200,7 +201,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Img1 As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents Img1 As HtmlImage
     
     '''<summary>
     '''modalMessageBoxReopen control.
@@ -209,7 +210,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents modalMessageBoxReopen As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents modalMessageBoxReopen As HtmlGenericControl
     
     '''<summary>
     '''imgIssueMsg control.
@@ -218,7 +219,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgIssueMsg As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents imgIssueMsg As HtmlImage
     
     '''<summary>
     '''MessageLiteral control.
@@ -227,7 +228,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MessageLiteral As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents MessageLiteral As Literal
     
     '''<summary>
     '''lblReopenReason control.
@@ -236,7 +237,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblReopenReason As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblReopenReason As Label
     
     '''<summary>
     '''rdbtlstIssueReopen control.
@@ -245,7 +246,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdbtlstIssueReopen As Global.System.Web.UI.WebControls.RadioButtonList
+    Protected WithEvents rdbtlstIssueReopen As RadioButtonList
     
     '''<summary>
     '''lblComments control.
@@ -254,7 +255,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblComments As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblComments As Label
     
     '''<summary>
     '''txtComments control.
@@ -263,7 +264,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtComments As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtComments As TextBox
     
     '''<summary>
     '''tdBtnArea control.
@@ -272,7 +273,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdBtnArea As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdBtnArea As HtmlTableCell
     
     '''<summary>
     '''btnReopenContinue control.
@@ -281,7 +282,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnReopenContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnReopenContinue As Button
     
     '''<summary>
     '''btnReopenCancel control.
@@ -290,7 +291,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnReopenCancel As Global.System.Web.UI.HtmlControls.HtmlInputButton
+    Protected WithEvents btnReopenCancel As HtmlInputButton
     
     '''<summary>
     '''Label1 control.
@@ -299,7 +300,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
     
     '''<summary>
     '''Img2 control.
@@ -308,7 +309,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Img2 As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents Img2 As HtmlImage
     
     '''<summary>
     '''modalMessageBoxWaive control.
@@ -317,7 +318,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents modalMessageBoxWaive As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents modalMessageBoxWaive As HtmlGenericControl
     
     '''<summary>
     '''img3 control.
@@ -326,7 +327,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents img3 As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents img3 As HtmlImage
     
     '''<summary>
     '''msgSelectwaiveReason control.
@@ -335,7 +336,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents msgSelectwaiveReason As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents msgSelectwaiveReason As Literal
     
     '''<summary>
     '''lblReasonWaiveIssue control.
@@ -344,7 +345,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblReasonWaiveIssue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblReasonWaiveIssue As Label
     
     '''<summary>
     '''rdbtRsnWaiveIss control.
@@ -353,7 +354,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdbtRsnWaiveIss As Global.System.Web.UI.WebControls.RadioButtonList
+    Protected WithEvents rdbtRsnWaiveIss As RadioButtonList
     
     '''<summary>
     '''lblWaiveComments control.
@@ -362,7 +363,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblWaiveComments As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblWaiveComments As Label
     
     '''<summary>
     '''txtWaiveComments control.
@@ -371,7 +372,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtWaiveComments As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtWaiveComments As TextBox
     
     '''<summary>
     '''td1 control.
@@ -380,7 +381,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents td1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents td1 As HtmlTableCell
     
     '''<summary>
     '''btnWaiveContinue control.
@@ -389,7 +390,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnWaiveContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnWaiveContinue As Button
     
     '''<summary>
     '''btnWaiveCancel control.
@@ -398,7 +399,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnWaiveCancel As Global.System.Web.UI.HtmlControls.HtmlInputButton
+    Protected WithEvents btnWaiveCancel As HtmlInputButton
     
     '''<summary>
     '''hdnSelectedTab control.
@@ -407,7 +408,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hdnSelectedTab As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hdnSelectedTab As HiddenField
     
     '''<summary>
     '''Label4 control.
@@ -416,7 +417,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label4 As Label
     
     '''<summary>
     '''Label6 control.
@@ -425,7 +426,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label6 As Label
     
     '''<summary>
     '''PanelQuestions control.
@@ -434,7 +435,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents PanelQuestions As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents PanelQuestions As Panel
     
     '''<summary>
     '''grdQuestions control.
@@ -443,7 +444,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents grdQuestions As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents grdQuestions As GridView
     
     '''<summary>
     '''btnProcess control.
@@ -452,7 +453,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnProcess As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnProcess As Button
     
     '''<summary>
     '''btnWaive control.
@@ -461,7 +462,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnWaive As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnWaive As Button
     
     '''<summary>
     '''btnUndo control.
@@ -470,7 +471,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnUndo As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnUndo As Button
     
     '''<summary>
     '''btnReopen control.
@@ -479,7 +480,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnReopen As Global.System.Web.UI.HtmlControls.HtmlInputSubmit
+    Protected WithEvents btnReopen As HtmlInputSubmit
     
     '''<summary>
     '''PanelProcessesEditDetail control.
@@ -488,7 +489,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents PanelProcessesEditDetail As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents PanelProcessesEditDetail As Panel
     
     '''<summary>
     '''grdProcessHistory control.
@@ -497,7 +498,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents grdProcessHistory As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents grdProcessHistory As GridView
     
     '''<summary>
     '''btnBack control.
@@ -506,7 +507,7 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
     
     '''<summary>
     '''hdnSelectedReason control.
@@ -515,5 +516,5 @@ Partial Public Class ClaimIssueDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hdnSelectedReason As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hdnSelectedReason As HiddenField
 End Class

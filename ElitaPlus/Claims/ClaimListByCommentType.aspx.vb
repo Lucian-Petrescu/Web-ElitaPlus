@@ -1,3 +1,4 @@
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
@@ -10,18 +11,18 @@ Partial Class ClaimListByCommentType
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -124,7 +125,7 @@ Partial Class ClaimListByCommentType
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         ErrorCtrl.Clear_Hide()
@@ -222,11 +223,11 @@ Partial Class ClaimListByCommentType
 
     Sub PopulateClaimStatusDropDown()
         Try
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(""))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_PENDING))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_CLOSED))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(""))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_PENDING))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_CLOSED))
             If State.claimStatus IsNot String.Empty Then
                 Dim setClaimStatusText As String
                 If State.claimStatus = Codes.CLAIM_STATUS__ACTIVE Then
@@ -457,7 +458,7 @@ Partial Class ClaimListByCommentType
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
         Dim lbClaimNumber As LinkButton = CType(e.Item.FindControl("btnClaimNum"), LinkButton)
@@ -495,7 +496,7 @@ Partial Class ClaimListByCommentType
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -505,7 +506,7 @@ Partial Class ClaimListByCommentType
         End Try
     End Sub
 
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Dim nIndex As Integer
         Dim oCommentTypeDrop As DropDownList
 
@@ -549,18 +550,18 @@ Partial Class ClaimListByCommentType
                     'Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED, oParam)
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = e.NewPageIndex
             State.selectedClaimId = Guid.Empty
@@ -573,7 +574,7 @@ Partial Class ClaimListByCommentType
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             State.SearchClicked = True
             State.PageIndex = 0
@@ -587,7 +588,7 @@ Partial Class ClaimListByCommentType
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception
@@ -595,7 +596,7 @@ Partial Class ClaimListByCommentType
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
         Try
 
             Dim oclaim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(State.selectedClaimId)
@@ -678,7 +679,7 @@ Partial Class ClaimListByCommentType
 
 #End Region
 
-    Private Sub UndoButton_Click(sender As Object, e As System.EventArgs) Handles UndoButton.Click
+    Private Sub UndoButton_Click(sender As Object, e As EventArgs) Handles UndoButton.Click
         Try
             Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
             State.Canceling = True

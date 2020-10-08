@@ -21,7 +21,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moClaimNumberLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moClaimNumberLabel As Label
         
         '''<summary>
         '''moClaimNumberText control.
@@ -30,7 +30,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moClaimNumberText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moClaimNumberText As TextBox
         
         '''<summary>
         '''moCertificateLabel control.
@@ -39,7 +39,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCertificateLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moCertificateLabel As Label
         
         '''<summary>
         '''moCertificateText control.
@@ -48,7 +48,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moCertificateText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moCertificateText As TextBox
         
         '''<summary>
         '''moDealerLabel control.
@@ -57,7 +57,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealerLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moDealerLabel As Label
         
         '''<summary>
         '''moDealerText control.
@@ -66,7 +66,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealerText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moDealerText As TextBox
         
         '''<summary>
         '''ScriptManager1 control.
@@ -75,7 +75,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+        Protected WithEvents ScriptManager1 As ScriptManager
         
         '''<summary>
         '''EditPanel control.
@@ -84,7 +84,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents EditPanel As Global.System.Web.UI.WebControls.Panel
+        Protected WithEvents EditPanel As Panel
         
         '''<summary>
         '''Label4 control.
@@ -93,7 +93,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label4 As Label
         
         '''<summary>
         '''lblPageSize control.
@@ -102,7 +102,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPageSize As Label
         
         '''<summary>
         '''cboPageSize control.
@@ -111,7 +111,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboPageSize As DropDownList
         
         '''<summary>
         '''lblRecordCount control.
@@ -120,7 +120,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblRecordCount As Label
         
         '''<summary>
         '''Grid control.
@@ -129,7 +129,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents Grid As GridView
         
         '''<summary>
         '''btnChangeCoverage control.
@@ -138,7 +138,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnChangeCoverage As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnChangeCoverage As Button
         
         '''<summary>
         '''btnBack control.
@@ -147,7 +147,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnBack As Button
         
         '''<summary>
         '''HiddenSaveChangesPromptResponse control.
@@ -156,6 +156,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+        Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
     End Class
 End Namespace

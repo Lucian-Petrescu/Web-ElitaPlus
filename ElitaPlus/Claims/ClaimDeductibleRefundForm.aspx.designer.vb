@@ -20,7 +20,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCustomerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCustomerName As Label
 
     '''<summary>
     '''lblCustomerNameValue control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCustomerNameValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCustomerNameValue As Label
 
     '''<summary>
     '''lblClaimNumber control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimNumber As Label
 
     '''<summary>
     '''lblClaimNumberValue control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimNumberValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimNumberValue As Label
 
     '''<summary>
     '''lblDealerName control.
@@ -56,7 +56,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDealerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDealerName As Label
 
     '''<summary>
     '''lblDealerNameValue control.
@@ -65,7 +65,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDealerNameValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDealerNameValue As Label
 
     '''<summary>
     '''lblClaimStatus control.
@@ -74,7 +74,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimStatus As Label
 
     '''<summary>
     '''ClaimStatusTD control.
@@ -83,7 +83,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimStatusTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents ClaimStatusTD As HtmlTableCell
 
     '''<summary>
     '''lblClaimStatusValue control.
@@ -92,7 +92,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimStatusValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimStatusValue As Label
 
     '''<summary>
     '''lblWorkPhoneNumber control.
@@ -101,7 +101,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblWorkPhoneNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblWorkPhoneNumber As Label
 
     '''<summary>
     '''lblWorkPhoneNumberValue control.
@@ -110,7 +110,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblWorkPhoneNumberValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblWorkPhoneNumberValue As Label
 
     '''<summary>
     '''lblDealerGroup control.
@@ -119,7 +119,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDealerGroup As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDealerGroup As Label
 
     '''<summary>
     '''lblDealerGroupValue control.
@@ -128,7 +128,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDealerGroupValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDealerGroupValue As Label
 
     '''<summary>
     '''lblSubscriberStatus control.
@@ -137,7 +137,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSubscriberStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSubscriberStatus As Label
 
     '''<summary>
     '''SubStatusTD control.
@@ -146,7 +146,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SubStatusTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents SubStatusTD As HtmlTableCell
 
     '''<summary>
     '''lblSubscriberStatusValue control.
@@ -155,7 +155,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSubscriberStatusValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSubscriberStatusValue As Label
 
     '''<summary>
     '''lblCertificateNumber control.
@@ -164,7 +164,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCertificateNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCertificateNumber As Label
 
     '''<summary>
     '''lblCertificateNumberValue control.
@@ -173,7 +173,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCertificateNumberValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCertificateNumberValue As Label
 
     '''<summary>
     '''lblSerialNumberImei control.
@@ -182,7 +182,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSerialNumberImei As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSerialNumberImei As Label
 
     '''<summary>
     '''lblSerialNumberImeiValue control.
@@ -191,7 +191,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSerialNumberImeiValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSerialNumberImeiValue As Label
 
     '''<summary>
     '''lblDateOfLoss control.
@@ -200,7 +200,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDateOfLoss As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDateOfLoss As Label
 
     '''<summary>
     '''lblDateOfLossValue control.
@@ -209,7 +209,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDateOfLossValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDateOfLossValue As Label
 
     '''<summary>
     '''lblGrdHdr control.
@@ -218,7 +218,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblGrdHdr As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblGrdHdr As Label
 
     '''<summary>
     '''AddImagePanel control.
@@ -227,7 +227,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents AddImagePanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents AddImagePanel As Panel
 
     '''<summary>
     '''lblClmDedRefundAmount control.
@@ -236,7 +236,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClmDedRefundAmount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClmDedRefundAmount As Label
 
     '''<summary>
     '''txtClmDedRefundAmount control.
@@ -245,7 +245,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtClmDedRefundAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtClmDedRefundAmount As TextBox
 
     '''<summary>
     '''lblRefundType control.
@@ -254,7 +254,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRefundType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRefundType As Label
 
     '''<summary>
     '''ddlRefundType control.
@@ -263,7 +263,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlRefundType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlRefundType As DropDownList
 
     '''<summary>
     '''btnSubmit control.
@@ -272,7 +272,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSubmit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSubmit As Button
 
     '''<summary>
     '''btnBack control.
@@ -281,7 +281,7 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''hdnSelectedIssueCode control.
@@ -290,5 +290,5 @@ Partial Public Class ClaimDeductibleRefundForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hdnSelectedIssueCode As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hdnSelectedIssueCode As HiddenField
 End Class

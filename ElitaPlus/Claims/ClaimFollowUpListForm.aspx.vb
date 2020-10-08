@@ -1,3 +1,4 @@
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.BusinessObjectsNew.Doc
 Imports Microsoft.VisualBasic
@@ -15,7 +16,7 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
@@ -23,9 +24,9 @@ Namespace Claims
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -162,7 +163,7 @@ Namespace Claims
             Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
             Try
                 Select Case retObj.LastOperation
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
                                 State.selectedClaimId = retObj.EditingBo.Id
@@ -172,7 +173,7 @@ Namespace Claims
                                 State.searchDV = Nothing
                             End If
                         End If
-                    Case ElitaPlusPage.DetailPageCommand.Delete
+                    Case DetailPageCommand.Delete
                         AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             Catch ex As Exception
@@ -183,7 +184,7 @@ Namespace Claims
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
             MasterPage.MessageController.Clear_Hide()
@@ -420,8 +421,8 @@ Namespace Claims
 
         Sub PopulateClaimStatusDropDown()
             Try
-                cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
-                cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
+                cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
+                cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -458,7 +459,7 @@ Namespace Claims
         Public Sub PopulateGrid()
             Dim foundLabel As String
             '   Dim oCompanyId As Guid = Me.GetApplicationUser.CompanyID
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             Try
                 GetSelectedItem(moDealerDrop)
@@ -566,7 +567,7 @@ Namespace Claims
 #Region " Datagrid Related "
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim btnEditButtonCode As LinkButton
@@ -593,29 +594,29 @@ Namespace Claims
                     e.Item.Cells(GRID_COL_DEALER_CODE_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_DEALER_CODE).ToString
 
 
-                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT) IsNot DBNull.Value Then
                         Dim claim_TAT As Integer = CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT), Integer)
                         e.Item.Cells(GRID_COL_CLAIM_TAT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT).ToString
 
                         Dim claim_TAT_colorCode As String = FindTATColor(claim_TAT)
-                        If claim_TAT_colorCode IsNot Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_CLAIM_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(claim_TAT_colorCode)
+                        If claim_TAT_colorCode IsNot Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_CLAIM_TAT_IDX).BackColor = ColorTranslator.FromHtml(claim_TAT_colorCode)
                     Else
                         e.Item.Cells(GRID_COL_CLAIM_TAT_IDX).Text = "N/A"
                     End If
 
-                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY) IsNot DBNull.Value Then
                         Dim no_activity As Integer = CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY), Integer)
                         Dim no_activity_colorCode As String = FindTATColor(no_activity)
-                        If no_activity_colorCode IsNot Nothing AndAlso Not no_activity_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_LAST_ACTIVITY_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(no_activity_colorCode)
+                        If no_activity_colorCode IsNot Nothing AndAlso Not no_activity_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_LAST_ACTIVITY_IDX).BackColor = ColorTranslator.FromHtml(no_activity_colorCode)
                     Else
                         e.Item.Cells(GRID_COL_LAST_ACTIVITY_IDX).Text = "N/A"
                     End If
 
-                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT) IsNot DBNull.Value Then
                         Dim SVC_TAT As Integer = CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT), Integer)
                         e.Item.Cells(GRID_COL_SVC_TAT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT).ToString
                         Dim SVC_TAT_colorCode As String = FindTATColor(SVC_TAT)
-                        If SVC_TAT_colorCode IsNot Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_SVC_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(SVC_TAT_colorCode)
+                        If SVC_TAT_colorCode IsNot Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_SVC_TAT_IDX).BackColor = ColorTranslator.FromHtml(SVC_TAT_colorCode)
                     Else
                         e.Item.Cells(GRID_COL_SVC_TAT_IDX).Text = "N/A"
                     End If
@@ -630,7 +631,7 @@ Namespace Claims
                         Grid.Columns(GRID_COL_COMMENT_TYPE_IDX).Visible = False
                     End If
                     e.Item.Cells(GRID_COL_NUM_OF_REMINDERS_SENT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_NUM_OF_REMINDERS).ToString
-                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_LAST_REMINDER_SEND_DATE) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_LAST_REMINDER_SEND_DATE) IsNot DBNull.Value Then
                         e.Item.Cells(GRID_COL_LAST_REMINDER_SENT_ON_IDX).Text = GetDateFormattedString(DateHelper.GetDateValue(dvRow(Claim.ClaimFollowUpSearchDV.COL_LAST_REMINDER_SEND_DATE).ToString()))
                     End If
                 End If
@@ -649,7 +650,7 @@ Namespace Claims
                 For i = 0 To State.TATDV.Count - 1
                     If CType(State.TATDV.Item(i)("min_days"), Integer) <= TAT AndAlso CType(State.TATDV.Item(i)("max_days"), Integer) >= TAT Then
                         Try
-                            Dim c As Color = System.Drawing.ColorTranslator.FromHtml(State.TATDV.Item(i)("color_code").ToString)
+                            Dim c As Color = ColorTranslator.FromHtml(State.TATDV.Item(i)("color_code").ToString)
                         Catch ex As Exception
                             Throw New GUIException(Message.MSG_INVALID_COLOR_CODE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_COLOR_CODE)
                         End Try
@@ -678,7 +679,7 @@ Namespace Claims
         '    End If
         'End Function
 
-        Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles Grid.SortCommand
             Try
                 If State.SortExpression.StartsWith(e.SortExpression) Then
                     If State.SortExpression.EndsWith(" DESC") Then
@@ -695,20 +696,20 @@ Namespace Claims
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
                     State.selectedClaimId = New Guid(e.Item.Cells(GRID_COL_CLAIM_ID_IDX).Text)
                     callPage(ClaimForm.URL, State.selectedClaimId)
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
@@ -716,7 +717,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
             Try
                 State.PageIndex = e.NewPageIndex
                 State.selectedClaimId = Guid.Empty
@@ -726,7 +727,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
                 State.PageSize = Grid.PageSize
@@ -740,7 +741,7 @@ Namespace Claims
 
 #Region " Buttons Clicks "
 
-        Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
                 SetStateProperties()
                 State.PageIndex = 0
@@ -753,7 +754,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
                 TextBoxFollowUpDate.Text = String.Empty
                 'Me.TextBoxSearchServiceCenterZIP.Text = String.Empty

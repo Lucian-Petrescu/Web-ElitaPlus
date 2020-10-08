@@ -44,12 +44,12 @@ Public Class ClaimDocumentForm
     Class MyState
         Public ClaimBO As ClaimBase
         Public PageIndex As Integer = 0
-        Public SortExpression As String = Claim.ClaimImagesView.COL_IMAGE_ID
+        Public SortExpression As String = ClaimBase.ClaimImagesView.COL_IMAGE_ID
         Public selectedImageId As Guid = Guid.Empty
         Public selectedSortById As Guid = Guid.Empty
         Public PageSize As Integer = DEFAULT_PAGE_SIZE
         Public IsGridVisible As Boolean = True
-        Public ClaimImagesView As Claim.ClaimImagesView
+        Public ClaimImagesView As ClaimBase.ClaimImagesView
         Public AllowDeleteOfImage As Boolean = True
     End Class
 
@@ -87,7 +87,7 @@ Public Class ClaimDocumentForm
         End If
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Try
             MasterPage.UsePageTabTitleInBreadCrum = False
@@ -201,7 +201,7 @@ Public Class ClaimDocumentForm
         End Try
     End Sub
 
-    Private Sub ClaimDocumentsGridView_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowCreated
+    Private Sub ClaimDocumentsGridView_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -209,7 +209,7 @@ Public Class ClaimDocumentForm
         End Try
     End Sub
 
-    Private Sub ClaimDocumentsGridView_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowDataBound
+    Private Sub ClaimDocumentsGridView_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnLinkImage As LinkButton
@@ -218,13 +218,13 @@ Public Class ClaimDocumentForm
                 'Link to the image 
                 If (e.Row.Cells(GRID_COL_IMAGE_ID_IDX).FindControl("btnImageLink") IsNot Nothing) Then
                     btnLinkImage = CType(e.Row.Cells(0).FindControl("btnImageLink"), LinkButton)
-                    btnLinkImage.Text = CType(dvRow(Claim.ClaimImagesView.COL_FILE_NAME), String)
-                    btnLinkImage.CommandArgument = String.Format("{0};{1};{2}", GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_IMAGE_ID), Byte())), State.ClaimBO.Id, CType(dvRow(Claim.ClaimImagesView.COL_IS_LOCAL_REPOSITORY), String))
+                    btnLinkImage.Text = CType(dvRow(ClaimBase.ClaimImagesView.COL_FILE_NAME), String)
+                    btnLinkImage.CommandArgument = String.Format("{0};{1};{2}", GetGuidStringFromByteArray(CType(dvRow(ClaimBase.ClaimImagesView.COL_IMAGE_ID), Byte())), State.ClaimBO.Id, CType(dvRow(ClaimBase.ClaimImagesView.COL_IS_LOCAL_REPOSITORY), String))
                 End If
 
                 If (e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("btnImageLink") IsNot Nothing) AndAlso _
-                    (dvRow(Claim.ClaimImagesView.COL_FILE_SIZE_BYTES) IsNot Nothing) Then
-                    Dim fileSize As Long = CType(dvRow(Claim.ClaimImagesView.COL_FILE_SIZE_BYTES), Long)
+                    (dvRow(ClaimBase.ClaimImagesView.COL_FILE_SIZE_BYTES) IsNot Nothing) Then
+                    Dim fileSize As Long = CType(dvRow(ClaimBase.ClaimImagesView.COL_FILE_SIZE_BYTES), Long)
                     Dim fileSizeLabel As Label = CType(e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("FileSizeLabel"), Label)
                     If (fileSize > 1048576) Then
                         ' Display in MB
@@ -245,8 +245,8 @@ Public Class ClaimDocumentForm
                 btnAddRemoveImage = CType(e.Row.Cells(0).FindControl("btnAddRemoveImage"), LinkButton)
 
                 If State.AllowDeleteOfImage Then
-                    btnAddRemoveImage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_CLAIM_IMAGE_ID), Byte()))
-                    If CType(dvRow(Claim.ClaimImagesView.COL_DELETE_FLAG), String) = "Y" Then
+                    btnAddRemoveImage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(ClaimBase.ClaimImagesView.COL_CLAIM_IMAGE_ID), Byte()))
+                    If CType(dvRow(ClaimBase.ClaimImagesView.COL_DELETE_FLAG), String) = "Y" Then
                         btnAddRemoveImage.Text = TranslationBase.TranslateLabelOrMessage("UNDO_DELETE_IMAGE")
                         btnAddRemoveImage.CommandName = UNDO_DELETE_IMAGE
                     Else
@@ -257,7 +257,7 @@ Public Class ClaimDocumentForm
                     btnAddRemoveImage.Visible = False
                 End If
 
-                If (dvRow(Claim.ClaimImagesView.COL_STATUS_CODE).ToString = Codes.CLAIM_IMAGE_PROCESSED) Then
+                If (dvRow(ClaimBase.ClaimImagesView.COL_STATUS_CODE).ToString = Codes.CLAIM_IMAGE_PROCESSED) Then
                         e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatActive"
                     Else
                         e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatInactive"
@@ -268,7 +268,7 @@ Public Class ClaimDocumentForm
         End Try
     End Sub
 
-    Protected Sub ClaimDocumentsGridView_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles ClaimDocumentsGridView.RowCommand
+    Protected Sub ClaimDocumentsGridView_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles ClaimDocumentsGridView.RowCommand
         If (e.CommandName = SELECT_ACTION_IMAGE) Then
             If Not e.CommandArgument.ToString().Equals(String.Empty) Then
                 Dim args() As String = CType(e.CommandArgument, String).Split(";".ToCharArray())
@@ -307,7 +307,7 @@ Public Class ClaimDocumentForm
         End If
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles ClaimDocumentsGridView.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles ClaimDocumentsGridView.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -327,7 +327,7 @@ Public Class ClaimDocumentForm
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles ClaimDocumentsGridView.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles ClaimDocumentsGridView.PageIndexChanged
         Try
             State.PageIndex = ClaimDocumentsGridView.PageIndex
             State.selectedImageId = Guid.Empty
@@ -337,7 +337,7 @@ Public Class ClaimDocumentForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles ClaimDocumentsGridView.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles ClaimDocumentsGridView.PageIndexChanging
         Try
             ClaimDocumentsGridView.PageIndex = e.NewPageIndex
             State.PageIndex = ClaimDocumentsGridView.PageIndex
@@ -346,7 +346,7 @@ Public Class ClaimDocumentForm
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(ClaimDocumentsGridView, State.claimImagesView.Count, State.PageSize)
@@ -361,16 +361,16 @@ Public Class ClaimDocumentForm
 
 #Region "Button Click"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Back(ElitaPlusPage.DetailPageCommand.Back)
-        Catch ex As Threading.ThreadAbortException
+            Back(DetailPageCommand.Back)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         Dim retType As New ClaimForm.ReturnType(cmd)
         ReturnToCallingPage(retType)
     End Sub
@@ -384,7 +384,7 @@ Public Class ClaimDocumentForm
     Protected Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
         Try
             ClearForm()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -409,7 +409,7 @@ Public Class ClaimDocumentForm
             Dim fileName As String
 
             Try
-                Dim file As System.IO.FileInfo = New System.IO.FileInfo(ImageFileUpload.PostedFile.FileName)
+                Dim file As FileInfo = New FileInfo(ImageFileUpload.PostedFile.FileName)
                 fileName = file.Name
             Catch ex As Exception
                 fileName = String.Empty
@@ -428,13 +428,13 @@ Public Class ClaimDocumentForm
             State.ClaimImagesView = Nothing
             ClearForm()
             PopulateGrid()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As BOValidationException
             ' Remove Mandatory Fields Validations for Hash, File Type and File Name
             Dim removeProperties As String() = New String() {"FileType", "FileName", "HashValue"}
             Dim newException As BOValidationException = _
                 New BOValidationException( _
-                    ex.ValidationErrorList().Where(Function(ve) (Not ((ve.Message = Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR) AndAlso (removeProperties.Contains(ve.PropertyName))))).ToArray(), _
+                    ex.ValidationErrorList().Where(Function(ve) (Not ((ve.Message = Messages.VALUE_MANDATORY_ERR) AndAlso (removeProperties.Contains(ve.PropertyName))))).ToArray(), _
                     ex.BusinessObjectName,
                     ex.UniqueId)
             HandleErrors(newException, MasterPage.MessageController)

@@ -1,5 +1,10 @@
-﻿Imports Assurant.ElitaPlus.DALObjects
+﻿Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports Assurant.ElitaPlus.DALObjects
 Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
+Imports AjaxControlToolkit
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
@@ -11,12 +16,12 @@ Partial Class InvoiceGroupDetailForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <DebuggerStepThrough()>
     Private Sub InitializeComponent()
 
     End Sub
     'Protected WithEvents moCompanyMultipleDrop As MultipleColumnDDLabelControl
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -208,7 +213,7 @@ Partial Class InvoiceGroupDetailForm
     End Sub
 
 #Region "Page Events"
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles Me.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Try
 
@@ -275,24 +280,24 @@ Partial Class InvoiceGroupDetailForm
 #End Region
 
 #Region "Button Clicks In Main Screen"
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
 
             If State.InvgrpBO.IsDirty Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = DetailPageCommand.Back
             Else
-                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.InvgrpBO, State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.InvgrpBO, State.HasDataChanged))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
-    Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
             ControlMgr.SetVisibleControl(Me, btnSave, False)
             PopulateBOsFromForm()
@@ -304,16 +309,16 @@ Partial Class InvoiceGroupDetailForm
                 'Me.EnableDisableFields(True)
                 ClearGridViewHeadersAndLabelsErrSign()
                 ControlMgr.SetVisibleControl(Me, btnDelete, True)
-                MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED)
             End If
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnUndo_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo.Click
+    Private Sub btnUndo_Click(sender As Object, e As EventArgs) Handles btnUndo.Click
         Try
             If Not State.InvgrpBO.IsNew Then
                 'Reload from the DB
@@ -330,7 +335,7 @@ Partial Class InvoiceGroupDetailForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnNew_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd.Click
+    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         Try
             CreateNew()
             State.InvgrpId = Guid.Empty
@@ -341,7 +346,7 @@ Partial Class InvoiceGroupDetailForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnDelete_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete.Click
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         Try
 
             State.InvgrpBO.BeginEdit()
@@ -349,9 +354,9 @@ Partial Class InvoiceGroupDetailForm
 
             State.InvgrpBO.Save()
             State.HasDataChanged = True
-            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.InvgrpBO, State.HasDataChanged))
+            ReturnToCallingPage(New ReturnType(DetailPageCommand.Delete, State.InvgrpBO, State.HasDataChanged))
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             'undo the delete
             State.MyBO.RejectChanges()
@@ -361,7 +366,7 @@ Partial Class InvoiceGroupDetailForm
 #End Region
 
 #Region "INSIDE TAB Button Clicks"
-    Private Sub addBtn_Click(sender As Object, e As System.EventArgs) Handles addBtnNew.Click
+    Private Sub addBtn_Click(sender As Object, e As EventArgs) Handles addBtnNew.Click
         Try
             PopulateModalControls()
             moMessageController.Visible = False
@@ -434,7 +439,7 @@ Partial Class InvoiceGroupDetailForm
         Try
 
 
-            Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
+            Dim outputParameters() As DBHelper.DBHelperParameter
             outputParameters = InvoiceGroupDetail.GetInvoicegroupnumber()
 
             With State.InvgrpBO
@@ -481,24 +486,24 @@ Partial Class InvoiceGroupDetailForm
     Protected Sub CheckIfComingFromSaveConfirm()
         Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept AndAlso
-                         State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> DetailPageCommand.Accept AndAlso
+                         State.ActionInProgress <> DetailPageCommand.Delete Then
 
                 BindBoPropertiesToLabels()
                 State.InvgrpBO.Save()
             End If
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.InvgrpBO, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.New_
-                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                Case DetailPageCommand.Back
+                    ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.InvgrpBO, State.HasDataChanged))
+                Case DetailPageCommand.New_
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 'Me.CreateNew()
-                Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                Case DetailPageCommand.NewAndCopy
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 'Me.CreateNewWithCopy()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.InvgrpBO, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.Delete
+                Case DetailPageCommand.Delete
                     If State.ISinvoicedelete Then
                         Dim invrecondv As DataView = InvoiceGroupDetail.Getinvoicereconids(State.InvoiceId)
                         Dim dal As InvoiceGroupDetailDAL
@@ -525,7 +530,7 @@ Partial Class InvoiceGroupDetailForm
                         State.InvoiceItemBO.Delete()
 
                         State.InvoiceItemBO.Save()
-                        MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.DELETE_RECORD_CONFIRMATION)
+                        MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION)
                         'Reload the main grid
                         PopulateGrid()
                         mdlLineItem.Hide()
@@ -534,17 +539,17 @@ Partial Class InvoiceGroupDetailForm
             End Select
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.InvgrpBO, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.New_
+                Case DetailPageCommand.Back
+                    ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.InvgrpBO, State.HasDataChanged))
+                Case DetailPageCommand.New_
                     CreateNew()
-                Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                Case DetailPageCommand.NewAndCopy
                     'Me.CreateNewWithCopy()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
-                Case ElitaPlusPage.DetailPageCommand.Accept
+                Case DetailPageCommand.Accept
                     EnableDisableFields()
-                Case ElitaPlusPage.DetailPageCommand.Delete
+                Case DetailPageCommand.Delete
                     If State.ISinvoicedelete Then
                     Else
                         PopulateLineitemsGrid()
@@ -552,7 +557,7 @@ Partial Class InvoiceGroupDetailForm
                     End If
             End Select
         End If
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenSaveChangesPromptResponse.Value = ""
     End Sub
     Protected Sub CreateNew()
@@ -652,9 +657,9 @@ Partial Class InvoiceGroupDetailForm
             If (serviceclasslist.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
 
 
-                Dim dv As DataView = SpecialService.getServiceTypesForServiceClass(ElitaPlusPage.GetSelectedItem(serviceclasslist), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0).DefaultView
+                Dim dv As DataView = SpecialService.getServiceTypesForServiceClass(GetSelectedItem(serviceclasslist), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0).DefaultView
 
-                ElitaPlusPage.BindListControlToDataView(serviceTypeList, dv, msServiceClassColumnName, , True)
+                BindListControlToDataView(serviceTypeList, dv, msServiceClassColumnName, , True)
                 serviceTypeList.Enabled = True
             End If
 
@@ -742,7 +747,7 @@ Partial Class InvoiceGroupDetailForm
 
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles InvoicesGrid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles InvoicesGrid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -762,7 +767,7 @@ Partial Class InvoiceGroupDetailForm
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles InvoicesGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles InvoicesGrid.PageIndexChanged
         Try
             State.PageIndex = InvoicesGrid.PageIndex
             PopulateGrid()
@@ -771,7 +776,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles InvoicesGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles InvoicesGrid.PageIndexChanging
         Try
             InvoicesGrid.PageIndex = e.NewPageIndex
             State.PageIndex = InvoicesGrid.PageIndex
@@ -780,7 +785,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Protected Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles InvoicesGrid.RowCommand
+    Protected Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles InvoicesGrid.RowCommand
         Try
             'Editing Grid populates modal popup with invoice detail info
             If e.CommandName = "selectAction" Then
@@ -805,7 +810,7 @@ Partial Class InvoiceGroupDetailForm
                 ReturnFromEditing()
                 mdlLineItem.Show()
             End If
-            If e.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME Then
+            If e.CommandName = EDIT_COMMAND_NAME Then
                 State.IsEditMode = True
 
                 State.InvoiceId = New Guid(e.CommandArgument.ToString())
@@ -845,7 +850,7 @@ Partial Class InvoiceGroupDetailForm
                 ControlMgr.SetVisibleControl(Me, btncancelSearch, False)
 
                 mdlPopup.Show()
-            ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
+            ElseIf e.CommandName = DELETE_COMMAND_NAME Then
                 State.IsEditMode = False
                 State.ISinvoicedelete = True
                 State.InvoiceId = New Guid(e.CommandArgument.ToString())
@@ -855,13 +860,13 @@ Partial Class InvoiceGroupDetailForm
                     State.InvoiceId = New Guid(InvoicesGrid.Rows(index).Cells(GRID_COL_INVOICEID_IDX).Text)
 
                     DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.ActionInProgress = DetailPageCommand.Delete
 
 
                 Catch ex As Exception
                     State.InvoiceBO.RejectChanges()
                     State.InvoiceItemBO.RejectChanges()
-                    MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.ERR_DELETING_DATA)
+                    MasterPage.MessageController.AddError(Message.ERR_DELETING_DATA)
                     Throw ex
                 End Try
                 PopulateGrid()
@@ -872,7 +877,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles InvoicesGrid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles InvoicesGrid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -880,7 +885,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles InvoicesGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles InvoicesGrid.RowDataBound
         If e.Row.RowType = DataControlRowType.DataRow Then
 
             ' Assign the detail id to the command agrument
@@ -905,7 +910,7 @@ Partial Class InvoiceGroupDetailForm
                 'Edit Button argument changed to id
                 btnEditItem = CType(e.Row.Cells(GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST), ImageButton)
                 btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(InvoiceGroupDetail.InvoiceGroupDetailSearchDV.COL_INVOICE_ID), Byte()))
-                btnEditItem.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME
+                btnEditItem.CommandName = EDIT_COMMAND_NAME
 
             End If
 
@@ -919,7 +924,7 @@ Partial Class InvoiceGroupDetailForm
                 'Delete Button argument changed to id
                 btnDeleteItem = CType(e.Row.Cells(GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST), ImageButton)
                 btnDeleteItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(InvoiceGroupDetail.InvoiceGroupDetailSearchDV.COL_INVOICE_ID), Byte()))
-                btnDeleteItem.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME
+                btnDeleteItem.CommandName = DELETE_COMMAND_NAME
 
             End If
 
@@ -930,7 +935,7 @@ Partial Class InvoiceGroupDetailForm
         End If
     End Sub
 
-    Private Sub cboPgSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPgSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.SelectedPageSize = State.PageSize
@@ -952,7 +957,7 @@ Partial Class InvoiceGroupDetailForm
 #Region "Button Clicks"
 
 
-    Private Sub btninveditSave_Click(sender As System.Object, e As System.EventArgs) Handles btnEditInvSave.Click
+    Private Sub btninveditSave_Click(sender As Object, e As EventArgs) Handles btnEditInvSave.Click
         Try
 
 
@@ -974,7 +979,7 @@ Partial Class InvoiceGroupDetailForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnNewInvCancel_Click(sender As Object, e As System.EventArgs) Handles btnNewInvCancel.Click
+    Private Sub btnNewInvCancel_Click(sender As Object, e As EventArgs) Handles btnNewInvCancel.Click
         Try
             mdlPopup.Hide()
         Catch ex As Exception
@@ -982,7 +987,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub btncancelSearch_Click(sender As Object, e As System.EventArgs) Handles btncancelSearch.Click
+    Private Sub btncancelSearch_Click(sender As Object, e As EventArgs) Handles btncancelSearch.Click
         Try
             mdlPopup.Hide()
         Catch ex As Exception
@@ -990,7 +995,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
             ReconciledInvoiceSearchgv.DataSource = State.ReconInvsearchDV
@@ -1002,7 +1007,7 @@ Partial Class InvoiceGroupDetailForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnsearch_click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnsearch_click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             moMessageController.Clear()
             If (ddlVendorName.SelectedIndex = 0 AndAlso
@@ -1039,7 +1044,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Public Sub btnNewItemAdd_Click(sender As System.Object, e As System.EventArgs) Handles btnNewItemAdd.Click
+    Public Sub btnNewItemAdd_Click(sender As Object, e As EventArgs) Handles btnNewItemAdd.Click
 
         Try
             If State.IsNew Then
@@ -1135,7 +1140,7 @@ Partial Class InvoiceGroupDetailForm
             HandleErrors(ex, moMessageController)
         End Try
     End Sub
-    Private Sub ReconciledInvoiceSearchgv_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ReconciledInvoiceSearchgv.RowCreated
+    Private Sub ReconciledInvoiceSearchgv_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles ReconciledInvoiceSearchgv.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -1144,7 +1149,7 @@ Partial Class InvoiceGroupDetailForm
     End Sub
 
 
-    Private Sub ReconciledInvoiceSearchgv_PageIndexChanged(sender As Object, e As System.EventArgs) Handles ReconciledInvoiceSearchgv.PageIndexChanged
+    Private Sub ReconciledInvoiceSearchgv_PageIndexChanged(sender As Object, e As EventArgs) Handles ReconciledInvoiceSearchgv.PageIndexChanged
         Try
             State.PageIndex = ReconciledInvoiceSearchgv.PageIndex
             PopulateReconciledInvoicesGrid()
@@ -1154,7 +1159,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub ReconciledInvoiceSearchgv_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles ReconciledInvoiceSearchgv.PageIndexChanging
+    Private Sub ReconciledInvoiceSearchgv_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles ReconciledInvoiceSearchgv.PageIndexChanging
         Try
             ReconciledInvoiceSearchgv.PageIndex = e.NewPageIndex
             State.PageIndex = InvoicesGrid.PageIndex
@@ -1163,7 +1168,7 @@ Partial Class InvoiceGroupDetailForm
             HandleErrors(ex, moMessageController)
         End Try
     End Sub
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPgSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPgSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.SelectedPageSize = State.PageSize
@@ -1177,7 +1182,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub ReconciledInvoiceSearchgv_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ReconciledInvoiceSearchgv.RowDataBound
+    Private Sub ReconciledInvoiceSearchgv_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles ReconciledInvoiceSearchgv.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -1230,7 +1235,7 @@ Partial Class InvoiceGroupDetailForm
                     Return False
                 Else
                     State.InvoiceAmountCulture = txtInvoiceAmount.Text.Trim
-                    State.InvoiceAmount = dblAmount.ToString(System.Threading.Thread.CurrentThread.CurrentCulture.InvariantCulture)
+                    State.InvoiceAmount = dblAmount.ToString(Thread.CurrentThread.CurrentCulture.InvariantCulture)
                 End If
             Else
                 State.InvoiceAmount = txtInvoiceAmount.Text
@@ -1271,7 +1276,7 @@ Partial Class InvoiceGroupDetailForm
         BaseItemBound(source, e)
 
     End Sub
-    Private Sub Lineitemsgv_RowCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Lineitemsgv.ItemCreated
+    Private Sub Lineitemsgv_RowCreated(sender As Object, e As DataGridItemEventArgs) Handles Lineitemsgv.ItemCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -1279,7 +1284,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub Lineitemsgv_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Lineitemsgv.PageIndexChanged
+    Private Sub Lineitemsgv_PageIndexChanging(source As Object, e As DataGridPageChangedEventArgs) Handles Lineitemsgv.PageIndexChanged
         Try
             State.PageIndex = e.NewPageIndex
             Lineitemsgv.CurrentPageIndex = State.PageIndex
@@ -1291,7 +1296,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Private Sub LIneitemsgv_RowDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Lineitemsgv.ItemDataBound
+    Private Sub LIneitemsgv_RowDataBound(sender As Object, e As DataGridItemEventArgs) Handles Lineitemsgv.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -1349,7 +1354,7 @@ Partial Class InvoiceGroupDetailForm
 
                 State.InvoiceBO = New Invoice(State.InvoiceId)
 
-                Dim autocompleteext As AjaxControlToolkit.AutoCompleteExtender = CType(e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl("AutoCompleteExtender1"), AjaxControlToolkit.AutoCompleteExtender)
+                Dim autocompleteext As AutoCompleteExtender = CType(e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl("AutoCompleteExtender1"), AutoCompleteExtender)
                 autocompleteext.ContextKey = State.InvoiceBO.ServiceCenter.Code
 
 
@@ -1360,11 +1365,11 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Protected Sub Grid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Lineitemsgv.ItemCommand
+    Protected Sub Grid_ItemCommand(source As Object, e As DataGridCommandEventArgs) Handles Lineitemsgv.ItemCommand
         Try
             'Editing Grid populates modal popup with invoice line item  details info
             Dim index As Integer = e.Item.ItemIndex
-            If e.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME Then
+            If e.CommandName = EDIT_COMMAND_NAME Then
 
                 hdnclaimnum.Value = ""
                 ControlMgr.SetVisibleControl(Me, btnnew_lineitem, False)
@@ -1420,7 +1425,7 @@ Partial Class InvoiceGroupDetailForm
                     MasterPage.MessageController.AddErrorAndShow(Message.MSG_CANNOT_MODIFY_CLAIM_AUTHORIZATION)
 
                 End If
-            ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
+            ElseIf e.CommandName = DELETE_COMMAND_NAME Then
 
                 State.Invoiceitemid = New Guid(Lineitemsgv.Items(e.Item.ItemIndex).Cells(GRID_COL_LINE_ITEM_ID_IDX).Text)
                 State.ClaimAuthorizationId = New Guid(Lineitemsgv.Items(e.Item.ItemIndex).Cells(GRID_COL_CLAIM_AUTHORIZATION_ID_IDX).Text)
@@ -1430,14 +1435,14 @@ Partial Class InvoiceGroupDetailForm
                     If (State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__VOID OrElse State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__PENDING) Then
 
                         DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                        State.ActionInProgress = DetailPageCommand.Delete
                     Else
                         MasterPage.MessageController.AddErrorAndShow(Message.MSG_LINE_ITEM_CANNOT_BE_DELETED)
                     End If
                 Catch ex As Exception
                     State.InvoiceItemBO.RejectChanges()
 
-                    MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.ERR_DELETING_DATA)
+                    MasterPage.MessageController.AddError(Message.ERR_DELETING_DATA)
                     Throw ex
                 End Try
 
@@ -1484,7 +1489,7 @@ Partial Class InvoiceGroupDetailForm
 #End Region
 
 #Region "Button Clicks"
-    Protected Sub btnnewlineitem_click(Sender As Object, e As System.EventArgs) Handles btnnew_lineitem.Click
+    Protected Sub btnnewlineitem_click(Sender As Object, e As EventArgs) Handles btnnew_lineitem.Click
         Try
             molineitemmsgcontroller.Clear()
             State.InvoiceBO = New Invoice(State.InvoiceId)
@@ -1542,7 +1547,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
     End Sub
 
-    Protected Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnsave_lineitem.Click
+    Protected Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles btnsave_lineitem.Click
         Try
             molineitemmsgcontroller.Clear()
             If State.IsNew Then
@@ -1624,7 +1629,7 @@ Partial Class InvoiceGroupDetailForm
                 If (State.InvoiceItemBO.IsDirty) Then
                     State.InvoiceItemBO.Save()
 
-                    molineitemmsgcontroller.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    molineitemmsgcontroller.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     mdlLineItem.Show()
 
                     ReturnFromEditing()
@@ -1634,7 +1639,7 @@ Partial Class InvoiceGroupDetailForm
                     mdlLineItem.Show()
                     State.lineitemsDV = Nothing
                 Else
-                    molineitemmsgcontroller.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+                    molineitemmsgcontroller.AddError(Message.MSG_RECORD_NOT_SAVED)
 
                     ReturnFromEditing()
                     ControlMgr.SetVisibleControl(Me, btnnew_lineitem, True)
@@ -1654,7 +1659,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
 
     End Sub
-    Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles btnundo_lineitem.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles btnundo_lineitem.Click
 
         Try
             molineitemmsgcontroller.Clear()
@@ -1670,7 +1675,7 @@ Partial Class InvoiceGroupDetailForm
         End Try
 
     End Sub
-    Private Sub standardlineitems_click(sender As Object, e As System.EventArgs) Handles btnAddstandardLineItems.Click
+    Private Sub standardlineitems_click(sender As Object, e As EventArgs) Handles btnAddstandardLineItems.Click
         Try
             molineitemmsgcontroller.Clear()
             State.InvoiceBO = New Invoice(State.InvoiceId)
@@ -1738,11 +1743,11 @@ Partial Class InvoiceGroupDetailForm
 
 
 #Region "Helper Functions"
-    <System.Web.Services.WebMethod(), System.Web.Script.Services.ScriptMethod()> _
-    Public Shared Function GetCompletionList(prefixText As String, count As Integer, contextKey As String) As System.Collections.Generic.List(Of String)
+    <WebMethod(), ScriptMethod()> _
+    Public Shared Function GetCompletionList(prefixText As String, count As Integer, contextKey As String) As List(Of String)
 
 
-        Dim listitems As System.Collections.Generic.List(Of String) = New System.Collections.Generic.List(Of String)
+        Dim listitems As List(Of String) = New List(Of String)
         ' Dim listItems As New ArrayList
 
 
@@ -1817,7 +1822,7 @@ Partial Class InvoiceGroupDetailForm
 
         State.vendorskudv = dv1
         If State.vendorskudv IsNot Nothing Then
-            ElitaPlusPage.BindListTextToDataView(vendorsku, State.vendorskudv, COL_VENDOR_SKU, COL_VENDOR_SKU, True)
+            BindListTextToDataView(vendorsku, State.vendorskudv, COL_VENDOR_SKU, COL_VENDOR_SKU, True)
 
         Else
             MasterPage.MessageController.AddErrorAndShow(Message.MSG_VENDOR_SKU_LIST_NOT_FOUND)

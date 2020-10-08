@@ -1,9 +1,12 @@
 ﻿Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports System.Text
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimLegacyBridgeService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports System.Threading
+Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
@@ -14,12 +17,12 @@ Partial Class ClaimIssueDetailForm
 
 #Region " Web Form Designer Generated Code "
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <DebuggerStepThrough()>
     Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -262,7 +265,7 @@ Partial Class ClaimIssueDetailForm
 
 #Region "Page_Events"
 
-    Private Sub Page_load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If mbIsFirstPass = True Then
             mbIsFirstPass = False
@@ -310,7 +313,7 @@ Partial Class ClaimIssueDetailForm
 
 #Region "Buttons Clicks "
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         If (NavController IsNot Nothing) Then
             Select Case NavController.PrevNavState.Name
                 Case "CLAIM_DETAIL"
@@ -319,7 +322,7 @@ Partial Class ClaimIssueDetailForm
                     NavController.Navigate(Me, "back")
             End Select
         Else
-            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyClaimBO)
+            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, State.MyClaimBO)
             MyBase.ReturnToCallingPage(retObj)
         End If
 
@@ -463,7 +466,7 @@ Partial Class ClaimIssueDetailForm
 #End Region
 
 
-    Private Sub grdQuestions_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdQuestions.RowDataBound
+    Private Sub grdQuestions_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdQuestions.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim bContainsEntityAttribute As Boolean = False
@@ -509,7 +512,7 @@ Partial Class ClaimIssueDetailForm
 
                         Dim dv As DataView = LookupListNew.GetPoliceLookupList(State.aryCountryId)
                         ddlMult.SetControl(True,
-                                          ddlMult.MODES.NEW_MODE,
+                                          MultipleColumnDDLabelControl.MODES.NEW_MODE,
                                           True,
                                           dv,
                                           "Police Station",
@@ -584,7 +587,7 @@ Partial Class ClaimIssueDetailForm
         End Try
     End Sub
 
-    Private Sub grdProcessHistory_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdProcessHistory.RowDataBound
+    Private Sub grdProcessHistory_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdProcessHistory.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         If (e.Row.RowType = DataControlRowType.DataRow) Then
             Dim gClaimIssueStatusID As New Guid(CType(e.Row.Cells(Q_GRID_COL_CLAIM_ISSUE_STATUS_ID_IDX).FindControl(CLAIM_ISSUE_STATUS_ID), Label).Text)
@@ -819,9 +822,9 @@ Partial Class ClaimIssueDetailForm
               Not policeReportNumber.Trim.ToUpper().Equals("N/A") AndAlso
               Not policeReportNumber.Trim.ToUpper().Equals("N-A")) Then
 
-            Dim lstClaim As Collections.Generic.List(Of String)
+            Dim lstClaim As List(Of String)
             If PoliceReport.IsReportNumberInUse(lstClaim, policeReportNumber, policeStationId) Then
-                Dim sbMsg As New System.Text.StringBuilder
+                Dim sbMsg As New StringBuilder
                 'sbMsg.Append("This Police Report# Is Already Used By The Claim#:")
                 sbMsg.Append(TranslationBase.TranslateLabelOrMessage(Message.MSG_DUPLICATE_POLICE_REPORT_NUMBER))
                 sbMsg.Append(" ")
@@ -948,7 +951,7 @@ Partial Class ClaimIssueDetailForm
                         State.MyClaimBO.Save()
                 End Select
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -966,12 +969,12 @@ Partial Class ClaimIssueDetailForm
         Try
             reimbursementAmt = Decimal.Parse(reimbursementValue)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
             Return isReimbursementAmtUpdated
         End Try
 
         If reimbursementAmt <= 0 Then
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
             Return isReimbursementAmtUpdated
         End If
 
@@ -988,16 +991,16 @@ Partial Class ClaimIssueDetailForm
                     oCaseConseqDamage.Save()
                     isReimbursementAmtUpdated = True
                 Else
-                    MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ISSUE_CONSEQUENTIAL_DAMAGE_REIMBURSEMENT_AMOUNT_INCORRECT) _
+                    MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.ISSUE_CONSEQUENTIAL_DAMAGE_REIMBURSEMENT_AMOUNT_INCORRECT) _
                                                           & " " & oCoverageConseqDamage.LiabilityLimitPerIncident.Value.ToString(), False)
                     isReimbursementAmtUpdated = False
                 End If
             Else
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
                 isReimbursementAmtUpdated = False
             End If
         Else
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
             isReimbursementAmtUpdated = False
         End If
         Return isReimbursementAmtUpdated
@@ -1034,12 +1037,12 @@ Partial Class ClaimIssueDetailForm
             Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
             wsResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, Boolean)(
                                                                             client,
-                                                                            New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                                            New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                                                             Function(c As LegacyBridgeServiceClient)
                                                                                 Return c.ExecuteClaimRecordingRules(State.MyClaimBO.Id.ToString, checkBenefit, HasBenefitFalseAction)
                                                                             End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_LEGACY_BRIDGE_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_LEGACY_BRIDGE_SERVICE_ERR, True)
             Throw
         End Try
     End Sub
@@ -1116,7 +1119,7 @@ Partial Class ClaimIssueDetailForm
         For i As Integer = 0 To State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
             'DEF-4069
             If Not (Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted) Then
-                If State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) IsNot System.DBNull.Value Then
+                If State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) IsNot DBNull.Value Then
                     gAnswerId = New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
                     Dim oAnswer As New Answer(gAnswerId)
                     If oAnswer.QuestionId = gSoftQuestionId Then
@@ -1143,7 +1146,7 @@ Partial Class ClaimIssueDetailForm
                 'DEF-4069
                 If Not Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted Then
                     If State.ClaimIssueId.Equals(New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_CLAIM_ISSUE_ID), Byte()))) Then
-                        If State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID) IsNot System.DBNull.Value Then
+                        If State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID) IsNot DBNull.Value Then
                             iQuestionCount = iQuestionCount + 1
                             gSupportsClaimId = New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID), Byte()))
                             sSupportsClaim = LookupListNew.GetCodeFromId(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, gSupportsClaimId).ToString()
@@ -1211,7 +1214,7 @@ Partial Class ClaimIssueDetailForm
             lblCompareValue.ID = "lblCompareValue"
             If ddl IsNot Nothing Then
                 If ddl.Items.Count > 0 Then
-                    Dim listItem As System.Web.UI.WebControls.ListItem
+                    Dim listItem As WebControls.ListItem
                     listItem = ddl.Items.FindByValue(CType(_typeObj.GetProperty(sAttribute).GetValue(oObject, Nothing), Guid).ToString())
                     If listItem IsNot Nothing Then
                         sValue = listItem.Text
@@ -1242,7 +1245,7 @@ Partial Class ClaimIssueDetailForm
                 ReturnToCallingPage()
                 'Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, Nothing, Me.State.MyClaimBO, True, False))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1293,7 +1296,7 @@ Partial Class ClaimIssueDetailForm
                         State.MyBO = CType(State.MyClaimBO.ClaimIssuesList.GetChild(State.ClaimIssueId), ClaimIssue)
                 End Select
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try

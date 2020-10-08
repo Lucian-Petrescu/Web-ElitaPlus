@@ -1,4 +1,6 @@
-﻿Imports BO = Assurant.ElitaPlus.BusinessObjectsNew
+﻿Imports System.Reflection
+Imports System.Threading
+Imports BO = Assurant.ElitaPlus.BusinessObjectsNew
 
 Public Class ClaimIssueForm
     Inherits ElitaPlusSearchPage
@@ -33,11 +35,11 @@ Public Class ClaimIssueForm
     Class MyState
         Public MyBO As ClaimBase
         Public IsGridVisible As Boolean = True
-        Public SortExpression As String = Claim.ClaimIssuesView.COL_CREATED_DATE & " DESC"
+        Public SortExpression As String = ClaimBase.ClaimIssuesView.COL_CREATED_DATE & " DESC"
         Public PageIndex As Integer = 0
         Public SelectedClaimIssueId As Guid
         Public PageSize As Integer = 5
-        Public ClaimIssuesView As Claim.ClaimIssuesView
+        Public ClaimIssuesView As ClaimBase.ClaimIssuesView
         Public InputParameters As Parameters
 
 
@@ -90,7 +92,7 @@ Public Class ClaimIssueForm
            
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         MasterPage.UsePageTabTitleInBreadCrum = False
         MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CLAIM_ISSUES")
@@ -119,7 +121,7 @@ Public Class ClaimIssueForm
 
             End If
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -191,14 +193,14 @@ Public Class ClaimIssueForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         NavController.Navigate(Me, FlowEvents.EVENT_CANCEL, New ClaimForm.Parameters(State.MyBO.Id))
     End Sub
 
     Private Sub SaveClaimIssue(sender As Object, Args As EventArgs) Handles btnSave.Click
 
         Try
-            Dim claimIssue As ClaimIssue = CType(State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+            Dim claimIssue As ClaimIssue = CType(State.MyBO.ClaimIssuesList.GetNewChild, ClaimIssue)
             claimIssue.SaveNewIssue(State.MyBO.Id, New Guid(hdnSelectedIssueCode.Value), State.MyBO.CertificateId, False)
             Select Case claimIssue.StatusCode
                 Case Codes.CLAIMISSUE_STATUS__OPEN, Codes.CLAIMISSUE_STATUS__PENDING
@@ -262,7 +264,7 @@ Public Class ClaimIssueForm
 
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -282,7 +284,7 @@ Public Class ClaimIssueForm
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             State.SelectedClaimIssueId = Guid.Empty
@@ -292,7 +294,7 @@ Public Class ClaimIssueForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -301,7 +303,7 @@ Public Class ClaimIssueForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -309,7 +311,7 @@ Public Class ClaimIssueForm
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnEditItem As LinkButton
@@ -317,9 +319,9 @@ Public Class ClaimIssueForm
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 If (e.Row.Cells(1).FindControl("EditButton_WRITE") IsNot Nothing) Then
                     btnEditItem = CType(e.Row.Cells(0).FindControl("EditButton_WRITE"), LinkButton)
-                    btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimIssuesView.COL_CLAIM_ISSUE_ID), Byte()))
+                    btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(ClaimBase.ClaimIssuesView.COL_CLAIM_ISSUE_ID), Byte()))
                     btnEditItem.CommandName = SELECT_ACTION_COMMAND
-                    btnEditItem.Text = dvRow(Claim.ClaimIssuesView.COL_ISSUE_DESC).ToString
+                    btnEditItem.Text = dvRow(ClaimBase.ClaimIssuesView.COL_ISSUE_DESC).ToString
                 End If
 
                 Dim strCreationDate As String = Convert.ToString(e.Row.Cells(GRID_COL_CREATE_DATE_IDX).Text)
@@ -339,8 +341,8 @@ Public Class ClaimIssueForm
                 End If
 
                 ' Convert short status codes to full description with css
-                e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
-                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(ClaimBase.ClaimIssuesView.COL_STATUS_CODE).ToString)
+                If (dvRow(ClaimBase.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse dvRow(ClaimBase.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
                 Else
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
@@ -352,7 +354,7 @@ Public Class ClaimIssueForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
@@ -360,15 +362,15 @@ Public Class ClaimIssueForm
                    NavController.Navigate(Me, FlowEvents.EVENT_NEXT, New ClaimIssueDetailForm.Parameters(State.MyBO, State.SelectedClaimIssueId))
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso _
-           (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
+            If (TypeOf ex Is TargetInvocationException) AndAlso _
+           (TypeOf ex.InnerException Is ThreadAbortException) Then Return
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.ClaimIssuesView.Count, State.PageSize)

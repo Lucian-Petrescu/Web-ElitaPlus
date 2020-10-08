@@ -1,5 +1,9 @@
+Imports System.Diagnostics
+Imports System.Text
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.DALObjects
 Imports Microsoft.VisualBasic
 
 Partial Class PayBatchClaimForm
@@ -8,15 +12,15 @@ Partial Class PayBatchClaimForm
 #Region "Web Form Designer Generated Code"
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -171,9 +175,9 @@ Partial Class PayBatchClaimForm
         State.companyBO = New Company(companyid)
         countryID = State.companyBO.BusinessCountryId
         State.countryid = countryID
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = countryID
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         DropDownState.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -386,7 +390,7 @@ Partial Class PayBatchClaimForm
         'Me.GridClaims.DataBind()
 
         If BOOL_ERR_ADDED Then
-            MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.ANOTHER_USER_HAS_MODIFIED_THIS_CLAIM)
+            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.ANOTHER_USER_HAS_MODIFIED_THIS_CLAIM)
         End If
 
         lblRecordCount.Text = dv.Count.ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
@@ -480,7 +484,7 @@ Partial Class PayBatchClaimForm
 
     Public Sub RegisterClientServerIds()
 
-        Dim onloadScript As New System.Text.StringBuilder()
+        Dim onloadScript As New StringBuilder()
         onloadScript.Append("<script type='text/javascript'>")
         onloadScript.Append(Environment.NewLine)
         onloadScript.Append("var CurrentAmt = '" + TextBoxCurrentAmount.ClientID + "';")
@@ -503,10 +507,10 @@ Partial Class PayBatchClaimForm
     Private Function SaveClaims() As Boolean
 
         Dim dgItem As GridViewRow
-        Dim dsBCI As New DALObjects.BatchClaimInvoice
+        Dim dsBCI As New BatchClaimInvoice
         Dim dsReturn As DataSet
         Dim dt As DataTable = dsBCI.INVOICE_TRANS_DETAIL
-        Dim dr As DALObjects.BatchClaimInvoice.INVOICE_TRANS_DETAILRow
+        Dim dr As BatchClaimInvoice.INVOICE_TRANS_DETAILRow
         Dim chkClose, chkSpareParts As CheckBox
         Dim txtPickup, txtRepair, txtPayment, txtSalvageAmt As TextBox
         Dim lossDate As Date
@@ -535,7 +539,7 @@ Partial Class PayBatchClaimForm
             'Validate PerceptionIVA
             If TextBoxPerceptionIVA.Text.Trim.Length > 0 Then
 
-                If Not Microsoft.VisualBasic.IsNumeric(TextBoxPerceptionIVA.Text) Then
+                If Not IsNumeric(TextBoxPerceptionIVA.Text) Then
                     MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
                     boolErr = True
                 End If
@@ -544,7 +548,7 @@ Partial Class PayBatchClaimForm
             If TextBoxPerceptionIIBB.Text.Trim.Length > 0 Then
 
                 'Validate PerceptionIIBB
-                If Not Microsoft.VisualBasic.IsNumeric(TextBoxPerceptionIIBB.Text) Then
+                If Not IsNumeric(TextBoxPerceptionIIBB.Text) Then
                     MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
                     boolErr = True
                 End If
@@ -827,7 +831,7 @@ Partial Class PayBatchClaimForm
 
 #Region " Datagrid Related "
 
-    Private Sub GridClaims_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaims.RowDataBound
+    Private Sub GridClaims_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridClaims.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -993,7 +997,7 @@ Partial Class PayBatchClaimForm
 
     End Sub
 
-    Private Sub GridClaims_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridClaims.PageIndexChanged
+    Private Sub GridClaims_PageIndexChanged(sender As Object, e As EventArgs) Handles GridClaims.PageIndexChanged
 
         'Me.CURRENT_PAGE = GridClaims.PageIndex
         CURRENT_PAGE_SIZE = GridClaims.PageSize
@@ -1001,7 +1005,7 @@ Partial Class PayBatchClaimForm
         CURRENT_PAGE = GridClaims.PageIndex
     End Sub
 
-    Private Sub GridClaims_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridClaims.PageIndexChanging
+    Private Sub GridClaims_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridClaims.PageIndexChanging
         Try
             CURRENT_PAGE = GridClaims.PageIndex
             GridClaims.PageIndex = e.NewPageIndex
@@ -1011,7 +1015,7 @@ Partial Class PayBatchClaimForm
         End Try
     End Sub
 
-    Private Sub GridClaims_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaims.RowCreated
+    Private Sub GridClaims_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridClaims.RowCreated
         Dim epsp As New ElitaPlusSearchPage
         epsp.BaseItemCreated(sender, e)
     End Sub
@@ -1021,7 +1025,7 @@ Partial Class PayBatchClaimForm
 
 #Region " Button clicks "
 
-    Private Sub btnPay_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnPay_WRITE.Click
+    Private Sub btnPay_WRITE_Click(sender As Object, e As EventArgs) Handles btnPay_WRITE.Click
 
         CURRENT_PAGE = GridClaims.PageIndex
         CURRENT_PAGE_SIZE = GridClaims.PageSize
@@ -1029,7 +1033,7 @@ Partial Class PayBatchClaimForm
         PayClaims()
     End Sub
 
-    Private Sub btnReject_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnReject_WRITE.Click
+    Private Sub btnReject_WRITE_Click(sender As Object, e As EventArgs) Handles btnReject_WRITE.Click
 
         ControlMgr.SetVisibleControl(Me, txtareaRejectReason, True)
         ControlMgr.SetVisibleControl(Me, btnRejectSave, True)
@@ -1041,7 +1045,7 @@ Partial Class PayBatchClaimForm
         ControlMgr.SetVisibleControl(Me, btnReject_WRITE, False)
     End Sub
 
-    Private Sub btnRejectSave_Click(sender As System.Object, e As System.EventArgs) Handles btnRejectSave.Click
+    Private Sub btnRejectSave_Click(sender As Object, e As EventArgs) Handles btnRejectSave.Click
 
         Dim _invoiceTrans As New InvoiceTrans
 
@@ -1061,7 +1065,7 @@ Partial Class PayBatchClaimForm
         End If
 
     End Sub
-    Private Sub btnRejectCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnRejectCancel.Click
+    Private Sub btnRejectCancel_Click(sender As Object, e As EventArgs) Handles btnRejectCancel.Click
 
         ControlMgr.SetVisibleControl(Me, txtareaRejectReason, False)
         ControlMgr.SetVisibleControl(Me, btnRejectSave, False)
@@ -1073,7 +1077,7 @@ Partial Class PayBatchClaimForm
         ControlMgr.SetVisibleControl(Me, btnReject_WRITE, True)
 
     End Sub
-    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
 
         CURRENT_PAGE = GridClaims.PageIndex
         CURRENT_PAGE_SIZE = GridClaims.PageSize
@@ -1081,11 +1085,11 @@ Partial Class PayBatchClaimForm
         SaveClaims()
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         ReturnToCallingPage(New ReturnType(State.MyBO.Id))
     End Sub
 
-    Private Sub btnAddRepairDate_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAddRepairDate_WRITE.Click
+    Private Sub btnAddRepairDate_WRITE_Click(sender As Object, e As EventArgs) Handles btnAddRepairDate_WRITE.Click
 
         Dim strRepairDt As String = TextBoxRepairDate.Text.Trim
         Dim dtRepair As Date, drCurrRow As DataRow, blnValid As Boolean = True
@@ -1125,9 +1129,9 @@ Partial Class PayBatchClaimForm
                     'save changes if there is any
                     SaveClaims()
 
-                    Dim dsBCI As New DALObjects.BatchClaimInvoice
+                    Dim dsBCI As New BatchClaimInvoice
                     Dim dt As DataTable = dsBCI.INVOICE_TRANS_DETAIL
-                    Dim dr As DALObjects.BatchClaimInvoice.INVOICE_TRANS_DETAILRow
+                    Dim dr As BatchClaimInvoice.INVOICE_TRANS_DETAILRow
 
                     For Each drCurrRow In State.searchInvoiceTransDetailDV.Table.Rows
                         If drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) Is DBNull.Value Then
@@ -1178,7 +1182,7 @@ Partial Class PayBatchClaimForm
 #End Region
 
 #Region " Page Events "
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
 
         CURRENT_PAGE = GridClaims.PageIndex
         CURRENT_PAGE_SIZE = GridClaims.PageSize
@@ -1191,7 +1195,7 @@ Partial Class PayBatchClaimForm
 
     End Sub
 
-    Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         InvoiceTabs.Visible = True
         MasterPage.MessageController.Clear()
 
@@ -1230,7 +1234,7 @@ Partial Class PayBatchClaimForm
 
     End Sub
 
-    Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As EventArgs) Handles Me.LoadComplete
         Try
             If IsRepairDateEmpty() Then
                 TextBoxRepairDate.Enabled = True

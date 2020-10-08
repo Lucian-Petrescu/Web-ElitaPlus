@@ -1,6 +1,7 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimStatusDetailForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimStatusDetailForm" Theme="Default"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
+<%@ Import Namespace="Assurant.ElitaPlus.BusinessObjectsNew" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
 
@@ -164,7 +165,7 @@
         </asp:DataGrid>
     </div>
     <div class="dataContainer">
-        <h2 class="searchGridHeader"><%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage("CLAIM_AGING_DETAILS")%></h2>
+        <h2 class="searchGridHeader"><%=TranslationBase.TranslateLabelOrMessage("CLAIM_AGING_DETAILS")%></h2>
         <table width="100%" class="searchGrid">
             <tbody>
                 <asp:Repeater runat="server" ID="moClaimRepeater">

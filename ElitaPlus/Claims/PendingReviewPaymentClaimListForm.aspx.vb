@@ -1,8 +1,11 @@
-﻿Imports System.Threading
+﻿Imports System.Collections.Generic
+Imports System.Threading
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Reports
 
 Public Class PendingReviewPaymentClaimListForm
     Inherits ElitaPlusSearchPage
@@ -84,7 +87,7 @@ Public Class PendingReviewPaymentClaimListForm
         Public IsGridVisible As Boolean = False
         Public searchDV As Claim.PendingReviewPaymentClaimSearchDV = Nothing
         Public SearchClicked As Boolean
-        Public ActionInProgress As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Nothing_
+        Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         Public cmdProcessRecord As String = String.Empty
 
         Sub New()
@@ -111,7 +114,7 @@ Public Class PendingReviewPaymentClaimListForm
 #Region "Page_Events"
 
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         PendingReviewForPaymentId = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT)
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         MasterPage.MessageController.Clear()
@@ -171,9 +174,9 @@ Public Class PendingReviewPaymentClaimListForm
                 End If
             End If
 
-            If CalledUrl = Reports.RepairLogisticsClaimsExportForm.URL Then
+            If CalledUrl = RepairLogisticsClaimsExportForm.URL Then
                 MenuEnabled = True
-                Dim retObj As Reports.RepairLogisticsClaimsExportForm.ReturnType = CType(ReturnPar, Reports.RepairLogisticsClaimsExportForm.ReturnType)
+                Dim retObj As RepairLogisticsClaimsExportForm.ReturnType = CType(ReturnPar, RepairLogisticsClaimsExportForm.ReturnType)
                 'Me.State.HasDataChanged = retObj.HasDataChanged
                 If retObj IsNot Nothing AndAlso retObj.HasDataChanged Then
                     State.searchDV = Nothing
@@ -190,15 +193,15 @@ Public Class PendingReviewPaymentClaimListForm
 #End Region
 
 #Region "Controlling Logic"
-    Private Sub Country_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlcountry.SelectedIndexChanged
+    Private Sub Country_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlcountry.SelectedIndexChanged
         Try
             Dim CountryId As Guid = GetSelectedItem(ddlcountry)
 
             If CountryId.Equals(Guid.Empty) Then
                 ' Me.BindListControlToDataView(ddlservicecenter, LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)) 'ServiceCenterListByCountry
-                Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
+                Dim ServiceCenterList As New List(Of ListItem)
                 For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
-                    Dim ServiceCenters As DataElements.ListItem() =
+                    Dim ServiceCenters As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
                                                                     context:=New ListContext() With
                                                                     {
@@ -248,9 +251,9 @@ Public Class PendingReviewPaymentClaimListForm
                     .AddBlankItem = True
                     })
 
-            Dim countryList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
+            Dim countryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
 
-            Dim filteredCountryList As DataElements.ListItem() = (From x In countryList
+            Dim filteredCountryList As ListItem() = (From x In countryList
                                                                   Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(x.ListItemId)
                                                                   Select x).ToArray()
 
@@ -306,9 +309,9 @@ Public Class PendingReviewPaymentClaimListForm
                 .AddBlankItem = True
                 })
 
-            Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
+            Dim ServiceCenterList As New List(Of ListItem)
             For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
-                Dim ServiceCenters As DataElements.ListItem() =
+                Dim ServiceCenters As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
                                                                     context:=New ListContext() With
                                                                     {
@@ -511,11 +514,11 @@ Public Class PendingReviewPaymentClaimListForm
 
     Protected Function ProcessRecords() As Boolean
         Try
-            Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
+            Dim outputParameters() As DBHelper.DBHelperParameter
             outputParameters = Claim.ApproveOrRejectClaims(State.cmdProcessRecord, checkRecords.Value)
 
             If CType(outputParameters(0).Value, Integer) = 0 Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 'Me.DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                 MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
@@ -523,7 +526,7 @@ Public Class PendingReviewPaymentClaimListForm
                 'Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR, Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
                 ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
             Else
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 'Me.DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, False)
                 MasterPage.MessageController.AddErrorAndShow(Message.MSG_RECORD_NOT_SAVED, True)
@@ -598,7 +601,7 @@ Public Class PendingReviewPaymentClaimListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
@@ -609,7 +612,7 @@ Public Class PendingReviewPaymentClaimListForm
     End Sub
 
 
-    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
 
         Try
 
@@ -624,19 +627,19 @@ Public Class PendingReviewPaymentClaimListForm
                 callPage(ClaimForm.URL, State.selectedClaimId)
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -645,7 +648,7 @@ Public Class PendingReviewPaymentClaimListForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
 
             State.PageIndex = Grid.PageIndex
@@ -655,7 +658,7 @@ Public Class PendingReviewPaymentClaimListForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -676,7 +679,7 @@ Public Class PendingReviewPaymentClaimListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Dim claimcreateddate As SearchCriteriaStructType(Of Date)
 
@@ -698,7 +701,7 @@ Public Class PendingReviewPaymentClaimListForm
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception
@@ -706,12 +709,12 @@ Public Class PendingReviewPaymentClaimListForm
         End Try
     End Sub
 
-    Private Sub btnapproveclaims_click(Sender As System.Object, e As System.EventArgs) Handles btnapproveclaims.Click
+    Private Sub btnapproveclaims_click(Sender As Object, e As EventArgs) Handles btnapproveclaims.Click
 
         Try
             ControlMgr.SetVisibleControl(Me, btnapproveclaims, False)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_APPROVE
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_APPROVE
             ProcessCommand()
 
         Catch ex As Exception
@@ -722,9 +725,9 @@ Public Class PendingReviewPaymentClaimListForm
     Protected Sub btnExportResults_Click(sender As Object, e As EventArgs) Handles btnexport.Click
         Try
 
-            callPage(Reports.RepairLogisticsClaimsExportForm.URL, State)
+            callPage(RepairLogisticsClaimsExportForm.URL, State)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try

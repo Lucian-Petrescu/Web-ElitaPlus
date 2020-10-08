@@ -1,7 +1,10 @@
+Imports System.Diagnostics
+Imports System.Globalization
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.DALObjects
 
 Partial Class InvoiceListForm
     Inherits ElitaPlusSearchPage
@@ -9,17 +12,17 @@ Partial Class InvoiceListForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -86,7 +89,7 @@ Partial Class InvoiceListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         ErrControllerMaster.Clear_Hide()
@@ -186,14 +189,14 @@ Partial Class InvoiceListForm
                     Dim createdDate As DateTime = New DateTime
                     Try
                         createdDate = DateTime.Parse(State.createdDate.ToString(),
-                                                        System.Threading.Thread.CurrentThread.CurrentCulture,
-                                                        System.Globalization.DateTimeStyles.NoCurrentDateDefault)
+                                                        Thread.CurrentThread.CurrentCulture,
+                                                        DateTimeStyles.NoCurrentDateDefault)
                     Catch ex As Exception
                         SetLabelError(LabelSearchCreatedDate)
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
                     End Try
 
-                    createDateStr = createdDate.ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
+                    createDateStr = createdDate.ToString(DALBase.DOTNET_QUERY_DATEFORMAT)
                 End If
 
 
@@ -244,7 +247,7 @@ Partial Class InvoiceListForm
                     lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                 End If
                 CreateHeaderForEmptyGrid(Grid, State.SortExpression)
-                AddInfoMsg(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND)
+                AddInfoMsg(Message.MSG_NO_RECORDS_FOUND)
             End If
 
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
@@ -292,7 +295,7 @@ Partial Class InvoiceListForm
                     Return False
                 Else
                     State.invoiceAmountCulture = TextBoxSearchInvoiceAmount.Text
-                    State.invoiceAmount = dblAmount.ToString(System.Threading.Thread.CurrentThread.CurrentCulture.InvariantCulture)
+                    State.invoiceAmount = dblAmount.ToString(Thread.CurrentThread.CurrentCulture.InvariantCulture)
                 End If
             Else
                 State.invoiceAmount = TextBoxSearchInvoiceAmount.Text
@@ -344,7 +347,7 @@ Partial Class InvoiceListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Try
@@ -364,7 +367,7 @@ Partial Class InvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             PopulateGrid()
@@ -373,7 +376,7 @@ Partial Class InvoiceListForm
         End Try
     End Sub
 
-    Public Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Public Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
 
         Try
             If e.CommandName = "SelectAction" Then
@@ -383,14 +386,14 @@ Partial Class InvoiceListForm
                 'Me.State.selectedClaimInvoiceId = New Guid(e.Item.Cells(Me.GRID_COL_CLAIM_INVOICE_ID_IDX).Text)
                 callPage(PayClaimForm.URL, New PayClaimForm.Parameters(State.selectedClaimInvoiceId))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Public Sub Grid_RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         BaseItemCreated(sender, e)
     End Sub
 
@@ -405,7 +408,7 @@ Partial Class InvoiceListForm
     '    End Try
     'End Sub
 
-    Private Sub moGrid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub moGrid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -420,7 +423,7 @@ Partial Class InvoiceListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
             State.SearchClicked = True
@@ -438,7 +441,7 @@ Partial Class InvoiceListForm
     '    Me.callPage(ClaimForm.URL)
     'End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception

@@ -1,12 +1,18 @@
 Option Strict Off
 
+Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports Microsoft.VisualBasic
 Imports System.Text
 Imports AjaxControlToolkit
 Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.DALObjects
 
 Partial Class PayBatchClaimListForm
     Inherits ElitaPlusSearchPage
@@ -14,15 +20,15 @@ Partial Class PayBatchClaimListForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -166,7 +172,7 @@ Partial Class PayBatchClaimListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnExisting.ClientID)
         MasterPage.MessageController.Clear()
@@ -230,12 +236,12 @@ Partial Class PayBatchClaimListForm
 
         If CallingPar IsNot Nothing AndAlso CallingPar.ToString = "P" Then
             State.ReturningFromProcessing = True
-            AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
+            AddInfoMsg(Message.MSG_INTERFACES_HAS_COMPLETED)
             'Me.DisplayMessage(Message.MSG_INTERFACES_HAS_COMPLETED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
 
         ElseIf CallingPar IsNot Nothing AndAlso CallingPar.ToString = "R" Then
             State.ReturningFromProcessing = True
-            AddInfoMsg(ElitaPlusWebApp.Message.MSG_INVOICE_REJECTED_SUCCESS)
+            AddInfoMsg(Message.MSG_INVOICE_REJECTED_SUCCESS)
             'Me.DisplayMessage(Message.MSG_INVOICE_REJECTED_SUCCESS, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
 
         End If
@@ -250,10 +256,10 @@ Partial Class PayBatchClaimListForm
 
         Try
             'Me.BindListControlToDataView(Me.cboServiceCenter, LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries), , , True)
-            Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
+            Dim ServiceCenterList As New List(Of ListItem)
 
             For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
-                Dim ServiceCenters As DataElements.ListItem() =
+                Dim ServiceCenters As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
                                                                     context:=New ListContext() With
                                                                     {
@@ -284,7 +290,7 @@ Partial Class PayBatchClaimListForm
 
         Try
             'Me.BindListControlToDataView(Me.ddlInvTyp, LookupListNew.DropdownLookupList(LookupListNew.LK_INVTYP, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), , , True)
-            Dim InvoiceType As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INVTYP",
+            Dim InvoiceType As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INVTYP",
                                                                                                         languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             ddlInvTyp.Populate(InvoiceType.ToArray(),
                                     New PopulateOptions() With
@@ -301,7 +307,7 @@ Partial Class PayBatchClaimListForm
 
         Try
             'Me.BindListControlTDataView(Me.ddlInvStat, LookupListNew.DropdownLookupList(LookupListNew.LK_INVSTAT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), , , True)
-            Dim InvoiceStatus As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INVSTAT",
+            Dim InvoiceStatus As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INVSTAT",
                                                                                                         languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             ddlInvStat.Populate(InvoiceStatus.ToArray(),
                                     New PopulateOptions() With
@@ -560,9 +566,9 @@ Partial Class PayBatchClaimListForm
     Private Sub AddClaims()
 
         Dim dgItem As GridViewRow
-        Dim dsBCI As New DALObjects.BatchClaimInvoice
+        Dim dsBCI As New BatchClaimInvoice
         Dim dt As DataTable = dsBCI.INVOICE_TRANS_DETAIL
-        Dim dr As DALObjects.BatchClaimInvoice.INVOICE_TRANS_DETAILRow
+        Dim dr As BatchClaimInvoice.INVOICE_TRANS_DETAILRow
         Dim chk, chkExclDeduc As CheckBox
 
 
@@ -661,7 +667,7 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
 
         If GridClaims.Visible Then
             GridClaims.PageIndex = 0
@@ -678,7 +684,7 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub GridInvoices_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridInvoices.PageIndexChanging
+    Private Sub GridInvoices_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridInvoices.PageIndexChanging
         Try
             GridInvoices.PageIndex = e.NewPageIndex
             State.PageIndex = GridInvoices.PageIndex
@@ -687,7 +693,7 @@ Partial Class PayBatchClaimListForm
         End Try
     End Sub
 
-    Private Sub GridClaims_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridClaims.PageIndexChanging
+    Private Sub GridClaims_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridClaims.PageIndexChanging
         Try
             GridClaims.PageIndex = e.NewPageIndex
             State.PageIndex = GridClaims.PageIndex
@@ -833,24 +839,24 @@ Partial Class PayBatchClaimListForm
 
 
     'Search for invoice Trans records based on what is in the grid
-    Private Sub btnExisting_Click(sender As Object, e As System.EventArgs) Handles btnExisting.Click
+    Private Sub btnExisting_Click(sender As Object, e As EventArgs) Handles btnExisting.Click
         Dim boolErr As Boolean = False
 
         'Validate Invoice Amount
-        If Not String.IsNullOrEmpty(TextBoxSearchInvoiceAmount.Text) AndAlso Not Microsoft.VisualBasic.IsNumeric(TextBoxSearchInvoiceAmount.Text) Then
+        If Not String.IsNullOrEmpty(TextBoxSearchInvoiceAmount.Text) AndAlso Not IsNumeric(TextBoxSearchInvoiceAmount.Text) Then
             MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
             boolErr = True
         End If
         Dim dtInvoiceDate As Date
 
         'Validate Invoice Date
-        If Not String.IsNullOrEmpty(TextBoxSearchInvoiceDate.Text.Trim) AndAlso Not Microsoft.VisualBasic.IsDate(DateHelper.GetDateValue(TextBoxSearchInvoiceDate.Text)) Then
+        If Not String.IsNullOrEmpty(TextBoxSearchInvoiceDate.Text.Trim) AndAlso Not IsDate(DateHelper.GetDateValue(TextBoxSearchInvoiceDate.Text)) Then
             MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_DATE_ENTERED_ERR, True)
             boolErr = True
         End If
 
         'Validate Invoice Recieved Date
-        If Not String.IsNullOrEmpty(txtboxInvRecDt.Text.Trim) AndAlso Not Microsoft.VisualBasic.IsDate(DateHelper.GetDateValue(txtboxInvRecDt.Text)) Then
+        If Not String.IsNullOrEmpty(txtboxInvRecDt.Text.Trim) AndAlso Not IsDate(DateHelper.GetDateValue(txtboxInvRecDt.Text)) Then
             MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_RECEIVED_DATE_ENTERED_ERR, True)
             boolErr = True
         End If
@@ -864,7 +870,7 @@ Partial Class PayBatchClaimListForm
     End Sub
 
     'Create new invoice Trans Record and follow with allowing the user to add claims to it.
-    Private Sub btnNew_Click(sender As Object, e As System.EventArgs) Handles btnNew.Click
+    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
 
         State.MyBO = New InvoiceTrans
 
@@ -877,14 +883,14 @@ Partial Class PayBatchClaimListForm
         End If
 
         'Validate Invoice Amount
-        If Not Microsoft.VisualBasic.IsNumeric(TextBoxSearchInvoiceAmount.Text) Then
+        If Not IsNumeric(TextBoxSearchInvoiceAmount.Text) Then
             MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
             boolErr = True
         End If
 
         'Validate Invoice Date
         If TextBoxSearchInvoiceDate.Text.Trim <> String.Empty Then
-            If Not Microsoft.VisualBasic.IsDate(DateHelper.GetDateValue(TextBoxSearchInvoiceDate.Text)) Then
+            If Not IsDate(DateHelper.GetDateValue(TextBoxSearchInvoiceDate.Text)) Then
                 MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_DATE_ENTERED_ERR, True)
                 boolErr = True
             End If
@@ -892,7 +898,7 @@ Partial Class PayBatchClaimListForm
 
         'Validate Invoice Recieved Date
         If txtboxInvRecDt.Text.Trim <> String.Empty Then
-            If Not Microsoft.VisualBasic.IsDate(DateHelper.GetDateValue(txtboxInvRecDt.Text)) Then
+            If Not IsDate(DateHelper.GetDateValue(txtboxInvRecDt.Text)) Then
                 MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_RECEIVED_DATE_ENTERED_ERR, True)
                 boolErr = True
             End If
@@ -983,7 +989,7 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
 
         SetDefaultButton(TextBoxSearchInvoiceAmount, btnSaveBatch_Write)
         SetDefaultButton(TextBoxSearchInvoiceNumber, btnSaveBatch_Write)
@@ -1000,7 +1006,7 @@ Partial Class PayBatchClaimListForm
         MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
     End Sub
 
-    Private Sub btnNEXT_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNEXT_WRITE.Click
+    Private Sub btnNEXT_WRITE_Click(sender As Object, e As EventArgs) Handles btnNEXT_WRITE.Click
         If State.MyBO.BatchNumber IsNot Nothing AndAlso Not State.MyBO.BatchNumber.Equals("") Then
             State.batchState = True
         Else
@@ -1011,13 +1017,13 @@ Partial Class PayBatchClaimListForm
         callPage(PayBatchClaimForm.URL, State.selectedInvoiceTransId.ToString)
     End Sub
 
-    Private Sub btnClear_Click(sender As Object, e As System.EventArgs) Handles btnClear.Click
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
 
         ClearAll()
 
     End Sub
 
-    Private Sub btnEditBatch_Write_Click(sender As Object, e As System.EventArgs) Handles btnEditBatch_Write.Click
+    Private Sub btnEditBatch_Write_Click(sender As Object, e As EventArgs) Handles btnEditBatch_Write.Click
         ControlMgr.SetVisibleControl(Me, ImageButtonInvoiceDate, True)
         ControlMgr.SetVisibleControl(Me, btnClear, False)
         ControlMgr.SetVisibleControl(Me, btnEditBatch_Write, False)
@@ -1055,7 +1061,7 @@ Partial Class PayBatchClaimListForm
         ControlMgr.SetEnableControl(Me, txtboxInvCtdDt, False)
     End Sub
 
-    Private Sub btnUndo_Write_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         ControlMgr.SetVisibleControl(Me, ImageButtonInvoiceDate, False)
         ControlMgr.SetVisibleControl(Me, btnClear, True)
         ControlMgr.SetVisibleControl(Me, btnEditBatch_Write, True)
@@ -1081,7 +1087,7 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub btnSaveBatch_Write_Click(sender As Object, e As System.EventArgs) Handles btnSaveBatch_Write.Click
+    Private Sub btnSaveBatch_Write_Click(sender As Object, e As EventArgs) Handles btnSaveBatch_Write.Click
 
         Dim boolErr As Boolean = False
 
@@ -1097,14 +1103,14 @@ Partial Class PayBatchClaimListForm
             End If
 
             'Validate Invoice Amount
-            If Not Microsoft.VisualBasic.IsNumeric(TextBoxSearchInvoiceAmount.Text) Then
+            If Not IsNumeric(TextBoxSearchInvoiceAmount.Text) Then
                 MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
                 boolErr = True
             End If
 
             'Validate Invoice Date
             If TextBoxSearchInvoiceDate.Text.Trim <> String.Empty Then
-                If Not Microsoft.VisualBasic.IsDate(DateHelper.GetDateValue(TextBoxSearchInvoiceDate.Text)) Then
+                If Not IsDate(DateHelper.GetDateValue(TextBoxSearchInvoiceDate.Text)) Then
                     MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_DATE_ENTERED_ERR, True)
                     boolErr = True
                 End If
@@ -1112,7 +1118,7 @@ Partial Class PayBatchClaimListForm
 
             'Validate Invoice Received Date
             If txtboxInvRecDt.Text.Trim <> String.Empty Then
-                If Not Microsoft.VisualBasic.IsDate(DateHelper.GetDateValue(txtboxInvRecDt.Text)) Then
+                If Not IsDate(DateHelper.GetDateValue(txtboxInvRecDt.Text)) Then
                     MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_RECEIVED_DATE_ENTERED_ERR, True)
                     boolErr = True
                 End If
@@ -1168,13 +1174,13 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub btnCancelSearch_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCancelSearch_WRITE.Click
+    Private Sub btnCancelSearch_WRITE_Click(sender As Object, e As EventArgs) Handles btnCancelSearch_WRITE.Click
 
         ClearAll()
 
     End Sub
 
-    Private Sub btnCancelEdit_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCancelEdit_WRITE.Click
+    Private Sub btnCancelEdit_WRITE_Click(sender As Object, e As EventArgs) Handles btnCancelEdit_WRITE.Click
 
         ClearAll()
 
@@ -1210,7 +1216,7 @@ Partial Class PayBatchClaimListForm
 
 #Region " Datagrid Related "
 
-    Private Sub GridClaims_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaims.RowDataBound
+    Private Sub GridClaims_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridClaims.RowDataBound
 
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -1330,7 +1336,7 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub GridInvoices_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridInvoices.RowDataBound
+    Private Sub GridInvoices_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridInvoices.RowDataBound
 
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -1392,7 +1398,7 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub GridInvoices_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridInvoices.RowCommand
+    Private Sub GridInvoices_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridInvoices.RowCommand
         Try
             Dim index As Integer
             Dim invoiceId As Guid
@@ -1435,13 +1441,13 @@ Partial Class PayBatchClaimListForm
                     '    Me.callPage(PayBatchClaimForm.URL, e.Item.Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text)
 
             End Select
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridClaims_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridClaims.PageIndexChanged
+    Private Sub GridClaims_PageIndexChanged(sender As Object, e As EventArgs) Handles GridClaims.PageIndexChanged
         If State.MyBO.BatchNumber IsNot Nothing AndAlso Not State.MyBO.BatchNumber.Equals("") Then
             State.batchState = True
         Else
@@ -1456,17 +1462,17 @@ Partial Class PayBatchClaimListForm
 
     End Sub
 
-    Private Sub GridInvoices_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridInvoices.PageIndexChanged
+    Private Sub GridInvoices_PageIndexChanged(sender As Object, e As EventArgs) Handles GridInvoices.PageIndexChanged
 
         SearchInvoiceTrans(GridClaims.PageIndex)
 
     End Sub
 
-    Private Sub GridClaims_RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaims.RowCreated
+    Private Sub GridClaims_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridClaims.RowCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub GridInvoices_IRowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridInvoices.RowCreated
+    Private Sub GridInvoices_IRowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridInvoices.RowCreated
         BaseItemCreated(sender, e)
 
         If e.Row.RowType = DataControlRowType.DataRow Then
@@ -1475,7 +1481,7 @@ Partial Class PayBatchClaimListForm
             Dim behaviorID1 As String = "pce1_" + e.Row.RowIndex.ToString
             pce1.BehaviorID = behaviorID1
 
-            Dim img1 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image1"), System.Web.UI.WebControls.Image)
+            Dim img1 As WebControls.Image = CType(e.Row.FindControl("Image1"), WebControls.Image)
 
             Dim OnMouseOverScript1 As String = String.Format("$find('{0}').showPopup();", behaviorID1)
             Dim OnMouseOutScript1 As String = String.Format("$find('{0}').hidePopup();", behaviorID1)
@@ -1485,15 +1491,15 @@ Partial Class PayBatchClaimListForm
             img1.Attributes.Add("onmouseout", OnMouseOutScript1)
         End If
     End Sub
-    Private Sub GridInvoices_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridInvoices.RowCreated
+    Private Sub GridInvoices_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridInvoices.RowCreated
 
 
     End Sub
 #End Region
 
 
-    <System.Web.Script.Services.ScriptMethod()> _
-    <System.Web.Services.WebMethod()>
+    <ScriptMethod()> _
+    <WebMethod()>
     Public Shared Function GetInvoiceComments(contextKey As String) As String
 
         Dim description As String = InvoiceTrans.GetInvoiceComments(contextKey)

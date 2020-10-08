@@ -1,3 +1,4 @@
+Imports System.Diagnostics
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
@@ -9,20 +10,20 @@ Partial Class ClaimPaymentAdjustmentsListForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents Label7 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label1a As System.Web.UI.WebControls.Label
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents Label7 As Label
+    Protected WithEvents Label1a As Label
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -103,7 +104,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         ErrorCtrl.Clear_Hide()
@@ -276,7 +277,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
                     Return False
                 Else
                     State.authorizedAmountCulture = TextBoxSearchAuthorizedAmount.Text
-                    State.authorizedAmount = dblAmount.ToString(System.Threading.Thread.CurrentThread.CurrentCulture.InvariantCulture)
+                    State.authorizedAmount = dblAmount.ToString(Thread.CurrentThread.CurrentCulture.InvariantCulture)
                 End If
             Else
                 State.authorizedAmount = TextBoxSearchAuthorizedAmount.Text
@@ -322,7 +323,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
@@ -343,7 +344,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -370,7 +371,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
 
     'End Sub
 
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
                 State.selectedClaimId = New Guid(e.Item.Cells(GRID_COL_CLAIM_ID_IDX).Text)
@@ -380,18 +381,18 @@ Partial Class ClaimPaymentAdjustmentsListForm
                 State.ForwardedParameters = New ForwardedParameters(State.selectedClaimId, oSelectedClaimNumber, oCustomerName, oSelectedServiceCenter)
                 callPage(ClaimPaymentAdjustmentsForm.URL, State.ForwardedParameters)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = e.NewPageIndex
             State.selectedClaimId = Guid.Empty
@@ -404,7 +405,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             State.SearchClicked = True
             State.PageIndex = 0
@@ -418,7 +419,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception

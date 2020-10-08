@@ -1,4 +1,7 @@
+Imports System.Diagnostics
 Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
 'Imports Assurant.Elita.Web.Forms
@@ -11,17 +14,17 @@ Partial Class RepairAndLogisticsListForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -102,7 +105,7 @@ Partial Class RepairAndLogisticsListForm
 
     Private Shared ReadOnly Property AjaxState() As MyState
         Get
-            Return CType(NavPage.ClientNavigator.PageState, MyState)
+            Return CType(ClientNavigator.PageState, MyState)
         End Get
 
     End Property
@@ -113,7 +116,7 @@ Partial Class RepairAndLogisticsListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         MasterPage.MessageController.Clear()
         'Put user code to initialize the page here
@@ -363,7 +366,7 @@ Partial Class RepairAndLogisticsListForm
 
 #Region " Datagrid Related "
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -382,7 +385,7 @@ Partial Class RepairAndLogisticsListForm
 
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -392,7 +395,7 @@ Partial Class RepairAndLogisticsListForm
     End Sub
 
     'The Binding LOgic is here
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditClaimItem As LinkButton
         Dim btnEditAuthorizationItem As LinkButton
@@ -449,7 +452,7 @@ Partial Class RepairAndLogisticsListForm
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
@@ -460,7 +463,7 @@ Partial Class RepairAndLogisticsListForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim param As RepairAndLogisticsForm.Parameters = New RepairAndLogisticsForm.Parameters()
         Dim rowIndex As Integer = 0
         Dim claimid As String = String.Empty
@@ -491,13 +494,13 @@ Partial Class RepairAndLogisticsListForm
             End If
 
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -505,7 +508,7 @@ Partial Class RepairAndLogisticsListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             State.selectedClaimId = Guid.Empty
@@ -519,7 +522,7 @@ Partial Class RepairAndLogisticsListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
             State.SearchClicked = True
@@ -536,7 +539,7 @@ Partial Class RepairAndLogisticsListForm
 
 
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception
@@ -548,8 +551,8 @@ Partial Class RepairAndLogisticsListForm
 
 #Region " Ajax"
 
-    <System.Web.Services.WebMethod()>
-    <Script.Services.ScriptMethod()>
+    <WebMethod()>
+    <ScriptMethod()>
     Public Shared Function PopulateServiceCenterDrop(prefixText As String, count As Integer) As String()
         Dim dv As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
         Return AjaxController.BindAutoComplete(prefixText, dv)

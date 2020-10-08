@@ -1,20 +1,23 @@
+Imports System.Diagnostics
+Imports System.Threading
+
 Partial Class ServiceCenterInfoForm
     'Inherits System.Web.UI.Page
     Inherits ElitaPlusPage
 
     Protected WithEvents ErrorCtrl As ErrorController
     Protected WithEvents UserControlServiceCenterInfo As UserControlServiceCenterInfo
-    Protected WithEvents Label40 As System.Web.UI.WebControls.Label
+    Protected WithEvents Label40 As Label
 
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -162,7 +165,7 @@ Partial Class ServiceCenterInfoForm
 
 #Region "Page Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         ErrorCtrl.Clear_Hide()
         Try
@@ -172,7 +175,7 @@ Partial Class ServiceCenterInfoForm
                 End If
                 PopulateFormFromBOs()
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
@@ -232,11 +235,11 @@ Partial Class ServiceCenterInfoForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
 
         Try
             NavController.Navigate(Me, FlowEvents.EVENT_BACK)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try

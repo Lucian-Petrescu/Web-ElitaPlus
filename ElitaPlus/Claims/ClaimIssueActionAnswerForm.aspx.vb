@@ -588,7 +588,7 @@ Partial Class ClaimIssueActionAnswerForm
                                                            Return c.SubmitFulfillmentIssueAnswer(wsRequest)
                                                        End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 
@@ -647,9 +647,9 @@ Partial Class ClaimIssueActionAnswerForm
     Private Sub ShowFaultException(fex As FaultException)
         If fex IsNot Nothing Then
             If fex.Code IsNot Nothing OrElse Not String.IsNullOrEmpty(fex.Message) Then
-                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
             Else
-                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
             End If
         End If
     End Sub
@@ -774,7 +774,7 @@ Partial Class ClaimIssueActionAnswerForm
                 AndAlso String.IsNullOrWhiteSpace(State.SelectedDeviceModel) _
                 AndAlso String.IsNullOrWhiteSpace(State.SelectedDeviceColor) _
                 AndAlso String.IsNullOrWhiteSpace(State.SelectedDeviceMemory) Then
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ONE_SEARCH_FIELD_MANDATORY_ERR, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ONE_SEARCH_FIELD_MANDATORY_ERR, True)
                 Return False
             End If
             Return True
@@ -897,7 +897,7 @@ Partial Class ClaimIssueActionAnswerForm
                                                            Return c.SearchVendorSKU(skuRequest)
                                                        End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 
@@ -935,7 +935,7 @@ Partial Class ClaimIssueActionAnswerForm
                                                         End Function)
 
                 Catch ex As Exception
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
                     Throw
                 End Try
                 If inventoryResponse IsNot Nothing Then
@@ -1083,7 +1083,7 @@ Partial Class ClaimIssueActionAnswerForm
             If rb.Checked Then
                 Dim makeId As Guid = LookupListNew.GetIdFromDescription(LookupListNew.GetManufacturerLookupList(Authentication.CompanyGroupId), gvr.Cells(GridColMakeIdx).Text)
                 If makeId.Equals(Guid.Empty) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.BO_ERROR_NO_MANUFACTURER_FOUND, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_NO_MANUFACTURER_FOUND, True)
                     blnUpdateSuccess = False
                     Return blnUpdateSuccess
                 End If
@@ -1237,7 +1237,7 @@ Partial Class ClaimIssueActionAnswerForm
                                                            Return c.GetClaimReimbursementAmount(wsRequest)
                                                        End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 
@@ -1288,7 +1288,7 @@ Partial Class ClaimIssueActionAnswerForm
 
             Dim paymentMethod As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTHD", ElitaPlusIdentity.Current.ActiveUser.LanguageCode, listcontextForMgList)
 
-            Dim filterpaymentMethod As DataElements.ListItem() = (From lst In paymentMethod
+            Dim filterpaymentMethod As ListItem() = (From lst In paymentMethod
                                                                   Where lst.Code = "CTT" OrElse lst.Code = "DGFT"
                                                                   Select lst).ToArray()
 
@@ -1359,7 +1359,7 @@ Partial Class ClaimIssueActionAnswerForm
                 CreateClaimIssueResponse(strAnswerCode)
                 CallSubmitFulfillmentIssueAnswerWs()
             Else
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION, True)
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -1430,7 +1430,7 @@ Partial Class ClaimIssueActionAnswerForm
                                                            Return c.ReSendFailedServiceOrder(wsRequest)
                                                        End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 
@@ -1480,7 +1480,7 @@ Partial Class ClaimIssueActionAnswerForm
                                                            Return c.NewClaimEntitled(wsRequest)
                                                        End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_SERVICE_ERR, True)
             Throw
         End Try
 

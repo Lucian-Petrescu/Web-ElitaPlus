@@ -1,4 +1,7 @@
-﻿Public Class PayClaimManualTaxForm
+﻿Imports System.Collections.Generic
+Imports System.Threading
+
+Public Class PayClaimManualTaxForm
     Inherits ElitaPlusSearchPage
 
 #Region "Constants"
@@ -53,15 +56,15 @@
     End Class
 
     Public Class Parameters
-        Public ManualTaxList As Collections.Generic.List(Of ManualTaxDetail)
+        Public ManualTaxList As List(Of ManualTaxDetail)
     End Class
 
 #End Region
 
 #Region "Page State"
     Class MyState        
-        Public ManualTaxDetials As Collections.Generic.List(Of ManualTaxDetail)
-        Public TaxAmtByDesc As Collections.Generic.Dictionary(Of String, Decimal)
+        Public ManualTaxDetials As List(Of ManualTaxDetail)
+        Public TaxAmtByDesc As Dictionary(Of String, Decimal)
     End Class
 
     Public Sub New()
@@ -76,7 +79,7 @@
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         ErrControllerMaster.Clear_Hide()
         Form.DefaultButton = btnSave_WRITE.UniqueID
         Try
@@ -110,7 +113,7 @@
     End Sub
 
     Private Sub DoSave(Optional ByVal blnComingFromBack As Boolean = False)
-        Dim ErrMsg As New Collections.Generic.List(Of String)
+        Dim ErrMsg As New List(Of String)
         If PopulateBOFromForm(ErrMsg) Then
             For Each mtd As ManualTaxDetail In State.ManualTaxDetials
                 mtd.Amount = State.TaxAmtByDesc(mtd.Description)
@@ -120,10 +123,10 @@
         End If
     End Sub
 
-    Private Function PopulateBOFromForm(ByRef errMsg As Collections.Generic.List(Of String)) As Boolean
+    Private Function PopulateBOFromForm(ByRef errMsg As List(Of String)) As Boolean
         Dim blnSuccess As Boolean = True
         Dim strDesc As String, decAmt As Decimal, strTemp As String
-        State.TaxAmtByDesc = New Collections.Generic.Dictionary(Of String, Decimal)
+        State.TaxAmtByDesc = New Dictionary(Of String, Decimal)
 
         For Each gvr As GridViewRow In Grid.Rows
             strDesc = String.Empty
@@ -135,7 +138,7 @@
                 State.TaxAmtByDesc(strDesc) = Decimal.Parse(Decimal.Round(decAmt, 2).ToString("N2"))            
             Else
                 blnSuccess = False
-                errMsg.Add(strDesc & " " & TranslationBase.TranslateLabelOrMessage("AMOUNT") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR))
+                errMsg.Add(strDesc & " " & TranslationBase.TranslateLabelOrMessage("AMOUNT") & ":" & TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR))
             End If
         Next
         Return blnSuccess
@@ -143,18 +146,18 @@
 #End Region
 
 #Region "Button click handlers"
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             Dim parm As New Parameters
             parm.ManualTaxList = State.ManualTaxDetials
             ReturnToCallingPage(parm)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnCancel_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCancel_WRITE.Click
+    Private Sub btnCancel_WRITE_Click(sender As Object, e As EventArgs) Handles btnCancel_WRITE.Click
         Try
             populateGrid()
         Catch ex As Exception
@@ -162,7 +165,7 @@
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Try
             DoSave()
             populateGrid()

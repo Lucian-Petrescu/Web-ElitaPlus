@@ -20,7 +20,7 @@ Partial Public Class UserControlLogisticalInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moClaimCloseRulesTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents moClaimCloseRulesTabPanel_WRITE As Panel
     
     '''<summary>
     '''LogisticsGrid control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlLogisticalInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LogisticsGrid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents LogisticsGrid As GridView
     
     '''<summary>
     '''HiddenDeletePromptResponse control.
@@ -38,5 +38,5 @@ Partial Public Class UserControlLogisticalInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenDeletePromptResponse As HtmlInputHidden
 End Class

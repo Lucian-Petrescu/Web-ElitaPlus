@@ -1,3 +1,5 @@
+Imports System.Diagnostics
+Imports System.Threading
 Imports Assurant.ElitaPlus.DALObjects
 Imports Microsoft.VisualBasic
 Imports Assurant.Elita.CommonConfiguration
@@ -11,11 +13,11 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -139,7 +141,7 @@ Namespace Claims
 
 #Region "Page_Events"
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             MasterPage.MessageController.Clear_Hide()
             Try
                 MasterPage.MessageController.Clear()
@@ -184,7 +186,7 @@ Namespace Claims
             Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_OK Then
                 HiddenSaveChangesPromptResponse.Value = ""
-                Back(ElitaPlusPage.DetailPageCommand.Back)
+                Back(DetailPageCommand.Back)
                 'Me.callPage(ClaimForm.URL, Me.State.claimId)
             End If
         End Sub
@@ -218,7 +220,7 @@ Namespace Claims
 #End Region
 
 #Region "Controlling Logic"
-        Protected Sub cboCauseOfLossId_SelectedIndexChanged(sender As Object, e As System.EventArgs)
+        Protected Sub cboCauseOfLossId_SelectedIndexChanged(sender As Object, e As EventArgs)
             Try
                 Dim ddlCauseOfLoss As DropDownList = CType(sender, DropDownList)
                 'Dim cell As TableCell = CType(ddCauseOfLoss.Parent, TableCell)
@@ -327,7 +329,7 @@ Namespace Claims
 
                 State.IsGridVisible = False
                 If blnShowErr Then
-                    MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 End If
             Else
                 Grid.Enabled = True
@@ -368,7 +370,7 @@ Namespace Claims
 
 #Region " Datagrid Related "
 
-        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -424,7 +426,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Public Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Public Sub ItemCommand(source As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
                 Dim nIndex As Integer
 
@@ -444,14 +446,14 @@ Namespace Claims
                     PopulateGrid()
 
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 State.PageIndex = e.NewPageIndex
                 Grid.PageIndex = State.PageIndex
@@ -466,7 +468,7 @@ Namespace Claims
 
 #Region "Button Clicks"
 
-        Private Sub btnChangeCoverage_Click(sender As Object, e As System.EventArgs) Handles btnChangeCoverage.Click
+        Private Sub btnChangeCoverage_Click(sender As Object, e As EventArgs) Handles btnChangeCoverage.Click
             Dim AuthAmtText As String
             Dim AssurantPaysAmt As New DecimalType(0)
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), Codes.YESNO_Y)
@@ -556,25 +558,25 @@ Namespace Claims
                 End If
                 State.isEditMode = False
                 'Send the user back to the previous page to see the udpated results
-                Back(ElitaPlusPage.DetailPageCommand.Back)
+                Back(DetailPageCommand.Back)
 
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 State.isEditMode = False
-                Back(ElitaPlusPage.DetailPageCommand.Back)
-            Catch ex As Threading.ThreadAbortException
+                Back(DetailPageCommand.Back)
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+        Protected Sub Back(cmd As DetailPageCommand)
             Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.claimId)
             Dim retObj As ReturnType = New ReturnType(cmd, ClaimBO, False)
             ReturnToCallingPage(retObj)

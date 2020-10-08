@@ -1,4 +1,5 @@
-﻿Imports Assurant.ElitaPlus.DALObjects
+﻿Imports System.Diagnostics
+Imports Assurant.ElitaPlus.DALObjects
 
 Namespace Claims
     Public Class ClaimReplacementQuoteForm
@@ -77,15 +78,15 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -94,7 +95,7 @@ Namespace Claims
 #End Region
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             MasterPage.MessageController.Clear()
             Try
@@ -134,11 +135,11 @@ Namespace Claims
 #Region "Handlers-Buttons"
         Private Sub GoBack()
             ' Claim Detail
-            Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
+            Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
             ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 GoBack()
             Catch ex As Exception
@@ -147,7 +148,7 @@ Namespace Claims
         End Sub
 
 
-        Private Sub btnSendQuote_Click(sender As System.Object, e As System.EventArgs) Handles btnSend.Click
+        Private Sub btnSendQuote_Click(sender As Object, e As EventArgs) Handles btnSend.Click
             Try
                 SendReplacementQuote()
             Catch ex As Exception
@@ -199,15 +200,15 @@ Namespace Claims
                                                         Return TranslationBase.TranslateLabelOrMessage(value)
                                                     End Function
 
-            ucSelectServiceCenter.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
+            ucSelectServiceCenter.TranslateGridHeaderFunc = Sub(grid As GridView)
                                                                 TranslateGridHeader(grid)
                                                             End Sub
 
-            ucSelectServiceCenter.HighLightSortColumnFunc = Sub(grid As System.Web.UI.WebControls.GridView, sortExp As String)
+            ucSelectServiceCenter.HighLightSortColumnFunc = Sub(grid As GridView, sortExp As String)
                                                                 HighLightSortColumn(grid, sortExp, False)
                                                             End Sub
 
-            ucSelectServiceCenter.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, intRecordCount As Integer, intNewPageSize As Integer)
+            ucSelectServiceCenter.NewCurrentPageIndexFunc = Function(grid As GridView, intRecordCount As Integer, intNewPageSize As Integer)
                                                                 Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
                                                             End Function
             'Set up the service center end

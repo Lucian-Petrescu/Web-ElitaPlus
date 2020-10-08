@@ -1,6 +1,7 @@
 ﻿Imports System.Web.Services
 Imports System.Globalization
 Imports System.Threading
+Imports System.Web.Script.Services
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
@@ -110,7 +111,7 @@ Public Class ClaimPaymentGroupForm
         End If
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             MasterPage.MessageController.Clear()
             If Not IsPostBack Then
@@ -164,7 +165,7 @@ Public Class ClaimPaymentGroupForm
 
 #Region "Button Click Handlers"
 
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             ReturnToCallingPage()
         Catch ex As Exception
@@ -172,11 +173,11 @@ Public Class ClaimPaymentGroupForm
         End Try
     End Sub
 
-    Private Sub btnAddPayables_Click(sender As Object, e As System.EventArgs) Handles btnAddPayables.Click
+    Private Sub btnAddPayables_Click(sender As Object, e As EventArgs) Handles btnAddPayables.Click
         callPage(ClaimSelectPayables.URL, State.selectedPymntGroupId)
     End Sub
 
-    Private Sub btnCreatePayment_Click(sender As Object, e As System.EventArgs) Handles btnCreatePayment.Click
+    Private Sub btnCreatePayment_Click(sender As Object, e As EventArgs) Handles btnCreatePayment.Click
         Try
             State.MyPaymentGroupBO.processClaimAuthorizations()
             EnableDisableButtons()
@@ -192,7 +193,7 @@ Public Class ClaimPaymentGroupForm
 #End Region
 
 #Region "Web Methods"
-    <WebMethod(), Script.Services.ScriptMethod()> _
+    <WebMethod(), ScriptMethod()> _
     Public Shared Function GetClaimAuthLineItems(claimAuthId As String) As String
         Try
             Dim claimAuthLineItems As DataView
@@ -303,7 +304,7 @@ Public Class ClaimPaymentGroupForm
         End Try
     End Sub
 
-    Private Sub moPaymentRepeater_ItemCommand(source As Object, e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles moPaymentRepeater.ItemCommand
+    Private Sub moPaymentRepeater_ItemCommand(source As Object, e As RepeaterCommandEventArgs) Handles moPaymentRepeater.ItemCommand
         Dim index As Integer
         Try
             Select Case e.CommandName
@@ -324,7 +325,7 @@ Public Class ClaimPaymentGroupForm
                         State.selectedPymntGroupDetailId = New Guid(e.CommandArgument.ToString())
 
                         DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
-                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                        State.ActionInProgress = DetailPageCommand.Delete
                     End If
                 Case SORT_COMMAND_NAME
                     If State.SortExpressionItem.StartsWith(e.CommandArgument.ToString()) Then
@@ -339,7 +340,7 @@ Public Class ClaimPaymentGroupForm
                     PopulateGrid()
             End Select
            
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -395,7 +396,7 @@ Public Class ClaimPaymentGroupForm
         Select Case e.Item.ItemType
             Case ListItemType.Item, ListItemType.AlternatingItem
                 Dim label As Label
-                Dim pymntDR As DataRow = DirectCast(e.Item.DataItem, System.Data.DataRowView).Row
+                Dim pymntDR As DataRow = DirectCast(e.Item.DataItem, DataRowView).Row
                 With DirectCast(e.Item.FindControl("lblSvcCenterCode"), LinkButton)
                     .Text = ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.SvcCode(pymntDR)
                     .CommandArgument = ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.AuthorizationNumber(pymntDR)
@@ -445,15 +446,15 @@ Public Class ClaimPaymentGroupForm
     Protected Sub CheckIfComingFromDeleteConfirm()
         Dim confResponse As String = HiddenDeletePromptResponse.Value
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
+            If Me.State.ActionInProgress = DetailPageCommand.Delete Then
                 DoDelete()
                 'Clean after consuming the action
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                State.ActionInProgress = DetailPageCommand.Nothing_
                 HiddenDeletePromptResponse.Value = ""
             End If
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             'Clean after consuming the action
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            State.ActionInProgress = DetailPageCommand.Nothing_
             HiddenDeletePromptResponse.Value = ""
         End If
     End Sub

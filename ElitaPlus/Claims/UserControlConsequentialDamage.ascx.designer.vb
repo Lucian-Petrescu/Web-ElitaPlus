@@ -20,7 +20,7 @@ Partial Public Class UserControlConsequentialDamage
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCdRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCdRecordCount As Label
     
     '''<summary>
     '''GridViewConsequentialDamage control.
@@ -29,5 +29,5 @@ Partial Public Class UserControlConsequentialDamage
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridViewConsequentialDamage As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents GridViewConsequentialDamage As GridView
 End Class

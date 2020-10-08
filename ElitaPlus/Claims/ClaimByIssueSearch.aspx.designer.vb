@@ -20,7 +20,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    Protected WithEvents ScriptManager1 As ScriptManager
     
     '''<summary>
     '''searchTable control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
     
     '''<summary>
     '''LabelSearchIssueType control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchIssueType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchIssueType As Label
     
     '''<summary>
     '''LabeL1 control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabeL1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabeL1 As Label
     
     '''<summary>
     '''cboSearchIssueType control.
@@ -56,7 +56,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSearchIssueType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSearchIssueType As DropDownList
     
     '''<summary>
     '''cboClaimIssue control.
@@ -65,7 +65,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboClaimIssue As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboClaimIssue As DropDownList
     
     '''<summary>
     '''LabeLSearchClaimIssueStatus control.
@@ -74,7 +74,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabeLSearchClaimIssueStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabeLSearchClaimIssueStatus As Label
     
     '''<summary>
     '''LabeLSearchClaimStatus control.
@@ -83,7 +83,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabeLSearchClaimStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabeLSearchClaimStatus As Label
     
     '''<summary>
     '''LabelSearchSDealer control.
@@ -92,7 +92,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchSDealer As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchSDealer As Label
     
     '''<summary>
     '''cboSearchClaimIssueStatus control.
@@ -101,7 +101,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSearchClaimIssueStatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSearchClaimIssueStatus As DropDownList
     
     '''<summary>
     '''cboSearchClaimStatus control.
@@ -110,7 +110,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSearchClaimStatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSearchClaimStatus As DropDownList
     
     '''<summary>
     '''cboSearchDealer control.
@@ -119,7 +119,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSearchDealer As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSearchDealer As DropDownList
     
     '''<summary>
     '''Label2 control.
@@ -128,7 +128,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label2 As Label
     
     '''<summary>
     '''Label4 control.
@@ -137,7 +137,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label4 As Label
     
     '''<summary>
     '''txtIssueAddedFromDate control.
@@ -146,7 +146,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtIssueAddedFromDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtIssueAddedFromDate As TextBox
     
     '''<summary>
     '''ImageIssueAddedFromDate control.
@@ -155,7 +155,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageIssueAddedFromDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageIssueAddedFromDate As ImageButton
     
     '''<summary>
     '''txtIssueAddedToDate control.
@@ -164,7 +164,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtIssueAddedToDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtIssueAddedToDate As TextBox
     
     '''<summary>
     '''ImageIssueAddedToDate control.
@@ -173,7 +173,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageIssueAddedToDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageIssueAddedToDate As ImageButton
     
     '''<summary>
     '''btnClearSearch control.
@@ -182,7 +182,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
     
     '''<summary>
     '''btnSearch control.
@@ -191,7 +191,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
     
     '''<summary>
     '''trPageSize control.
@@ -200,7 +200,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
     
     '''<summary>
     '''lblPageSize control.
@@ -209,7 +209,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
     
     '''<summary>
     '''Label3 control.
@@ -218,7 +218,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label3 As Label
     
     '''<summary>
     '''cboPageSize control.
@@ -227,7 +227,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
     
     '''<summary>
     '''lblRecordCount control.
@@ -236,7 +236,7 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
     
     '''<summary>
     '''Grid control.
@@ -245,5 +245,5 @@ Partial Public Class ClaimByIssueSearch
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 End Class

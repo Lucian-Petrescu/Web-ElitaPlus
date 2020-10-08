@@ -1,4 +1,6 @@
 Option Strict On
+
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
@@ -7,6 +9,8 @@ Imports System.Threading
 Imports Microsoft.VisualBasic
 Imports System.Web.Services
 Imports System.Globalization
+Imports System.Web.Script.Services
+Imports Assurant.ElitaPlus.DALObjects
 
 Partial Class ClaimStatusDetailForm
     Inherits ElitaPlusSearchPage
@@ -17,11 +21,11 @@ Partial Class ClaimStatusDetailForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -112,7 +116,7 @@ Partial Class ClaimStatusDetailForm
         Public IsAfterSave As Boolean
         Public IsDisabled As Boolean = False
 
-        Public ActionInProgress As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Nothing_
+        Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         Public PageIndex As Integer = 0
         Public selectedPageIndex As Integer = DEFAULT_PAGE_INDEX
         Public PageSize As Integer = DEFAULT_PAGE_SIZE
@@ -132,7 +136,7 @@ Partial Class ClaimStatusDetailForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         permType = FormAuthorization.GetPermissions("CLAIMSTATUSDETAILFORM")
 
@@ -263,12 +267,12 @@ Partial Class ClaimStatusDetailForm
                 Dim disableRow As Boolean = False
 
                 'Disable Row belonging to a group number (with a status already selected from that group -commented out)
-                If drv(DALObjects.ClaimStatusDAL.COL_NAME_GROUP_NUMBER) IsNot DBNull.Value Then
+                If drv(ClaimStatusDAL.COL_NAME_GROUP_NUMBER) IsNot DBNull.Value Then
                     disableRow = True
                 End If
 
-                If drv(DALObjects.ClaimStatusDAL.COL_NAME_LIST_ITEM_ID) IsNot System.DBNull.Value Then
-                    clmStat = LookupListNew.GetCodeFromId(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, GuidControl.ByteArrayToGuid(drv(DALObjects.ClaimStatusDAL.COL_NAME_LIST_ITEM_ID)))
+                If drv(ClaimStatusDAL.COL_NAME_LIST_ITEM_ID) IsNot DBNull.Value Then
+                    clmStat = LookupListNew.GetCodeFromId(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, GuidControl.ByteArrayToGuid(drv(ClaimStatusDAL.COL_NAME_LIST_ITEM_ID)))
                 End If
 
                 If (e.Item.Cells(GRID_COL_OWNER_IDX).FindControl(GRID_CTL_OWNER) IsNot Nothing) Then
@@ -281,8 +285,8 @@ Partial Class ClaimStatusDetailForm
                                                     .AddBlankItem = False
                                                    })
 
-                    If drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) IsNot DBNull.Value Then
-                        dropdownOwner.SelectedValue = GuidControl.ByteArrayToGuid(CType(drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte())).ToString()
+                    If drv(ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) IsNot DBNull.Value Then
+                        dropdownOwner.SelectedValue = GuidControl.ByteArrayToGuid(CType(drv(ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte())).ToString()
                     End If
 
                     If disableRow OrElse (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
@@ -295,18 +299,18 @@ Partial Class ClaimStatusDetailForm
                     End If
                 End If
 
-                If drv(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1) IsNot DBNull.Value Then
+                If drv(ClaimStatusDAL.COL_NAME_STATUS_DATE_1) IsNot DBNull.Value Then
                     If CultureInfo.CurrentCulture.Name.Equals("ja-JP") Then
-                        PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_STATUS_DATE), New DateTimeType(CType(drv(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1), Date)), Nothing)
+                        PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_STATUS_DATE), New DateTimeType(CType(drv(ClaimStatusDAL.COL_NAME_STATUS_DATE_1), Date)), Nothing)
                     Else
-                        PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_STATUS_DATE), New DateTimeType(CType(drv(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1), Date)), DATE_TIME_FORMAT)
+                        PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_STATUS_DATE), New DateTimeType(CType(drv(ClaimStatusDAL.COL_NAME_STATUS_DATE_1), Date)), DATE_TIME_FORMAT)
                     End If
                 End If
 
                     AddCalendar(CType(e.Item.FindControl(GRID_CTL_IMG_STATUS_DATE), ImageButton), CType(e.Item.FindControl(GRID_CTL_STATUS_DATE), TextBox), "", "Y")
 
-                If drv(DALObjects.ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID) IsNot System.DBNull.Value Then
-                    PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_CLAIM_STATUS_ID), drv(DALObjects.ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID))
+                If drv(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID) IsNot DBNull.Value Then
+                    PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_CLAIM_STATUS_ID), drv(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID))
                 Else
                     PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_CLAIM_STATUS_ID), "")
                 End If
@@ -361,11 +365,11 @@ Partial Class ClaimStatusDetailForm
         End Try
     End Sub
 
-    Protected Sub EnableDisableControl(ctl As System.Web.UI.Control, Optional ByVal disabled As Boolean = False)
+    Protected Sub EnableDisableControl(ctl As Control, Optional ByVal disabled As Boolean = False)
         If Not (permType = FormAuthorization.enumPermissionType.EDIT) OrElse disabled Then
-            ControlMgr.SetEnableControl(Me, CType(ctl, System.Web.UI.WebControls.WebControl), False)
+            ControlMgr.SetEnableControl(Me, CType(ctl, WebControl), False)
         Else
-            ControlMgr.SetEnableControl(Me, CType(ctl, System.Web.UI.WebControls.WebControl), True)
+            ControlMgr.SetEnableControl(Me, CType(ctl, WebControl), True)
         End If
     End Sub
 
@@ -373,7 +377,7 @@ Partial Class ClaimStatusDetailForm
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             HdnFldFilterSize.Value = Request.Form(cboPageSize.UniqueID)
 
@@ -382,7 +386,7 @@ Partial Class ClaimStatusDetailForm
             End If
 
             If IsDataGPageDirty() Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                State.ActionInProgress = DetailPageCommand.GridPageSize
                 DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
             Else
                 State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -408,7 +412,7 @@ Partial Class ClaimStatusDetailForm
         'End Try
     End Sub
 
-    Private Sub DataGridDropdowns_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
+    Private Sub DataGridDropdowns_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
         Try
             State.selectedPageIndex = e.NewPageIndex
             If IsDataGPageDirty() Then
@@ -463,9 +467,9 @@ Partial Class ClaimStatusDetailForm
                 HiddenIsPageDirty.Value = String.Empty
 
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
-                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.claimId, False))
-                    Case ElitaPlusPage.DetailPageCommand.GridPageSize
+                    Case DetailPageCommand.Back
+                        ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.claimId, False))
+                    Case DetailPageCommand.GridPageSize
                         State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                     Case Else
                         DataGridDropdowns.CurrentPageIndex = State.selectedPageIndex
@@ -572,16 +576,16 @@ Partial Class ClaimStatusDetailForm
                         If dr IsNot Nothing Then
                             Dim isDirty As Boolean = False
 
-                            If dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_COMMENTS) IsNot DBNull.Value Then
-                                isDirty = isDirty OrElse (CType(dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_COMMENTS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox).Text, String)))
+                            If dr(ClaimStatusDAL.COL_NAME_STATUS_COMMENTS) IsNot DBNull.Value Then
+                                isDirty = isDirty OrElse (CType(dr(ClaimStatusDAL.COL_NAME_STATUS_COMMENTS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox).Text, String)))
                             Else
                                 isDirty = isDirty OrElse ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox).Text, String)))
                             End If
 
-                            If dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1) IsNot DBNull.Value Then
+                            If dr(ClaimStatusDAL.COL_NAME_STATUS_DATE_1) IsNot DBNull.Value Then
 
                                 isDirty = isDirty OrElse (
-                                            DateHelper.GetDateValue(CType(dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1), String)) <>
+                                            DateHelper.GetDateValue(CType(dr(ClaimStatusDAL.COL_NAME_STATUS_DATE_1), String)) <>
                                             DateHelper.GetDateValue((CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_DATE_IDX).FindControl(GRID_CTL_STATUS_DATE), TextBox).Text, String)))
                                           )
                             Else
@@ -591,10 +595,10 @@ Partial Class ClaimStatusDetailForm
                             If isDirty Then
                                 Dim curBO As ClaimStatus
 
-                                If dr(DALObjects.ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID) Is DBNull.Value Then
+                                If dr(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID) Is DBNull.Value Then
                                     curBO = GetClaimStatusBO(isFirstBO, Guid.Empty)
                                 Else
-                                    curBO = GetClaimStatusBO(isFirstBO, New Guid(CType(dr(DALObjects.ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID), Byte())))
+                                    curBO = GetClaimStatusBO(isFirstBO, New Guid(CType(dr(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID), Byte())))
                                 End If
 
                                 curBO.Comments = statusComment
@@ -723,8 +727,8 @@ Partial Class ClaimStatusDetailForm
             Dim guidStr As String = GuidControl.GuidToHexString(New Guid(claimStatusId))
 
             For Each dr In dv
-                If dr(DALObjects.ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID) IsNot DBNull.Value Then
-                    Dim drStr As String = GuidControl.GuidToHexString(New Guid(CType(dr(DALObjects.ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID), Byte())))
+                If dr(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID) IsNot DBNull.Value Then
+                    Dim drStr As String = GuidControl.GuidToHexString(New Guid(CType(dr(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID), Byte())))
                     If drStr = guidStr Then
                         retDr = dr
                     End If
@@ -735,7 +739,7 @@ Partial Class ClaimStatusDetailForm
         Return retDr
     End Function
 
-    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
         Try
             MasterPage.MessageController.Clear_Hide()
             SaveChanges()
@@ -745,7 +749,7 @@ Partial Class ClaimStatusDetailForm
         End Try
     End Sub
 
-    Private Sub CancelButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton_WRITE.Click
+    Private Sub CancelButton_WRITE_Click(sender As Object, e As EventArgs) Handles CancelButton_WRITE.Click
         Try
             State.IsEditMode = False
             DataGridDropdowns.EditItemIndex = -1
@@ -756,23 +760,23 @@ Partial Class ClaimStatusDetailForm
         End Try
     End Sub
 
-    Private Sub BackButton_WRITE_Click(sender As Object, e As System.EventArgs) Handles BackButton_WRITE.Click
+    Private Sub BackButton_WRITE_Click(sender As Object, e As EventArgs) Handles BackButton_WRITE.Click
         Try
             State.IsEditMode = False
             DataGridDropdowns.EditItemIndex = -1
             EnableDisableControl(BackButton_WRITE, False)
-            Back(ElitaPlusPage.DetailPageCommand.Back)
-        Catch ex As Threading.ThreadAbortException
+            Back(DetailPageCommand.Back)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
-        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.claimId, False))
+    Protected Sub Back(cmd As DetailPageCommand)
+        ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.claimId, False))
     End Sub
 
-    Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
+    Private Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
 
         Try
             Dim desc As DropDownList = New DropDownList
@@ -937,7 +941,7 @@ Partial Class ClaimStatusDetailForm
 #End Region
 
 #Region "Web Methods"
-    <WebMethod(), Script.Services.ScriptMethod()> _
+    <WebMethod(), ScriptMethod()> _
     Public Shared Function GetClaimAgingDetails(claimId As String) As String
         Try
             Dim claimAgingDetailsDV As ClaimAgingDetails.ClaimAgingDetailsDV

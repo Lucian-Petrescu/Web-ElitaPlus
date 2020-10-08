@@ -1,4 +1,7 @@
 
+Imports System.Diagnostics
+Imports System.Threading
+
 Namespace Claims
 
     Partial Class ClaimItemForm
@@ -74,14 +77,14 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -101,7 +104,7 @@ Namespace Claims
             End If
         End Sub
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             MasterPage.MessageController.Clear_Hide()
             Try
@@ -127,14 +130,14 @@ Namespace Claims
 
         Private Sub GoBack()
             ' Claim Detail
-            Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
+            Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
             ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 GoBack()
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try

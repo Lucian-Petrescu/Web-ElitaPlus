@@ -21,7 +21,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moClaimInfoController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlClaimInfo
+        Protected WithEvents moClaimInfoController As UserControlClaimInfo
         
         '''<summary>
         '''HiddenSaveChangesPromptResponse control.
@@ -30,7 +30,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+        Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
         
         '''<summary>
         '''OldEquipmentInfoLabel control.
@@ -39,7 +39,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldEquipmentInfoLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents OldEquipmentInfoLabel As Label
         
         '''<summary>
         '''NewEquipmentInfoLabel control.
@@ -48,7 +48,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewEquipmentInfoLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents NewEquipmentInfoLabel As Label
         
         '''<summary>
         '''OldManufacturerLabel control.
@@ -57,7 +57,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldManufacturerLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents OldManufacturerLabel As Label
         
         '''<summary>
         '''OldManufacturerTextBox control.
@@ -66,7 +66,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldManufacturerTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents OldManufacturerTextBox As TextBox
         
         '''<summary>
         '''NewManufacturerLabel control.
@@ -75,7 +75,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewManufacturerLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents NewManufacturerLabel As Label
         
         '''<summary>
         '''NewManufacturerDropDown control.
@@ -84,7 +84,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewManufacturerDropDown As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents NewManufacturerDropDown As DropDownList
         
         '''<summary>
         '''OldModelLabel control.
@@ -93,7 +93,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldModelLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents OldModelLabel As Label
         
         '''<summary>
         '''OldModelTextBox control.
@@ -102,7 +102,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldModelTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents OldModelTextBox As TextBox
         
         '''<summary>
         '''NewModelLabel control.
@@ -111,7 +111,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewModelLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents NewModelLabel As Label
         
         '''<summary>
         '''NewModelTextBox control.
@@ -120,7 +120,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewModelTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents NewModelTextBox As TextBox
         
         '''<summary>
         '''OldRiskTypeLabel control.
@@ -129,7 +129,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldRiskTypeLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents OldRiskTypeLabel As Label
         
         '''<summary>
         '''OldRiskTypeTextBox control.
@@ -138,7 +138,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldRiskTypeTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents OldRiskTypeTextBox As TextBox
         
         '''<summary>
         '''NewRiskTypeLabel control.
@@ -147,7 +147,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewRiskTypeLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents NewRiskTypeLabel As Label
         
         '''<summary>
         '''NewRiskTypeTextBox control.
@@ -156,7 +156,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewRiskTypeTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents NewRiskTypeTextBox As TextBox
         
         '''<summary>
         '''OldSerialNumberLabel control.
@@ -165,7 +165,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldSerialNumberLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents OldSerialNumberLabel As Label
         
         '''<summary>
         '''OldSerialNumberTextBox control.
@@ -174,7 +174,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldSerialNumberTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents OldSerialNumberTextBox As TextBox
         
         '''<summary>
         '''NewSerialNumberLabel control.
@@ -183,7 +183,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewSerialNumberLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents NewSerialNumberLabel As Label
         
         '''<summary>
         '''NewSerialNumberTextBox control.
@@ -192,7 +192,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewSerialNumberTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents NewSerialNumberTextBox As TextBox
         
         '''<summary>
         '''OldImeiNumberLabel control.
@@ -201,7 +201,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldImeiNumberLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents OldImeiNumberLabel As Label
         
         '''<summary>
         '''OldImeiNumberTextBox control.
@@ -210,7 +210,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents OldImeiNumberTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents OldImeiNumberTextBox As TextBox
         
         '''<summary>
         '''NewImeiNumberLabel control.
@@ -219,7 +219,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewImeiNumberLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents NewImeiNumberLabel As Label
         
         '''<summary>
         '''NewImeiNumberTextBox control.
@@ -228,7 +228,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewImeiNumberTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents NewImeiNumberTextBox As TextBox
         
         '''<summary>
         '''DeviceTypeLabel control.
@@ -237,7 +237,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents DeviceTypeLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents DeviceTypeLabel As Label
         
         '''<summary>
         '''DeviceTypeDropDown control.
@@ -246,7 +246,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents DeviceTypeDropDown As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents DeviceTypeDropDown As DropDownList
         
         '''<summary>
         '''headerDeviceInfo control.
@@ -255,7 +255,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents headerDeviceInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents headerDeviceInfo As HtmlGenericControl
         
         '''<summary>
         '''CommentsTextBox control.
@@ -264,7 +264,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents CommentsTextBox As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents CommentsTextBox As TextBox
         
         '''<summary>
         '''btnBack control.
@@ -273,7 +273,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnBack As Button
         
         '''<summary>
         '''btnSave_WRITE control.
@@ -282,7 +282,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnSave_WRITE As Button
         
         '''<summary>
         '''BtnEdit_WRITE control.
@@ -291,7 +291,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnEdit_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnEdit_WRITE As Button
         
         '''<summary>
         '''btnUndo_WRITE control.
@@ -300,7 +300,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnUndo_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnUndo_WRITE As Button
         
         '''<summary>
         '''btnDelete_WRITE control.
@@ -309,6 +309,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnDelete_WRITE As Button
     End Class
 End Namespace

@@ -1,4 +1,5 @@
-﻿Imports Assurant.ElitaPlus.DALObjects
+﻿Imports System.Diagnostics
+Imports Assurant.ElitaPlus.DALObjects
 Imports System.Globalization
 Imports System.Web.Services
 Imports System.Threading
@@ -6,6 +7,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Generic
 
 Namespace Claims
 
@@ -14,13 +16,13 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
-        Protected WithEvents UserControlAvailableSelectedServiceCenters As Assurant.ElitaPlus.ElitaPlusWebApp.Generic.UserControlAvailableSelected
+        Protected WithEvents UserControlAvailableSelectedServiceCenters As UserControlAvailableSelected
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -50,9 +52,9 @@ Namespace Claims
             Public moCert As String
             Public moCertId As Guid
             Public moIsnew As Boolean
-            Public moClaimDenielLetters As Claims.LetterSearchDV
+            Public moClaimDenielLetters As LetterSearchDV
 
-            Public Sub New(oClaimbo As ClaimBase, oClaimId As Guid, oClaim As String, oCert As String, oCertId As Guid, oIsnew As Boolean, oClaimDenielLetters As Claims.LetterSearchDV)
+            Public Sub New(oClaimbo As ClaimBase, oClaimId As Guid, oClaim As String, oCert As String, oCertId As Guid, oIsnew As Boolean, oClaimDenielLetters As LetterSearchDV)
                 moClaimbo = oClaimbo
                 moClaimId = oClaimId
                 moClaim = oClaim
@@ -140,7 +142,7 @@ Namespace Claims
 
 #End Region
 #Region "Page Events"
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 ErrControllerMaster.Clear_Hide()
@@ -167,7 +169,7 @@ Namespace Claims
                 If Not IsPostBack Then
                     AddLabelDecorations(State.MyBO)
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster)
             End Try
@@ -259,7 +261,7 @@ Namespace Claims
                 If State.moParams.moIsnew Then
                     PopulateControlFromBOProperty(TextboxShortDesc, State.moParams.moCert)
                     PopulateControlFromBOProperty(TextboxDescription, State.moParams.moClaim)
-                    PopulateControlFromBOProperty(TextboxDate, System.DateTime.Now)
+                    PopulateControlFromBOProperty(TextboxDate, DateTime.Now)
                     EnableDisableControls(TextboxShortDesc, True)
                     EnableDisableControls(TextboxDescription, True)
                     EnableDisableControls(TextboxDate, True)
@@ -302,35 +304,35 @@ Namespace Claims
         Protected Sub CheckIfComingFromSaveConfirm()
             Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                If State.ActionInProgress <> DetailPageCommand.BackOnErr Then
                     State.MyBO.Save()
                 End If
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
-                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
-                    Case ElitaPlusPage.DetailPageCommand.New_
+                    Case DetailPageCommand.Back
+                        ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                    Case DetailPageCommand.New_
                         DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                         CreateNew()
-                    Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    Case DetailPageCommand.NewAndCopy
                         'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                         'Me.CreateNewWithCopy()
-                    Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                    Case DetailPageCommand.BackOnErr
                         ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 End Select
             ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
-                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
-                    Case ElitaPlusPage.DetailPageCommand.New_
+                    Case DetailPageCommand.Back
+                        ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                    Case DetailPageCommand.New_
                         CreateNew()
-                    Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    Case DetailPageCommand.NewAndCopy
                         'Me.CreateNewWithCopy()
-                    Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                    Case DetailPageCommand.BackOnErr
                         ErrControllerMaster.AddErrorAndShow(State.LastErrMsg)
                 End Select
             End If
             'Clean after consuming the action
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            State.ActionInProgress = DetailPageCommand.Nothing_
             HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
@@ -338,30 +340,30 @@ Namespace Claims
 #End Region
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
 
                 'Me.NavController.Navigate(Me, "back")
 
                 If State.moParams.moClaimDenielLetters.Count = 0 Then
-                    NavController.Navigate(Me, "back_info", New Claims.ClaimDeniedInformationForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimbo.Id, State.moParams.moCertId))
+                    NavController.Navigate(Me, "back_info", New ClaimDeniedInformationForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimbo.Id, State.moParams.moCertId))
                 Else
                     NavController.Navigate(Me, "back_list", New ClaimDeniedLetterListForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimDenielLetters, State.moParams.moClaimId, State.moParams.moClaim, State.moParams.moCert, State.moParams.moCertId))
                 End If
 
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster)
                 DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.ActionInProgress = DetailPageCommand.BackOnErr
                 State.LastErrMsg = ErrControllerMaster.Text
             End Try
         End Sub
 
-        Private Sub moBtnCancelClick(sender As System.Object, e As System.EventArgs) Handles moBtnCancel.Click
+        Private Sub moBtnCancelClick(sender As Object, e As EventArgs) Handles moBtnCancel.Click
             Try
                 UndoChanges()
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster)
             End Try
@@ -380,7 +382,7 @@ Namespace Claims
 #End Region
 #Region "Attach - Detach Event Handlers"
 
-        Private Sub UserControlAvailableSelectedDeniedReasosns_Attach(aSrc As Generic.UserControlAvailableSelected, attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Attach
+        Private Sub UserControlAvailableSelectedDeniedReasosns_Attach(aSrc As UserControlAvailableSelected, attachedList As ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Attach
             Try
                 If attachedList.Count > 0 Then
                     State.MyBO.AttachDeniedReason(attachedList)
@@ -390,7 +392,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub UserControlAvailableSelectedDeniedReasosns_Detach(aSrc As Generic.UserControlAvailableSelected, detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Detach
+        Private Sub UserControlAvailableSelectedDeniedReasosns_Detach(aSrc As UserControlAvailableSelected, detachedList As ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Detach
             Try
                 If detachedList.Count > 0 Then
                     State.MyBO.DetachDeniedReason(detachedList)
@@ -404,7 +406,7 @@ Namespace Claims
             navCtrl.FlowSession(FlowSessionKeys.SESSION_CHANGES_MADE_FLAG) = True
         End Sub
 
-        Private Sub mpHoriz_SelectedIndexChange(sender As System.Object, e As System.EventArgs)
+        Private Sub mpHoriz_SelectedIndexChange(sender As Object, e As EventArgs)
 
         End Sub
 
@@ -483,7 +485,7 @@ Namespace Claims
                 NavController.Navigate(Me, FlowEvents.EVENT_SAVE)
 
 
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster)
             End Try

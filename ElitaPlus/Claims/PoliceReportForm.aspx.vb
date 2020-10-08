@@ -1,3 +1,7 @@
+Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports System.Text
+Imports System.Threading
 Imports BN = Assurant.ElitaPlus.BusinessObjectsNew
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 
@@ -7,7 +11,7 @@ Partial Class PoliceReportForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     Protected WithEvents ErrorCtrl As ErrorController
@@ -16,9 +20,9 @@ Partial Class PoliceReportForm
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -101,7 +105,7 @@ Partial Class PoliceReportForm
 
             'Me.State.ScreenSnapShotBO = New PoliceReport
             'Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
-        Catch dnfex As BN.DataNotFoundException
+        Catch dnfex As DataNotFoundException
             ' its a valid scenario, there may or may NOT be a police report data for that claim id,
             ' so do NOT throw exception, just get a new object !
             State.MyBO = New PoliceReport
@@ -122,7 +126,7 @@ Partial Class PoliceReportForm
 
                     'Me.State.ScreenSnapShotBO = New PoliceReport
                     'Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
-                Catch dnfex As BN.DataNotFoundException
+                Catch dnfex As DataNotFoundException
                     ' its a valid scenario, there may or may NOT be a police report data for that claim id,
                     ' so do NOT throw exception, just get a new object !
                     State.MyBO = New PoliceReport
@@ -171,7 +175,7 @@ Partial Class PoliceReportForm
 
 #Region "Page Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         ErrorCtrl.Clear_Hide()
         'If moPoliceMultipleDrop Is Nothing Then
@@ -191,7 +195,7 @@ Partial Class PoliceReportForm
             '    Me.AddLabelDecorations(Me.State.MyBO)
 
             'End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
@@ -281,18 +285,18 @@ Partial Class PoliceReportForm
 
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
 
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail 
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail 
                 State.MyBO.Save()
             End If
             NavController.Navigate(Me, "back")
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail Then
                 NavController.Navigate(Me, "back")
             End If
         End If
 
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenSaveChangesPromptResponse.Value = ""
 
     End Sub
@@ -302,18 +306,18 @@ Partial Class PoliceReportForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
 
         Try
             PopulateBOFromForm()
             If (State.MyBO.IsDirty) Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = DetailPageCommand.Back
             Else
                 NavController.Navigate(Me, "back")
             End If
             'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Nothing))
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
@@ -321,7 +325,7 @@ Partial Class PoliceReportForm
             State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
-    Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
+    Private Sub btnEdit_WRITE_Click(sender As Object, e As EventArgs) Handles btnEdit_WRITE.Click
 
         'Introduce the logic to Enable/Disable the Editable fields here
         'Also make the relevant buttons Disabled/Invisible when in Edit mode - set a flag carried in the State
@@ -338,16 +342,16 @@ Partial Class PoliceReportForm
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
 
         Try
             Dim strOrigRptNumber As String = State.MyBO.ReportNumber, guidOrigStationID As Guid = State.MyBO.PoliceStationId
             PopulateBOFromForm()
             If (State.MyBO.IsDirty) Then
                 If State.MyBO.ReportNumber <> strOrigRptNumber OrElse guidOrigStationID <> State.MyBO.PoliceStationId Then
-                    Dim lstClaim As Collections.Generic.List(Of String)
+                    Dim lstClaim As List(Of String)
                     If State.MyBO.IsReportNumberInUser(lstClaim) Then
-                        Dim sbMsg As New System.Text.StringBuilder
+                        Dim sbMsg As New StringBuilder
                         sbMsg.Append(TranslationBase.TranslateLabelOrMessage(Message.MSG_DUPLICATE_POLICE_REPORT_NUMBER))
                         sbMsg.Append(" ")
                         For int As Integer = 0 To (lstClaim.Count - 1)
@@ -380,14 +384,14 @@ Partial Class PoliceReportForm
 
     End Sub
 
-    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         Try
             If Not State.MyBO.IsNew Then 'AndAlso Not Me.State.ScreenSnapShotBO Is Nothing Then
                 'Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
                 State.MyBO = New PoliceReport(State.InputParameters.ClaimId, True)
             End If
             PopulateFormFromBO()
-        Catch dnfex As BN.DataNotFoundException
+        Catch dnfex As DataNotFoundException
             ' its a valid scenario, there may or may NOT be a police report data for that claim id,
             ' so do NOT throw exception, just get a new object !
             State.MyBO = New PoliceReport

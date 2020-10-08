@@ -20,7 +20,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CertificateNumberLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents CertificateNumberLabel As Label
     
     '''<summary>
     '''CertificateNumberTD control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CertificateNumberTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents CertificateNumberTD As HtmlTableCell
     
     '''<summary>
     '''ServiceCenterLabelTD control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ServiceCenterLabelTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents ServiceCenterLabelTD As HtmlTableCell
     
     '''<summary>
     '''ServiceCenterNameLabel control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ServiceCenterNameLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ServiceCenterNameLabel As Label
     
     '''<summary>
     '''ServiceCenterTD control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ServiceCenterTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents ServiceCenterTD As HtmlTableCell
     
     '''<summary>
     '''StatusLabel control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents StatusLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents StatusLabel As Label
     
     '''<summary>
     '''CLAIMStatusTD control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CLAIMStatusTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents CLAIMStatusTD As HtmlTableCell
     
     '''<summary>
     '''SubscriberStatusLabelTD control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SubscriberStatusLabelTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents SubscriberStatusLabelTD As HtmlTableCell
     
     '''<summary>
     '''SubscriberStatusLabel control.
@@ -92,7 +92,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SubscriberStatusLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents SubscriberStatusLabel As Label
     
     '''<summary>
     '''SubscriberStatus control.
@@ -101,7 +101,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SubscriberStatus As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents SubscriberStatus As HtmlTableCell
     
     '''<summary>
     '''ScrutinyRequiredLabel control.
@@ -110,7 +110,7 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScrutinyRequiredLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ScrutinyRequiredLabel As Label
     
     '''<summary>
     '''ScrutinyRequiredLabelTD control.
@@ -119,5 +119,5 @@ Partial Public Class UserControlClaimInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScrutinyRequiredLabelTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents ScrutinyRequiredLabelTD As HtmlTableCell
 End Class

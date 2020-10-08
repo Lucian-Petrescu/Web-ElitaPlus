@@ -1,4 +1,6 @@
-﻿Namespace Claims
+﻿Imports System.Threading
+
+Namespace Claims
     Partial Public Class ClaimDeniedLetterListForm
         Inherits ElitaPlusSearchPage
         'Implements IStateController
@@ -16,14 +18,14 @@
 
         Public Class Parameters
             Public moClaimbo As ClaimBase
-            Public moClaimDenielLetters As Claims.LetterSearchDV
+            Public moClaimDenielLetters As LetterSearchDV
             Public moCliamID As Guid
             Public moClaimNumber As String
             Public moCertificate As String
             Public moCertItemCoverage As Guid
 
 
-            Public Sub New(oClaimbo As ClaimBase, oClaimDenielLetters As claims.LetterSearchDV, oClaimID As Guid, oClaimNumber As String, oCertificate As String, oCertItemCoverage As Guid)
+            Public Sub New(oClaimbo As ClaimBase, oClaimDenielLetters As LetterSearchDV, oClaimID As Guid, oClaimNumber As String, oCertificate As String, oCertItemCoverage As Guid)
                 ' If oClaimDenielLetters.Count < 0 Then
                 moClaimbo = oClaimbo
                 moClaimDenielLetters = oClaimDenielLetters
@@ -64,7 +66,7 @@
             Public moParams As Parameters
             Public denialReasonCode As String
             Public selectedSortById As Guid = Guid.Empty
-            Public selectedPageSize As Int32 = ElitaPlusSearchPage.DEFAULT_PAGE_SIZE
+            Public selectedPageSize As Int32 = DEFAULT_PAGE_SIZE
             Public IsGridVisible As Boolean = False
             Public SearchClicked As Boolean
             Public bnoRow As Boolean = False
@@ -114,7 +116,7 @@
 #Region "Page_Events"
 
 
-        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             'Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
             ErrControllerMaster.Clear_Hide()
 
@@ -223,7 +225,7 @@
 #Region " Datagrid Related "
 
         'The Binding LOgic is here
-        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -242,7 +244,7 @@
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
                 State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
@@ -253,7 +255,7 @@
         End Sub
 
 
-        Public Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub ItemCommand(source As Object, e As GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer = Nothing
@@ -263,20 +265,20 @@
                 If e.CommandName = "Select" Then
                     Dim row As GridViewRow = Grid.Rows(index)
                     State.selectedClaimId = New Guid(row.Cells(GRID_COL_EDIT_IDX).Text)
-                    NavController.Navigate(Me, "denied_claims_next", New Claims.DeniedClaimsForm.Parameters(State.moParams.moClaimbo, State.selectedClaimId, State.moParams.moClaimNumber, State.moParams.moCertificate, State.moParams.moCertItemCoverage, False, State.moParams.moClaimDenielLetters))
+                    NavController.Navigate(Me, "denied_claims_next", New DeniedClaimsForm.Parameters(State.moParams.moClaimbo, State.selectedClaimId, State.moParams.moClaimNumber, State.moParams.moCertificate, State.moParams.moCertItemCoverage, False, State.moParams.moClaimDenielLetters))
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 State.PageIndex = e.NewPageIndex
                 State.selectedClaimId = Guid.Empty
@@ -307,15 +309,15 @@
         
 #End Region
 
-        Private Sub btnNew_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
 
-            NavController.Navigate(Me, "new", New Claims.DeniedClaimsForm.Parameters(State.moParams.moClaimbo, State.moParams.moCliamID, State.moParams.moClaimNumber, State.moParams.moCertificate, State.moParams.moCertItemCoverage, True, State.moParams.moClaimDenielLetters))
+            NavController.Navigate(Me, "new", New DeniedClaimsForm.Parameters(State.moParams.moClaimbo, State.moParams.moCliamID, State.moParams.moClaimNumber, State.moParams.moCertificate, State.moParams.moCertItemCoverage, True, State.moParams.moClaimDenielLetters))
         End Sub
 
-        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack_WRITE.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack_WRITE.Click
 
 
-            NavController.Navigate(Me, "back", New Claims.ClaimDeniedInformationForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimbo.Id, State.moParams.moCertItemCoverage))
+            NavController.Navigate(Me, "back", New ClaimDeniedInformationForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimbo.Id, State.moParams.moCertItemCoverage))
 
 
         End Sub

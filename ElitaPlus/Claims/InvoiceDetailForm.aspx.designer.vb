@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports AjaxControlToolkit
 
 Partial Public Class InvoiceDetailForm
 
@@ -20,7 +21,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInfoMessageController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
+    Protected WithEvents moInfoMessageController As MessageController
 
     '''<summary>
     '''moScriptManager control.
@@ -29,7 +30,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moScriptManager As Global.System.Web.UI.ScriptManager
+    Protected WithEvents moScriptManager As ScriptManager
 
     '''<summary>
     '''moInvoiceNumberLabel control.
@@ -38,7 +39,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceNumberLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moInvoiceNumberLabel As Label
 
     '''<summary>
     '''moInvoiceNumber control.
@@ -47,7 +48,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceNumber As TextBox
 
     '''<summary>
     '''moInvoiceDateLabel control.
@@ -56,7 +57,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceDateLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moInvoiceDateLabel As Label
 
     '''<summary>
     '''moInvoiceDate control.
@@ -65,7 +66,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceDate As TextBox
 
     '''<summary>
     '''btnInvoiceDate control.
@@ -74,7 +75,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnInvoiceDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnInvoiceDate As ImageButton
 
     '''<summary>
     '''moServiceCenterLabel control.
@@ -83,7 +84,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moServiceCenterLabel As Label
 
     '''<summary>
     '''inputServiceCenterId control.
@@ -92,7 +93,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents inputServiceCenterId As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents inputServiceCenterId As HtmlInputHidden
 
     '''<summary>
     '''moServiceCenter control.
@@ -101,7 +102,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceCenter As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moServiceCenter As TextBox
 
     '''<summary>
     '''aCompServiceCenter control.
@@ -110,7 +111,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents aCompServiceCenter As Global.AjaxControlToolkit.AutoCompleteExtender
+    Protected WithEvents aCompServiceCenter As AutoCompleteExtender
 
     '''<summary>
     '''moDueDateLabel control.
@@ -119,7 +120,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moDueDateLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moDueDateLabel As Label
 
     '''<summary>
     '''moDueDate control.
@@ -128,7 +129,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moDueDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moDueDate As TextBox
 
     '''<summary>
     '''btnDueDate control.
@@ -137,7 +138,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDueDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnDueDate As ImageButton
 
     '''<summary>
     '''moInvoiceStatusLabel control.
@@ -146,7 +147,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceStatusLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moInvoiceStatusLabel As Label
 
     '''<summary>
     '''moInvoiceStatus control.
@@ -155,7 +156,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceStatus As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceStatus As TextBox
 
     '''<summary>
     '''moInvoiceAmountLabel control.
@@ -164,7 +165,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceAmountLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moInvoiceAmountLabel As Label
 
     '''<summary>
     '''moInvoiceAmount control.
@@ -173,7 +174,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceAmount As TextBox
 
     '''<summary>
     '''moRepairDateLabel control.
@@ -182,7 +183,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRepairDateLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moRepairDateLabel As Label
 
     '''<summary>
     '''moRepairDate control.
@@ -191,7 +192,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRepairDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moRepairDate As TextBox
 
     '''<summary>
     '''btnRepairDate control.
@@ -200,7 +201,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnRepairDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnRepairDate As ImageButton
 
     '''<summary>
     '''btnAddRepairDate control.
@@ -209,7 +210,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnAddRepairDate As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnAddRepairDate As Button
 
     '''<summary>
     '''moDifferenceAmountLabel control.
@@ -218,7 +219,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moDifferenceAmountLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moDifferenceAmountLabel As Label
 
     '''<summary>
     '''moDifferenceAmount control.
@@ -227,7 +228,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moDifferenceAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moDifferenceAmount As TextBox
 
     '''<summary>
     '''moSourceLabel control.
@@ -236,7 +237,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSourceLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSourceLabel As Label
 
     '''<summary>
     '''moSource control.
@@ -245,7 +246,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSource As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moSource As TextBox
 
     '''<summary>
     '''moIsCompleteLabel control.
@@ -254,7 +255,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moIsCompleteLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moIsCompleteLabel As Label
 
     '''<summary>
     '''moIsComplete control.
@@ -263,7 +264,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moIsComplete As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moIsComplete As TextBox
 
     '''<summary>
     '''mosearch control.
@@ -272,7 +273,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mosearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents mosearch As Button
 
     '''<summary>
     '''trInvoiceTaxes1 control.
@@ -281,7 +282,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trInvoiceTaxes1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trInvoiceTaxes1 As HtmlTableRow
 
     '''<summary>
     '''moBatchNumberLabel control.
@@ -290,7 +291,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moBatchNumberLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moBatchNumberLabel As Label
 
     '''<summary>
     '''moBatchNumber control.
@@ -299,7 +300,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moBatchNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moBatchNumber As TextBox
 
     '''<summary>
     '''moPerceptionIvaLabel control.
@@ -308,7 +309,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPerceptionIvaLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moPerceptionIvaLabel As Label
 
     '''<summary>
     '''moPerceptionIva control.
@@ -317,7 +318,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPerceptionIva As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPerceptionIva As TextBox
 
     '''<summary>
     '''trInvoiceTaxes2 control.
@@ -326,7 +327,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trInvoiceTaxes2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trInvoiceTaxes2 As HtmlTableRow
 
     '''<summary>
     '''moPerceptionIibbProvinceLabel control.
@@ -335,7 +336,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPerceptionIibbProvinceLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moPerceptionIibbProvinceLabel As Label
 
     '''<summary>
     '''moPerceptionIibbProvince control.
@@ -344,7 +345,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPerceptionIibbProvince As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moPerceptionIibbProvince As DropDownList
 
     '''<summary>
     '''moPerceptionIibbLabel control.
@@ -353,7 +354,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPerceptionIibbLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moPerceptionIibbLabel As Label
 
     '''<summary>
     '''moPerceptionIibb control.
@@ -362,7 +363,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPerceptionIibb As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPerceptionIibb As TextBox
 
     '''<summary>
     '''moLineItems control.
@@ -371,7 +372,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moLineItems As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents moLineItems As HtmlGenericControl
 
     '''<summary>
     '''moInvoiceRepeater control.
@@ -380,7 +381,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceRepeater As Global.System.Web.UI.WebControls.Repeater
+    Protected WithEvents moInvoiceRepeater As Repeater
 
     '''<summary>
     '''btnBack control.
@@ -389,7 +390,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''btnSave_WRITE control.
@@ -398,7 +399,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave_WRITE As Button
 
     '''<summary>
     '''btnUndoBalance_WRITE control.
@@ -407,7 +408,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnUndoBalance_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnUndoBalance_WRITE As Button
 
     '''<summary>
     '''btnBalance_WRITE control.
@@ -416,7 +417,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBalance_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBalance_WRITE As Button
 
     '''<summary>
     '''btnNew_WRITE control.
@@ -425,7 +426,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnNew_WRITE As Button
 
     '''<summary>
     '''btnUndo_Write control.
@@ -434,7 +435,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnUndo_Write As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnUndo_Write As Button
 
     '''<summary>
     '''btnDelete_WRITE control.
@@ -443,7 +444,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnDelete_WRITE As Button
 
     '''<summary>
     '''mdlPopup control.
@@ -452,7 +453,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mdlPopup As Global.AjaxControlToolkit.ModalPopupExtender
+    Protected WithEvents mdlPopup As ModalPopupExtender
 
     '''<summary>
     '''pnlPopup control.
@@ -461,7 +462,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents pnlPopup As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents pnlPopup As Panel
 
     '''<summary>
     '''lblModalTitle control.
@@ -470,7 +471,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblModalTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblModalTitle As Label
 
     '''<summary>
     '''moSkuLabel control.
@@ -479,7 +480,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSkuLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSkuLabel As Label
 
     '''<summary>
     '''moSku control.
@@ -488,7 +489,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSku As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moSku As TextBox
 
     '''<summary>
     '''moSkuDescriptionLabel control.
@@ -497,7 +498,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSkuDescriptionLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSkuDescriptionLabel As Label
 
     '''<summary>
     '''moSkuDescription control.
@@ -506,7 +507,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSkuDescription As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moSkuDescription As TextBox
 
     '''<summary>
     '''moServiceClassLabel control.
@@ -515,7 +516,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceClassLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moServiceClassLabel As Label
 
     '''<summary>
     '''moServiceClass control.
@@ -524,7 +525,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceClass As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moServiceClass As DropDownList
 
     '''<summary>
     '''moServiceTypeLabel control.
@@ -533,7 +534,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceTypeLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moServiceTypeLabel As Label
 
     '''<summary>
     '''moServiceType control.
@@ -542,7 +543,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moServiceType As DropDownList
 
     '''<summary>
     '''moRiskTypeLabel control.
@@ -551,7 +552,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRiskTypeLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moRiskTypeLabel As Label
 
     '''<summary>
     '''moRiskType control.
@@ -560,7 +561,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRiskType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moRiskType As DropDownList
 
     '''<summary>
     '''moEquipmentClassLabel control.
@@ -569,7 +570,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moEquipmentClassLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moEquipmentClassLabel As Label
 
     '''<summary>
     '''moEquipmentClass control.
@@ -578,7 +579,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moEquipmentClass As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moEquipmentClass As DropDownList
 
     '''<summary>
     '''moEquipmentLabel control.
@@ -587,7 +588,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moEquipmentLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moEquipmentLabel As Label
 
     '''<summary>
     '''moEquipment control.
@@ -596,7 +597,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moEquipment As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moEquipment As DropDownList
 
     '''<summary>
     '''moConditionLabel control.
@@ -605,7 +606,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moConditionLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moConditionLabel As Label
 
     '''<summary>
     '''moCondition control.
@@ -614,7 +615,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCondition As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moCondition As DropDownList
 
     '''<summary>
     '''Td1 control.
@@ -623,7 +624,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Td1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents Td1 As HtmlTableCell
 
     '''<summary>
     '''btnCancelSearch control.
@@ -632,7 +633,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancelSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancelSearch As Button
 
     '''<summary>
     '''btnClearSearch control.
@@ -641,7 +642,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -650,7 +651,7 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -659,5 +660,5 @@ Partial Public Class InvoiceDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 End Class

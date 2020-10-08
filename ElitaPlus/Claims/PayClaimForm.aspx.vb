@@ -1,9 +1,13 @@
+Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Globalization
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Claims
 Imports Assurant.ElitaPlus.External.Interfaces
 Imports Assurant.ElitaPlus.External.Interfaces.Darty
 Imports Assurant.ElitaPlus.Security
@@ -14,23 +18,23 @@ Partial Class PayClaimForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-    Protected WithEvents LabelPayeeSelector As System.Web.UI.WebControls.Label
-    Protected WithEvents LabelConsumerPays As System.Web.UI.WebControls.Label
+    Protected WithEvents LabelPayeeSelector As Label
+    Protected WithEvents LabelConsumerPays As Label
     Protected WithEvents PayeeAddress As UserControlAddress_New
     Protected WithEvents PayeeBankInfo As UserControlBankInfo_New
-    Protected WithEvents CustomValidator1 As System.Web.UI.WebControls.CustomValidator
-    Protected WithEvents Label9 As System.Web.UI.WebControls.Label
-    Protected WithEvents Textbox1 As System.Web.UI.WebControls.TextBox
+    Protected WithEvents CustomValidator1 As CustomValidator
+    Protected WithEvents Label9 As Label
+    Protected WithEvents Textbox1 As TextBox
 
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -189,9 +193,9 @@ Partial Class PayClaimForm
         Public OverrideShowGrandTotal As Boolean = False
 
 
-        Private _ManualTaxes As Collections.Generic.List(Of PayClaimManualTaxForm.ManualTaxDetail)
+        Private _ManualTaxes As List(Of PayClaimManualTaxForm.ManualTaxDetail)
 
-        Public Sub LoadManualTaxesAmountChanges(lstMT As Collections.Generic.List(Of PayClaimManualTaxForm.ManualTaxDetail))
+        Public Sub LoadManualTaxesAmountChanges(lstMT As List(Of PayClaimManualTaxForm.ManualTaxDetail))
             For Each objNew As PayClaimManualTaxForm.ManualTaxDetail In lstMT
                 For Each objOld As PayClaimManualTaxForm.ManualTaxDetail In _ManualTaxes
                     If objOld.Position = objNew.Position Then
@@ -201,7 +205,7 @@ Partial Class PayClaimForm
             Next
         End Sub
 
-        Public ReadOnly Property ManualTaxes() As Collections.Generic.List(Of PayClaimManualTaxForm.ManualTaxDetail)
+        Public ReadOnly Property ManualTaxes() As List(Of PayClaimManualTaxForm.ManualTaxDetail)
             Get
                 If _ManualTaxes Is Nothing Then
                     Dim guidCountryID As Guid, dvManulTax As DataView
@@ -211,7 +215,7 @@ Partial Class PayClaimForm
                     dvManulTax = CountryTax.getManualTaxesByTaxType(guidCountryID, ClaimTax.TAX_TYPE_CLAIM, DateTime.Now, oClaim.Certificate.DealerId)
 
 
-                    _ManualTaxes = New Collections.Generic.List(Of PayClaimManualTaxForm.ManualTaxDetail)
+                    _ManualTaxes = New List(Of PayClaimManualTaxForm.ManualTaxDetail)
                     If (dvManulTax IsNot Nothing) AndAlso (dvManulTax.Count > 0) Then
                         Dim strTemp As String, strDesc As String
                         strTemp = CType(dvManulTax(0)("ManualClaimTax"), String)
@@ -375,7 +379,7 @@ Partial Class PayClaimForm
 
 #Region "Page_Events"
 
-    Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As EventArgs) Handles Me.LoadComplete
         If State.HasManualTaxes Then
             EnableDisabManualTaxFields(True)
             txtManualTax.Text = State.TotalManualTaxes.ToString
@@ -405,7 +409,7 @@ Partial Class PayClaimForm
         End Try
     End Sub
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load, Me.Load
         MasterPage.MessageController.Clear_Hide()
 
         Try
@@ -421,7 +425,7 @@ Partial Class PayClaimForm
                     State.ComingFromChildForm = True
                 End If
 
-                If (CalledUrl IsNot Nothing) AndAlso (CalledUrl = PayClaimManualTaxForm.URL OrElse CalledUrl = Claims.ReplacementForm.URL) Then
+                If (CalledUrl IsNot Nothing) AndAlso (CalledUrl = PayClaimManualTaxForm.URL OrElse CalledUrl = ReplacementForm.URL) Then
                     State.ComingFromChildForm = True
                 End If
 
@@ -525,7 +529,7 @@ Partial Class PayClaimForm
                 AddLabelDecorations(State.ClaimInvoiceBO)
                 AddLabelColons()
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1022,7 +1026,7 @@ Partial Class PayClaimForm
             If claimServiceCenter.MasterCenterId.Equals(Guid.Empty) Then
 
                 'payeeDV.RowFilter = payeeDV.RowFilter & " and code <>'" & ClaimInvoice.PAYEE_OPTION_MASTER_CENTER & "'"
-                Dim payeeTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+                Dim payeeTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
                                                                                   If (li.Code <> ClaimInvoice.PAYEE_OPTION_MASTER_CENTER) Then
                                                                                       Return li.Translation
                                                                                   Else
@@ -1044,7 +1048,7 @@ Partial Class PayClaimForm
 
             If State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty) Then
                 'payeeDV.RowFilter = payeeDV.RowFilter & " and code <>'" & ClaimInvoice.PAYEE_OPTION_LOANER_CENTER & "'"
-                Dim payeeTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+                Dim payeeTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
                                                                                   If (li.Code <> ClaimInvoice.PAYEE_OPTION_LOANER_CENTER) Then
                                                                                       Return li.Translation
                                                                                   Else
@@ -1081,7 +1085,7 @@ Partial Class PayClaimForm
             Dim dvDocumentType As DataView = LookupListNew.DropdownLookupList("DTYP", Authentication.LangId, True)
             'dvDocumentType.RowFilter = dvDocumentType.RowFilter & " and code <>'" & Codes.DOCUMENT_TYPE__CON & "'"
             'Me.BindListControlToDataView(Me.cboDocumentTypeId, dvDocumentType)
-            Dim documentTypeTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+            Dim documentTypeTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
                                                                                      If (li.Code <> Codes.DOCUMENT_TYPE__CON) Then
                                                                                          Return li.Translation
                                                                                      Else
@@ -1095,9 +1099,9 @@ Partial Class PayClaimForm
                                                  })
             'Me.BindListControlToDataView(cboRegionDropID, LookupListNew.GetRegionLookupList(oCompany.CountryId))
 
-            Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+            Dim oListContext As New ListContext
             oListContext.CountryId = oCompany.CountryId
-            Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+            Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
             cboRegionDropID.Populate(oRegionList, New PopulateOptions() With
                                                    {
                                                    .AddBlankItem = True
@@ -1120,7 +1124,7 @@ Partial Class PayClaimForm
                     hasGiftCardAttriute = True
                 End If
 
-                Dim listItem As ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode("PMTHD", Codes.PAYMENT_METHOD__DARTY_GIFT_CARD))
+                Dim listItem As WebControls.ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode("PMTHD", Codes.PAYMENT_METHOD__DARTY_GIFT_CARD))
 
                 'Exclude Darty gift card from the dealers with no attribute or dealer with the attribute and payee not Customer
                 If (listItem IsNot Nothing) Then
@@ -1288,7 +1292,7 @@ Partial Class PayClaimForm
                         PopulateControlFromBOProperty(txtTotalWithholdingAmount, .WithholdingAmount)
                     End If
                     GrandTotal = totAmount + State.ClaimInvoiceBO.WithholdingAmount.Value
-                    txtGrandTotal.Text = System.Convert.ToString(GrandTotal)
+                    txtGrandTotal.Text = Convert.ToString(GrandTotal)
                     hdGrandTotalAmt.Value = GrandTotal
 
                     PopulateControlFromBOProperty(txtSubTotal, authdetailTtl)
@@ -1336,7 +1340,7 @@ Partial Class PayClaimForm
 
                 If State.ClaimInvoiceBO.WithholdingAmount Is Nothing Then State.ClaimInvoiceBO.WithholdingAmount = New DecimalType(0D)
                 GrandTotal = TotalAmount + State.TotalManualTaxes + PerceptionIIBB + PerceptionIVA + State.ClaimInvoiceBO.WithholdingAmount.Value
-                txtGrandTotal.Text = System.Convert.ToString(GrandTotal)
+                txtGrandTotal.Text = Convert.ToString(GrandTotal)
                 hdGrandTotalAmt.Value = GrandTotal
 
                 PopulateControlFromBOProperty(txtIvaTax, .IvaAmount)
@@ -1802,7 +1806,7 @@ Partial Class PayClaimForm
                 'TotalVal = CType(hdTotal.Value.Replace(",", ""), Decimal)
                 'DEF-22413-START
                 'TotalVal = Decimal.Parse(hdTotal.Value.Trim, System.Globalization.NumberStyles.Any, System.Threading.Thread.CurrentThread.CurrentCulture)
-                TotalVal = Decimal.Parse(hdTotal.Value.Trim.Replace(ElitaPlusPage.GetGroupSeperator(System.Threading.Thread.CurrentThread.CurrentCulture.ToString()), ""), System.Globalization.NumberStyles.Any, System.Threading.Thread.CurrentThread.CurrentCulture)
+                TotalVal = Decimal.Parse(hdTotal.Value.Trim.Replace(GetGroupSeperator(Thread.CurrentThread.CurrentCulture.ToString()), ""), NumberStyles.Any, Thread.CurrentThread.CurrentCulture)
                 'DEF-22413-END
             End If
 
@@ -1811,7 +1815,7 @@ Partial Class PayClaimForm
                 'OtherAmt = CType(hdOtherAmt.Value.Replace(",", ""), Decimal)
                 'DEF-22413-START
                 'OtherAmt = Decimal.Parse(hdOtherAmt.Value.Trim, System.Globalization.NumberStyles.Any, System.Threading.Thread.CurrentThread.CurrentCulture)
-                OtherAmt = Decimal.Parse(hdOtherAmt.Value.Trim.Replace(ElitaPlusPage.GetGroupSeperator(System.Threading.Thread.CurrentThread.CurrentCulture.ToString()), ""), System.Globalization.NumberStyles.Any, System.Threading.Thread.CurrentThread.CurrentCulture)
+                OtherAmt = Decimal.Parse(hdOtherAmt.Value.Trim.Replace(GetGroupSeperator(Thread.CurrentThread.CurrentCulture.ToString()), ""), NumberStyles.Any, Thread.CurrentThread.CurrentCulture)
                 'DEF-22413-END
             End If
 
@@ -2179,29 +2183,29 @@ Partial Class PayClaimForm
                 CleanConsumedActions()
             ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         If CheckStatusAndSaveClaimInvoice() Then
                             If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
-                                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                             End If
                             CleanConsumedActions()
                         End If
-                    Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                    Case DetailPageCommand.BackOnErr
                         ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.ClaimInvoiceBO, State.ChangesMade))
                         CleanConsumedActions()
-                    Case ElitaPlusPage.DetailPageCommand.Accept
+                    Case DetailPageCommand.Accept
                         State.ClaimInvoiceBO.CloseClaim = True
                         If SaveClaimInvoice() Then
                             If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
-                                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                             End If
                         End If
                         CleanConsumedActions()
-                    Case ElitaPlusPage.DetailPageCommand.OK
+                    Case DetailPageCommand.OK
                         State.ClaimInvoiceBO.CloseClaim = True
                         If SaveClaimInvoice() Then
                             Dim claim As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
@@ -2210,7 +2214,7 @@ Partial Class PayClaimForm
                             If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
-                                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                             End If
                         End If
                         CleanConsumedActions()
@@ -2220,41 +2224,41 @@ Partial Class PayClaimForm
                 End Select
             ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         State.ClaimInvoiceBO.cancelEdit()
                         If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                             NavController.Navigate(Me, "back")
                         Else
-                            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                         End If
-                    Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                    Case DetailPageCommand.BackOnErr
                         MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
-                    Case ElitaPlusPage.DetailPageCommand.Accept
+                    Case DetailPageCommand.Accept
                         State.ClaimInvoiceBO.CloseClaim = False
                         If SaveClaimInvoice() Then
                             If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
-                                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                             End If
                         End If
-                    Case ElitaPlusPage.DetailPageCommand.OK
+                    Case DetailPageCommand.OK
                         If SaveClaimInvoice() Then
                             If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
-                                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                             End If
                         End If
                 End Select
                 CleanConsumedActions()
                 'in this case, we need to exit after we show the message
                 'so we dont care about user's response
-            ElseIf Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK Then
+            ElseIf Me.State.ActionInProgress = DetailPageCommand.OK Then
                 If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                     NavController.Navigate(Me, "back")
                 Else
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                    ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                 End If
                 CleanConsumedActions()
             End If
@@ -2269,7 +2273,7 @@ Partial Class PayClaimForm
 
     Private Sub CleanConsumedActions()
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
@@ -2391,30 +2395,30 @@ Partial Class PayClaimForm
 
 #Region "Button_handlers"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             PopulateBOsFromForm(False, False)
             If State.isClaimSystemMaintAllowed AndAlso (Not State.ViewOnly) AndAlso State.ClaimInvoiceBO.IsDirty Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = DetailPageCommand.Back
             Else
                 If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                     NavController.Navigate(Me, "back")
                 Else
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+                    ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = MasterPage.MessageController.Text
         End Try
 
     End Sub
 
-    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Try
             State.ClaimInvoiceBO.RefreshCurrentClaim()
             CheckStatusAndSaveClaimInvoice()
@@ -2473,10 +2477,10 @@ Partial Class PayClaimForm
                     'for repair claim, if the remaining amt > 0 then ask for confirmation or else just close the claim.
                     State.ClaimInvoiceBO.CloseClaim = False
                     If Not isPendingReplacement Then
-                        If System.Math.Abs(State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
+                        If Math.Abs(State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
                             'Check with the user...
                             DisplayMessage(Message.MSG_PROMPT_FOR_CLOSING_THE_CLAIM, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                            State.ActionInProgress = DetailPageCommand.Accept
                             Return True
                         Else
                             Return ProcessPayClaim(True, isPendingReplacement)
@@ -2489,9 +2493,9 @@ Partial Class PayClaimForm
                 DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Return True
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DALConcurrencyAccessException
+        Catch ex As DALConcurrencyAccessException
             DisplayMessage(Message.MSG_ANOTHER_USER_HAS_MODIFIED_THIS_CLAIM_THE_SYSTEM_MUST_REFRESH_THIS_SCREEN, "", MSG_BTN_OK, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+            State.ActionInProgress = DetailPageCommand.Accept
             Return False
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -2544,22 +2548,22 @@ Partial Class PayClaimForm
                     State.ClaimBO.CertItemCoverageId, DateHelper.GetDateValue(txtRepairDate.Text)) = 0) Then
                 'If reaminingamount is > 0 then ask for confirmation 
                 State.ClaimInvoiceBO.CloseClaim = False
-                If System.Math.Abs(State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
+                If Math.Abs(State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
                     DisplayMessage(Message.MSG_PROMPT_FOR_CLOSING_THE_CLAIM, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                    State.ActionInProgress = DetailPageCommand.Accept
                     Return True
                 End If
                 Return SaveClaimInvoice()
             Else
                 DisplayMessage(Message.MSG_PROMPT_FOR_HAVE_ITEM_REPLACED, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 Return True
             End If
         Else
             State.ClaimInvoiceBO.CloseClaim = False
-            If System.Math.Abs(State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
+            If Math.Abs(State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
                 DisplayMessage(Message.MSG_PROMPT_FOR_CLOSING_THE_CLAIM, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                State.ActionInProgress = DetailPageCommand.Accept
                 Return True
             End If
             Return SaveClaimInvoice()
@@ -2572,9 +2576,9 @@ Partial Class PayClaimForm
             State.ClaimInvoiceBO.Save()
             State.ClaimInvoiceBO.EndEdit()
             State.ChangesMade = True
-            Dim listItem As ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode(
+            Dim listItem As WebControls.ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode(
                                                                       "PMTHD", Codes.PAYMENT_METHOD__DARTY_GIFT_CARD))
-            Dim listItem1 As ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode(
+            Dim listItem1 As WebControls.ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode(
                                                                    "PMTHD", Codes.PAYMENT_METHOD__BANK_TRANSFER))
             If (listItem IsNot Nothing) Then
                 If (cboPayeeSelector.SelectedItem.Text.ToUpper = Payee_Customer AndAlso PaymentMethodDrop.SelectedItem.Text = listItem.Text) Then
@@ -2609,16 +2613,16 @@ Partial Class PayClaimForm
 
             PopulateFormFromBOs()
             EnableDisableFields()
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+            State.ActionInProgress = DetailPageCommand.OK
             DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Return True
         Catch ex As ElitaPlusException
             Throw ex
             HandleErrors(ex, MasterPage.MessageController)
             Return False
-        Catch ex As Assurant.ElitaPlus.DALObjects.DALConcurrencyAccessException
+        Catch ex As DALConcurrencyAccessException
             DisplayMessage(Message.MSG_ANOTHER_USER_HAS_MODIFIED_THIS_CLAIM_THE_SYSTEM_MUST_REFRESH_THIS_SCREEN, "", MSG_BTN_OK, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+            State.ActionInProgress = DetailPageCommand.Accept
             Return False
         Catch ex As Exception
             Throw ex
@@ -2627,7 +2631,7 @@ Partial Class PayClaimForm
         End Try
     End Function
 
-    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         Try
             PopulateControlFromBOProperty(txtGrandTotal, 0.0)
             PopulateFormFromBOs()
@@ -2644,13 +2648,13 @@ Partial Class PayClaimForm
                 objParm.ManualTaxList = State.ManualTaxes
                 callPage(PayClaimManualTaxForm.URL, objParm)
             End If
-        Catch exT As System.Threading.ThreadAbortException
+        Catch exT As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnPartsInfo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnPartsInfo_WRITE.Click
+    Private Sub btnPartsInfo_WRITE_Click(sender As Object, e As EventArgs) Handles btnPartsInfo_WRITE.Click
         Try
             State.PartsInfoViewed = True
 
@@ -2668,7 +2672,7 @@ Partial Class PayClaimForm
                     '    Me.callPage(PartsInfoForm.URL, Me.State.ClaimBO)
                 End If
             End If
-        Catch exT As System.Threading.ThreadAbortException
+        Catch exT As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -2685,7 +2689,7 @@ Partial Class PayClaimForm
         Return New ClaimAuthDetailForm.Parameters(claimBO, Nothing, Nothing)
     End Function
 
-    Private Sub btnAuthDetail_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAuthDetail_WRITE.Click
+    Private Sub btnAuthDetail_WRITE_Click(sender As Object, e As EventArgs) Handles btnAuthDetail_WRITE.Click
         Try
             If State.ClaimBO IsNot Nothing Then
                 'DEF-17426
@@ -2694,16 +2698,16 @@ Partial Class PayClaimForm
                 'Me.callPage(ClaimAuthDetailForm.URL, Me.State.ClaimBO) 'DEF-17426
                 NavController.Navigate(Me, "auth_detail", BuildClaimAuthDetailParameters)
             End If
-        Catch exT As System.Threading.ThreadAbortException
+        Catch exT As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnReplacement_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnReplacement_WRITE.Click
+    Private Sub btnReplacement_WRITE_Click(sender As Object, e As EventArgs) Handles btnReplacement_WRITE.Click
         Try
             PopulateBOsFromForm(True, True)
-            callPage(Claims.ReplacementForm.URL, New Claims.ReplacementForm.Parameters(False, State.ClaimInvoiceBO.Invoiceable.Claim_Id))
-        Catch exT As System.Threading.ThreadAbortException
+            callPage(ReplacementForm.URL, New ReplacementForm.Parameters(False, State.ClaimInvoiceBO.Invoiceable.Claim_Id))
+        Catch exT As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -2711,7 +2715,7 @@ Partial Class PayClaimForm
 
 
 
-    Private Sub cboPayeeSelector_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPayeeSelector.SelectedIndexChanged
+    Private Sub cboPayeeSelector_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPayeeSelector.SelectedIndexChanged
         Try
             PayeeChanged(GetSelectedItem(cboPayeeSelector), True)
             LoadClaimTaxRates()
@@ -2719,7 +2723,7 @@ Partial Class PayClaimForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub PaymentMethodDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles PaymentMethodDrop.SelectedIndexChanged
+    Private Sub PaymentMethodDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PaymentMethodDrop.SelectedIndexChanged
         Try
             PaymentMethodChanged(GetSelectedItem(PaymentMethodDrop), GetSelectedItem(cboPayeeSelector), True)
         Catch ex As Exception
@@ -3258,7 +3262,7 @@ Partial Class PayClaimForm
 
     Private Function IsGiftCardValid() As Boolean
 
-        Dim listItem As ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode(
+        Dim listItem As WebControls.ListItem = PaymentMethodDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode(
                                                                       "PMTHD", Codes.PAYMENT_METHOD__DARTY_GIFT_CARD))
         If (listItem IsNot Nothing) Then
             If (cboPayeeSelector.SelectedItem.Text.ToUpper = Payee_Customer AndAlso PaymentMethodDrop.SelectedItem.Text = listItem.Text) Then

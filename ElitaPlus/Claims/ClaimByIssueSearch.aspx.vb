@@ -1,5 +1,8 @@
-﻿Imports System.Globalization
+﻿Imports System.Collections.Generic
+Imports System.Globalization
 Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
@@ -128,7 +131,7 @@ navCtrl.PrevNavState IsNot Nothing Then
 #End Region
 
 #Region "Page_Events"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         'Put user code to initialize the page here
         'Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
         ClientScript.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
@@ -267,7 +270,7 @@ navCtrl.PrevNavState IsNot Nothing Then
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
             ControlMgr.SetVisibleControl(Me, Grid, False)
@@ -286,7 +289,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearState()
             ClearSearch()
@@ -376,24 +379,24 @@ navCtrl.PrevNavState IsNot Nothing Then
 
             If String.IsNullOrEmpty(txtIssueAddedFromDate.Text) = False Then
                 Try
-                    DateTime.TryParseExact(txtIssueAddedFromDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
+                    DateTime.TryParseExact(txtIssueAddedFromDate.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
                         State.Criterias.IssueAddedFromDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
-                    ElitaPlusPage.SetLabelError(Label2)
+                    SetLabelError(Label2)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End Try
             End If
 
             If String.IsNullOrEmpty(txtIssueAddedToDate.Text) = False Then
                 Try
-                    DateTime.TryParseExact(txtIssueAddedToDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
+                    DateTime.TryParseExact(txtIssueAddedToDate.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
                         State.Criterias.IssueAddedToDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
-                    ElitaPlusPage.SetLabelError(Label4)
+                    SetLabelError(Label4)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End Try
             End If
@@ -500,18 +503,18 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Try
     End Sub
 
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             'UserCompanyList &= ",'" & GuidControl.GuidToHexString(UserCompanyies(Index))
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
                 If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
@@ -569,7 +572,7 @@ navCtrl.PrevNavState IsNot Nothing Then
 
 #Region " Datagrid Related "
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -588,7 +591,7 @@ navCtrl.PrevNavState IsNot Nothing Then
 
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -598,7 +601,7 @@ navCtrl.PrevNavState IsNot Nothing Then
     End Sub
 
     'The Binding Logic is here
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         'Dim itemType As ListItemType = CType(e.Row.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditClaimItem As LinkButton
@@ -644,7 +647,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDv.Count, State.PageSize)
@@ -655,7 +658,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Try
     End Sub
 
-    Public Sub Grid_RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Public Sub Grid_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim rowIndex As Integer = 0
         Dim claimid As String = String.Empty
         Try
@@ -691,14 +694,14 @@ navCtrl.PrevNavState IsNot Nothing Then
 
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -706,7 +709,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             State.SelectedClaimId = Guid.Empty
@@ -718,9 +721,9 @@ navCtrl.PrevNavState IsNot Nothing Then
 #End Region
 
 #Region "Ajax Funtions"
-    <System.Web.Services.WebMethod(), System.Web.Script.Services.ScriptMethod()>
-    Public Shared Function GetClaimIssueByType(issueTypestr As String) As System.Collections.Generic.List(Of WebControls.ListItem)
-        Dim listitems As System.Collections.Generic.List(Of WebControls.ListItem) = New System.Collections.Generic.List(Of WebControls.ListItem)
+    <WebMethod(), ScriptMethod()>
+    Public Shared Function GetClaimIssueByType(issueTypestr As String) As List(Of WebControls.ListItem)
+        Dim listitems As List(Of WebControls.ListItem) = New List(Of WebControls.ListItem)
         Dim issueTypeId As Guid
         Try
             issueTypeId = New Guid(issueTypestr)

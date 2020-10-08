@@ -1,4 +1,5 @@
-﻿Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
+﻿Imports System.Diagnostics
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
@@ -10,11 +11,11 @@ Partial Class ClaimReimbursementForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -75,7 +76,7 @@ Partial Class ClaimReimbursementForm
 
     End Class
 #End Region
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear_Hide()
 
         If (Not Page.IsPostBack) Then
@@ -165,7 +166,7 @@ Partial Class ClaimReimbursementForm
                 MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                 EnableDisableAfterSave()
             Else
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION, True)
                 'Throw New GUIException(Message.ERR_SAVING_DATA, ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
             End If
 

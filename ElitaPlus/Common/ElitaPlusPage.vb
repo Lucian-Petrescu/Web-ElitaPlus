@@ -2016,7 +2016,11 @@ Public Class ElitaPlusPage
         Dim LongDateTimeValue = formattedDate + " " + FormattedTime
         Dim i As String = LongDateTimeValue.IndexOf(" ")
         If i <> -1 Then
-            LongDateTimeValue = LongDateTimeValue.Substring(0, i + 9)
+            If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                LongDateTimeValue = LongDateTimeValue.Substring(0, i + 12)
+            Else
+                LongDateTimeValue = LongDateTimeValue.Substring(0, i + 9)
+            End If
         End If
         Return LongDateTimeValue.ToString()
     End Function

@@ -1,5 +1,6 @@
 ﻿Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Public Class InvoiceGroupListForm
@@ -77,7 +78,7 @@ Public Class InvoiceGroupListForm
             End If
             State.IsGridVisible = False
             Select Case retObj.LastOperation
-                Case ElitaPlusPage.DetailPageCommand.Back
+                Case DetailPageCommand.Back
                     If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
                             State.selectedInvoiceGroupId = retObj.EditingBo.Id
@@ -85,7 +86,7 @@ Public Class InvoiceGroupListForm
                         End If
 
                     End If
-                Case ElitaPlusPage.DetailPageCommand.Delete
+                Case DetailPageCommand.Delete
                     DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     'Case ElitaPlusPage.DetailPageCommand.Expire
                     '    Me.DisplayMessage(Message.EXPIRE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
@@ -98,7 +99,7 @@ Public Class InvoiceGroupListForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         MasterPage.MessageController.Clear()
         Form.DefaultButton = btnSearch.UniqueID
@@ -154,7 +155,7 @@ Public Class InvoiceGroupListForm
 
 #Region "Button Event Handlers"
 
-    Private Sub btnClearSearch_Click(Sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(Sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception
@@ -163,7 +164,7 @@ Public Class InvoiceGroupListForm
 
     End Sub
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             Dim begindate, enddate As Date
             If Date.TryParse(txtgrpnumbfromdate.Text, begindate) AndAlso Date.TryParse(txtgrpnumbertodate.Text, enddate) Then
@@ -188,7 +189,7 @@ Public Class InvoiceGroupListForm
         End Try
     End Sub
 
-    Private Sub btnnew_CLick(sender As System.Object, e As System.EventArgs) Handles btnNew.Click
+    Private Sub btnnew_CLick(sender As Object, e As EventArgs) Handles btnNew.Click
         Try
             callPage(InvoiceGroupDetailForm.URL)
         Catch ex As Exception
@@ -324,9 +325,9 @@ Public Class InvoiceGroupListForm
             'Dim langID As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             'Me.BindListControlToDataView(Me.ddlcountry, LookupListNew.GetUserCountriesLookupList)
             'Me.BindListControlToDataView(Me.ddlStatus, LookupListNew.DropdownLookupList(LookupListNew.LK_INVOICE_STATUS, langID))
-            Dim CountryList As DataElements.ListItem() =
+            Dim CountryList As ListItem() =
                                 CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.Country)
-            Dim UserCountries As DataElements.ListItem() = (From Country In CountryList
+            Dim UserCountries As ListItem() = (From Country In CountryList
                                                             Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                             Select Country).ToArray()
             ddlcountry.Populate(UserCountries.ToArray(),
@@ -335,7 +336,7 @@ Public Class InvoiceGroupListForm
                                 .AddBlankItem = True
                             })
 
-            Dim StatusList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
+            Dim StatusList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
                                                                                                         languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             ddlStatus.Populate(StatusList.ToArray(),
                                     New PopulateOptions() With
@@ -351,7 +352,7 @@ Public Class InvoiceGroupListForm
         Try
             'Dim langID As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             'Me.BindListControlToDataView(Me.ddlStatus, LookupListNew.DropdownLookupList(LookupListNew.LK_INVOICE_STATUS, langID))
-            Dim StatusList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
+            Dim StatusList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
                                                                                                         languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             ddlStatus.Populate(StatusList.ToArray(),
                                     New PopulateOptions() With
@@ -365,7 +366,7 @@ Public Class InvoiceGroupListForm
 #End Region
 
 #Region "DataGrid Related"
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -391,7 +392,7 @@ Public Class InvoiceGroupListForm
         End Try
     End Sub
 
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs) Handles Grid.ItemCommand
         Try
             Dim recievedate As Date
             If e.CommandName = "SelectAction" Then
@@ -401,18 +402,18 @@ Public Class InvoiceGroupListForm
 
                 callPage(InvoiceGroupDetailForm.URL, State.selectedInvoiceGroupId)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = e.NewPageIndex
             State.selectedInvoiceGroupId = Guid.Empty
@@ -423,7 +424,7 @@ Public Class InvoiceGroupListForm
     End Sub
 
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -433,7 +434,7 @@ Public Class InvoiceGroupListForm
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
 
             If State.SortExpression.StartsWith(e.SortExpression) Then

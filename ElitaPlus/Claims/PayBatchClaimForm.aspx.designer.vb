@@ -20,7 +20,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelServiceCenter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelServiceCenter As Label
 
     '''<summary>
     '''tdlblbatch control.
@@ -29,7 +29,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdlblbatch As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdlblbatch As HtmlTableCell
 
     '''<summary>
     '''LabelBatchNumber control.
@@ -38,7 +38,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelBatchNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelBatchNumber As Label
 
     '''<summary>
     '''td1 control.
@@ -47,7 +47,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents td1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents td1 As HtmlTableCell
 
     '''<summary>
     '''lblInvTyp control.
@@ -56,7 +56,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvTyp As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvTyp As Label
 
     '''<summary>
     '''LabelRepairDate control.
@@ -65,7 +65,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelRepairDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelRepairDate As Label
 
     '''<summary>
     '''TextBoxServiceCenter control.
@@ -74,7 +74,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxServiceCenter As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxServiceCenter As TextBox
 
     '''<summary>
     '''tdtxtbatch control.
@@ -83,7 +83,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdtxtbatch As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdtxtbatch As HtmlTableCell
 
     '''<summary>
     '''TextBoxBatchNumber control.
@@ -92,7 +92,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxBatchNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxBatchNumber As TextBox
 
     '''<summary>
     '''td2 control.
@@ -101,7 +101,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents td2 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents td2 As HtmlTableCell
 
     '''<summary>
     '''txtInvTyp control.
@@ -110,7 +110,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtInvTyp As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtInvTyp As TextBox
 
     '''<summary>
     '''TextBoxRepairDate control.
@@ -119,7 +119,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxRepairDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxRepairDate As TextBox
 
     '''<summary>
     '''ImageButtonRepirDate control.
@@ -128,7 +128,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageButtonRepirDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageButtonRepirDate As ImageButton
 
     '''<summary>
     '''btnAddRepairDate_WRITE control.
@@ -137,7 +137,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnAddRepairDate_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnAddRepairDate_WRITE As Button
 
     '''<summary>
     '''LabelInvoiceNumber control.
@@ -146,7 +146,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelInvoiceNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelInvoiceNumber As Label
 
     '''<summary>
     '''LabelInvoiceAmount control.
@@ -155,7 +155,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelInvoiceAmount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelInvoiceAmount As Label
 
     '''<summary>
     '''tdlblstate control.
@@ -164,7 +164,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdlblstate As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdlblstate As HtmlTableCell
 
     '''<summary>
     '''LabelState control.
@@ -173,7 +173,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelState As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelState As Label
 
     '''<summary>
     '''tdlbltax1 control.
@@ -182,7 +182,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdlbltax1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdlbltax1 As HtmlTableCell
 
     '''<summary>
     '''LabelPerceptionIVA control.
@@ -191,7 +191,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelPerceptionIVA As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelPerceptionIVA As Label
 
     '''<summary>
     '''TextBoxInvoiceNumber control.
@@ -200,7 +200,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxInvoiceNumber As TextBox
 
     '''<summary>
     '''TextBoxInvoiceAmount control.
@@ -209,7 +209,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxInvoiceAmount As TextBox
 
     '''<summary>
     '''tddpstate control.
@@ -218,7 +218,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tddpstate As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tddpstate As HtmlTableCell
 
     '''<summary>
     '''DropDownState control.
@@ -227,7 +227,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents DropDownState As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents DropDownState As DropDownList
 
     '''<summary>
     '''tdtxttax1 control.
@@ -236,7 +236,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdtxttax1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdtxttax1 As HtmlTableCell
 
     '''<summary>
     '''TextBoxPerceptionIVA control.
@@ -245,7 +245,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxPerceptionIVA As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxPerceptionIVA As TextBox
 
     '''<summary>
     '''LabelCurrentAmount control.
@@ -254,7 +254,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCurrentAmount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCurrentAmount As Label
 
     '''<summary>
     '''LabelInvoiceDate control.
@@ -263,7 +263,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelInvoiceDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelInvoiceDate As Label
 
     '''<summary>
     '''LabelDifference control.
@@ -272,7 +272,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDifference As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDifference As Label
 
     '''<summary>
     '''tdlbltax2 control.
@@ -281,7 +281,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdlbltax2 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdlbltax2 As HtmlTableCell
 
     '''<summary>
     '''LabeLPerceptionIIBB control.
@@ -290,7 +290,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabeLPerceptionIIBB As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabeLPerceptionIIBB As Label
 
     '''<summary>
     '''TextBoxCurrentAmount control.
@@ -299,7 +299,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxCurrentAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxCurrentAmount As TextBox
 
     '''<summary>
     '''TextBoxInvoiceDate control.
@@ -308,7 +308,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxInvoiceDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxInvoiceDate As TextBox
 
     '''<summary>
     '''TextBoxDifference control.
@@ -317,7 +317,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxDifference As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxDifference As TextBox
 
     '''<summary>
     '''tdtxttax2 control.
@@ -326,7 +326,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdtxttax2 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdtxttax2 As HtmlTableCell
 
     '''<summary>
     '''TextBoxPerceptionIIBB control.
@@ -335,7 +335,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxPerceptionIIBB As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxPerceptionIIBB As TextBox
 
     '''<summary>
     '''inpCurrentAmt control.
@@ -344,7 +344,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents inpCurrentAmt As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents inpCurrentAmt As HtmlInputHidden
 
     '''<summary>
     '''inpDifference control.
@@ -353,7 +353,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents inpDifference As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents inpDifference As HtmlInputHidden
 
     '''<summary>
     '''InvoiceTabs control.
@@ -362,7 +362,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents InvoiceTabs As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents InvoiceTabs As HtmlGenericControl
 
     '''<summary>
     '''hdnSelectedTab control.
@@ -371,7 +371,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hdnSelectedTab As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hdnSelectedTab As HiddenField
 
     '''<summary>
     '''lblsearchInvoice control.
@@ -380,7 +380,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblsearchInvoice As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblsearchInvoice As Label
 
     '''<summary>
     '''Label6 control.
@@ -389,7 +389,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label6 As Label
 
     '''<summary>
     '''trPageSize control.
@@ -398,7 +398,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -407,7 +407,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -416,7 +416,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -425,7 +425,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''GridClaims control.
@@ -434,7 +434,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridClaims As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents GridClaims As GridView
 
     '''<summary>
     '''IIBBTaxes control.
@@ -443,7 +443,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents IIBBTaxes As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes
+    Protected WithEvents IIBBTaxes As UserControlInvoiceRegionTaxes
 
     '''<summary>
     '''tr1 control.
@@ -452,7 +452,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents tr1 As HtmlTableRow
 
     '''<summary>
     '''lblRejectReason control.
@@ -461,7 +461,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRejectReason As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRejectReason As Label
 
     '''<summary>
     '''txtareaRejectReason control.
@@ -470,7 +470,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtareaRejectReason As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtareaRejectReason As TextBox
 
     '''<summary>
     '''tr2 control.
@@ -479,7 +479,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tr2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents tr2 As HtmlTableRow
 
     '''<summary>
     '''btnRejectSave control.
@@ -488,7 +488,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnRejectSave As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnRejectSave As Button
 
     '''<summary>
     '''btnRejectCancel control.
@@ -497,7 +497,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnRejectCancel As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnRejectCancel As Button
 
     '''<summary>
     '''btnCancel control.
@@ -506,7 +506,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancel As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancel As Button
 
     '''<summary>
     '''btnSave_WRITE control.
@@ -515,7 +515,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave_WRITE As Button
 
     '''<summary>
     '''btnPay_WRITE control.
@@ -524,7 +524,7 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnPay_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnPay_WRITE As Button
 
     '''<summary>
     '''btnReject_WRITE control.
@@ -533,5 +533,5 @@ Partial Public Class PayBatchClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnReject_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnReject_WRITE As Button
 End Class

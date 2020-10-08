@@ -9,6 +9,8 @@ Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.BusinessObjectsNew.DocumentImaging
+Imports Assurant.ElitaPlus.BusinessObjectsNew.WrkQueue
 
 Public Class ImagingIndexingForm
     Inherits ElitaPlusSearchPage
@@ -77,7 +79,7 @@ Public Class ImagingIndexingForm
         Public RspositoryId As Guid
         Public ImageName As String
         Public DocInfo As DocumentInfo
-        Public WorkQueueItem As WorkQueueItem
+        Public WorkQueueItem As BusinessObjectsNew.WorkQueueItem
         Public Action As BaseActionProvider
         Public claimStatus As String = String.Empty
         'Public InputParameters As WorkQueueItem
@@ -118,7 +120,7 @@ Public Class ImagingIndexingForm
     End Property
 
     Protected Sub InitializeFromFlowSession()
-        State.WorkQueueItem = CType(NavController.ParametersPassed, WorkQueueItem)
+        State.WorkQueueItem = CType(NavController.ParametersPassed, BusinessObjectsNew.WorkQueueItem)
     End Sub
 
 #End Region
@@ -131,7 +133,7 @@ Public Class ImagingIndexingForm
         End If
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             MasterPage.MessageController.Clear_Hide()
             moMessageController.Clear_Hide()
@@ -175,14 +177,14 @@ Public Class ImagingIndexingForm
     End Sub
 
     Private Sub LoadDocumentBeforeIndexing()
-        Dim oDoc As Doc.Document = New Doc.Document
+        Dim oDoc As Document = New Document
         Dim xid As Guid
-        Dim oDocInfo As Doc.DocumentInfo = New Doc.DocumentInfo
+        Dim oDocInfo As DocumentInfo = New DocumentInfo
         Try
             xid = State.WorkQueueItem.WorkQueueItem.ImageId
-            oDoc = DocumentImaging.Doc.DownloadDocument(xid)
+            oDoc = Doc.DownloadDocument(xid)
             oDocInfo = CType(oDoc, DocumentInfo)
-            State.DocInfo = New Doc.DocumentInfo
+            State.DocInfo = New DocumentInfo
             'Using the Reflection Extension method directly on the source object
             oDocInfo.CopyProperties(State.DocInfo)
             State.ImageName = State.WorkQueueItem.WorkQueueItem.ImageId.ToString
@@ -266,11 +268,11 @@ Public Class ImagingIndexingForm
 
     Sub PopulateClaimStatusDropDown()
         Try
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(""))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_PENDING))
-            cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_CLOSED))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(""))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_PENDING))
+            cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_CLOSED))
             If State.claimStatus IsNot String.Empty Then
                 Dim setClaimStatusText As String
                 If State.claimStatus = Codes.CLAIM_STATUS__ACTIVE Then
@@ -294,7 +296,7 @@ Public Class ImagingIndexingForm
 
 #Region "PopUp Button Clicks "
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             If (TextBoxSearchClaimNumber.Text = "" AndAlso
                 TextBoxSearchCustomerName.Text = "" AndAlso
@@ -330,7 +332,7 @@ Public Class ImagingIndexingForm
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             clearSearch()
             ClaimSearchGridView.DataSource = State.searchDV
@@ -352,7 +354,7 @@ Public Class ImagingIndexingForm
         TextBoxSearchAuthorizedAmount.Text = String.Empty
     End Sub
 
-    Private Sub btnCancelSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnCancelSearch.Click
+    Private Sub btnCancelSearch_Click(sender As Object, e As EventArgs) Handles btnCancelSearch.Click
         Try
             mdlPopup.Hide()
             dvBottom.Style(HtmlTextWriterStyle.Display) = "None"
@@ -392,7 +394,7 @@ Public Class ImagingIndexingForm
                     Return False
                 Else
                     State.authorizedAmountCulture = TextBoxSearchAuthorizedAmount.Text
-                    State.authorizedAmount = dblAmount.ToString(System.Threading.Thread.CurrentThread.CurrentCulture.InvariantCulture)
+                    State.authorizedAmount = dblAmount.ToString(Thread.CurrentThread.CurrentCulture.InvariantCulture)
                 End If
             Else
                 State.authorizedAmount = TextBoxSearchAuthorizedAmount.Text
@@ -467,7 +469,7 @@ Public Class ImagingIndexingForm
         End Try
     End Sub
 
-    Private Sub ClaimSearchGridView_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ClaimSearchGridView.RowCreated
+    Private Sub ClaimSearchGridView_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles ClaimSearchGridView.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -475,7 +477,7 @@ Public Class ImagingIndexingForm
         End Try
     End Sub
 
-    Private Sub ClaimSearchGridView_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles ClaimSearchGridView.PageIndexChanging
+    Private Sub ClaimSearchGridView_PageIndexChanging(source As Object, e As GridViewPageEventArgs) Handles ClaimSearchGridView.PageIndexChanging
         Try
             State.PageIndex = e.NewPageIndex
             ClaimSearchGridView.PageIndex = State.PageIndex
@@ -490,7 +492,7 @@ Public Class ImagingIndexingForm
         End Try
     End Sub
 
-    Private Sub ClaimSearchGridView_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ClaimSearchGridView.RowDataBound
+    Private Sub ClaimSearchGridView_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles ClaimSearchGridView.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             If (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -507,7 +509,7 @@ Public Class ImagingIndexingForm
         End Try
     End Sub
 
-    Public Sub btnNewItemAdd_Click(sender As System.Object, e As System.EventArgs) Handles btnNewItemAdd.Click
+    Public Sub btnNewItemAdd_Click(sender As Object, e As EventArgs) Handles btnNewItemAdd.Click
         Dim oClaim As Claim
         Dim oCompany As Company
         Try
@@ -588,9 +590,9 @@ Public Class ImagingIndexingForm
             oMataData.Value = State.SelectedCompanyCode
             oDocInfo(IDX_DOC_INFO).MetadataList(IDX_ATTB_THREE) = oMataData
             oDocInfo(IDX_DOC_INFO).UpdatedBy = ElitaPlusIdentity.Current.ActiveUser.UniqueId
-            DocumentImaging.Doc.UpdateDocument(oDocInfo(IDX_DOC_INFO))
+            Doc.UpdateDocument(oDocInfo(IDX_DOC_INFO))
         Else
-            MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.ERR_SAVING_DATA)
+            MasterPage.MessageController.AddSuccess(Message.ERR_SAVING_DATA)
         End If
 
     End Sub
@@ -609,7 +611,7 @@ Public Class ImagingIndexingForm
         End Try
     End Sub
 
-    Private Sub btnNewItemCancel_Click(sender As Object, e As System.EventArgs) Handles btnNewItemCancel.Click
+    Private Sub btnNewItemCancel_Click(sender As Object, e As EventArgs) Handles btnNewItemCancel.Click
         Try
             mdlPopup.Hide()
             dvBottom.Style(HtmlTextWriterStyle.Display) = "None"
@@ -628,13 +630,13 @@ Public Class ImagingIndexingForm
         End Try
     End Sub
 
-    Protected Sub ddlWorkQueueList_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlWorkQueueList.SelectedIndexChanged
+    Protected Sub ddlWorkQueueList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlWorkQueueList.SelectedIndexChanged
 
-        Dim wq As WorkQueue
-        Dim wqReasonList As System.Web.UI.WebControls.ListItem()
+        Dim wq As BusinessObjectsNew.WorkQueue
+        Dim wqReasonList As WebControls.ListItem()
         If (Not String.IsNullOrEmpty(ddlWorkQueueList.SelectedItem.Value)) Then
-            wq = New WorkQueue(New Guid(ddlWorkQueueList.SelectedItem.Value))
-            wqReasonList = (From wqr In wq.ReDirectReasons Select New System.Web.UI.WebControls.ListItem(If(wqr.Description Is Nothing, wqr.ItemStatusReason.Reason, wqr.Description), wqr.ItemStatusReason.Id.ToString())).ToArray()
+            wq = New BusinessObjectsNew.WorkQueue(New Guid(ddlWorkQueueList.SelectedItem.Value))
+            wqReasonList = (From wqr In wq.ReDirectReasons Select New WebControls.ListItem(If(wqr.Description Is Nothing, wqr.ItemStatusReason.Reason, wqr.Description), wqr.ItemStatusReason.Id.ToString())).ToArray()
             BindListControlToArray(rdbtRedirectRsn, wqReasonList, False, False, Guid.Empty.ToString())
             ddlWorkQueueList.SelectedValue = ddlWorkQueueList.SelectedItem.Value
             If (wqReasonList.Count = 0) Then
@@ -675,9 +677,9 @@ Public Class ImagingIndexingForm
         lblQueueToRedirect.Text = TranslationBase.TranslateLabelOrMessage("QUEUE_NAME")
         msgRedirectReasons.Text = TranslationBase.TranslateLabelOrMessage("MSG_SELECT_REDIRECT_REASON")
 
-        Dim wqList As System.Web.UI.WebControls.ListItem()
+        Dim wqList As WebControls.ListItem()
         Dim wqReasonList As ListItem()
-        wqList = (From wq In GetWorkQueueList(State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode, State.WorkQueueItem.WorkQueue.WorkQueue.ActionCode) Select New System.Web.UI.WebControls.ListItem(wq.Name, wq.Id.ToString())).ToArray()
+        wqList = (From wq In GetWorkQueueList(State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode, State.WorkQueueItem.WorkQueue.WorkQueue.ActionCode) Select New WebControls.ListItem(wq.Name, wq.Id.ToString())).ToArray()
         BindListControlToArray(ddlWorkQueueList, wqList, False, True, Guid.Empty.ToString())
         If (wqList.Count = 0) Then
             msgRedirectReasons.Text = TranslationBase.TranslateLabelOrMessage("MSG_NO_WORK_QUEUES_TO_POPULATE")
@@ -700,13 +702,13 @@ Public Class ImagingIndexingForm
 
     End Sub
 
-    Private Function GetWorkQueueList(companyCode As String, actionCode As String) As WrkQueue.WorkQueue()
-        Dim wkQList As WrkQueue.WorkQueue() = WorkQueue.GetList("*", companyCode, actionCode, Date.Now.UtcNow, False)
+    Private Function GetWorkQueueList(companyCode As String, actionCode As String) As WorkQueue()
+        Dim wkQList As WorkQueue() = BusinessObjectsNew.WorkQueue.GetList("*", companyCode, actionCode, Date.Now.UtcNow, False)
         wkQList = (From wq In wkQList Where wq.Id <> State.WorkQueueItem.WorkQueue.Id Select wq).ToArray()
         Return wkQList
     End Function
 
-    Protected Sub btnRedirectContinue_Click(sender As Object, e As System.EventArgs) Handles btnRedirectContinue.Click
+    Protected Sub btnRedirectContinue_Click(sender As Object, e As EventArgs) Handles btnRedirectContinue.Click
         If Not ddlWorkQueueList.SelectedIndex > BLANK_ITEM_SELECTED Then
             msgRedirectReasons.Text = TranslationBase.TranslateLabelOrMessage("MSG_SELECT_WORK_QUEUE")
             modalMessageBoxRedirect.Attributes.Add("class", "errorMsg")

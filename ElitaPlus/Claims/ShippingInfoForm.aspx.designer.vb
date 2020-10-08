@@ -22,7 +22,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''TablesLabel control.
@@ -31,7 +31,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TablesLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents TablesLabel As Label
 
     '''<summary>
     '''MaintainShippingInfoLabel control.
@@ -40,7 +40,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MaintainShippingInfoLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents MaintainShippingInfoLabel As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -49,7 +49,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''LabelCredit_Card_Number control.
@@ -58,7 +58,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCredit_Card_Number As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCredit_Card_Number As Label
 
     '''<summary>
     '''TextboxCredit_Card_Number control.
@@ -67,7 +67,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxCredit_Card_Number As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxCredit_Card_Number As TextBox
 
     '''<summary>
     '''Label1 control.
@@ -76,7 +76,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''LabelAuthorization_Number control.
@@ -85,7 +85,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAuthorization_Number As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAuthorization_Number As Label
 
     '''<summary>
     '''TextboxAuthorization_Number control.
@@ -94,7 +94,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxAuthorization_Number As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxAuthorization_Number As TextBox
 
     '''<summary>
     '''moAddress1Label control.
@@ -103,7 +103,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress1Label As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moAddress1Label As Label
 
     '''<summary>
     '''moAddress1Text control.
@@ -112,7 +112,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress1Text As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAddress1Text As TextBox
 
     '''<summary>
     '''moAddress2Label control.
@@ -121,7 +121,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress2Label As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moAddress2Label As Label
 
     '''<summary>
     '''moAddress2Text control.
@@ -130,7 +130,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress2Text As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAddress2Text As TextBox
 
     '''<summary>
     '''moCityLabel control.
@@ -139,7 +139,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCityLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCityLabel As Label
 
     '''<summary>
     '''moCityText control.
@@ -148,7 +148,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCityText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moCityText As TextBox
 
     '''<summary>
     '''moRegionLabel control.
@@ -157,7 +157,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRegionLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moRegionLabel As Label
 
     '''<summary>
     '''moRegionDrop_WRITE control.
@@ -166,7 +166,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRegionDrop_WRITE As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moRegionDrop_WRITE As DropDownList
 
     '''<summary>
     '''moPostalLabel control.
@@ -175,7 +175,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPostalLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moPostalLabel As Label
 
     '''<summary>
     '''moPostalText control.
@@ -184,7 +184,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPostalText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPostalText As TextBox
 
     '''<summary>
     '''moCountryLabel control.
@@ -193,7 +193,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCountryLabel As Label
 
     '''<summary>
     '''moCountryDrop_WRITE control.
@@ -202,7 +202,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryDrop_WRITE As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moCountryDrop_WRITE As DropDownList
 
     '''<summary>
     '''LabelPROCESSING_FEE control.
@@ -211,7 +211,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelPROCESSING_FEE As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelPROCESSING_FEE As Label
 
     '''<summary>
     '''TextboxPROCESSING_FEE control.
@@ -220,7 +220,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxPROCESSING_FEE As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxPROCESSING_FEE As TextBox
 
     '''<summary>
     '''LabelTOTAL_CHARGE control.
@@ -229,7 +229,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTOTAL_CHARGE As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTOTAL_CHARGE As Label
 
     '''<summary>
     '''TextboxTOTAL_CHARGE control.
@@ -238,7 +238,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxTOTAL_CHARGE As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxTOTAL_CHARGE As TextBox
 
     '''<summary>
     '''btnBack control.
@@ -247,7 +247,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''SaveButton_WRITE control.
@@ -256,7 +256,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SaveButton_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents SaveButton_WRITE As Button
 
     '''<summary>
     '''btnUndo_Write control.
@@ -265,7 +265,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnUndo_Write As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnUndo_Write As Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -274,7 +274,7 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 
     '''<summary>
     '''HiddenUserAuthorization control.
@@ -283,5 +283,5 @@ Partial Public Class ShippingInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenUserAuthorization As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenUserAuthorization As HtmlInputHidden
 End Class

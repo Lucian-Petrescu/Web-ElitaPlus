@@ -1,3 +1,4 @@
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.DALObjects
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
@@ -130,15 +131,15 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -148,7 +149,7 @@ Namespace Claims
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             MasterPage.MessageController.Clear()
             Try
@@ -157,8 +158,8 @@ Namespace Claims
                 If Not Page.IsPostBack Then
                     SetStateProperties()
                     UpdateBreadCrum()
-                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", ElitaPlusPage.MSG_BTN_YES_NO,
-                                                                        ElitaPlusPage.MSG_TYPE_CONFIRM, True)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                        MSG_TYPE_CONFIRM, True)
                 Else
                     CheckIfComingFromConfirm()
                 End If
@@ -183,7 +184,7 @@ Namespace Claims
             Try
                 If State.moParams.mbIsClaimFormCalling = True Then
                     ' Claim Detail
-                    Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
+                    Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
                     ReturnToCallingPage(retType)
                 Else
                     ' Pay Claim
@@ -194,16 +195,16 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 If State.IsDirty = True Then
-                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM,
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
                                             HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -219,7 +220,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
             Try
                 SaveReplacementChanges()
             Catch ex As Exception
@@ -227,7 +228,7 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 SetDisplayMode(True)
                 ClearAll()
@@ -237,18 +238,18 @@ Namespace Claims
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteReplacement() = True Then
                     GoBack()
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub BtnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnEdit_WRITE.Click
+        Private Sub BtnEdit_WRITE_Click(sender As Object, e As EventArgs) Handles BtnEdit_WRITE.Click
             Try
                 SetDisplayMode(False)
             Catch ex As Exception
@@ -432,8 +433,8 @@ Namespace Claims
                 With pReplacedEquipment
                     .ClaimId = State.moParams.moClaimId
                     ' DropDowns
-                    .ManufacturerId = ElitaPlusPage.GetSelectedItem(NewManufacturerDropDown)
-                    .DeviceTypeId = ElitaPlusPage.GetSelectedItem(DeviceTypeDropDown)
+                    .ManufacturerId = GetSelectedItem(NewManufacturerDropDown)
+                    .DeviceTypeId = GetSelectedItem(DeviceTypeDropDown)
                     ' Texts
                     PopulateBOProperty(pReplacedEquipment, "Model", NewModelTextBox.Text)
                     PopulateBOProperty(pReplacedEquipment, "SerialNumber", NewSerialNumberTextBox.Text)
@@ -448,7 +449,7 @@ Namespace Claims
             End Try
         End Sub
         Private Sub populateCertItemBOFromForm(oCertItem As CertItem)
-            oCertItem.ManufacturerId = ElitaPlusPage.GetSelectedItem(NewManufacturerDropDown)
+            oCertItem.ManufacturerId = GetSelectedItem(NewManufacturerDropDown)
             PopulateBOProperty(oCertItem, "SerialNumber", NewSerialNumberTextBox.Text)
             PopulateBOProperty(oCertItem, "IMEINumber", NewImeiNumberTextBox.Text)
             PopulateBOProperty(oCertItem, "Model", NewModelTextBox.Text)
@@ -516,7 +517,7 @@ Namespace Claims
                 Dim blnCreateExtendedStatus As Boolean = False
                 Dim blnAnyStatusFound As Boolean = False
                 'check if action status "Replacement IMEI Changed" is configured
-                Dim dv As DataView = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+                Dim dv As DataView = ClaimStatusAction.LoadList()
                 If dv.Count > 0 Then
                     Dim dvAction As DataView = LookupListNew.GetClaimStatsActionLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     Dim actionCode As String
@@ -575,12 +576,12 @@ Namespace Claims
                     ' Return from the Back Button
 
                     Select Case confResponse
-                        Case ElitaPlusPage.MSG_VALUE_YES
+                        Case MSG_VALUE_YES
                             ' Save and go back to Search Page
                             If ApplyReplacementChanges() = True Then
                                 GoBack()
                             End If
-                        Case ElitaPlusPage.MSG_VALUE_NO
+                        Case MSG_VALUE_NO
                             ' Go back to Search Page
                             GoBack()
                     End Select
@@ -593,12 +594,12 @@ Namespace Claims
         Protected Sub CheckIfComingFromConfirm()
             Try
                 Select Case State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         ComingFromBack()
                 End Select
 
                 'Clean after consuming the action
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                State.ActionInProgress = DetailPageCommand.Nothing_
                 HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)

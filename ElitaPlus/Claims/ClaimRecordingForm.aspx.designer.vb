@@ -20,7 +20,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moProtectionEvtDtl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ProtectionAndEventDetails
+    Protected WithEvents moProtectionEvtDtl As ProtectionAndEventDetails
 
     '''<summary>
     '''ScriptManager1 control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    Protected WithEvents ScriptManager1 As ScriptManager
 
     '''<summary>
     '''lblModalTitle control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblModalTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblModalTitle As Label
 
     '''<summary>
     '''Img1 control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Img1 As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents Img1 As HtmlImage
 
     '''<summary>
     '''imgMsgIcon control.
@@ -56,7 +56,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgMsgIcon As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents imgMsgIcon As HtmlImage
 
     '''<summary>
     '''tdModalMessage control.
@@ -65,7 +65,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdModalMessage As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdModalMessage As HtmlTableCell
 
     '''<summary>
     '''lblCancelMessage control.
@@ -74,7 +74,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCancelMessage As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCancelMessage As Label
 
     '''<summary>
     '''tdBtnArea control.
@@ -83,7 +83,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdBtnArea As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdBtnArea As HtmlTableCell
 
     '''<summary>
     '''btnCancelYes control.
@@ -92,7 +92,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancelYes As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancelYes As Button
 
     '''<summary>
     '''btnModalCancelNo control.
@@ -101,7 +101,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnModalCancelNo As Global.System.Web.UI.HtmlControls.HtmlInputButton
+    Protected WithEvents btnModalCancelNo As HtmlInputButton
 
     '''<summary>
     '''mvClaimsRecording control.
@@ -110,7 +110,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mvClaimsRecording As Global.System.Web.UI.WebControls.MultiView
+    Protected WithEvents mvClaimsRecording As MultiView
 
     '''<summary>
     '''vCaller control.
@@ -119,7 +119,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vCaller As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vCaller As View
 
     '''<summary>
     '''Div1 control.
@@ -128,7 +128,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Div1 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents Div1 As HtmlGenericControl
 
     '''<summary>
     '''trPurpose control.
@@ -137,7 +137,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPurpose As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPurpose As HtmlTableRow
 
     '''<summary>
     '''lblPurpose control.
@@ -146,7 +146,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPurpose As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPurpose As Label
 
     '''<summary>
     '''Label4 control.
@@ -155,7 +155,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label4 As Label
 
     '''<summary>
     '''moPurposecode control.
@@ -164,7 +164,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPurposecode As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moPurposecode As DropDownList
 
     '''<summary>
     '''trCallers control.
@@ -173,7 +173,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trCallers As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trCallers As HtmlTableRow
 
     '''<summary>
     '''ucCallerInfo control.
@@ -182,7 +182,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ucCallerInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlCallerInfo
+    Protected WithEvents ucCallerInfo As UserControlCallerInfo
 
     '''<summary>
     '''hprevCallerinformation control.
@@ -191,7 +191,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hprevCallerinformation As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents hprevCallerinformation As HtmlGenericControl
 
     '''<summary>
     '''lvlPreCaller control.
@@ -200,7 +200,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lvlPreCaller As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lvlPreCaller As Label
 
     '''<summary>
     '''ucPrevCallerInfo control.
@@ -209,7 +209,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ucPrevCallerInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlCallerInfo
+    Protected WithEvents ucPrevCallerInfo As UserControlCallerInfo
 
     '''<summary>
     '''btn_Caller_Cont control.
@@ -218,7 +218,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Caller_Cont As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btn_Caller_Cont As Button
 
     '''<summary>
     '''btn_Caller_SaveExit control.
@@ -227,7 +227,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Caller_SaveExit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btn_Caller_SaveExit As Button
 
     '''<summary>
     '''btn_Caller_Cancel control.
@@ -236,7 +236,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Caller_Cancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents btn_Caller_Cancel As LinkButton
 
     '''<summary>
     '''vDevice control.
@@ -245,7 +245,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vDevice As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vDevice As View
 
     '''<summary>
     '''Device_Selection control.
@@ -254,7 +254,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Device_Selection As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents Device_Selection As HtmlGenericControl
 
     '''<summary>
     '''lblDevice control.
@@ -263,7 +263,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDevice As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDevice As Label
 
     '''<summary>
     '''GridItems control.
@@ -272,7 +272,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridItems As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents GridItems As GridView
 
     '''<summary>
     '''btnNewCertRegItem_WRITE control.
@@ -281,7 +281,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnNewCertRegItem_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnNewCertRegItem_WRITE As Button
 
     '''<summary>
     '''divDeviceInfoContainer control.
@@ -290,7 +290,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents divDeviceInfoContainer As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divDeviceInfoContainer As HtmlGenericControl
 
     '''<summary>
     '''headerDeviceInfo control.
@@ -299,7 +299,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents headerDeviceInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents headerDeviceInfo As HtmlGenericControl
 
     '''<summary>
     '''lblModifyDvcInfo control.
@@ -308,7 +308,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblModifyDvcInfo As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblModifyDvcInfo As Label
 
     '''<summary>
     '''lblDvcSelected control.
@@ -317,7 +317,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcSelected As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcSelected As Label
 
     '''<summary>
     '''lblDvcCorrected control.
@@ -326,7 +326,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcCorrected As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcCorrected As Label
 
     '''<summary>
     '''lblDvcMake control.
@@ -335,7 +335,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcMake As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcMake As Label
 
     '''<summary>
     '''lblDvcMakeValue control.
@@ -344,7 +344,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcMakeValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcMakeValue As Label
 
     '''<summary>
     '''ddlDvcMake control.
@@ -353,7 +353,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlDvcMake As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlDvcMake As DropDownList
 
     '''<summary>
     '''txtDvcMake control.
@@ -362,7 +362,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDvcMake As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDvcMake As TextBox
 
     '''<summary>
     '''lblDvcModel control.
@@ -371,7 +371,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcModel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcModel As Label
 
     '''<summary>
     '''lblDvcModelValue control.
@@ -380,7 +380,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcModelValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcModelValue As Label
 
     '''<summary>
     '''ddlDvcModel control.
@@ -389,7 +389,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlDvcModel As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlDvcModel As DropDownList
 
     '''<summary>
     '''txtDvcModel control.
@@ -398,7 +398,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDvcModel As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDvcModel As TextBox
 
     '''<summary>
     '''lblDvcImei control.
@@ -407,7 +407,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcImei As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcImei As Label
 
     '''<summary>
     '''lblDvcImeiValue control.
@@ -416,7 +416,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcImeiValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcImeiValue As Label
 
     '''<summary>
     '''txtDvcImei control.
@@ -425,7 +425,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDvcImei As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDvcImei As TextBox
 
     '''<summary>
     '''lblDvcSerialNumber control.
@@ -434,7 +434,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcSerialNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcSerialNumber As Label
 
     '''<summary>
     '''lblDvcSerialNumberValue control.
@@ -443,7 +443,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcSerialNumberValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcSerialNumberValue As Label
 
     '''<summary>
     '''txtDvcSerialNumber control.
@@ -452,7 +452,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDvcSerialNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDvcSerialNumber As TextBox
 
     '''<summary>
     '''lblDvcColor control.
@@ -461,7 +461,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcColor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcColor As Label
 
     '''<summary>
     '''lblDvcColorValue control.
@@ -470,7 +470,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcColorValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcColorValue As Label
 
     '''<summary>
     '''txtDvcColor control.
@@ -479,7 +479,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDvcColor As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDvcColor As TextBox
 
     '''<summary>
     '''lblDvcCapacity control.
@@ -488,7 +488,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcCapacity As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcCapacity As Label
 
     '''<summary>
     '''lblDvcCapacityValue control.
@@ -497,7 +497,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDvcCapacityValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDvcCapacityValue As Label
 
     '''<summary>
     '''txtDvcCapacity control.
@@ -506,7 +506,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDvcCapacity As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDvcCapacity As TextBox
 
     '''<summary>
     '''btn_Device_Cont control.
@@ -515,7 +515,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Device_Cont As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btn_Device_Cont As Button
 
     '''<summary>
     '''btn_Device_SaveExit control.
@@ -524,7 +524,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Device_SaveExit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btn_Device_SaveExit As Button
 
     '''<summary>
     '''btn_Device_Cancel control.
@@ -533,7 +533,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Device_Cancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents btn_Device_Cancel As LinkButton
 
     '''<summary>
     '''vQuestion control.
@@ -542,7 +542,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vQuestion As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vQuestion As View
 
     '''<summary>
     '''questionUserControl control.
@@ -551,7 +551,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents questionUserControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlQuestion
+    Protected WithEvents questionUserControl As UserControlQuestion
 
     '''<summary>
     '''btn_Quest_Cont control.
@@ -560,7 +560,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Quest_Cont As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btn_Quest_Cont As Button
 
     '''<summary>
     '''btn_Quest_SaveExit control.
@@ -569,7 +569,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Quest_SaveExit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btn_Quest_SaveExit As Button
 
     '''<summary>
     '''btn_Quest_Cancel control.
@@ -578,7 +578,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btn_Quest_Cancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents btn_Quest_Cancel As LinkButton
 
     '''<summary>
     '''vTroubleShooting control.
@@ -587,7 +587,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vTroubleShooting As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vTroubleShooting As View
 
     '''<summary>
     '''hTroubleShooting control.
@@ -596,7 +596,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hTroubleShooting As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents hTroubleShooting As HtmlGenericControl
 
     '''<summary>
     '''lblTroubleShooting control.
@@ -605,7 +605,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTroubleShooting As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblTroubleShooting As Label
 
     '''<summary>
     '''tblTroubleShooting control.
@@ -614,7 +614,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tblTroubleShooting As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents tblTroubleShooting As HtmlTable
 
     '''<summary>
     '''Label1 control.
@@ -623,7 +623,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''rdoTbYes control.
@@ -632,7 +632,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdoTbYes As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents rdoTbYes As RadioButton
 
     '''<summary>
     '''rdoTbNo control.
@@ -641,7 +641,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdoTbNo As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents rdoTbNo As RadioButton
 
     '''<summary>
     '''rdoTbSkipped control.
@@ -650,7 +650,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdoTbSkipped As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents rdoTbSkipped As RadioButton
 
     '''<summary>
     '''ButtonTBcontinue control.
@@ -659,7 +659,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ButtonTBcontinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents ButtonTBcontinue As Button
 
     '''<summary>
     '''ButtonTBSaveExit control.
@@ -668,7 +668,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ButtonTBSaveExit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents ButtonTBSaveExit As Button
 
     '''<summary>
     '''LinkButtonTBCancel control.
@@ -677,7 +677,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButtonTBCancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents LinkButtonTBCancel As LinkButton
 
     '''<summary>
     '''vBestReplacementDevice control.
@@ -686,7 +686,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vBestReplacementDevice As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vBestReplacementDevice As View
 
     '''<summary>
     '''Label2 control.
@@ -695,7 +695,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label2 As Label
 
     '''<summary>
     '''trPageSize control.
@@ -704,7 +704,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblRecordCount control.
@@ -713,7 +713,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''rep control.
@@ -722,7 +722,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rep As Global.System.Web.UI.WebControls.Repeater
+    Protected WithEvents rep As Repeater
 
     '''<summary>
     '''btnBestReplacementNotSelectedContinue control.
@@ -731,7 +731,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBestReplacementNotSelectedContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBestReplacementNotSelectedContinue As Button
 
     '''<summary>
     '''LinkButtonBestReplacementCancel control.
@@ -740,7 +740,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButtonBestReplacementCancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents LinkButtonBestReplacementCancel As LinkButton
 
     '''<summary>
     '''vFulfillmentOptions control.
@@ -749,7 +749,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vFulfillmentOptions As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vFulfillmentOptions As View
 
     '''<summary>
     '''lblFulfillmentOptions control.
@@ -758,7 +758,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblFulfillmentOptions As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblFulfillmentOptions As Label
 
     '''<summary>
     '''lblFulfillmentOptionNoRecordsFound control.
@@ -767,7 +767,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblFulfillmentOptionNoRecordsFound As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblFulfillmentOptionNoRecordsFound As Label
 
     '''<summary>
     '''GridViewFulfillmentOptions control.
@@ -776,7 +776,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridViewFulfillmentOptions As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents GridViewFulfillmentOptions As GridView
 
     '''<summary>
     '''fulfillmentOptionQuestions control.
@@ -785,7 +785,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents fulfillmentOptionQuestions As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlQuestion
+    Protected WithEvents fulfillmentOptionQuestions As UserControlQuestion
 
     '''<summary>
     '''btnFulfillmentOptionsContinue control.
@@ -794,7 +794,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnFulfillmentOptionsContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnFulfillmentOptionsContinue As Button
 
     '''<summary>
     '''LinkButtonFulfillmentOptionsCancel control.
@@ -803,7 +803,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButtonFulfillmentOptionsCancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents LinkButtonFulfillmentOptionsCancel As LinkButton
 
     '''<summary>
     '''vLogisticsOptions control.
@@ -812,7 +812,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vLogisticsOptions As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vLogisticsOptions As View
 
     '''<summary>
     '''lblLogisticsOptions control.
@@ -821,7 +821,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblLogisticsOptions As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblLogisticsOptions As Label
 
     '''<summary>
     '''lblLogisticsOptionNoRecordsFound control.
@@ -830,7 +830,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblLogisticsOptionNoRecordsFound As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblLogisticsOptionNoRecordsFound As Label
 
     '''<summary>
     '''lblLogisticStageName control.
@@ -839,7 +839,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblLogisticStageName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblLogisticStageName As Label
 
     '''<summary>
     '''lblLogisticStageDescription control.
@@ -848,7 +848,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblLogisticStageDescription As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblLogisticStageDescription As Label
 
     '''<summary>
     '''GridViewLogisticsOptions control.
@@ -857,7 +857,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridViewLogisticsOptions As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents GridViewLogisticsOptions As GridView
 
     '''<summary>
     '''btnLogisticsOptionsBack control.
@@ -866,7 +866,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnLogisticsOptionsBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnLogisticsOptionsBack As Button
 
     '''<summary>
     '''btnLogisticsOptionsContinue control.
@@ -875,7 +875,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnLogisticsOptionsContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnLogisticsOptionsContinue As Button
 
     '''<summary>
     '''LinkButtonLogisticsOptionsCancel control.
@@ -884,7 +884,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButtonLogisticsOptionsCancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents LinkButtonLogisticsOptionsCancel As LinkButton
 
     '''<summary>
     '''vShippingAddress control.
@@ -893,7 +893,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vShippingAddress As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vShippingAddress As View
 
     '''<summary>
     '''dvStep4 control.
@@ -902,7 +902,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents dvStep4 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents dvStep4 As HtmlGenericControl
 
     '''<summary>
     '''ShippingAddress control.
@@ -911,7 +911,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ShippingAddress As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents ShippingAddress As HtmlGenericControl
 
     '''<summary>
     '''LabelShippingAddress control.
@@ -920,7 +920,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelShippingAddress As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelShippingAddress As Label
 
     '''<summary>
     '''LabelSelectShippingAddress control.
@@ -929,7 +929,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSelectShippingAddress As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSelectShippingAddress As Label
 
     '''<summary>
     '''RadioButtonBillingAddress control.
@@ -938,7 +938,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents RadioButtonBillingAddress As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents RadioButtonBillingAddress As RadioButton
 
     '''<summary>
     '''RadioButtonOtherAddress control.
@@ -947,7 +947,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents RadioButtonOtherAddress As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents RadioButtonOtherAddress As RadioButton
 
     '''<summary>
     '''moAddressController control.
@@ -956,7 +956,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddressController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlAddress_New
+    Protected WithEvents moAddressController As UserControlAddress_New
 
     '''<summary>
     '''trDeliveryDates control.
@@ -965,7 +965,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trDeliveryDates As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trDeliveryDates As HtmlTableRow
 
     '''<summary>
     '''lblGetDeliveryDates control.
@@ -974,7 +974,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblGetDeliveryDates As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblGetDeliveryDates As Label
 
     '''<summary>
     '''btnGetDeliveryDate control.
@@ -983,7 +983,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnGetDeliveryDate As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnGetDeliveryDate As Button
 
     '''<summary>
     '''UserControlDeliverySlot control.
@@ -992,7 +992,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents UserControlDeliverySlot As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDeliverySlot
+    Protected WithEvents UserControlDeliverySlot As UserControlDeliverySlot
 
     '''<summary>
     '''ButtonShippingAddressContinue control.
@@ -1001,7 +1001,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ButtonShippingAddressContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents ButtonShippingAddressContinue As Button
 
     '''<summary>
     '''ButtonShippingAddressSaveExit control.
@@ -1010,7 +1010,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ButtonShippingAddressSaveExit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents ButtonShippingAddressSaveExit As Button
 
     '''<summary>
     '''LinkButtonShippingAddressCancel control.
@@ -1019,7 +1019,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButtonShippingAddressCancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents LinkButtonShippingAddressCancel As LinkButton
 
     '''<summary>
     '''vDynamicFulfillment control.
@@ -1028,7 +1028,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents vDynamicFulfillment As Global.System.Web.UI.WebControls.View
+    Protected WithEvents vDynamicFulfillment As View
 
     '''<summary>
     '''phDynamicFulfillmentUI control.
@@ -1037,7 +1037,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents phDynamicFulfillmentUI As Global.System.Web.UI.WebControls.PlaceHolder
+    Protected WithEvents phDynamicFulfillmentUI As PlaceHolder
 
     '''<summary>
     '''btnContinue control.
@@ -1046,7 +1046,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnContinue As Button
 
     '''<summary>
     '''btnLegacyContinue control.
@@ -1055,7 +1055,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnLegacyContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnLegacyContinue As Button
 
     '''<summary>
     '''hdnData control.
@@ -1064,7 +1064,7 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hdnData As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hdnData As HiddenField
 
     '''<summary>
     '''lnkCancel control.
@@ -1073,5 +1073,5 @@ Partial Public Class ClaimRecordingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lnkCancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents lnkCancel As LinkButton
 End Class

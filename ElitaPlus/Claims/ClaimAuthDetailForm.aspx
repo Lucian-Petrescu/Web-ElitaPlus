@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimAuthDetailForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimAuthDetailForm" %>
 
+<%@ Import Namespace="System.Globalization" %>
 <%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -170,8 +171,8 @@
 
 				if (bClaimTaxRatesExist) {
 				    //debugger;
-                    var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-                    var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+                    var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+                    var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
 
 				    var hdLaborTaxAmt = document.getElementById("hdLaborTaxAmt");
 				    var hdPartsTaxAmt = document.getElementById("hdPartsTaxAmt");

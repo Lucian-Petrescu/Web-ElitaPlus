@@ -50,10 +50,10 @@ Partial Public Class InventorySearchForm
         Public PageIndex As Integer = 0
         Public PageSize As Integer = 30
         Public SortColumn As String = DefaultSortColumn
-        Public SortDirection As WebControls.SortDirection = WebControls.SortDirection.Ascending
+        Public SortDirection As SortDirection = SortDirection.Ascending
         Public ReadOnly Property SortExpression As String
             Get
-                Return String.Format("{0} {1}", SortColumn, If(SortDirection = WebControls.SortDirection.Ascending, "ASC", "DESC"))
+                Return String.Format("{0} {1}", SortColumn, If(SortDirection = SortDirection.Ascending, "ASC", "DESC"))
             End Get
         End Property
 
@@ -191,16 +191,16 @@ Partial Public Class InventorySearchForm
         End If
     End Sub
 
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
                 If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
@@ -309,7 +309,7 @@ Partial Public Class InventorySearchForm
             Else
                 keySelector = Function(vi) vi.VendorSku
             End If
-            Dim dataSource = If(State.SortDirection = WebControls.SortDirection.Ascending, State.VendorInventoryData.OrderBy(Of String)(keySelector), State.VendorInventoryData.OrderByDescending(Of String)(keySelector))
+            Dim dataSource = If(State.SortDirection = SortDirection.Ascending, State.VendorInventoryData.OrderBy(Of String)(keySelector), State.VendorInventoryData.OrderByDescending(Of String)(keySelector))
 
             Grid.DataSource = dataSource.ToList()
             HighLightSortColumn(Grid, State.SortExpression, True)
@@ -475,9 +475,9 @@ Partial Public Class InventorySearchForm
     Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If (State.SortColumn = e.SortExpression) Then
-                State.SortDirection = If(State.SortDirection = WebControls.SortDirection.Ascending, WebControls.SortDirection.Descending, WebControls.SortDirection.Ascending)
+                State.SortDirection = If(State.SortDirection = SortDirection.Ascending, SortDirection.Descending, SortDirection.Ascending)
             Else
-                State.SortDirection = WebControls.SortDirection.Ascending
+                State.SortDirection = SortDirection.Ascending
             End If
             State.SortColumn = e.SortExpression
             State.PageIndex = 0
@@ -535,7 +535,7 @@ Partial Public Class InventorySearchForm
                                                            Return c.SearchVendorInventory(wsRequest)
                                                        End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 

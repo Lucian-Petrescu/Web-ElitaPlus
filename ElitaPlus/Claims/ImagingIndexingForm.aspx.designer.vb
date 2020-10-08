@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports AjaxControlToolkit
 
 Partial Public Class ImagingIndexingForm
 
@@ -20,7 +21,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    Protected WithEvents ScriptManager1 As ScriptManager
 
     '''<summary>
     '''lblImage control.
@@ -29,7 +30,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblImage As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblImage As Label
 
     '''<summary>
     '''txtImage control.
@@ -38,7 +39,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtImage As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtImage As TextBox
 
     '''<summary>
     '''lblScanDate control.
@@ -47,7 +48,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblScanDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblScanDate As Label
 
     '''<summary>
     '''txtScanDate control.
@@ -56,7 +57,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtScanDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtScanDate As TextBox
 
     '''<summary>
     '''lblClaimNumber control.
@@ -65,7 +66,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblClaimNumber As Label
 
     '''<summary>
     '''txtClaimNumber control.
@@ -74,7 +75,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtClaimNumber As TextBox
 
     '''<summary>
     '''hfClaimId control.
@@ -83,7 +84,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents hfClaimId As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hfClaimId As HiddenField
 
     '''<summary>
     '''imgBtnClaimLookup control.
@@ -92,7 +93,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgBtnClaimLookup As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents imgBtnClaimLookup As ImageButton
 
     '''<summary>
     '''LinkButton1 control.
@@ -101,7 +102,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButton1 As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents LinkButton1 As LinkButton
 
     '''<summary>
     '''lblDocumentType control.
@@ -110,7 +111,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDocumentType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDocumentType As Label
 
     '''<summary>
     '''ddlDocumentType control.
@@ -119,7 +120,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlDocumentType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlDocumentType As DropDownList
 
     '''<summary>
     '''Label1 control.
@@ -128,7 +129,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''txtMobileNumber control.
@@ -137,7 +138,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtMobileNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtMobileNumber As TextBox
 
     '''<summary>
     '''Label2 control.
@@ -146,7 +147,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label2 As Label
 
     '''<summary>
     '''txtCertificateNumber control.
@@ -155,7 +156,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCertificateNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCertificateNumber As TextBox
 
     '''<summary>
     '''pdfIframe control.
@@ -164,7 +165,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents pdfIframe As Global.System.Web.UI.HtmlControls.HtmlIframe
+    Protected WithEvents pdfIframe As HtmlIframe
 
     '''<summary>
     '''btnSave control.
@@ -173,7 +174,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave As Button
 
     '''<summary>
     '''btnRedirect control.
@@ -182,7 +183,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnRedirect As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnRedirect As Button
 
     '''<summary>
     '''LinkButton2 control.
@@ -191,7 +192,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButton2 As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents LinkButton2 As LinkButton
 
     '''<summary>
     '''mdlPopup control.
@@ -200,7 +201,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mdlPopup As Global.AjaxControlToolkit.ModalPopupExtender
+    Protected WithEvents mdlPopup As ModalPopupExtender
 
     '''<summary>
     '''pnlPopup control.
@@ -209,7 +210,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents pnlPopup As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents pnlPopup As Panel
 
     '''<summary>
     '''lblModalTitle control.
@@ -218,7 +219,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblModalTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblModalTitle As Label
 
     '''<summary>
     '''moMessageController control.
@@ -227,7 +228,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moMessageController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
+    Protected WithEvents moMessageController As MessageController
 
     '''<summary>
     '''LabelSearchClaimNumber control.
@@ -236,7 +237,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchClaimNumber As Label
 
     '''<summary>
     '''LabelSearchCustomerName control.
@@ -245,7 +246,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchCustomerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchCustomerName As Label
 
     '''<summary>
     '''LabelSearchClaimStatus control.
@@ -254,7 +255,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchClaimStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchClaimStatus As Label
 
     '''<summary>
     '''TextBoxSearchClaimNumber control.
@@ -263,7 +264,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchClaimNumber As TextBox
 
     '''<summary>
     '''TextBoxSearchCustomerName control.
@@ -272,7 +273,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchCustomerName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchCustomerName As TextBox
 
     '''<summary>
     '''cboClaimStatus control.
@@ -281,7 +282,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboClaimStatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboClaimStatus As DropDownList
 
     '''<summary>
     '''LabelSearchServiceCenter control.
@@ -290,7 +291,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchServiceCenter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchServiceCenter As Label
 
     '''<summary>
     '''LabelSearchAuthorizationNumber control.
@@ -299,7 +300,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchAuthorizationNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchAuthorizationNumber As Label
 
     '''<summary>
     '''LabelSearchAuthorizedAmount control.
@@ -308,7 +309,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchAuthorizedAmount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchAuthorizedAmount As Label
 
     '''<summary>
     '''moServiceCenterText control.
@@ -317,7 +318,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceCenterText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moServiceCenterText As TextBox
 
     '''<summary>
     '''TextBoxSearchAuthorizationNumber control.
@@ -326,7 +327,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchAuthorizationNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchAuthorizationNumber As TextBox
 
     '''<summary>
     '''TextBoxSearchAuthorizedAmount control.
@@ -335,7 +336,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchAuthorizedAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchAuthorizedAmount As TextBox
 
     '''<summary>
     '''lblSortBy control.
@@ -344,7 +345,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSortBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSortBy As Label
 
     '''<summary>
     '''cboSortBy control.
@@ -353,7 +354,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSortBy As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSortBy As DropDownList
 
     '''<summary>
     '''btnCancelSearch control.
@@ -362,7 +363,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancelSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancelSearch As Button
 
     '''<summary>
     '''btnClearSearch control.
@@ -371,7 +372,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -380,7 +381,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''trPageSize control.
@@ -389,7 +390,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblRecordCount control.
@@ -398,7 +399,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''dvBottom control.
@@ -407,7 +408,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents dvBottom As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents dvBottom As HtmlGenericControl
 
     '''<summary>
     '''ClaimSearchGridView control.
@@ -416,7 +417,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimSearchGridView As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents ClaimSearchGridView As GridView
 
     '''<summary>
     '''btnDiv control.
@@ -425,7 +426,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDiv As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents btnDiv As HtmlGenericControl
 
     '''<summary>
     '''btnNewItemAdd control.
@@ -434,7 +435,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnNewItemAdd As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnNewItemAdd As Button
 
     '''<summary>
     '''btnNewItemCancel control.
@@ -443,7 +444,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnNewItemCancel As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnNewItemCancel As Button
 
     '''<summary>
     '''mdlPopupRedirect control.
@@ -452,7 +453,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mdlPopupRedirect As Global.AjaxControlToolkit.ModalPopupExtender
+    Protected WithEvents mdlPopupRedirect As ModalPopupExtender
 
     '''<summary>
     '''pnlPopupRedirect control.
@@ -461,7 +462,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents pnlPopupRedirect As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents pnlPopupRedirect As Panel
 
     '''<summary>
     '''UpdatePanel1 control.
@@ -470,7 +471,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents UpdatePanel1 As UpdatePanel
 
     '''<summary>
     '''lblRedirectModalTitle control.
@@ -479,7 +480,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRedirectModalTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRedirectModalTitle As Label
 
     '''<summary>
     '''modalMessageBoxRedirect control.
@@ -488,7 +489,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents modalMessageBoxRedirect As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents modalMessageBoxRedirect As HtmlGenericControl
 
     '''<summary>
     '''imgRedirectReasonMsg control.
@@ -497,7 +498,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgRedirectReasonMsg As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents imgRedirectReasonMsg As HtmlImage
 
     '''<summary>
     '''msgRedirectReasons control.
@@ -506,7 +507,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents msgRedirectReasons As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents msgRedirectReasons As Literal
 
     '''<summary>
     '''lblQueueToRedirect control.
@@ -515,7 +516,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblQueueToRedirect As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblQueueToRedirect As Label
 
     '''<summary>
     '''ddlWorkQueueList control.
@@ -524,7 +525,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlWorkQueueList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlWorkQueueList As DropDownList
 
     '''<summary>
     '''trLblRedirectRsn control.
@@ -533,7 +534,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trLblRedirectRsn As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trLblRedirectRsn As HtmlTableRow
 
     '''<summary>
     '''lblRedirectReasons control.
@@ -542,7 +543,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRedirectReasons As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRedirectReasons As Label
 
     '''<summary>
     '''rdbtRedirectRsn control.
@@ -551,7 +552,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdbtRedirectRsn As Global.System.Web.UI.WebControls.RadioButtonList
+    Protected WithEvents rdbtRedirectRsn As RadioButtonList
 
     '''<summary>
     '''btnRedirectContinue control.
@@ -560,7 +561,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnRedirectContinue As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnRedirectContinue As Button
 
     '''<summary>
     '''btnRedirectCancel control.
@@ -569,7 +570,7 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnRedirectCancel As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnRedirectCancel As Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -578,5 +579,5 @@ Partial Public Class ImagingIndexingForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 End Class

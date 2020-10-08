@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Net
 Imports System.Net.Http
 Imports System.Net.Http.Headers
+Imports System.Reflection
 Imports System.Threading
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
@@ -12,8 +13,11 @@ Imports Assurant.Elita.Configuration
 Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Claims
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Tables
 Imports Assurant.ElitaPlus.Security
 Imports Microsoft.VisualBasic
 Imports Newtonsoft.Json
@@ -76,7 +80,7 @@ Partial Class ClaimForm
 
 #Region "Property"
 
-    Public ReadOnly Property UserControlAddress() As UserControlAddress_New
+    Public ReadOnly Property UserControlAddress As UserControlAddress_New
         Get
             If moUserControlAddress Is Nothing Then
                 moUserControlContactInfo = CType(Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
@@ -87,7 +91,7 @@ Partial Class ClaimForm
         End Get
     End Property
 
-    Public ReadOnly Property UserControlContactInfo() As UserControlContactInfo_New
+    Public ReadOnly Property UserControlContactInfo As UserControlContactInfo_New
         Get
             If moUserControlContactInfo Is Nothing Then
                 moUserControlContactInfo = CType(Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
@@ -166,7 +170,7 @@ Partial Class ClaimForm
         MyBase.New(New BaseState)
     End Sub
 
-    Protected Shadows ReadOnly Property State() As MyState
+    Protected Shadows ReadOnly Property State As MyState
         Get
             If NavController.State Is Nothing Then
                 NavController.State = New MyState
@@ -187,18 +191,18 @@ Partial Class ClaimForm
         Try
             If CallFromUrl.Contains(ClaimRecordingForm.Url2) Then
                 ' Remove the Claim Recording page from the stack(return path flow)
-                MyBase.SetPageOutOfNavigation()
+                SetPageOutOfNavigation()
             End If
 
             If CallingParameters IsNot Nothing Then
                 StartNavControl()
                 Try
-                    State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(CallingParameters, Guid))
+                    State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CallingParameters)
                 Catch ex As Exception
                     State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(CallingParameters, Parameters).claimId)
                     State.IsCallerAuthenticated = CType(CallingParameters, Parameters).IsCallerAuthenticated
                 End Try
-                If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then State.IsMultiAuthClaim = True
+                If (State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then State.IsMultiAuthClaim = True
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -213,8 +217,8 @@ Partial Class ClaimForm
 
         Try
             If State.InputParameters IsNot Nothing Then
-                State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(State.InputParameters.claimId, Guid))
-                If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then State.IsMultiAuthClaim = True
+                State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.InputParameters.claimId)
+                If (State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then State.IsMultiAuthClaim = True
             End If
 
         Catch ex As Exception
@@ -259,7 +263,7 @@ Partial Class ClaimForm
         End If
     End Sub
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         If mbIsFirstPass = True Then
@@ -312,7 +316,7 @@ Partial Class ClaimForm
                 'Return to the calling screen if status is pending
                 If Me.State.MyBO.Status = BasicClaimStatus.Pending Then
                     Dim myBo As ClaimBase = State.MyBO
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,, State.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, myBo,, State.IsCallerAuthenticated)
                     NavController = Nothing
                     ReturnToCallingPage(retObj)
                 End If
@@ -380,8 +384,8 @@ Partial Class ClaimForm
             End If
 
 
-        Catch ex As Threading.ThreadAbortException
-            System.Threading.Thread.ResetAbort()
+        Catch ex As ThreadAbortException
+            Thread.ResetAbort()
         Catch ex As Exception
             CleanPopupInput()
             CleanHiddenLimitExceededInput()
@@ -400,7 +404,7 @@ Partial Class ClaimForm
 
     Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            If CalledUrl = Certificates.CertificateForm.URL Then
+            If CalledUrl = CertificateForm.URL Then
                 NavController = CType(MyBase.State, BaseState).NavCtrl
             End If
 
@@ -421,34 +425,34 @@ Partial Class ClaimForm
                 Dim retObj As MasterClaimForm.ReturnType = CType(ReturnPar, MasterClaimForm.ReturnType)
                 If retObj IsNot Nothing Then
                     StartNavControl()
-                    Dim claimTmp As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(retObj.ClaimBO.Id, Guid))
+                    Dim claimTmp As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(retObj.ClaimBO.Id)
                     State.MyBO = claimTmp
                 End If
             ElseIf CalledUrl = COVERAGE_TYPE_URL Then
-                Dim retObj As Claims.CoverageTypeList.ReturnType = CType(ReturnPar, Claims.CoverageTypeList.ReturnType)
+                Dim retObj As CoverageTypeList.ReturnType = CType(ReturnPar, CoverageTypeList.ReturnType)
                 If retObj IsNot Nothing Then
                     StartNavControl()
-                    Dim claimTmp As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(retObj.ClaimBO.Id, Guid))
+                    Dim claimTmp As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(retObj.ClaimBO.Id)
                     State.MyBO = claimTmp
                 End If
             ElseIf CalledUrl = CLAIM_STATUS_DETAIL_FORM Then
                 Dim retObj As ClaimStatusDetailForm.ReturnType = CType(ReturnPar, ClaimStatusDetailForm.ReturnType)
                 If retObj IsNot Nothing Then
                     StartNavControl()
-                    Dim claimTmp As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(retObj.claimId, Guid))
+                    Dim claimTmp As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(retObj.claimId)
                     State.MyBO = claimTmp
                 End If
             ElseIf CalledUrl = ClaimAuthorizationDetailForm.URL Then
                 State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.MyBO.Id)
             ElseIf CalledUrl = ClaimDetailsForm.Url Then
-                Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
+                Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
                 If retObj IsNot Nothing Then
                     StartNavControl()
                     State.MyBO = retObj.EditingBo
                     State.IsCallerAuthenticated = retObj.IsCallerAuthenticated
                 End If
             ElseIf CalledUrl = ClaimRecordingForm.Url Then
-                Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
+                Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
                 If retObj IsNot Nothing Then
                     StartNavControl()
                     State.MyBO = retObj.EditingBo
@@ -470,12 +474,12 @@ Partial Class ClaimForm
 
         ControlMgr.SetVisibleControl(Me, TextboxClaimStatus, True)
 
-        If State.MyBO.Company.MasterClaimProcessingId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_MASTERCLAIMPROC, Codes.MasterClmProc_NONE)) Then
+        If State.MyBO.Company.MasterClaimProcessingId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_MASTERCLAIMPROC, Codes.MasterClmProc_NONE)) Then
             ControlMgr.SetVisibleForControlFamily(Me, LabelMasterClaimNumber, False, True)
             ControlMgr.SetVisibleForControlFamily(Me, TextboxMasterClaimNumber, False, True)
         End If
 
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_TYPE, State.MyBO.Company.CompanyTypeId) = State.MyBO.Company.COMPANY_TYPE_INSURANCE Then
+        If LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY_TYPE, State.MyBO.Company.CompanyTypeId) = State.MyBO.Company.COMPANY_TYPE_INSURANCE Then
             ControlMgr.SetVisibleControl(Me, LabelCaller_Tax_Number, True)
             ControlMgr.SetVisibleControl(Me, TextboxCaller_Tax_Number, True)
         Else
@@ -663,7 +667,7 @@ Partial Class ClaimForm
         '5921
         SetEnabledForControlFamily(TextboxTrackingNumber, State.IsEditMode, True)
         'REQ-5565
-        If (State.MyBO.Company.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")) Then
+        If (State.MyBO.Company.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "N")) Then
             SetEnabledForControlFamily(TextboxBatchNumber, State.IsEditMode, True)
         Else
             SetEnabledForControlFamily(TextboxBatchNumber, State.IsEditMode, False)
@@ -800,11 +804,11 @@ Partial Class ClaimForm
             ControlMgr.SetVisibleControl(Me, LabelPolicyNumber, False)
         End If
 
-        If (State.MyBO.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) OrElse (State.MyBO.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
+        If (State.MyBO.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) OrElse (State.MyBO.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
             trDueToSCFromAssurant.Visible = False
         End If
 
-        If (State.MyBO.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)) Then
+        If (State.MyBO.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)) Then
             ControlMgr.SetVisibleControl(Me, trUseEquipment1, False)
             ControlMgr.SetVisibleControl(Me, trUseEquipment2, False)
             ControlMgr.SetVisibleControl(Me, trUseEquipment3, False)
@@ -814,7 +818,7 @@ Partial Class ClaimForm
             ControlMgr.SetVisibleControl(Me, trUseEquipment3, True)
         End If
 
-        If State.MyBO.Dealer.DeductibleCollectionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y) Then
+        If State.MyBO.Dealer.DeductibleCollectionId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y) Then
             ControlMgr.SetVisibleControl(Me, trDedCollection, True)
         Else
             ControlMgr.SetVisibleControl(Me, trDedCollection, False)
@@ -1267,7 +1271,7 @@ Partial Class ClaimForm
                    AndAlso State.MyBO.CoverageTypeCode.ToUpper <> Codes.COVERAGE_TYPE__THEFT.ToUpper _
                    AndAlso (State.MyBO.CoverageTypeCode.ToUpper <> Codes.COVERAGE_TYPE__LOSS.ToUpper _
                             OrElse (State.MyBO.CoverageTypeCode.ToUpper = Codes.COVERAGE_TYPE__LOSS.ToUpper _
-                                    AndAlso (State.MyBO.Company.PoliceRptForLossCovId).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)))) Then
+                                    AndAlso (State.MyBO.Company.PoliceRptForLossCovId).Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)))) Then
                     btnPoliceReport.Enabled = False
                     ControlMgr.SetVisibleControl(Me, btnPoliceReport, False)
                 Else
@@ -1405,7 +1409,7 @@ Partial Class ClaimForm
     Protected Sub DisableButtonsForClaimSystem()
         If Not State.MyBO.CertificateId.Equals(Guid.Empty) OrElse State.MyBO.IsClaimChild = Codes.YESNO_Y Then
             Dim oClmSystem As New ClaimSystem(State.MyBO.Dealer.ClaimSystemId)
-            Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+            Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
             If oClmSystem.MaintainClaimId.Equals(noId) OrElse State.MyBO.IsClaimChild = Codes.YESNO_Y Then
                 If ActionButton.Visible AndAlso ActionButton.Enabled Then
                     ControlMgr.SetEnableControl(Me, ActionButton, False)
@@ -1559,7 +1563,7 @@ Partial Class ClaimForm
         ClearGridHeadersAndLabelsErrSign()
 
         If State.IsTEMP_SVC Then
-            LabelServiceCenter.ForeColor = System.Drawing.ColorTranslator.FromHtml("red") 'Color.Red
+            LabelServiceCenter.ForeColor = ColorTranslator.FromHtml("red") 'Color.Red
         End If
 
 
@@ -1633,8 +1637,8 @@ Partial Class ClaimForm
         Dim equipmentId As Guid
         Dim equipClassId As Guid
 
-        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.MyBO.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
-            equipConditionid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
+        If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, State.MyBO.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+            equipConditionid = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
             If State.MyBO.ClaimedEquipment Is Nothing Then
                 Throw New GUIException(Codes.EQUIPMENT_NOT_FOUND, Codes.EQUIPMENT_NOT_FOUND)
             Else
@@ -1952,10 +1956,10 @@ Partial Class ClaimForm
                 PopulateControlFromBOProperty(txtServiceCenter, $"{logisticStage.ServiceCenterDescription}")
                 PopulateControlFromBOProperty(txtPostalCode, logisticStage.Address.PostalCode)
                 PopulateControlFromBOProperty(txtState, LookupListNew.GetDescriptionFromCode(
-                                                 LookupListNew.DataView(LookupListNew.LK_REGIONS),
+                                                 LookupListNew.DataView(LookupListCache.LK_REGIONS),
                                                  logisticStage.Address.State))
                 PopulateControlFromBOProperty(txtCountry, LookupListNew.GetDescriptionFromCode(
-                                                 LookupListNew.DataView(LookupListNew.LK_COUNTRIES),
+                                                 LookupListNew.DataView(LookupListCache.LK_COUNTRIES),
                                                  logisticStage.Address.Country))
 
                 PopulateControlFromBOProperty(txtStoreCode, logisticStage.HandlingStore.StoreCode)
@@ -2172,7 +2176,7 @@ Partial Class ClaimForm
             PopulateControlFromBOProperty(TextboxAuthorizedAmount, claimBo.AuthorizedAmount)
 
             If Not String.IsNullOrEmpty(claimBo.LoanerRquestedXcd) Then
-                TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
+                TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListCache.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
             End If
 
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
@@ -2245,7 +2249,7 @@ Partial Class ClaimForm
                 End If
             End If
 
-            Dim YesIdd As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+            Dim YesIdd As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
             If cbousershipaddress.SelectedValue = YesIdd.ToString AndAlso claim.ContactInfo IsNot Nothing Then
                 claim.ContactInfoId = claim.ContactInfo.Id
             End If
@@ -2253,7 +2257,7 @@ Partial Class ClaimForm
         If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
-        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
         If cbousershipaddress.SelectedValue = YesId.ToString Then
             PopulateClaimDetailContactInfoBOsFromForm()
         End If
@@ -2324,7 +2328,7 @@ Partial Class ClaimForm
                 PopulateBOProperty(claim, "AuthorizationNumber", TextboxAuthorizationNumber)
             End If
 
-            Dim YesIdd As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+            Dim YesIdd As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
             If cbousershipaddress.SelectedValue = YesIdd.ToString AndAlso claim.ContactInfo IsNot Nothing Then
                 claim.ContactInfoId = claim.ContactInfo.Id
             End If
@@ -2332,7 +2336,7 @@ Partial Class ClaimForm
         If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
-        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
         If cbousershipaddress.SelectedValue = YesId.ToString Then
             PopulateClaimDetailContactInfoBOsFromForm()
         End If
@@ -2410,7 +2414,7 @@ Partial Class ClaimForm
         Try
             If State IsNot Nothing Then
                 'Clean after consuming the action
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                State.ActionInProgress = DetailPageCommand.Nothing_
                 HiddenSaveChangesPromptResponse.Value = ""
             End If
         Catch ex As Exception
@@ -2425,12 +2429,12 @@ Partial Class ClaimForm
 
     Protected Sub CheckIfComingFromSaveConfirm()
         Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
-        Dim actionInProgress As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+        Dim actionInProgress As DetailPageCommand = State.ActionInProgress
         CleanPopupInput()
 
 
         'if the user has clicked on the back button, then Yes means that leave the page, so stay on the page should be no, since logic below is relative to the page
-        If confResponse IsNot Nothing AndAlso (actionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr OrElse actionInProgress = ElitaPlusPage.DetailPageCommand.Back) Then
+        If confResponse IsNot Nothing AndAlso (actionInProgress = DetailPageCommand.BackOnErr OrElse actionInProgress = DetailPageCommand.Back) Then
             If confResponse = MSG_VALUE_YES Then
                 confResponse = MSG_VALUE_NO
             Else
@@ -2439,7 +2443,7 @@ Partial Class ClaimForm
         End If
 
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If actionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+            If actionInProgress <> DetailPageCommand.BackOnErr Then
                 'If (Me.State.IsMultiAuthClaim) Then
                 '    CType(Me.State.MyBO, MultiAuthClaim).Save()
                 'Else
@@ -2468,7 +2472,7 @@ Partial Class ClaimForm
                         Dim objServiceCenter As New ServiceCenter(CType(State.MyBO, Claim).ServiceCenterId)
                         If Not objServiceCenter.IntegratedWithGVS Then
                             Dim soController As New ServiceOrderController
-                            Dim so As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = soController.GenerateServiceOrder(CType(State.MyBO, Claim))
+                            Dim so As ServiceOrder = soController.GenerateServiceOrder(CType(State.MyBO, Claim))
                             'Save this ServiceOrder in the FlowSession
                             NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) = so
                         End If
@@ -2481,13 +2485,13 @@ Partial Class ClaimForm
                     'Me.State.MyBO.Save()
                     NotifyChanges(NavController)
                     Select Case actionInProgress
-                        Case ElitaPlusPage.DetailPageCommand.Back
-                            Back(ElitaPlusPage.DetailPageCommand.Back)
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Back(ElitaPlusPage.DetailPageCommand.BackOnErr)
-                        Case ElitaPlusPage.DetailPageCommand.Save
+                        Case DetailPageCommand.Back
+                            Back(DetailPageCommand.Back)
+                        Case DetailPageCommand.BackOnErr
+                            Back(DetailPageCommand.BackOnErr)
+                        Case DetailPageCommand.Save
                             SaveClaim()
-                        Case ElitaPlusPage.DetailPageCommand.Redirect_
+                        Case DetailPageCommand.Redirect_
                             'pm 06-07-06 '
                             ServiceWarranty()
                     End Select
@@ -2495,9 +2499,9 @@ Partial Class ClaimForm
             End If
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             Select Case actionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    Back(ElitaPlusPage.DetailPageCommand.Back)
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.Back
+                    Back(DetailPageCommand.Back)
+                Case DetailPageCommand.BackOnErr
                     MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
 
             End Select
@@ -2517,7 +2521,7 @@ Partial Class ClaimForm
             If (blockInvoice = YES) Then
                 If Claim.CheckClaimPaymentInProgress(State.MyBO.Id, State.MyBO.Company.CompanyGroupId) Then
                     ControlMgr.SetEnableControl(Me, btnEdit_WRITE, False)
-                    ElitaPlusPage.SetLabelError(LabelAuthorizedAmount)
+                    SetLabelError(LabelAuthorizedAmount)
                     Throw New GUIException(Message.MSG_CLAIM_PROCESS_IN_PROGRESS_ERR, Assurant.ElitaPlus.Common.ErrorCodes.CLAIM_PROCESS_IN_PROGRESS_ERR)
                 End If
             End If
@@ -2543,21 +2547,21 @@ Partial Class ClaimForm
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
             State.MyBO.StatusCode = Codes.CLAIM_STATUS__PENDING
             SaveClaim()
-            System.Threading.Thread.CurrentThread.Abort()
+            Thread.CurrentThread.Abort()
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             'Nothing To Do. Stay on the page
         End If
     End Sub
 
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         Dim retObj As ReturnType = New ReturnType(cmd, State.MyBO, CheckForChanges(NavController), State.IsCallerAuthenticated)
         NavController = Nothing
         ReturnToCallingPage(retObj)
     End Sub
 
     Private Function getSalutation(salutaionid As Guid) As String
-        Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company =
-                New Assurant.ElitaPlus.BusinessObjectsNew.Company(State.MyBO.CompanyId)
+        Dim companyBO As Company =
+                New Company(State.MyBO.CompanyId)
 
         If LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), companyBO.SalutationId) = "Y" Then
             Dim oSalutation As String = State.MyBO.getSalutationDescription(salutaionid) & " "
@@ -2647,11 +2651,11 @@ Partial Class ClaimForm
             State.MyBO = ClaimFacade.Instance.CreateClaim(Of ClaimBase)()
         End If
 
-        State.YesId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
-        State.NoId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        State.YesId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+        State.NoId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
 
         'Claim Auth Detail logic
-        If State.MyBO.Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_AUTH_DTL, "ADR")) Then
+        If State.MyBO.Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, "ADR")) Then
             State.AuthDetailEnabled = True
         End If
 
@@ -2662,41 +2666,41 @@ Partial Class ClaimForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             'Me.PopulateBOsFromForm()
             If State.MyBO.IsDirty Then
                 DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_CHANGES, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = DetailPageCommand.Back
             Else
                 Dim myBo As ClaimBase = State.MyBO
                 'for single auth claims coming from claim search form and (certificate search and then to claim form)
                 If (NavController.CurrentNavState.Name = "CLAIM_ISSUE_APPROVED_FROM_CLAIM" OrElse NavController.CurrentNavState.Name = "CLAIM_ISSUE_APPROVED_FROM_CERT") Then
-                    NavController.Navigate(Me, "back", New ClaimForm.Parameters(State.MyBO.Id, State.IsCallerAuthenticated))
+                    NavController.Navigate(Me, "back", New Parameters(State.MyBO.Id, State.IsCallerAuthenticated))
                 ElseIf (NavOriginURL = ClaimWizardForm.AbsoluteURL) Then
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,, State.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, myBo,, State.IsCallerAuthenticated)
                     NavController = Nothing
                     ReturnToMaxCallingPage(retObj)
                 Else
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,, State.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, myBo,, State.IsCallerAuthenticated)
                     NavController = Nothing
                     ReturnToCallingPage(retObj)
                 End If
                 'DirectCast(Me.NavController, Assurant.Common.AppNavigationControl.NavControllerBase).CurrentFlow.StartState.Url
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_CHANGES, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Try
-            Dim NoId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+            Dim NoId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
             If cbousershipaddress.SelectedValue = NoId.ToString Then
                 If Not State.MyBO.ContactInfoId.Equals(Guid.Empty) Then
                     State.MyBO.ContactInfoId = Nothing
@@ -2709,7 +2713,7 @@ Partial Class ClaimForm
 
             If TextboxAuthorizedAmount.Text = String.Empty OrElse Not IsNumeric(TextboxAuthorizedAmount.Text) Then
                 'display error
-                ElitaPlusPage.SetLabelError(LabelAuthorizedAmount)
+                SetLabelError(LabelAuthorizedAmount)
                 Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTHORIZED_AMOUNT_ERR)
             End If
 
@@ -2734,18 +2738,18 @@ Partial Class ClaimForm
             If State.IsEditMode = True Then
                 If State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
                     If CType(TextboxLiabilityLimit.Text, Decimal) <> 0 Then
-                        ElitaPlusPage.SetLabelError(LabelLiabilityLimit)
+                        SetLabelError(LabelLiabilityLimit)
                         Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                     End If
                 End If
                 If Not IsNumeric(TextboxLiabilityLimit.Text) Then
-                    ElitaPlusPage.SetLabelError(LabelLiabilityLimit)
+                    SetLabelError(LabelLiabilityLimit)
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                 End If
 
                 If CType(TextboxLiabilityLimit.Text, Decimal) < 0 Then
                     'display error
-                    ElitaPlusPage.SetLabelError(LabelLiabilityLimit)
+                    SetLabelError(LabelLiabilityLimit)
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                 End If
 
@@ -2759,12 +2763,12 @@ Partial Class ClaimForm
                         dLiabilityLimit = CType(dv(0)(0), Decimal)
                         If CType(TextboxLiabilityLimit.Text, Decimal) > dLiabilityLimit Then
                             'display error
-                            ElitaPlusPage.SetLabelError(LabelLiabilityLimit)
+                            SetLabelError(LabelLiabilityLimit)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                         End If
                     Else
                         'if no history record raise error since entered amount is >existing amount
-                        ElitaPlusPage.SetLabelError(LabelLiabilityLimit)
+                        SetLabelError(LabelLiabilityLimit)
                         Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                     End If
                 End If
@@ -2785,7 +2789,7 @@ Partial Class ClaimForm
             If State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
                 If State.MyBO.PolicyNumber Is Nothing Then
                     'display error
-                    ElitaPlusPage.SetLabelError(LabelPolicyNumber)
+                    SetLabelError(LabelPolicyNumber)
                     Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_POLICYNUMBER_REQD)
                 End If
             End If
@@ -2808,7 +2812,7 @@ Partial Class ClaimForm
 
                 'First check the AuthorizedAmount validation
                 If State.MyBO.AuthorizedAmount Is Nothing Then
-                    ElitaPlusPage.SetLabelError(LabelAuthorizedAmount)
+                    SetLabelError(LabelAuthorizedAmount)
                     Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTHORIZED_AMOUNT_ERR)
                 End If
 
@@ -2816,7 +2820,7 @@ Partial Class ClaimForm
                     If State.MyBO.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
                         If ((authorizedAmountChanged) AndAlso (Not (State.MyBO.IsAuthorizationLimitExceeded))) Then
                             '' Auth amt is being changed, calculate the new deductible amt if by percent
-                            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.MyBO.DeductiblePercentID) = Codes.YESNO_Y Then
+                            If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, State.MyBO.DeductiblePercentID) = Codes.YESNO_Y Then
                                 If State.MyBO.DeductiblePercent IsNot Nothing Then
                                     If State.MyBO.DeductiblePercent.Value > 0 Then
                                         If (Not deductibleAmountChanged) Then
@@ -2836,7 +2840,7 @@ Partial Class ClaimForm
                             'Reqs-784
                             CType(State.MyBO, Claim).Save()
                             Dim soController As New ServiceOrderController
-                            Dim so As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = soController.GenerateServiceOrder(CType(State.MyBO, Claim))
+                            Dim so As ServiceOrder = soController.GenerateServiceOrder(CType(State.MyBO, Claim))
 
                             'Save this ServiceOrder in the FlowSession
                             NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) = so
@@ -2854,7 +2858,7 @@ Partial Class ClaimForm
 
                     If cboReasonClosed.SelectedIndex > 0 Then
                         DisplayMessage(Message.MSG_PROMPT_FOR_CLOSING_THE_CLAIM, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Save
+                        State.ActionInProgress = DetailPageCommand.Save
                     Else
                         SaveClaim()
                     End If
@@ -2885,7 +2889,7 @@ Partial Class ClaimForm
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
         'Get out of Edit mode
         Try
             UndoChanges()
@@ -2907,7 +2911,7 @@ Partial Class ClaimForm
 
     End Sub
 
-    Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
+    Private Sub btnEdit_WRITE_Click(sender As Object, e As EventArgs) Handles btnEdit_WRITE.Click
         Try
             State.IsEditMode = True
             'Service center role update
@@ -2915,7 +2919,7 @@ Partial Class ClaimForm
                 State.IsSVCCUserEdit = True
             End If
             EnableDisablePageControls()
-            Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+            Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
             If cbousershipaddress.SelectedValue = YesId.ToString Then
                 moUserControlContactInfo.Visible = True
                 UserControlContactInfo.EnableDisablecontrol(False)
@@ -2930,23 +2934,23 @@ Partial Class ClaimForm
         End Try
     End Sub
 
-    Private Sub btnNewItemInfo_Click(sender As Object, e As System.EventArgs) Handles btnNewItemInfo.Click
+    Private Sub btnNewItemInfo_Click(sender As Object, e As EventArgs) Handles btnNewItemInfo.Click
         Try
-            callPage(Claims.ReplacementForm.URL, New Claims.ReplacementForm.Parameters(True, State.MyBO.Id))
-        Catch ex As Threading.ThreadAbortException
+            callPage(ReplacementForm.URL, New ReplacementForm.Parameters(True, State.MyBO.Id))
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnPartsInfo_Click(sender As System.Object, e As System.EventArgs) Handles btnPartsInfo.Click
+    Private Sub btnPartsInfo_Click(sender As Object, e As EventArgs) Handles btnPartsInfo.Click
         Try
             If State.MyBO IsNot Nothing Then
                 PopulateBOsFromForm()
                 NavController.Navigate(Me, "parts_info", BuildPartsInfoParameters)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
@@ -2958,20 +2962,20 @@ Partial Class ClaimForm
         Return New PartsInfoForm.Parameters(claimBO)
     End Function
 
-    Private Sub btnServiceCenterInfo_Click(sender As System.Object, e As System.EventArgs) Handles btnServiceCenterInfo.Click
+    Private Sub btnServiceCenterInfo_Click(sender As Object, e As EventArgs) Handles btnServiceCenterInfo.Click
         Try
             If (Not (CType(State.MyBO, Claim).ServiceCenterId.Equals(Guid.Empty))) Then
                 NavController.Navigate(Me, "service_center_info", New ServiceCenterInfoForm.Parameters(CType(State.MyBO, Claim).ServiceCenterId))
                 'Me.callPage(ServiceCenterInfoForm.URL, New ServiceCenterInfoForm.Parameters(CType(Me.State.MyBO, Claim).ServiceCenterId))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
 
         End Try
 
     End Sub
 
-    Private Sub btnReplaceItemInfo_Click(sender As System.Object, e As System.EventArgs) Handles btnReplaceItem.Click
+    Private Sub btnReplaceItemInfo_Click(sender As Object, e As EventArgs) Handles btnReplaceItem.Click
         Try
             If (Not State.IsMultiAuthClaim) Then
                 NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER) = Nothing
@@ -2990,14 +2994,14 @@ Partial Class ClaimForm
                 End If
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnServiceWarranty_Click(sender As System.Object, e As System.EventArgs) Handles btnServiceWarranty.Click
+    Private Sub btnServiceWarranty_Click(sender As Object, e As EventArgs) Handles btnServiceWarranty.Click
 
         Dim oContract As Contract
         Dim CoverageType As String
@@ -3007,7 +3011,7 @@ Partial Class ClaimForm
             oContract = Contract.GetContract(State.MyBO.Certificate.DealerId, State.MyBO.Certificate.WarrantySalesDate.Value)
 
             If oContract IsNot Nothing Then
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, oContract.ClaimControlID) = "Y" Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, oContract.ClaimControlID) = "Y" Then
                     ClaimControl = True
                 End If
             End If
@@ -3015,7 +3019,7 @@ Partial Class ClaimForm
 
             If ClaimControl Then
                 DisplayMessage(Message.MSG_DEALER_USER_CLAIM_INTERFACES, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Redirect_
+                State.ActionInProgress = DetailPageCommand.Redirect_
             Else
                 If State.IsMultiAuthClaim Then
                     If CallAddServiceWarrantyWs() Then
@@ -3030,7 +3034,7 @@ Partial Class ClaimForm
                 End If
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
@@ -3068,7 +3072,7 @@ Partial Class ClaimForm
                 End Function)
         Catch ex As Exception
             blnsuccess = False
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 
@@ -3089,7 +3093,7 @@ Partial Class ClaimForm
     End Function
 #End Region
 
-    Private Sub btnNewServiceCenter_Click(sender As System.Object, e As System.EventArgs) Handles btnNewServiceCenter.Click
+    Private Sub btnNewServiceCenter_Click(sender As Object, e As EventArgs) Handles btnNewServiceCenter.Click
         Try
             NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER) = Nothing
             Dim claim As Claim = CType(State.MyBO, Claim)
@@ -3104,20 +3108,20 @@ Partial Class ClaimForm
                                                                                      , , , State.MyBO.Company.CountryId)
             NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM) = State.MyBO
             NavController.Navigate(Me, FlowEvents.EVENT_NEW_CENTER, locateServCenterParameters)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnPoliceReport_Click(sender As System.Object, e As System.EventArgs) Handles btnPoliceReport.Click
+    Private Sub btnPoliceReport_Click(sender As Object, e As EventArgs) Handles btnPoliceReport.Click
         Try
 
             If (Not (State.MyBO.Id.Equals(Guid.Empty))) Then
                 NavController.Navigate(Me, FlowEvents.EVENT_POLICEREPORT_INFO, New PoliceReportForm.Parameters(State.MyBO.Id))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
@@ -3125,21 +3129,21 @@ Partial Class ClaimForm
 
     End Sub
 
-    Private Sub btnCertificate_Click(sender As System.Object, e As System.EventArgs) Handles btnCertificate.Click
+    Private Sub btnCertificate_Click(sender As Object, e As EventArgs) Handles btnCertificate.Click
         Try
             If (Not (State.MyBO.CertificateId.Equals(Guid.Empty))) Then
                 CType(MyBase.State, BaseState).NavCtrl = NavController
                 'Me.callPage(Certificates.CertificateForm.URL, Me.State.MyBO.CertificateId)
-                callPage(Certificates.CertificateForm.URL, New Certificates.CertificateForm.Parameters(State.MyBO.CertificateId, State.IsCallerAuthenticated))
+                callPage(CertificateForm.URL, New CertificateForm.Parameters(State.MyBO.CertificateId, State.IsCallerAuthenticated))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
 
         End Try
 
     End Sub
 
-    Private Sub btnPrint_Click(sender As System.Object, e As System.EventArgs) Handles btnPrint.Click
+    Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
         Try
             If (Not (State.MyBO.GetLatestServiceOrder Is Nothing)) Then
                 NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) = State.MyBO.GetLatestServiceOrder
@@ -3155,35 +3159,35 @@ Partial Class ClaimForm
                     DisplayMessage(Message.MSG_SERVICE_ORDER_RECORD_NOT_FOUND, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Try
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnComment_Click(sender As System.Object, e As System.EventArgs) Handles btnComment.Click
+    Private Sub btnComment_Click(sender As Object, e As EventArgs) Handles btnComment.Click
         Try
             NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = State.MyBO
             NavController.Navigate(Me, FlowEvents.EVENT_COMMENTS, New CommentListForm.Parameters(State.MyBO.CertificateId, State.MyBO.Id))
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnItem_Click(sender As System.Object, e As System.EventArgs) Handles btnItem.Click
+    Private Sub btnItem_Click(sender As Object, e As EventArgs) Handles btnItem.Click
         Try
-            callPage(Claims.ClaimItemForm.URL, New Claims.ClaimItemForm.Parameters(State.MyBO.Id))
-        Catch ex As Threading.ThreadAbortException
+            callPage(ClaimItemForm.URL, New ClaimItemForm.Parameters(State.MyBO.Id))
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnClaimDeniedInformation_Click(sender As System.Object, e As System.EventArgs) Handles btnClaimDeniedInformation.Click
+    Private Sub btnClaimDeniedInformation_Click(sender As Object, e As EventArgs) Handles btnClaimDeniedInformation.Click
         Try
             Select Case State.MyBO.ClaimAuthorizationType
                 Case ClaimAuthorizationType.Multiple
@@ -3191,15 +3195,15 @@ Partial Class ClaimForm
                 Case ClaimAuthorizationType.Single
                     CType(State.MyBO, Claim).Save()
             End Select
-            NavController.Navigate(Me, "claim_denied_information", New Claims.ClaimDeniedInformationForm.Parameters(State.MyBO, State.MyBO.Id, State.MyBO.CertificateId))
-        Catch ex As Threading.ThreadAbortException
+            NavController.Navigate(Me, "claim_denied_information", New ClaimDeniedInformationForm.Parameters(State.MyBO, State.MyBO.Id, State.MyBO.CertificateId))
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnReopen_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnReopen_WRITE.Click
+    Private Sub btnReopen_WRITE_Click(sender As Object, e As EventArgs) Handles btnReopen_WRITE.Click
 
         Try
             If (Not State.IsMultiAuthClaim) Then
@@ -3219,19 +3223,19 @@ Partial Class ClaimForm
 
     End Sub
 
-    Private Sub btnShipping_Click(sender As System.Object, e As System.EventArgs) Handles btnShipping.Click
+    Private Sub btnShipping_Click(sender As Object, e As EventArgs) Handles btnShipping.Click
         Try
             If (Not (State.MyBO.ShippingInfoId.Equals(Guid.Empty))) Then
                 NavController.Navigate(Me, FlowEvents.EVENT_SHIPPING_INFO, New ShippingInfoForm.Parameters(State.MyBO.ShippingInfoId))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnAuthDetail_Click(sender As System.Object, e As System.EventArgs) Handles btnAuthDetail.Click
+    Private Sub btnAuthDetail_Click(sender As Object, e As EventArgs) Handles btnAuthDetail.Click
         Try
             If State.MyBO IsNot Nothing Then
                 PopulateBOsFromForm()
@@ -3239,7 +3243,7 @@ Partial Class ClaimForm
                 'Me.callPage(ClaimAuthDetailForm.URL, New ClaimAuthDetailForm.Parameters(CType(Me.State.MyBO, Claim), Me.State.ClaimAuthDetailBO, Me.State.PartsInfoDV))
                 NavController.Navigate(Me, "auth_detail", BuildClaimAuthDetailParameters)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -3250,27 +3254,27 @@ Partial Class ClaimForm
         Return New ClaimAuthDetailForm.Parameters(CType(State.MyBO, Claim), State.ClaimAuthDetailBO, State.PartsInfoDV)
     End Function
 
-    Private Sub btnMasterClaim_Click(sender As System.Object, e As System.EventArgs) Handles btnMasterClaim.Click
+    Private Sub btnMasterClaim_Click(sender As Object, e As EventArgs) Handles btnMasterClaim.Click
         Try
             If (State.MyBO.MasterClaimNumber IsNot Nothing AndAlso Not (State.MyBO.Id.Equals(Guid.Empty))) Then
                 CType(MyBase.State, BaseState).NavCtrl = NavController
                 params.Add(State.MyBO.MasterClaimNumber)
                 params.Add(State.MyBO.Id)
                 params.Add(State.MyBO.CertificateId)
-                callPage(ClaimForm.MASTER_CLAIM_DETAIL_URL, params)
+                callPage(MASTER_CLAIM_DETAIL_URL, params)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub btnUseRecoveries_Click(sender As Object, e As System.EventArgs) Handles btnUseRecoveries.Click
+    Private Sub btnUseRecoveries_Click(sender As Object, e As EventArgs) Handles btnUseRecoveries.Click
         Try
             If (Not State.MyBO.CertItemCoverageId.Equals(Guid.Empty) AndAlso Not (CType(State.MyBO, Claim).ServiceCenterId.Equals(Guid.Empty))) Then
                 NavController.Navigate(Me, "recovery_locate_sc", BuildServiceCenterParametersForRecovery)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
         End Try
     End Sub
@@ -3281,7 +3285,7 @@ Partial Class ClaimForm
         Return New LocateServiceCenterForm.Parameters(State.MyBO.Certificate.DealerId, State.MyBO.Certificate.AddressChild.ZipLocator, State.MyBO.RiskTypeId, claim.GetManufacturerIdForServiceCenter, CType(State.MyBO, Claim).GetCoverageTypeCodeForServiceCenter, State.MyBO.CertItemCoverageId, State.MyBO.Id, showAcceptButton, True, False, True)
     End Function
 
-    Private Sub btnChangeCoverage_Click(sender As System.Object, e As System.EventArgs) Handles btnChangeCoverage.Click
+    Private Sub btnChangeCoverage_Click(sender As Object, e As EventArgs) Handles btnChangeCoverage.Click
         Try
             If (Not (State.MyBO.Id.Equals(Guid.Empty))) Then
                 params.Add(CType(State.MyBO.LossDate, String))
@@ -3296,28 +3300,28 @@ Partial Class ClaimForm
                 Else
                     params.Add(Nothing)
                 End If
-                callPage(ClaimForm.COVERAGE_TYPE_URL, params)
+                callPage(COVERAGE_TYPE_URL, params)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub btnStatusDetail_Click(sender As Object, e As System.EventArgs) Handles btnStatusDetail.Click
+    Private Sub btnStatusDetail_Click(sender As Object, e As EventArgs) Handles btnStatusDetail.Click
         Try
             If State.MyBO IsNot Nothing Then
                 PopulateBOsFromForm()
                 callPage(ClaimStatusDetailForm.URL, State.MyBO.Id)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub btnClaimHistoryDetails_Click(sender As System.Object, e As System.EventArgs) Handles btnClaimHistoryDetails.Click
+    Private Sub btnClaimHistoryDetails_Click(sender As Object, e As EventArgs) Handles btnClaimHistoryDetails.Click
         Try
             Dim URL As String = "~/Claims/ClaimHistoryForm.aspx"
             params.Add(State.MyBO.ClaimNumber)
@@ -3325,7 +3329,7 @@ Partial Class ClaimForm
 
             callPage(URL, params)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -3336,13 +3340,13 @@ Partial Class ClaimForm
 
     Protected Sub btnOutboundCommHistory_Click(sender As Object, e As EventArgs) Handles btnOutboundCommHistory.Click
         Try
-            callPage(Tables.OcMessageSearchForm.URL, New Tables.OcMessageSearchForm.CallType("claim_number", State.MyBO.ClaimNumber, State.MyBO.Id, State.MyBO.Dealer.Id))
+            callPage(OcMessageSearchForm.URL, New OcMessageSearchForm.CallType("claim_number", State.MyBO.ClaimNumber, State.MyBO.Id, State.MyBO.Dealer.Id))
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnRepairLogistics_Click(sender As System.Object, e As System.EventArgs) Handles btnRepairLogistics.Click
+    Private Sub btnRepairLogistics_Click(sender As Object, e As EventArgs) Handles btnRepairLogistics.Click
         Dim param As RepairAndLogisticsForm.Parameters = New RepairAndLogisticsForm.Parameters()
 
         Try
@@ -3353,7 +3357,7 @@ Partial Class ClaimForm
             param.selectedLvl = RepairAndLogisticsForm.SelectedLevel.Claim
             callPage(URL, param)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -3362,12 +3366,12 @@ Partial Class ClaimForm
 
     End Sub
 
-    Private Sub btnDenyClaim_Click(sender As System.Object, e As System.EventArgs) Handles btnDenyClaim.Click
+    Private Sub btnDenyClaim_Click(sender As Object, e As EventArgs) Handles btnDenyClaim.Click
         Try
             NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = State.MyBO
             NavController.Navigate(Me, FlowEvents.EVENT_DENY)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -3376,56 +3380,56 @@ Partial Class ClaimForm
 
     End Sub
 
-    Private Sub btnRedo_Click(sender As Object, e As System.EventArgs) Handles btnRedo.Click
+    Private Sub btnRedo_Click(sender As Object, e As EventArgs) Handles btnRedo.Click
         Try
             NavController.Navigate(Me, FlowEvents.EVENT_REDO, State.MyBO)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
-    Protected Sub btnClaimIssues_Click(sender As Object, e As System.EventArgs) Handles btnClaimIssues.Click
+    Protected Sub btnClaimIssues_Click(sender As Object, e As EventArgs) Handles btnClaimIssues.Click
         Try
             NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_ISSUES, New ClaimIssueForm.Parameters(State.MyBO))
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnClaimImages_Click(sender As System.Object, e As System.EventArgs) Handles btnClaimImages.Click
+    Private Sub btnClaimImages_Click(sender As Object, e As EventArgs) Handles btnClaimImages.Click
         Try
             Dim URL As String = "~/Claims/ClaimDocumentForm.aspx"
             params.Add(State.MyBO)
             callPage(URL, params)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
-    Protected Sub btnClaimCaseList_Click(sender As Object, e As System.EventArgs) Handles btnClaimCaseList.Click
+    Protected Sub btnClaimCaseList_Click(sender As Object, e As EventArgs) Handles btnClaimCaseList.Click
         Try
             params.Add(State.MyBO)
             callPage(ClaimDetailsForm.Url, params)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub btnAddConseqDamage_Click(sender As Object, e As System.EventArgs) Handles btnAddConseqDamage.Click
+    Protected Sub btnAddConseqDamage_Click(sender As Object, e As EventArgs) Handles btnAddConseqDamage.Click
         Try
             NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_RECORDING_CONSEQUENTIAL_DAMAGE, New ClaimRecordingForm.Parameters(State.MyBO.Certificate.Id, State.MyBO.Id, Nothing, Codes.CASE_PURPOSE__CONSEQUENTIAL_DAMAGE))
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub SelectServiceCenter(sender As System.Object, e As System.EventArgs) Handles ucSelectServiceCenter.SelectServiceCenter
+    Protected Sub SelectServiceCenter(sender As Object, e As EventArgs) Handles ucSelectServiceCenter.SelectServiceCenter
         Try
             Dim selectedServiceCenterId As Guid = ucSelectServiceCenter.SelectedServiceCenterId
             Dim multiAuthClaim As MultiAuthClaim = CType(State.MyBO, MultiAuthClaim)
@@ -3433,25 +3437,25 @@ Partial Class ClaimForm
             PopulateFormFromBOs()
             PopulateGrid()
             EnableDisablePageControls()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnChangeServiceCenterYes_Click(sender As System.Object, e As System.EventArgs) Handles btnModalSelectServiceCenterNo.Click
+    Private Sub btnChangeServiceCenterYes_Click(sender As Object, e As EventArgs) Handles btnModalSelectServiceCenterNo.Click
         Try
             ucSelectServiceCenter.Populate(State.MyBO, Guid.Empty)
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
             RegisterStartupScript("Startup", x)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     'REQ-6230
-    Private Sub btnPriceRetailSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnPriceRetailSearch.Click
+    Private Sub btnPriceRetailSearch_Click(sender As Object, e As EventArgs) Handles btnPriceRetailSearch.Click
         Try
             Dim URL As String = "~/Claims/ClaimIndixSearchForm.aspx"
             params.Add(State.MyBO.Id)
@@ -3462,7 +3466,7 @@ Partial Class ClaimForm
 
             callPage(URL, params)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -3473,13 +3477,13 @@ Partial Class ClaimForm
 
 
 
-    Private Sub btnChangeServiceCenterNo_Click(sender As System.Object, e As System.EventArgs) Handles btnModalSelectServiceCenterYes.Click
+    Private Sub btnChangeServiceCenterNo_Click(sender As Object, e As EventArgs) Handles btnModalSelectServiceCenterYes.Click
         Try
             Dim multiAuthClaim As MultiAuthClaim = CType(State.MyBO, MultiAuthClaim)
             multiAuthClaim.CreateReplacementFromRepair(multiAuthClaim.NonVoidClaimAuthorizationList.FirstOrDefault().ServiceCenterId)
             PopulateFormFromBOs()
             EnableDisablePageControls()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -3496,8 +3500,8 @@ Partial Class ClaimForm
 
     Private Sub btnReplacementQuote_Click(sender As Object, e As EventArgs) Handles btnReplacementQuote.Click
         Try
-            callPage(Claims.ClaimReplacementQuoteForm.URL, New Claims.ClaimReplacementQuoteForm.Parameters(State.MyBO.Id))
-        Catch ex As Threading.ThreadAbortException
+            callPage(ClaimReplacementQuoteForm.URL, New ClaimReplacementQuoteForm.Parameters(State.MyBO.Id))
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -3507,7 +3511,7 @@ Partial Class ClaimForm
         Try
             NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_DEDUCTIBLE_REFUND, New ClaimDeductibleRefundForm.Parameters(State.MyBO))
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -3519,7 +3523,7 @@ Partial Class ClaimForm
 
 #Region "Page Control Events"
 
-    Private Sub cboReasonClosed_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboReasonClosed.SelectedIndexChanged
+    Private Sub cboReasonClosed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboReasonClosed.SelectedIndexChanged
         Try
             If (TextboxStatusCode.Text <> Codes.CLAIM_STATUS__CLOSED) Then
                 'For a Claim that is NOT CLOSED
@@ -3565,7 +3569,7 @@ Partial Class ClaimForm
         Implements IStateController
 
 
-        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
             Dim oldClaim As Claim = CType(navCtrl.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim)
             Dim newServCenter As ServiceCenter = CType(navCtrl.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER), ServiceCenter)
 
@@ -3579,7 +3583,7 @@ Partial Class ClaimForm
                 'This is an existing Service Warranty Claim
                 'Close this Claim regardless of the estimate price for the Service Center
                 If Not oldClaim.PreserveAuthAmount() Then
-                    oldClaim.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPLACED)
+                    oldClaim.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPLACED)
                     oldClaim.CloseTheClaim()
                 End If
             Else
@@ -3598,7 +3602,7 @@ Partial Class ClaimForm
                 If Not objServiceCenter.IntegratedWithGVS OrElse oldClaim.NotificationTypeId.Equals(Guid.Empty) Then
                     'Generate Service Order for the Existing Claim
                     Dim soController As New ServiceOrderController
-                    Dim so As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = soController.GenerateServiceOrder(oldClaim)
+                    Dim so As ServiceOrder = soController.GenerateServiceOrder(oldClaim)
 
                     'Save this ServiceOrder in the FlowSession
                     navCtrl.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) = so
@@ -3618,7 +3622,7 @@ Partial Class ClaimForm
     Public Class StateControllerCreateNewServiceWarrantyClaim
         Implements IStateController
 
-        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
             Dim oldClaim As Claim = CType(navCtrl.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim)
             'Remove the Old Claim BO from the session
             navCtrl.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM) = Nothing
@@ -3636,7 +3640,7 @@ Partial Class ClaimForm
     Public Class StateControllerRollbackCreateNewClaim
         Implements IStateController
 
-        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
             navCtrl.FlowSession.Clear()
             navCtrl.Navigate(callingPage, FlowEvents.EVENT_NEXT)
         End Sub
@@ -3645,7 +3649,7 @@ Partial Class ClaimForm
     Public Class StateControllerChangeServiceCenter
         Implements IStateController
 
-        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
             'Prepare to Generate a Service Order
             Dim oldClaim As Claim = CType(navCtrl.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim)
             Dim newServiceCenter As ServiceCenter = CType(navCtrl.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER), ServiceCenter)
@@ -3677,7 +3681,7 @@ Partial Class ClaimForm
     Public Class StateControllerCheckAuthorizedAmount
         Implements IStateController
 
-        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
             Dim oldClaim As Claim = CType(navCtrl.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim)
 
             'Check if the EstimatePrice for this ServiceCenter EXCEEDS the AuthorizationLimit for the User
@@ -3704,7 +3708,7 @@ Partial Class ClaimForm
                 If Not objServiceCenter.IntegratedWithGVS Then
                     'Call The Create Service Order Use Case
                     Dim soController As New ServiceOrderController
-                    Dim so As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = soController.GenerateServiceOrder(oldClaim)
+                    Dim so As ServiceOrder = soController.GenerateServiceOrder(oldClaim)
 
                     'Save this ServiceOrder in the FlowSession
                     navCtrl.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) = so
@@ -3735,7 +3739,7 @@ Partial Class ClaimForm
         Implements IStateController
 
 
-        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
             navCtrl.Navigate(callingPage, FlowEvents.EVENT_NEXT, BuidlLocateServiceCenterParameters(navCtrl))
         End Sub
 
@@ -3769,7 +3773,7 @@ Partial Class ClaimForm
             Public Stage As ProcessingStage = ProcessingStage.AddingOKPrompt
         End Class
 
-        Public ReadOnly Property State() As MyState
+        Public ReadOnly Property State As MyState
             Get
                 If NavController.State Is Nothing Then
                     NavController.State = New MyState
@@ -3778,7 +3782,7 @@ Partial Class ClaimForm
             End Get
         End Property
 #End Region
-        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
 
             NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
@@ -3793,8 +3797,8 @@ Partial Class ClaimForm
             End Select
         End Sub
 
-        Sub AddPrompt(callingPage As System.Web.UI.Page)
-            CType(callingPage, ElitaPlusPage).DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", ElitaPlusPage.MSG_BTN_OK, ElitaPlusPage.MSG_TYPE_CONFIRM)
+        Sub AddPrompt(callingPage As Page)
+            CType(callingPage, ElitaPlusPage).DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_CONFIRM)
         End Sub
 
     End Class
@@ -3816,7 +3820,7 @@ Partial Class ClaimForm
 
 #Region "Handle Dropdown Events"
 
-    Private Sub cboCauseOfLossId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCauseOfLossId.SelectedIndexChanged
+    Private Sub cboCauseOfLossId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboCauseOfLossId.SelectedIndexChanged
         Try
             With State.MyBO
                 PopulateBOProperty(State.MyBO, "CauseOfLossId", cboCauseOfLossId)
@@ -3830,16 +3834,16 @@ Partial Class ClaimForm
                     PopulateAuthorizedAmountFromPGPrices()
                 End If
             End With
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub cbousershipaddress_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cbousershipaddress.SelectedIndexChanged
+    Private Sub cbousershipaddress_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbousershipaddress.SelectedIndexChanged
 
-        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
         If cbousershipaddress.SelectedValue = YesId.ToString Then
             moUserControlContactInfo.Visible = True
             UserControlContactInfo.EnableDisablecontrol(False)
@@ -3871,14 +3875,14 @@ Partial Class ClaimForm
                     State.MyBO.ContactInfo.Address.Delete()
                 End If
 
-                If Not State.MyBO.ContactInfoId = System.Guid.Empty Then
-                    State.MyBO.ContactInfoId = System.Guid.Empty
+                If Not State.MyBO.ContactInfoId = Guid.Empty Then
+                    State.MyBO.ContactInfoId = Guid.Empty
                 End If
             End If
         End If
     End Sub
 
-    Private Sub cboFulfilmentMethod_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboFulfilmentMethod.SelectedIndexChanged
+    Private Sub cboFulfilmentMethod_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboFulfilmentMethod.SelectedIndexChanged
         If cboFulfilmentMethod.SelectedValue = Codes.FULFILMENT_METHOD_REIMBURSEMENT Then
             ControlMgr.SetVisibleControl(Me, LabelAccountNumber, True)
             ControlMgr.SetVisibleControl(Me, TextboxAccountNumber, True)
@@ -3908,7 +3912,7 @@ Partial Class ClaimForm
         ControlMgr.SetVisibleControl(Me, GridClaimAuthorization, State.IsGridVisible)
     End Sub
 
-    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridClaimAuthorization.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -3916,7 +3920,7 @@ Partial Class ClaimForm
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridClaimAuthorization.RowDataBound
 
         Try
             Dim claimAuth As ClaimAuthorization = CType(e.Row.DataItem, ClaimAuthorization)
@@ -3945,7 +3949,7 @@ Partial Class ClaimForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridClaimAuthorization.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridClaimAuthorization.RowCommand
         Dim claimAuthorizationId As Guid
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
@@ -3955,15 +3959,15 @@ Partial Class ClaimForm
                     'Me.callPage(ClaimAuthorizationDetailForm.URL, New ClaimAuthorizationDetailForm.Parameters(CType(Me.State.MyBO, MultiAuthClaim), claimAuthorizationId, Guid.Empty))
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
-               (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
+            If (TypeOf ex Is TargetInvocationException) AndAlso
+               (TypeOf ex.InnerException Is ThreadAbortException) Then Return
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridClaimAuthorization.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles GridClaimAuthorization.Sorting
         Try
             If (State.claimAuthList.Count > 0) Then
                 State.IsGridVisible = True
@@ -3981,10 +3985,10 @@ Partial Class ClaimForm
 
     End Sub
 
-    Private Function Sort(list As List(Of ClaimAuthorization), sortBy As String, sortDirection As WebControls.SortDirection) As List(Of ClaimAuthorization)
+    Private Function Sort(list As List(Of ClaimAuthorization), sortBy As String, sortDirection As SortDirection) As List(Of ClaimAuthorization)
         Dim propInfo As Reflection.PropertyInfo = list.GetType().GetGenericArguments()(0).GetProperty(sortBy)
 
-        If sortDirection = WebControls.SortDirection.Ascending Then
+        If sortDirection = SortDirection.Ascending Then
             Return list.OrderBy(Function(i) propInfo.GetValue(i, Nothing)).ToList()
         Else
             Return list.OrderByDescending(Function(i) propInfo.GetValue(i, Nothing)).ToList()
@@ -4102,7 +4106,7 @@ Partial Class ClaimForm
             End If
 
             Dim uri As String = String.Format(oWebPasswd.Url, "Elita", State.MyBO.ClaimNumber)
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
             Dim client As HttpClient = New HttpClient()
             client.DefaultRequestHeaders.Accept.Clear()
             client.DefaultRequestHeaders.Add(oWebPasswd.UserId, oWebPasswd.Password)
@@ -4210,7 +4214,7 @@ Partial Class ClaimForm
                                     Nothing,
                                     Codes.CasePurposeChangeFulfillment,
                                     State.IsCallerAuthenticated)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -4230,7 +4234,7 @@ Partial Class ClaimForm
                                                                              isCallerAuthenticated)
 
             NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, claimRecordingParameters)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try

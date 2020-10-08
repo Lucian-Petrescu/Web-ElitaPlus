@@ -1,5 +1,6 @@
 ﻿<%@ Register TagPrefix="uc1" TagName="UserControlPoliceReport" Src="../Common/UserControlPoliceReport_New.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
+<%@ Import Namespace="System.Globalization" %>
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
 <%--REQ-784--%>
 <%@ Register TagPrefix="uc1" TagName="UserControlContactInfo" Src="../Common/UserControlContactInfo_New.ascx" %>
@@ -11,6 +12,8 @@
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
+<%@ Import Namespace="Assurant.ElitaPlus.BusinessObjectsNew" %>
+<%@ Import Namespace="Assurant.ElitaPlus.Common" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet"/>
@@ -170,8 +173,8 @@
         }
 
         function OnComplete(result) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var liab = document.getElementById('<%=TextboxLiabilityLimit.ClientID %>');
             var auth = document.getElementById('<%=TextboxAuthorizedAmount.ClientID %>');
             var liab2 = document.getElementById('<%=TextboxLiabilityLimitShadow.ClientID %>');
@@ -186,8 +189,8 @@
         }
 
         function UpdateLiabLimitAssPays() {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var liab = document.getElementById('<%=TextboxLiabilityLimit.ClientID %>');
             var auth = document.getElementById('<%=TextboxAuthorizedAmount.ClientID %>');
             var liab2 = document.getElementById('<%=TextboxLiabilityLimitShadow.ClientID %>');
@@ -230,8 +233,8 @@
         }
 
         function AssurantPays(authValue) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var assurPays = document.getElementById('<%=TextboxAssurantPays.ClientID %>');
             var liab = document.getElementById('<%=TextboxLiabilityLimit.ClientID %>');
             var deduct = document.getElementById('<%=TextboxDeductible_WRITE.ClientID %>');
@@ -267,8 +270,8 @@
         }
 
         function ConsumerPays(authValue) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var assurPays = document.getElementById('<%=TextboxAssurantPays.ClientID %>');
             var cPays = document.getElementById('<%=TextboxConsumerPays.ClientID %>');
 
@@ -282,8 +285,8 @@
         function UpdateDeductible() {
             var US = /^(((\d{1,3})(,\d{3})*)|(\d+))(\.\d{1,2})?$/;
             var EU = /^(((\d{1,3})(\.\d{3})*)|(\d+))(,\d{1,2})?$/;
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var deductible = document.getElementById('<%=TextboxDeductible_WRITE.ClientID %>');
             var deductibleShadow = document.getElementById('<%=TextboxDeductibleShadow.ClientID %>');
             var replacementCost = document.getElementById('<%=TextBoxReplacementCost.ClientID %>');
@@ -307,7 +310,7 @@
                 }
             }
             else {
-                alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                 return;
             }
             deductible.value = convertNumberToCulture(parseFloat(deductible.value), decSep, groupSep);
@@ -324,8 +327,8 @@
         }
 
         function DueToScFromAssurant(authValue) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var assurPays = document.getElementById('<%=TextboxAssurantPays.ClientID %>');
             var deductible = document.getElementById('<%=TextboxDeductible_WRITE.ClientID %>');
             var dueToScFromA = document.getElementById('<%=TextboxDueToSCFromAssurant.ClientID %>');
@@ -344,8 +347,8 @@
         }
 
         function Deductible(authValue) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var liab = document.getElementById('<%=TextboxLiabilityLimit.ClientID %>');
             var deduct = document.getElementById('<%=TextboxDeductible_WRITE.ClientID %>');
             var liabLimit = parseFloat(setJsFormat(liab.value, decSep));
@@ -370,8 +373,8 @@
         }
 
         function Discount(authValue) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var disc = document.getElementById('<%=TextBoxDiscount.ClientID %>');
             var discountpercent = '<%=nDiscountPercent%>';
             //alert('inside 1 0 ' + disc.value);
@@ -396,13 +399,13 @@
         }
 
         function AuthorizationWarning(authValue) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
             var userAuth = document.getElementById('<%=HiddenUserAuthorization.ClientID %>');
         }
 
         function CallUpdateAuth(webControl) {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var ctl = document.getElementById("ctl00_BodyPlaceHolder_" + webControl);
             UpdateAuth(ctl);
             var tb9 = document.getElementById('<%=TextboxDeductible_WRITE.ClientID %>');
@@ -420,8 +423,8 @@
         function UpdateAuth(webControl) {
             var auth = document.getElementById('<%=TextboxAuthorizedAmount.ClientID %>');
             var auth2 = document.getElementById('<%=TextboxAuthorizedAmountShadow.ClientID %>');
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var US = /^(((\d{1,3})(,\d{3})*)|(\d+))(\.\d{1,2})?$/;
             //var EU = /^(((\d{1,3})(.\d{3})*)|(\d+))(\,\d{1,2})?$/;
             var EU = /^(((\d{1,3})(\.\d{3})*)|(\d+))(,\d{1,2})?$/;
@@ -472,10 +475,10 @@
                         auth2.value = auth.value;
                     }
                     else
-                    { alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
+                    { alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
                 }
                 else
-                { alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
+                { alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
             }
 
             //auth.value = parseFloat(setJsFormat(webControl.value,decSep));

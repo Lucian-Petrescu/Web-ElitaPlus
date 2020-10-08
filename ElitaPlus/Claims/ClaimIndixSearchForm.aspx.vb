@@ -105,7 +105,7 @@ Public Class ClaimIndixSearchForm
     End Sub
 
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Form.DefaultButton = btnSearch.UniqueID
 
@@ -229,7 +229,7 @@ Public Class ClaimIndixSearchForm
 
         Catch ex As ServiceException
             State.NumberOfRecords = 0
-            Dim failError As String = "Indix: " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_WEB_SERVICE_CALL_FAILED)
+            Dim failError As String = "Indix: " & TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.ERR_WEB_SERVICE_CALL_FAILED)
             ShowMessage(failError, IMessageController.MessageType.Error, False)
         Catch ex As Exception
             State.NumberOfRecords = 0
@@ -344,7 +344,7 @@ Public Class ClaimIndixSearchForm
 
         Try
             'Call SQL to bring Indix CountryCode  
-            countryCode = BusinessObjectsNew.Claim.GetCountryCodeOverwrite(State.CompanyID)
+            countryCode = Claim.GetCountryCodeOverwrite(State.CompanyID)
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -420,9 +420,9 @@ Public Class ClaimIndixSearchForm
         BindGrid()
     End Sub
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
+            Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
             ReturnToCallingPage(retType)
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -447,7 +447,7 @@ Public Class ClaimIndixSearchForm
 
 #Region "Grid Related"
 
-    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -475,7 +475,7 @@ Public Class ClaimIndixSearchForm
 
 
     'The Binding LOgic is here
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         'Dim itemType As ListItemType = CType(e.Row.ItemType, ListItemType)
         Dim product As ProductDetail = CType(e.Row.DataItem, ProductDetail)
         Dim btnEditClaimItem As LinkButton
@@ -500,7 +500,7 @@ Public Class ClaimIndixSearchForm
 
 
 
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         NavController = Nothing
         ReturnToCallingPage(True)
     End Sub

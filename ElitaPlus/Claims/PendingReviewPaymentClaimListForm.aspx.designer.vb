@@ -20,7 +20,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
 
     '''<summary>
     '''labelCountry control.
@@ -29,7 +29,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelCountry As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelCountry As Label
 
     '''<summary>
     '''ddlcountry control.
@@ -38,7 +38,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlcountry As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlcountry As DropDownList
 
     '''<summary>
     '''LabelSearchServiceCenter control.
@@ -47,7 +47,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchServiceCenter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchServiceCenter As Label
 
     '''<summary>
     '''ddlservicecenter control.
@@ -56,7 +56,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlservicecenter As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlservicecenter As DropDownList
 
     '''<summary>
     '''LabelSerialNumber control.
@@ -65,7 +65,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSerialNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSerialNumber As Label
 
     '''<summary>
     '''TextBoxSearchSerialNumber control.
@@ -74,7 +74,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchSerialNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchSerialNumber As TextBox
 
     '''<summary>
     '''moClaimCreatedDate control.
@@ -83,7 +83,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moClaimCreatedDate As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moClaimCreatedDate As FieldSearchCriteriaControl
 
     '''<summary>
     '''lblServicelevel control.
@@ -92,7 +92,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblServicelevel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblServicelevel As Label
 
     '''<summary>
     '''LabelSearchClaimNumber control.
@@ -101,7 +101,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchClaimNumber As Label
 
     '''<summary>
     '''labelclaimstatus control.
@@ -110,7 +110,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelclaimstatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelclaimstatus As Label
 
     '''<summary>
     '''labelclaimexttatus control.
@@ -119,7 +119,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelclaimexttatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelclaimexttatus As Label
 
     '''<summary>
     '''ddlservicelevel control.
@@ -128,7 +128,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlservicelevel As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlservicelevel As DropDownList
 
     '''<summary>
     '''TextBoxSearchClaimNumber control.
@@ -137,7 +137,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchClaimNumber As TextBox
 
     '''<summary>
     '''ddlclaimstatus control.
@@ -146,7 +146,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlclaimstatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlclaimstatus As DropDownList
 
     '''<summary>
     '''ddlclaimextstatus control.
@@ -155,7 +155,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlclaimextstatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlclaimextstatus As DropDownList
 
     '''<summary>
     '''LabelSearchCustomerCertificate control.
@@ -164,7 +164,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchCustomerCertificate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchCustomerCertificate As Label
 
     '''<summary>
     '''lblrisktype control.
@@ -173,7 +173,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblrisktype As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblrisktype As Label
 
     '''<summary>
     '''labelCoverageType control.
@@ -182,7 +182,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelCoverageType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelCoverageType As Label
 
     '''<summary>
     '''TextBoxSearchCertificate control.
@@ -191,7 +191,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchCertificate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchCertificate As TextBox
 
     '''<summary>
     '''ddlrisktype control.
@@ -200,7 +200,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlrisktype As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlrisktype As DropDownList
 
     '''<summary>
     '''ddlcoveragetype control.
@@ -209,7 +209,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlcoveragetype As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlcoveragetype As DropDownList
 
     '''<summary>
     '''lblSKUclaimed control.
@@ -218,7 +218,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSKUclaimed As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSKUclaimed As Label
 
     '''<summary>
     '''lblreppartsku control.
@@ -227,7 +227,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblreppartsku As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblreppartsku As Label
 
     '''<summary>
     '''lblSKUReplaced control.
@@ -236,7 +236,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSKUReplaced As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSKUReplaced As Label
 
     '''<summary>
     '''lblReplacementType control.
@@ -245,7 +245,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblReplacementType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblReplacementType As Label
 
     '''<summary>
     '''txtSKUClaimed control.
@@ -254,7 +254,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtSKUClaimed As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtSKUClaimed As TextBox
 
     '''<summary>
     '''txtskureppart control.
@@ -263,7 +263,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtskureppart As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtskureppart As TextBox
 
     '''<summary>
     '''txtSKUReplaced control.
@@ -272,7 +272,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtSKUReplaced As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtSKUReplaced As TextBox
 
     '''<summary>
     '''ddlReplacementType control.
@@ -281,7 +281,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlReplacementType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlReplacementType As DropDownList
 
     '''<summary>
     '''lblmake control.
@@ -290,7 +290,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblmake As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblmake As Label
 
     '''<summary>
     '''lblmodel control.
@@ -299,7 +299,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblmodel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblmodel As Label
 
     '''<summary>
     '''ddlmake control.
@@ -308,7 +308,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlmake As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlmake As DropDownList
 
     '''<summary>
     '''TextBoxmodel control.
@@ -317,7 +317,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxmodel As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxmodel As TextBox
 
     '''<summary>
     '''btnClearSearch control.
@@ -326,7 +326,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -335,7 +335,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''mogridresults control.
@@ -344,7 +344,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mogridresults As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents mogridresults As HtmlGenericControl
 
     '''<summary>
     '''trPageSize control.
@@ -353,7 +353,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -362,7 +362,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''colonSepertor control.
@@ -371,7 +371,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -380,7 +380,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -389,7 +389,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''Grid control.
@@ -398,7 +398,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 
     '''<summary>
     '''divbtns control.
@@ -407,7 +407,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents divbtns As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divbtns As HtmlGenericControl
 
     '''<summary>
     '''btnapproveclaims control.
@@ -416,7 +416,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnapproveclaims As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnapproveclaims As Button
 
     '''<summary>
     '''btnexport control.
@@ -425,7 +425,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnexport As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnexport As Button
 
     '''<summary>
     '''checkRecords control.
@@ -434,7 +434,7 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents checkRecords As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents checkRecords As HtmlInputHidden
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -443,5 +443,5 @@ Partial Public Class PendingReviewPaymentClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 End Class

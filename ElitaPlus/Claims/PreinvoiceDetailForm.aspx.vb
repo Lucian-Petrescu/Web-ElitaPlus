@@ -1,4 +1,9 @@
 ﻿Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
+Imports Assurant.ElitaPlus.DALObjects
 Imports Microsoft.VisualBasic
 Partial Class PreinvoiceDetailForm
     Inherits ElitaPlusSearchPage
@@ -7,12 +12,12 @@ Partial Class PreinvoiceDetailForm
 
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <DebuggerStepThrough()> _
     Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -213,7 +218,7 @@ Partial Class PreinvoiceDetailForm
     End Sub
 
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
 
@@ -234,7 +239,7 @@ Partial Class PreinvoiceDetailForm
             End If
             EnableDisablePageControls()
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -405,7 +410,7 @@ Partial Class PreinvoiceDetailForm
         End Set
     End Property
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         BaseItemCreated(sender, e)
     End Sub
 
@@ -414,7 +419,7 @@ Partial Class PreinvoiceDetailForm
         Return Result.Equals("YES")
     End Function
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             State.PageIndex = e.NewPageIndex
             If IsDataGPageDirty() Then
@@ -430,11 +435,11 @@ Partial Class PreinvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim index As Integer
             If IsDataGPageDirty() Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                State.ActionInProgress = DetailPageCommand.GridPageSize
                 btnReject.Enabled = True
                 DisplayMessage(Message.MSG_PAGE_ALERT_PROMPT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             ElseIf e.CommandName = SELECT_ACTION_COMMAND Then
@@ -444,13 +449,13 @@ Partial Class PreinvoiceDetailForm
                 callPage(ClaimForm.URL, State.selectedClaimID)
             End If
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -482,7 +487,7 @@ Partial Class PreinvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -500,10 +505,10 @@ Partial Class PreinvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             If IsDataGPageDirty() Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                State.ActionInProgress = DetailPageCommand.GridPageSize
                 btnReject.Enabled = True
                 DisplayMessage(Message.MSG_PAGE_ALERT_PROMPT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             Else
@@ -522,7 +527,7 @@ Partial Class PreinvoiceDetailForm
 
     Private Shared ReadOnly Property AjaxState() As MyState
         Get
-            Return CType(NavPage.ClientNavigator.PageState, MyState)
+            Return CType(ClientNavigator.PageState, MyState)
         End Get
 
     End Property
@@ -531,8 +536,8 @@ Partial Class PreinvoiceDetailForm
 
 #Region "Ajax Autocomplete"
 
-    <System.Web.Services.WebMethod()>
-    <Script.Services.ScriptMethod()>
+    <WebMethod()>
+    <ScriptMethod()>
     Public Shared Function PopulateMasterCenterDrop(prefixText As String, count As Integer) As String()
 
         Dim countryId As Guid = New Guid(CType(LookupListNew.GetCountryLookupList(AjaxState.preInvBO.CompanyId)(0)(0), Byte()))
@@ -578,7 +583,7 @@ Partial Class PreinvoiceDetailForm
                                 "</script>"
     End Sub
 
-    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             State.searchBtnClicked = True
             State.PageIndex = 0
@@ -595,31 +600,31 @@ Partial Class PreinvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             'Me.PopulateBOsFromForm()
             'If Me.IsDataGPageDirty() Then
             'Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
             Dim myBo As PreInvoiceDetails = State.MyBO
-            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo)
+            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, myBo)
             NavController = Nothing
             ReturnToCallingPage(retObj)
             'End If
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub ApproveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApprove.Click
+    Private Sub ApproveButton_WRITE_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
         Try
 
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_APPROVE
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_APPROVE
             ProcessRecords()
             HiddenIsPageDirty.Value = "NO"
             'reload the top level data
@@ -629,7 +634,7 @@ Partial Class PreinvoiceDetailForm
             PopulateGrid()
             EnableDisablePageControls()
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
@@ -690,19 +695,19 @@ Partial Class PreinvoiceDetailForm
 
     Protected Function ProcessRecords() As Boolean
         Try
-            Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
-            If (State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_APPROVE) Then
+            Dim outputParameters() As DBHelper.DBHelperParameter
+            If (State.cmdProcessRecord = ClaimDAL.CMD_APPROVE) Then
                 outputParameters = PreInvoiceDetails.ApprovePreInvoiceClaims(State.preInvBO.CompanyId, State.PreInvoiceId)
             Else
                 outputParameters = PreInvoiceDetails.RejectPreInvoiceClaims(State.preInvBO.CompanyId, checkRecords.Value, State.PreInvoiceId, txtRejectComments.Text)
             End If
             If CType(outputParameters(0).Value, Integer) = 0 Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 MasterPage.MessageController.Show()
             ElseIf CType(outputParameters(0).Value, Integer) = 100 Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CType(outputParameters(1).Value, String)), True)
                 MasterPage.MessageController.Show()
@@ -718,7 +723,7 @@ Partial Class PreinvoiceDetailForm
         End Try
     End Function
 
-    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         State.SortExpression = PreInvoiceDetails.PreInvoiceDetailSearchDV.COL_CLAIM_NUMBER
         txtServiceCtrName.Text = String.Empty
         txtMasterCtrName.Text = String.Empty
@@ -729,10 +734,10 @@ Partial Class PreinvoiceDetailForm
         PopulateGrid()
     End Sub
 
-    Private Sub btnOk_Click(sender As Object, e As System.EventArgs) Handles btnOk.Click
+    Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click
         Try
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_REJECT
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_REJECT
             ProcessCommand()
             PopulateGrid()
             HiddenIsPageDirty.Value = "NO"
@@ -742,13 +747,13 @@ Partial Class PreinvoiceDetailForm
             populateBatchNumberData()
             txtRejectComments.Text = String.Empty
             ControlMgr.SetEnableControl(Me, btnReject, False)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         txtRejectComments.Text = String.Empty
     End Sub
 End Class

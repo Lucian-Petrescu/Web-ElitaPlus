@@ -20,7 +20,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager2 As Global.System.Web.UI.ScriptManager
+    Protected WithEvents ScriptManager2 As ScriptManager
     
     '''<summary>
     '''searchTable control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
     
     '''<summary>
     '''LabelSearchterm control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchterm As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchterm As Label
     
     '''<summary>
     '''LabelSearchOrder control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchOrder As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchOrder As Label
     
     '''<summary>
     '''TextBoxSearchTerm control.
@@ -56,7 +56,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchTerm As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchTerm As TextBox
     
     '''<summary>
     '''cboSortBy control.
@@ -65,7 +65,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSortBy As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSortBy As DropDownList
     
     '''<summary>
     '''btnResetSearch control.
@@ -74,7 +74,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnResetSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnResetSearch As Button
     
     '''<summary>
     '''btnClearSearch control.
@@ -83,7 +83,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
     
     '''<summary>
     '''btnSearch control.
@@ -92,7 +92,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
     
     '''<summary>
     '''LabelModelName control.
@@ -101,7 +101,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelModelName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelModelName As Label
     
     '''<summary>
     '''trPageSize control.
@@ -110,7 +110,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
     
     '''<summary>
     '''lblPageSize control.
@@ -119,7 +119,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
     
     '''<summary>
     '''Label3 control.
@@ -128,7 +128,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label3 As Label
     
     '''<summary>
     '''cboPageSize control.
@@ -137,7 +137,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
     
     '''<summary>
     '''lblRecordCount control.
@@ -146,7 +146,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
     
     '''<summary>
     '''dataSectionContainer control.
@@ -155,7 +155,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents dataSectionContainer As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents dataSectionContainer As Panel
     
     '''<summary>
     '''Grid control.
@@ -164,7 +164,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
     
     '''<summary>
     '''btnMore control.
@@ -173,7 +173,7 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnMore As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnMore As Button
     
     '''<summary>
     '''btnBack control.
@@ -182,5 +182,5 @@ Partial Public Class ClaimIndixSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 End Class

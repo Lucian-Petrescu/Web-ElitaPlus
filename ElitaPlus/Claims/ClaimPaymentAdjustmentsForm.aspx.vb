@@ -1,10 +1,14 @@
+Imports System.Diagnostics
+Imports System.Reflection
+Imports System.Threading
+
 Partial Class ClaimPaymentAdjustmentsForm
     Inherits ElitaPlusSearchPage
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
@@ -12,9 +16,9 @@ Partial Class ClaimPaymentAdjustmentsForm
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -190,7 +194,7 @@ Partial Class ClaimPaymentAdjustmentsForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         ErrorCtrl.Clear_Hide()
         Try
@@ -260,7 +264,7 @@ Partial Class ClaimPaymentAdjustmentsForm
 
     Public Sub PopulateGrid()
         Dim foundLabel As String
-        Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+        Dim errors() As ValidationError = {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
         State.decTotalPaid = 0
         ToggleButtons(blnNewPaymentButtonEnabledState, False, False)
@@ -471,7 +475,7 @@ Partial Class ClaimPaymentAdjustmentsForm
 #Region " Datagrid Related "
 
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
@@ -486,7 +490,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         End If
     End Sub
 
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" AndAlso Grid.Enabled Then
                 Grid.SelectedIndex = e.Item.ItemIndex
@@ -523,18 +527,18 @@ Partial Class ClaimPaymentAdjustmentsForm
                 Session("AdjustPaymentButtonEnabledState") = blnAdjustPaymentButtonEnabledState
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = e.NewPageIndex
             State.selectedClaimInvoiceId = Guid.Empty
@@ -544,7 +548,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.PageSize = Grid.PageSize
@@ -557,20 +561,20 @@ Partial Class ClaimPaymentAdjustmentsForm
 #End Region
 
 #Region " Buttons Clicks "
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
-        Catch ex As Threading.ThreadAbortException
+            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = ErrorCtrl.Text
         End Try
 
     End Sub
 
-    Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
             If ButtonClicked = REVERSE_PAYMENT Then
                 '**************************************REVERSE PAYMENT********************************
@@ -580,7 +584,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                 '3- Comment record      (New)
                 '****************************************************************************
                 If txtInvoiceNumber.Text = "" Then
-                    ElitaPlusPage.SetLabelError(lblINVOICE_NUMBER)
+                    SetLabelError(lblINVOICE_NUMBER)
                     Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR)
                 End If
 
@@ -589,7 +593,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                 oCompaniesDv.RowFilter = "code in ('ABA','VBA','SBA')"
                 If oCompaniesDv.Count > 0 Then
                     If txtInvoiceDate.Text.Trim = "" Then
-                        ElitaPlusPage.SetLabelError(lblInvoiceDate)
+                        SetLabelError(lblInvoiceDate)
                         Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVOICE_DATE_REQUIRED_ERR)
                     Else
                         If Not Microsoft.VisualBasic.IsDate(txtInvoiceDate.Text) Then
@@ -609,7 +613,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                 '5- Comment record      (New)
                 '****************************************************************************
                 If txtInvoiceNumber.Text = "" Then
-                    ElitaPlusPage.SetLabelError(lblINVOICE_NUMBER)
+                    SetLabelError(lblINVOICE_NUMBER)
                     Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR)
                 End If
 
@@ -618,7 +622,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                 oCompaniesDv.RowFilter = "code in ('ABA','VBA','SBA')"
                 If oCompaniesDv.Count > 0 Then
                     If txtInvoiceDate.Text.Trim = "" Then
-                        ElitaPlusPage.SetLabelError(lblInvoiceDate)
+                        SetLabelError(lblInvoiceDate)
                         Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVOICE_DATE_REQUIRED_ERR)
                     Else
                         If Not Microsoft.VisualBasic.IsDate(txtInvoiceDate.Text) Then
@@ -630,7 +634,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                 Dim blnInvalidTtl As Boolean = False, dAdjAmt As Decimal = 0
 
                 If txtADJUSTMENT_AMOUNT.Text = "" Then
-                    ElitaPlusPage.SetLabelError(lblADJUSTMENT_AMOUNT)
+                    SetLabelError(lblADJUSTMENT_AMOUNT)
                     Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED_ERR)
                 Else
                     Try
@@ -640,7 +644,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                         'YX: instead of create a dummy new BO, using parse function to test amount in correct format
                         dAdjAmt = Decimal.Parse(txtADJUSTMENT_AMOUNT.Text.Trim())
                     Catch ex As Exception
-                        ElitaPlusPage.SetLabelError(lblADJUSTMENT_AMOUNT)
+                        SetLabelError(lblADJUSTMENT_AMOUNT)
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_AMOUNT_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)
                     End Try
 
@@ -661,16 +665,16 @@ Partial Class ClaimPaymentAdjustmentsForm
             'Navigate to Comment Screen
             State.NavigateToComment = True
             NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_ADDED, New CommentForm.Parameters(State.CommentBO.Id))
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
-                (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
+            If (TypeOf ex Is TargetInvocationException) AndAlso
+                (TypeOf ex.InnerException Is ThreadAbortException) Then Return
             HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Private Sub btnNEW_PAYMENT_Click(sender As Object, e As System.EventArgs) Handles btnNEW_PAYMENT.Click
+    Private Sub btnNEW_PAYMENT_Click(sender As Object, e As EventArgs) Handles btnNEW_PAYMENT.Click
         ToggleButtons(False, False, False)
         ButtonClicked = NEW_PAYMENT
         Session("ButtonClicked") = ButtonClicked
@@ -680,7 +684,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         'Me.callPage(PayClaimForm.URL, New PayClaimForm.Parameters(New Claim(Me.State.selectedClaimID), True))
     End Sub
 
-    Private Sub btnADJUST_PAYMENT_Click(sender As Object, e As System.EventArgs) Handles btnADJUST_PAYMENT.Click
+    Private Sub btnADJUST_PAYMENT_Click(sender As Object, e As EventArgs) Handles btnADJUST_PAYMENT.Click
         ControlMgr.SetVisibleControl(Me, tblPaymentDetails, True)
         ControlMgr.SetVisibleControl(Me, tblHR, True)
         ControlMgr.SetVisibleControl(Me, lblADJUSTMENT_AMOUNT, True)
@@ -709,7 +713,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         cboPageSize.Enabled = False
     End Sub
 
-    Private Sub btnREVERSE_PAYMENT_Click(sender As Object, e As System.EventArgs) Handles btnREVERSE_PAYMENT.Click
+    Private Sub btnREVERSE_PAYMENT_Click(sender As Object, e As EventArgs) Handles btnREVERSE_PAYMENT.Click
         ControlMgr.SetVisibleControl(Me, tblPaymentDetails, True)
         ControlMgr.SetVisibleControl(Me, tblHR, True)
         ControlMgr.SetVisibleControl(Me, lblADJUSTMENT_AMOUNT, False)
@@ -738,7 +742,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         cboPageSize.Enabled = False
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         ControlMgr.SetVisibleControl(Me, tblPaymentDetails, False)
         ControlMgr.SetVisibleControl(Me, tblHR, False)
         ControlMgr.SetVisibleControl(Me, ImageButtonInvoiceDate, False)

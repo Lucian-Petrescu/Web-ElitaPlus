@@ -42,7 +42,7 @@ Partial Public Class DenyClaimForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         ErrorCtrl.Clear_Hide()
         Try
 
@@ -61,7 +61,7 @@ Partial Public Class DenyClaimForm
             If Not IsPostBack Then
                 AddLabelDecorations(State.MyBO)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
@@ -129,15 +129,15 @@ Partial Public Class DenyClaimForm
 #End Region
 
 #Region "Button Clicks"
-    Protected Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         NavController.Navigate(Me, FlowEvents.EVENT_CANCEL)
     End Sub
 
-    Protected Sub btnApply_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
+    Protected Sub btnApply_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
         Try
             PopulateBOsFromForm()
             If State.MyBO.DeniedReasonId.Equals(Guid.Empty) Then
-                ElitaPlusPage.SetLabelError(lblDeniedReason)
+                SetLabelError(lblDeniedReason)
                 Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DENIED_REASON_IS_REQUIRED_ERR)
             End If
 
@@ -164,7 +164,7 @@ Partial Public Class DenyClaimForm
             Else
                 NavController.Navigate(Me, FlowEvents.EVENT_NEXT, Message.MSG_CLAIM_ADDED)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try

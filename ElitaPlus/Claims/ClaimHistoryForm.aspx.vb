@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System.Globalization
+Imports Assurant.ElitaPlus.DALObjects
 
 
 Partial Public Class ClaimHistoryForm
@@ -102,7 +103,7 @@ Partial Public Class ClaimHistoryForm
 #Region "Page Events"
 
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
 
 
@@ -212,7 +213,7 @@ Partial Public Class ClaimHistoryForm
         Dim dv As DataView
         Try
 
-            Dim myDALBusObject As New Assurant.ElitaPlus.DALObjects.ClaimHistoryDAL
+            Dim myDALBusObject As New ClaimHistoryDAL
             Dim defaultSelectedCodeId As New Guid
 
             defaultSelectedCodeId = State.claimId
@@ -239,7 +240,7 @@ Partial Public Class ClaimHistoryForm
 
     End Sub
 
-    Private Sub CommentsGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub CommentsGrid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim btnEditItem As LinkButton
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -262,7 +263,7 @@ Partial Public Class ClaimHistoryForm
         End If
 
     End Sub
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
 
@@ -407,7 +408,7 @@ Partial Public Class ClaimHistoryForm
         End Try
 
     End Sub
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
 
 
@@ -420,7 +421,7 @@ Partial Public Class ClaimHistoryForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
             ControlMgr.SetVisibleControl(Me, PanelHistoryDetails, False)
 
@@ -435,7 +436,7 @@ Partial Public Class ClaimHistoryForm
 #End Region
 
 #Region "Button Clicks"
-    Protected Sub ImgCloseButton_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles ImgCloseButton.Click
+    Protected Sub ImgCloseButton_Click(sender As Object, e As ImageClickEventArgs) Handles ImgCloseButton.Click
         ControlMgr.SetVisibleControl(Me, Grid, True)
         ControlMgr.SetVisibleControl(Me, lblPageSize, True)
         ControlMgr.SetVisibleControl(Me, cboPageSize, True)
@@ -466,14 +467,14 @@ Partial Public Class ClaimHistoryForm
 
                 FlagPanel.Text = "n"
             Else
-                Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
+                Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
                 ReturnToCallingPage(retType)
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         NavController = Nothing
         ReturnToCallingPage(True)
     End Sub

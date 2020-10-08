@@ -105,7 +105,7 @@ Public Class ClaimSelectPayables
         End If
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
         UpdateBreadCrum()
         If Not Page.IsPostBack Then
@@ -116,7 +116,7 @@ Public Class ClaimSelectPayables
 #End Region
 
 #Region "Button Click Handlers"
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             ReturnToCallingPage()
         Catch ex As Exception
@@ -124,7 +124,7 @@ Public Class ClaimSelectPayables
         End Try
     End Sub
 
-    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
 
         Dim hasErrors As Boolean = False
         If (Not moInvoiceDateRange.IsEmpty) Then hasErrors = hasErrors OrElse Not moInvoiceDateRange.Validate()
@@ -135,7 +135,7 @@ Public Class ClaimSelectPayables
         PopulateGrid()
     End Sub
 
-    Private Sub btnContinue_Click(sender As Object, e As System.EventArgs) Handles btnContinue.Click
+    Private Sub btnContinue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click
         Dim payableSelected As Boolean = False
         Dim chk As CheckBox
         Dim pgdRow As GridViewRow
@@ -265,7 +265,7 @@ Public Class ClaimSelectPayables
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -273,7 +273,7 @@ Public Class ClaimSelectPayables
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim claimAuthId As Guid
@@ -337,7 +337,7 @@ Public Class ClaimSelectPayables
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
 
         AddClaims(True)
         Try
@@ -350,7 +350,7 @@ Public Class ClaimSelectPayables
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
                 If State.SortExpression.EndsWith(" DESC") Then
@@ -372,7 +372,7 @@ Public Class ClaimSelectPayables
 #End Region
 
 
-    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         State.SearchClicked = False
         moClaimNumber.Text = String.Empty
         moInvoiceGroupNumber.Text = String.Empty

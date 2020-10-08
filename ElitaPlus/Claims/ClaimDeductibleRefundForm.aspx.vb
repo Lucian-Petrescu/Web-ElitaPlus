@@ -103,7 +103,7 @@ Public Class ClaimDeductibleRefundForm
         End Try
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         MasterPage.UsePageTabTitleInBreadCrum = False
         MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(LBL_TXT_CLAIM_DEDUCTIBLE_REFUND)
@@ -119,7 +119,7 @@ Public Class ClaimDeductibleRefundForm
                 PopulateFormFromBO()
             End If
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -171,7 +171,7 @@ Public Class ClaimDeductibleRefundForm
         txtClmDedRefundAmount.Text = GetAmountFormattedString(State.MyBO.Deductible)
 
         If (State.MyBO.StatusCode = Codes.CLAIM_STATUS__CLOSED OrElse State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
-            MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_DEDUCTIBLE_REFUND_CLAIM_STATUS))
+            MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.MSG_DEDUCTIBLE_REFUND_CLAIM_STATUS))
         End If
 
     End Sub
@@ -180,9 +180,9 @@ Public Class ClaimDeductibleRefundForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple AndAlso State.MyBO.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
-            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO)
+            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, State.MyBO)
             MyBase.ReturnToCallingPage(retObj)
         Else
             NavController.Navigate(Me, FlowEvents.EVENT_CANCEL, New ClaimForm.Parameters(State.MyBO.Id))
@@ -201,7 +201,7 @@ Public Class ClaimDeductibleRefundForm
                     btnSubmit.Enabled = False
                 End If
             Else
-                MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_DEDUCTIBLE_REFUND_MULTI_AUTH_CLAIM))
+                MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.MSG_DEDUCTIBLE_REFUND_MULTI_AUTH_CLAIM))
             End If
 
         Catch ex As Exception
@@ -219,11 +219,11 @@ Public Class ClaimDeductibleRefundForm
                 blnSuccess = True
             Else
                 blnSuccess = False
-                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_REFUND_AMOUNT))
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_REFUND_AMOUNT))
             End If
         Else
             blnSuccess = False
-            MasterPage.MessageController.AddError(lblClmDedRefundAmount.Text & ": " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR))
+            MasterPage.MessageController.AddError(lblClmDedRefundAmount.Text & ": " & TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR))
         End If
         Return blnSuccess
     End Function

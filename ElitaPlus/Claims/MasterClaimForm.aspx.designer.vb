@@ -28,7 +28,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''TablesLabel control.
@@ -37,7 +37,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TablesLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents TablesLabel As Label
 
     '''<summary>
     '''LabelTables control.
@@ -46,7 +46,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTables As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTables As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -55,7 +55,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''ErrorCtrl control.
@@ -64,7 +64,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ErrorCtrl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
+    Protected WithEvents ErrorCtrl As ErrorController
 
     '''<summary>
     '''LabelMasterClaimNumber control.
@@ -73,7 +73,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelMasterClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelMasterClaimNumber As Label
 
     '''<summary>
     '''LabelTotalAmountAuthorized control.
@@ -82,7 +82,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTotalAmountAuthorized As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTotalAmountAuthorized As Label
 
     '''<summary>
     '''LabelTotalAmountPaid control.
@@ -91,7 +91,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTotalAmountPaid As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTotalAmountPaid As Label
 
     '''<summary>
     '''TextBoxMasterClaimNumber control.
@@ -100,7 +100,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxMasterClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxMasterClaimNumber As TextBox
 
     '''<summary>
     '''TextBoxTotalAmountAuthorized control.
@@ -109,7 +109,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxTotalAmountAuthorized As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxTotalAmountAuthorized As TextBox
 
     '''<summary>
     '''TextBoxTotalAmountPaid control.
@@ -118,7 +118,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxTotalAmountPaid As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxTotalAmountPaid As TextBox
 
     '''<summary>
     '''serviceCenterPanel control.
@@ -127,7 +127,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents serviceCenterPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents serviceCenterPanel As Panel
 
     '''<summary>
     '''LabelDealer control.
@@ -136,7 +136,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDealer As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDealer As Label
 
     '''<summary>
     '''LabelCertificate control.
@@ -145,7 +145,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCertificate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCertificate As Label
 
     '''<summary>
     '''TextBoxDealer control.
@@ -154,7 +154,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxDealer As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxDealer As TextBox
 
     '''<summary>
     '''TextBoxCertificate control.
@@ -163,7 +163,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxCertificate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxCertificate As TextBox
 
     '''<summary>
     '''trPageSize control.
@@ -172,7 +172,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -181,7 +181,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -190,7 +190,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -199,7 +199,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''Grid control.
@@ -208,7 +208,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents Grid As DataGrid
 
     '''<summary>
     '''buttonlinks control.
@@ -217,7 +217,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents buttonlinks As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents buttonlinks As Panel
 
     '''<summary>
     '''btnClaimDetail control.
@@ -226,7 +226,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClaimDetail As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClaimDetail As Button
 
     '''<summary>
     '''btnInvoiceDetail control.
@@ -235,7 +235,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnInvoiceDetail As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnInvoiceDetail As Button
 
     '''<summary>
     '''btnCertificate control.
@@ -244,7 +244,7 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCertificate As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCertificate As Button
 
     '''<summary>
     '''btnBack control.
@@ -253,5 +253,5 @@ Partial Public Class MasterClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 End Class

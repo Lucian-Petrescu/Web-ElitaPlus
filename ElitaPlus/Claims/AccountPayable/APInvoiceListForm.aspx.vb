@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.Collections.Generic
+Imports System.Threading
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AccountPayable
 
 Partial Class APInvoiceListForm
@@ -55,7 +56,7 @@ Partial Class APInvoiceListForm
             Set(value As String)
                 _DueDateFromString = value
                 Dim dt As Date
-                If DateTime.TryParseExact(DueDateFromString.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If DateTime.TryParseExact(DueDateFromString.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     _DueDateFrom = dt
                 End If
             End Set
@@ -74,7 +75,7 @@ Partial Class APInvoiceListForm
             Set(value As String)
                 _DueDateToString = value
                 Dim dt As Date
-                If DateTime.TryParseExact(_DueDateToString.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If DateTime.TryParseExact(_DueDateToString.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     _DueDateTo = dt
                 End If
             End Set
@@ -93,7 +94,7 @@ Partial Class APInvoiceListForm
             Set(value As String)
                 _InvoiceDateString = value
                 Dim dt As Date
-                If DateTime.TryParseExact(_InvoiceDateString.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If DateTime.TryParseExact(_InvoiceDateString.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     _InvoiceDate = dt
                 End If
             End Set
@@ -137,7 +138,7 @@ Partial Class APInvoiceListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         MasterPage.MessageController.Clear_Hide()
@@ -305,7 +306,7 @@ Partial Class APInvoiceListForm
             State.Criterias.Source = txtInvoiceSource.Text
 
             If String.IsNullOrWhiteSpace(txtInvoiceDate.Text) = False Then
-                If Date.TryParseExact(txtInvoiceDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDate.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.InvoiceDateString = txtInvoiceDate.Text.Trim
                     End If
@@ -318,25 +319,25 @@ Partial Class APInvoiceListForm
             End If
 
             If String.IsNullOrEmpty(txtInvoiceDueDateFrom.Text) = False Then
-                If Date.TryParseExact(txtInvoiceDueDateFrom.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDueDateFrom.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.DueDateFromString = txtInvoiceDueDateFrom.Text.Trim
                     End If
                 Else
                     blnSuccess = False
-                    ElitaPlusPage.SetLabelError(lblInvoiceDueDateFrom)
+                    SetLabelError(lblInvoiceDueDateFrom)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End If
             End If
 
             If String.IsNullOrEmpty(txtInvoiceDueDateTo.Text) = False Then
-                If Date.TryParseExact(txtInvoiceDueDateTo.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDueDateTo.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.DueDateToString = txtInvoiceDueDateTo.Text.Trim
                     End If
                 Else
                     blnSuccess = False
-                    ElitaPlusPage.SetLabelError(lblInvoiceDueDateTo)
+                    SetLabelError(lblInvoiceDueDateTo)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End If
             End If
@@ -611,7 +612,7 @@ Partial Class APInvoiceListForm
 
     'End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -620,7 +621,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
         Dim chkbox As CheckBox
@@ -659,7 +660,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDv.Count, State.selectedPageSize)
@@ -670,7 +671,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Public Sub Grid_RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Public Sub Grid_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim rowIndex As Integer = 0
         Dim invoiceHeaderId As String = String.Empty
 
@@ -694,14 +695,14 @@ Partial Class APInvoiceListForm
 
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -709,7 +710,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             State.SelectedInvoiceId = Guid.Empty

@@ -1,5 +1,8 @@
+Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 
@@ -9,19 +12,19 @@ Partial Class PayClaimListForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     'Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents Label2 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents Label2 As Label
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -116,14 +119,14 @@ Partial Class PayClaimListForm
             If CalledUrl = PayClaimForm.URL Then
                 Dim retObj As PayClaimForm.ReturnType = CType(ReturnPar, PayClaimForm.ReturnType)
                 Select Case retObj.LastOperation
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
                                 State.selectedClaimId = retObj.EditingBo.Invoiceable.Claim_Id
                             End If
                             State.IsGridVisible = True
                         End If
-                    Case ElitaPlusPage.DetailPageCommand.Delete
+                    Case DetailPageCommand.Delete
                         AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
 
@@ -133,7 +136,7 @@ Partial Class PayClaimListForm
             ElseIf CalledUrl = ClaimForm.URL Then
                 Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
                 Select Case retObj.LastOperation
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
                                 State.selectedClaimId = retObj.EditingBo.Id
@@ -141,7 +144,7 @@ Partial Class PayClaimListForm
                             State.IsGridVisible = True
                             State.searchDV = Nothing
                         End If
-                    Case ElitaPlusPage.DetailPageCommand.Delete
+                    Case DetailPageCommand.Delete
                         AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
                 If retObj IsNot Nothing AndAlso retObj.BoChanged Then
@@ -156,7 +159,7 @@ Partial Class PayClaimListForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         MasterPage.MessageController.Clear_Hide()
@@ -207,7 +210,7 @@ Partial Class PayClaimListForm
 
             cboSortBy.Populate(CommonConfigManager.Current.ListManager.GetList("CSEDR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions())
 
-            Dim lst1 As ListItem = cboSortBy.Items.FindByText(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_CLAIM_SEARCH_FIELDS, Codes.SORT_BY_CERT_NUMBER, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+            Dim lst1 As WebControls.ListItem = cboSortBy.Items.FindByText(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_CLAIM_SEARCH_FIELDS, Codes.SORT_BY_CERT_NUMBER, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
             If lst1 IsNot Nothing Then
                 cboSortBy.Items.Remove(lst1)
             End If
@@ -226,7 +229,7 @@ Partial Class PayClaimListForm
     End Sub
     Sub PopulateDealerDropDown()
         Try
-            Dim oDealerList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = GetDealerListByCompanyForUser()
+            Dim oDealerList As ListItem() = GetDealerListByCompanyForUser()
             cboSearchDealer.Populate(oDealerList, New PopulateOptions() With
                                                    {
                                                    .AddBlankItem = True
@@ -240,18 +243,18 @@ Partial Class PayClaimListForm
         End Try
     End Sub
 
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             'UserCompanyList &= ",'" & GuidControl.GuidToHexString(UserCompanyies(Index))
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
                 If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
@@ -411,7 +414,7 @@ Partial Class PayClaimListForm
                     Return False
                 Else
                     State.authorizedAmountCulture = TextBoxSearchAuthorizedAmount.Text
-                    State.authorizedAmount = dblAmount.ToString(System.Threading.Thread.CurrentThread.CurrentCulture.InvariantCulture)
+                    State.authorizedAmount = dblAmount.ToString(Thread.CurrentThread.CurrentCulture.InvariantCulture)
                 End If
             Else
                 State.authorizedAmount = TextBoxSearchAuthorizedAmount.Text
@@ -458,7 +461,7 @@ Partial Class PayClaimListForm
     End Property
 
     'The Binding LOgic is here
-    Private Sub moGrid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moGrid.RowDataBound
+    Private Sub moGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles moGrid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -490,7 +493,7 @@ Partial Class PayClaimListForm
         End Try
     End Sub
 
-    Private Sub moGrid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub moGrid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             moGrid.PageIndex = NewCurrentPageIndex(moGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -501,7 +504,7 @@ Partial Class PayClaimListForm
     End Sub
 
 
-    Public Sub RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moGrid.RowCommand
+    Public Sub RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles moGrid.RowCommand
         Try
             Dim index As Integer
             If e.CommandName = "SelectAction" Then
@@ -514,7 +517,7 @@ Partial Class PayClaimListForm
                 'Get the latest Claim Status for this Claim and Check if it is 'Pending Review for Payment'
                 Dim maxClaimStatus As ClaimStatus = ClaimStatus.GetLatestClaimStatus(State.selectedClaimId)
                 If maxClaimStatus IsNot Nothing AndAlso maxClaimStatus.StatusCode = Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT Then
-                    DisplayMessage(Message.MSG_PROMPT_FOR_CLAIM_PENDING_REVIEW, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    DisplayMessage(Message.MSG_PROMPT_FOR_CLAIM_PENDING_REVIEW, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 Else
                     If claimBO.AssurantPays.Value > 0 Then
                         callPage(PayClaimForm.URL, New PayClaimForm.Parameters(State.selectedClaimId, False))
@@ -522,25 +525,25 @@ Partial Class PayClaimListForm
                         If claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
                             callPage(PayClaimForm.URL, New PayClaimForm.Parameters(State.selectedClaimId, False))
                         Else
-                            DisplayMessage(Message.MSG_PROMPT_FOR_PAY_CLAIM_WITH_ZERO_AMOUNT, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                            DisplayMessage(Message.MSG_PROMPT_FOR_PAY_CLAIM_WITH_ZERO_AMOUNT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                             'Me.callPage(ClaimForm.URL, claimBO.Id)
                         End If
                     End If
                     'Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED, Me.State.selectedClaimId)
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles moGrid.RowCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub moGrid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles moGrid.PageIndexChanged
+    Private Sub moGrid_PageIndexChanged(sender As Object, e As EventArgs) Handles moGrid.PageIndexChanged
         Try
 
             State.PageIndex = moGrid.PageIndex
@@ -552,7 +555,7 @@ Partial Class PayClaimListForm
     End Sub
 
     'Private Sub moGrid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moGrid.PageIndexChanged
-    Private Sub moGrid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moGrid.PageIndexChanging
+    Private Sub moGrid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles moGrid.PageIndexChanging
         Try
             moGrid.PageIndex = e.NewPageIndex
             State.PageIndex = moGrid.PageIndex
@@ -568,7 +571,7 @@ Partial Class PayClaimListForm
 
 #Region "Button Clicks"
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
             State.SearchClicked = True
@@ -587,7 +590,7 @@ Partial Class PayClaimListForm
     '    Me.callPage(ClaimForm.URL)
     'End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception

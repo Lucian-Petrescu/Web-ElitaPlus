@@ -1,13 +1,17 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports AjaxControlToolkit
 Imports System.Text
 
 Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.DALObjects
 
 
 Partial Class ClaimAdjusterInboxForm
@@ -16,18 +20,18 @@ Partial Class ClaimAdjusterInboxForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -128,7 +132,7 @@ Partial Class ClaimAdjusterInboxForm
         Public SearchClicked As Boolean
         Public authorizedAmountCulture As String
         Public selectedClaimStausCode As String = String.Empty
-        Public ActionInProgress As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Nothing_
+        Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         Public cmdProcessRecord As String = String.Empty
         Public selectedPageIndex As Integer = DEFAULT_PAGE_INDEX
 
@@ -173,7 +177,7 @@ Partial Class ClaimAdjusterInboxForm
 #End Region
 #Region "Page_Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         ErrorCtrl.Clear_Hide()
@@ -544,10 +548,10 @@ Partial Class ClaimAdjusterInboxForm
             State.selectedAutoApproveId = GetSelectedItem(cboAutoApproved)
             State.selectedAutoApproveDesc = GetSelectedDescription(cboAutoApproved)
             If txtExt_Sts_Date_From.Text <> String.Empty Then
-                State.BeginDate = DateTime.Parse(txtExt_Sts_Date_From.Text).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
+                State.BeginDate = DateTime.Parse(txtExt_Sts_Date_From.Text).ToString(DALBase.DOTNET_QUERY_DATEFORMAT)
             End If
             If txtExt_Sts_Date_To.Text <> String.Empty Then
-                State.EndDate = DateTime.Parse(txtExt_Sts_Date_To.Text).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
+                State.EndDate = DateTime.Parse(txtExt_Sts_Date_To.Text).ToString(DALBase.DOTNET_QUERY_DATEFORMAT)
             End If
             State.ClaimAdjuster = txtClaimAdjuster.Text
             State.ClaimAddedBy = txtCreatedBy.Text
@@ -590,7 +594,7 @@ Partial Class ClaimAdjusterInboxForm
             For i = 0 To State.TATDV.Count - 1
                 If CType(State.TATDV.Item(i)("min_days"), Integer) <= TAT AndAlso CType(State.TATDV.Item(i)("max_days"), Integer) >= TAT Then
                     Try
-                        Dim c As Color = System.Drawing.ColorTranslator.FromHtml(State.TATDV.Item(i)("color_code").ToString)
+                        Dim c As Color = ColorTranslator.FromHtml(State.TATDV.Item(i)("color_code").ToString)
                     Catch ex As Exception
                         Throw New GUIException(Message.MSG_INVALID_COLOR_CODE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_COLOR_CODE)
                     End Try
@@ -680,22 +684,22 @@ Partial Class ClaimAdjusterInboxForm
 
     Protected Function ProcessRecords() As Boolean
         Try
-            Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
+            Dim outputParameters() As DBHelper.DBHelperParameter
             outputParameters = Claim.ApproveOrRejectClaims(State.cmdProcessRecord, checkRecords.Value, comments, risktypes)
 
             If CType(outputParameters(0).Value, Integer) = 0 Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             ElseIf CType(outputParameters(0).Value, Integer) = 100 Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", MSG_BTN_OK, MSG_TYPE_INFO, False)
             ElseIf CType(outputParameters(0).Value, Integer) = 300 Then
                 'Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR, Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
                 ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
             Else
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                State.ActionInProgress = DetailPageCommand.OK
                 HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", MSG_BTN_OK, MSG_TYPE_INFO, False)
             End If
@@ -718,7 +722,7 @@ Partial Class ClaimAdjusterInboxForm
             GUIException.ValidateDate(lblExt_Sts_Date_To, txtExt_Sts_Date_To.Text)
 
             If txtExt_Sts_Date_From.Text.Trim() <> String.Empty AndAlso CDate(txtExt_Sts_Date_From.Text) > CDate(txtExt_Sts_Date_To.Text) Then
-                ElitaPlusPage.SetLabelError(lblExt_Sts_Date_From)
+                SetLabelError(lblExt_Sts_Date_From)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
             End If
         End If
@@ -744,7 +748,7 @@ Partial Class ClaimAdjusterInboxForm
 
 #Region " Datagrid Related "
 
-    Private Sub moDataGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles modataGrid.PageIndexChanging
+    Private Sub moDataGrid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles modataGrid.PageIndexChanging
         Try
             State.selectedPageIndex = e.NewPageIndex
             If IsDataGPageDirty() Then
@@ -760,10 +764,10 @@ Partial Class ClaimAdjusterInboxForm
         End Try
     End Sub
 
-    Private Sub moDataGrid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub moDataGrid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             If IsDataGPageDirty() Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                State.ActionInProgress = DetailPageCommand.GridPageSize
                 ApproveButton_WRITE.Enabled = True
                 RejectButton_WRITE.Enabled = True
                 DisplayMessage(Message.MSG_PAGE_ALERT_PROMPT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
@@ -805,17 +809,17 @@ Partial Class ClaimAdjusterInboxForm
                 If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ID))
-                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT) IsNot DBNull.Value Then
                         Dim claim_TAT As Integer = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT), Integer)
                         Dim claim_TAT_colorCode As String = FindTATColor(claim_TAT)
-                        If claim_TAT_colorCode IsNot Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(GRID_COL_CLAIM_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(claim_TAT_colorCode)
+                        If claim_TAT_colorCode IsNot Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(GRID_COL_CLAIM_TAT_IDX).BackColor = ColorTranslator.FromHtml(claim_TAT_colorCode)
                     End If
 
-                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT) IsNot DBNull.Value Then
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SVC_TAT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT).ToString)
                         Dim SVC_TAT As Integer = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT), Integer)
                         Dim SVC_TAT_colorCode As String = FindTATColor(SVC_TAT)
-                        If SVC_TAT_colorCode IsNot Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(GRID_COL_SVC_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(SVC_TAT_colorCode)
+                        If SVC_TAT_colorCode IsNot Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(GRID_COL_SVC_TAT_IDX).BackColor = ColorTranslator.FromHtml(SVC_TAT_colorCode)
                     Else
                         e.Row.Cells(GRID_COL_SVC_TAT_IDX).Text = "N/A"
                     End If
@@ -866,7 +870,7 @@ Partial Class ClaimAdjusterInboxForm
                     Dim curAuthAmount As Decimal
                     Dim curPrposedAmount As Decimal
                     Dim cb As CheckBox = CType(e.Row.Cells(GRID_COL_CHK_BOX_IDX).FindControl("btnSelected"), CheckBox)
-                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT) IsNot DBNull.Value Then
                         curAuthAmount = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT), Decimal)
                     End If
                     'If Not dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT) Is System.DBNull.Value Then
@@ -877,7 +881,7 @@ Partial Class ClaimAdjusterInboxForm
                     'End If
 
                     'Request 5547
-                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT) IsNot System.DBNull.Value Then
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT) IsNot DBNull.Value Then
                         curPrposedAmount = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT), Decimal)
                         If curPrposedAmount > curAuthAmount Then
                             Dim objCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
@@ -906,7 +910,7 @@ Partial Class ClaimAdjusterInboxForm
 
     End Sub
 
-    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles modataGrid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles modataGrid.Sorting
         Try
 
             Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
@@ -964,11 +968,11 @@ Partial Class ClaimAdjusterInboxForm
         End Try
     End Sub
 
-    Public Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles modataGrid.RowCommand
+    Public Sub ItemCommand(source As Object, e As GridViewCommandEventArgs) Handles modataGrid.RowCommand
         Try
 
             If IsDataGPageDirty() Then
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                State.ActionInProgress = DetailPageCommand.GridPageSize
                 ApproveButton_WRITE.Enabled = True
                 RejectButton_WRITE.Enabled = True
                 DisplayMessage(Message.MSG_PAGE_ALERT_PROMPT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
@@ -987,7 +991,7 @@ Partial Class ClaimAdjusterInboxForm
                 callPage(ClaimForm.URL, State.selectedClaimId)
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
         End Try
@@ -999,7 +1003,7 @@ Partial Class ClaimAdjusterInboxForm
 #Region " Button Clicks "
 
 
-    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
             State.SearchClicked = True
@@ -1018,32 +1022,32 @@ Partial Class ClaimAdjusterInboxForm
         End Try
     End Sub
 
-    Private Sub ApproveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles ApproveButton_WRITE.Click
+    Private Sub ApproveButton_WRITE_Click(sender As Object, e As EventArgs) Handles ApproveButton_WRITE.Click
         Try
 
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_APPROVE
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_APPROVE
             ProcessCommand()
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub RejectButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles RejectButton_WRITE.Click
+    Private Sub RejectButton_WRITE_Click(sender As Object, e As EventArgs) Handles RejectButton_WRITE.Click
         Try
             'Resend confirmation
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_REJECT
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_REJECT
             ProcessCommand()
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             txtClaimNumber.Text = String.Empty
             txtAuthorizationNumber.Text = String.Empty
@@ -1067,7 +1071,7 @@ Partial Class ClaimAdjusterInboxForm
 
 #End Region
 
-    Private Sub modataGrid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles modataGrid.RowCreated
+    Private Sub modataGrid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles modataGrid.RowCreated
 
         Try
               If e.Row.RowType = DataControlRowType.DataRow Then
@@ -1082,9 +1086,9 @@ Partial Class ClaimAdjusterInboxForm
                 Dim behaviorID3 As String = "pce3_" + e.Row.RowIndex.ToString
                 pce3.BehaviorID = behaviorID3
 
-                Dim img1 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image1"), System.Web.UI.WebControls.Image)
-                Dim img2 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image2"), System.Web.UI.WebControls.Image)
-                Dim img3 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image3"), System.Web.UI.WebControls.Image)
+                Dim img1 As WebControls.Image = CType(e.Row.FindControl("Image1"), WebControls.Image)
+                Dim img2 As WebControls.Image = CType(e.Row.FindControl("Image2"), WebControls.Image)
+                Dim img3 As WebControls.Image = CType(e.Row.FindControl("Image3"), WebControls.Image)
 
                 Dim OnMouseOverScript1 As String = String.Format("$find('{0}').showPopup();", behaviorID1)
                 Dim OnMouseOutScript1 As String = String.Format("$find('{0}').hidePopup();", behaviorID1)
@@ -1113,8 +1117,8 @@ Partial Class ClaimAdjusterInboxForm
     End Sub
 
 
-    <System.Web.Script.Services.ScriptMethod()> _
-    <System.Web.Services.WebMethod()>
+    <ScriptMethod()> _
+    <WebMethod()>
     Public Shared Function GetProblemDescription(contextKey As String) As String
 
         Dim description As String = Claim.GetProblemDescription(contextKey)
@@ -1136,8 +1140,8 @@ Partial Class ClaimAdjusterInboxForm
 
     End Function
 
-    <System.Web.Script.Services.ScriptMethod()> _
-    <System.Web.Services.WebMethod()>
+    <ScriptMethod()> _
+    <WebMethod()>
     Public Shared Function GetTechnicalReport(contextKey As String) As String
 
         Dim description As String = Claim.GetTechnicalReport(contextKey)
@@ -1159,8 +1163,8 @@ Partial Class ClaimAdjusterInboxForm
 
     End Function
 
-    <System.Web.Script.Services.ScriptMethod()> _
-    <System.Web.Services.WebMethod()>
+    <ScriptMethod()> _
+    <WebMethod()>
     Public Shared Function GetExtendedStatusComment(contextKey As String) As String
 
         Dim description As String = Claim.GetExtendedStatusComment(contextKey)

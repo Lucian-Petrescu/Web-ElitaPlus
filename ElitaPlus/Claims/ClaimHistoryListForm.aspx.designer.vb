@@ -22,5 +22,5 @@ Partial Public Class ClaimHistoryListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents Grid As DataGrid
 End Class

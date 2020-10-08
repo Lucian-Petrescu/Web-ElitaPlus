@@ -105,7 +105,7 @@ Public Class ClaimRecordingForm
         Public DefaultDeliveryDay As DeliveryDay
         Public DeliverySlotTimeSpan As TimeSpan
         Public IsExpeditedBtnClicked As Boolean = False
-        Public BankInfoBO As Assurant.ElitaPlus.BusinessObjectsNew.BankInfo
+        Public BankInfoBO As BusinessObjectsNew.BankInfo
 
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -756,7 +756,7 @@ Public Class ClaimRecordingForm
     End Sub
     Private Sub ThrowWsFaultExceptions(fex As FaultException)
 
-        Dim errClaimRecordingWs As String = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR)
+        Dim errClaimRecordingWs As String = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR)
 
         If fex.GetType() Is GetType(FaultException(Of ValidationFault)) AndAlso (DirectCast(fex, FaultException(Of ValidationFault)).Detail.Items.Count > 0) Then
             Dim items As List(Of ValidationFaultItem)
@@ -957,7 +957,7 @@ Public Class ClaimRecordingForm
 
             If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
                 If (String.IsNullOrEmpty(callerinfo.PhoneNumber) AndAlso String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
-                    MasterPage.MessageController.AddError(errorMessage:=ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR, translate:=True)
+                    MasterPage.MessageController.AddError(errorMessage:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR, translate:=True)
                     Exit Sub
                 End If
             End If
@@ -1000,7 +1000,7 @@ Public Class ClaimRecordingForm
                 Dim policyRequest As CreateCaseRequest = New CreateCaseRequest()
                 policyRequest.PurposeCode = moPurposecode.SelectedValue
                 If (String.IsNullOrEmpty(policyRequest.PurposeCode)) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CASE_PURPOSE_REQUIRED_ERR, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CASE_PURPOSE_REQUIRED_ERR, True)
                     Exit Sub
                 End If
 
@@ -1067,16 +1067,16 @@ Public Class ClaimRecordingForm
 
                 If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
                     If (String.IsNullOrEmpty(callerinfo.PhoneNumber) AndAlso String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
-                        errMsg.Add(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR)
+                        errMsg.Add(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR)
                     End If
                 End If
 
                 If String.IsNullOrEmpty(callerinfo.FirstName) Then
-                    errMsg.Add(ElitaPlus.Common.ErrorCodes.GUI_CALLER_FIRST_NAME_REQUIRED_ERR)
+                    errMsg.Add(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CALLER_FIRST_NAME_REQUIRED_ERR)
                 End If
 
                 If String.IsNullOrEmpty(callerinfo.LastName) Then
-                    errMsg.Add(ElitaPlus.Common.ErrorCodes.GUI_CALLER_LAST_NAME_REQUIRED_ERR)
+                    errMsg.Add(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CALLER_LAST_NAME_REQUIRED_ERR)
                 End If
 
                 If errMsg.Count > 0 Then
@@ -1353,7 +1353,7 @@ Public Class ClaimRecordingForm
                                 enrolleddevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
                                 If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
                                     Exit Sub
                                 End If
                                 itemSelectionRequest.ClaimedDevice = claimdevice
@@ -1368,7 +1368,7 @@ Public Class ClaimRecordingForm
                                 claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
                                 If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
                                     Exit Sub
                                 End If
                                 itemSelectionRequest.ClaimedDevice = claimdevice
@@ -1472,7 +1472,7 @@ Public Class ClaimRecordingForm
                 Next
 
                 If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
                     Exit Sub
                 End If
 
@@ -1551,13 +1551,13 @@ Public Class ClaimRecordingForm
                 questionUserControl.GetQuestionAnswer()
 
                 If (Not String.IsNullOrEmpty(questionUserControl.ErrAnswerMandatory.ToString())) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
                     Exit Sub
                 ElseIf (Not String.IsNullOrEmpty(questionUserControl.ErrorQuestionCodes.ToString())) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
                     Exit Sub
                 ElseIf (Not String.IsNullOrEmpty(questionUserControl.ErrTextAnswerLength.ToString())) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
                     Exit Sub
                 ElseIf (questionUserControl.ErrorQuestionValidation IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrorQuestionValidation.ToString()) = False) Then
                     MasterPage.MessageController.AddError(questionUserControl.ErrorQuestionValidation.ToString(), false)
@@ -2494,13 +2494,13 @@ Public Class ClaimRecordingForm
             fulfillmentOptionQuestions.GetQuestionAnswer()
 
             If (questionUserControl.ErrAnswerMandatory IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrAnswerMandatory.ToString()) = False) Then
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
                 Return False
             ElseIf (questionUserControl.ErrorQuestionCodes IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrorQuestionCodes.ToString()) = False) Then
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
                 Return False
             ElseIf (questionUserControl.ErrTextAnswerLength IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrTextAnswerLength.ToString()) = False) Then
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
                 Return False
             ElseIf (fulfillmentOptionQuestions.ErrorQuestionValidation IsNot Nothing AndAlso String.IsNullOrEmpty(fulfillmentOptionQuestions.ErrorQuestionValidation.ToString()) = False) Then
                 MasterPage.MessageController.AddError(fulfillmentOptionQuestions.ErrorQuestionValidation.ToString(), false)
@@ -2790,10 +2790,10 @@ Public Class ClaimRecordingForm
                     'Retrieve the selections from the user
                     logistictUserControlQuestion.GetQuestionAnswer()
                     If (Not String.IsNullOrEmpty(logistictUserControlQuestion.ErrAnswerMandatory.ToString())) Then
-                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
+                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
                         Return False
                     ElseIf (Not String.IsNullOrEmpty(logistictUserControlQuestion.ErrorQuestionCodes.ToString())) Then
-                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
                         Return False
                     End If
                 End If

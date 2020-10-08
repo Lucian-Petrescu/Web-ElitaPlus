@@ -1,5 +1,7 @@
 Imports System.IO
 Imports System.Text
+Imports System.Text.RegularExpressions
+Imports System.Threading
 Imports System.Web.Mail
 Imports Assurant.Common.AppNavigationControl
 
@@ -33,7 +35,7 @@ Public Class ProcessAllServiceOrders
     End Property
 #End Region
 
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         NavController = navCtrl
         Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
@@ -59,7 +61,7 @@ Public Class ProcessAllServiceOrders
                 Case ProcessingStage.Processing_Old_SO
                     EndProcess()
             End Select
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         End Try
 
     End Sub
@@ -80,14 +82,14 @@ Public Class ProcessServiceOrder
 #Region "Private Atributes"
     Private NavController As INavigationController
     Private CallingPage As ElitaPlusPage
-    Private ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder
+    Private ServiceOrderBO As ServiceOrder
 #End Region
 
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
             NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
-            ServiceOrderBO = CType(NavController.ParametersPassed, Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+            ServiceOrderBO = CType(NavController.ParametersPassed, ServiceOrder)
 
             Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
 
@@ -145,7 +147,7 @@ Public Class ProcessServiceOrder
 
                 email = If(EnvironmentContext.Current.Environment <> Environments.Production, "test_" + oCert.Email, oCert.Email)
 
-                    If (oCert.Email IsNot Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso System.Text.RegularExpressions.Regex.IsMatch(email, ElitaPlus.Common.RegExConstants.EMAIL_REGEX) Then
+                    If (oCert.Email IsNot Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso Regex.IsMatch(email, RegExConstants.EMAIL_REGEX) Then
                         strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_CUSTOMER_EMAIL_CONFIRM) & " " & email
                         If (NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE") Then
                             NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False, False, isCustomerEmail))
@@ -191,7 +193,7 @@ Public Class ProcessServiceOrder
             If isPreview Then
                 NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_PREVIEW_SERVICE_ORDER)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         End Try
 
     End Sub
@@ -203,10 +205,10 @@ Public Class ProcessServiceOrderCustomerEmail
 #Region "Private Atributes"
     Private NavController As INavigationController
     Private CallingPage As ElitaPlusPage
-    Private ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder
+    Private ServiceOrderBO As ServiceOrder
 #End Region
 
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
             NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
@@ -229,7 +231,7 @@ Public Class ProcessServiceOrderCustomerEmail
 
             email = If(EnvironmentContext.Current.Environment <> Environments.Production, "test_" + oCert.Email, oCert.Email)
 
-            If (oCert.Email IsNot Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso System.Text.RegularExpressions.Regex.IsMatch(email, ElitaPlus.Common.RegExConstants.EMAIL_REGEX) Then
+            If (oCert.Email IsNot Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso Regex.IsMatch(email, RegExConstants.EMAIL_REGEX) Then
                 strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_CUSTOMER_EMAIL_CONFIRM) & " " & email
                 NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
             Else
@@ -240,7 +242,7 @@ Public Class ProcessServiceOrderCustomerEmail
                 End If
             End If
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         End Try
 
     End Sub
@@ -258,13 +260,13 @@ Public Class ProcessEmail
 
 #End Region
 
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
             NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
-            Dim ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = _
-                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+            Dim ServiceOrderBO As ServiceOrder = _
+                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), ServiceOrder)
 
             Dim ClaimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
             ProcessEmail(ServiceOrderBO, ClaimBo)
@@ -273,14 +275,14 @@ Public Class ProcessEmail
             NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
             '    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_BACK)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
         End Try
 
     End Sub
 
-    Private Sub ProcessEmail(ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, oClaim As ClaimBase)
+    Private Sub ProcessEmail(ServiceOrderBO As ServiceOrder, oClaim As ClaimBase)
         Dim oServiceCenter As ServiceCenter
         If oClaim.LoanerCenterId.Equals(Guid.Empty) Then
             oServiceCenter = New ServiceCenter(oClaim.ServiceCenterId)
@@ -325,7 +327,7 @@ Public Class ProcessEmail
                 Dim soController As New ServiceOrderController
                 Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
-                If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
+                If Not File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
                 Else
 
@@ -356,7 +358,7 @@ Public Class ProcessEmail
                 Dim soController As New ServiceOrderController
                 Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
-                If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
+                If Not File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
                 Else
 
@@ -415,7 +417,7 @@ Public Class ProcessEmail
                 Dim maAttach As MailAttachment
                 maAttach = New MailAttachment(pdfTempFileName)
 
-                Dim m As Web.Mail.MailMessage = New Web.Mail.MailMessage
+                Dim m As MailMessage = New MailMessage
                 With m
                     '.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", 2)
                     .From = strFromAddress
@@ -476,8 +478,8 @@ Public Class ProcessEmail
                 maAttach = New MailAttachment(TempFileName)
             End If
 
-            Dim m As Web.Mail.MailMessage = New Web.Mail.MailMessage
-            m.BodyEncoding = System.Text.Encoding.UTF8
+            Dim m As MailMessage = New MailMessage
+            m.BodyEncoding = Encoding.UTF8
             With m
                 .From = strFromAddress
                 .To = strToAddress
@@ -519,27 +521,27 @@ Public Class ProcessCustomerEmail
 
 #End Region
 
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
             NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
-            Dim ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = _
-                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+            Dim ServiceOrderBO As ServiceOrder = _
+                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), ServiceOrder)
 
             Dim ClaimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
             ProcessEmail(ServiceOrderBO, ClaimBo)
             NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
             '    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_BACK)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
         End Try
 
     End Sub
 
-    Private Sub ProcessEmail(ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, oClaim As ClaimBase)
+    Private Sub ProcessEmail(ServiceOrderBO As ServiceOrder, oClaim As ClaimBase)
         Dim oServiceCenter As ServiceCenter
         Dim oCert As Certificate
 
@@ -586,7 +588,7 @@ Public Class ProcessCustomerEmail
                 Dim soController As New ServiceOrderController
                 Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
-                If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
+                If Not File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
                 Else
 
@@ -615,7 +617,7 @@ Public Class ProcessCustomerEmail
                 Dim soController As New ServiceOrderController
                 Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
-                If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
+                If Not File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
                 Else
 
@@ -675,7 +677,7 @@ Public Class ProcessCustomerEmail
                 Dim maAttach As MailAttachment
                 maAttach = New MailAttachment(pdfTempFileName)
 
-                Dim m As Web.Mail.MailMessage = New Web.Mail.MailMessage
+                Dim m As MailMessage = New MailMessage
                 With m
                     '.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", 2)
                     .From = strFromAddress
@@ -685,7 +687,7 @@ Public Class ProcessCustomerEmail
                     .Subject = strSubject
                     .BodyFormat = MailFormat.Text
                     .Body = strEmailBody
-                    .BodyEncoding = System.Text.Encoding.UTF8
+                    .BodyEncoding = Encoding.UTF8
                     .Attachments.Add(maAttach)
                 End With
 
@@ -739,8 +741,8 @@ Public Class ProcessCustomerEmail
                 maAttach = New MailAttachment(TempFileName)
             End If
 
-            Dim m As Web.Mail.MailMessage = New Web.Mail.MailMessage
-            m.BodyEncoding = System.Text.Encoding.UTF8
+            Dim m As MailMessage = New MailMessage
+            m.BodyEncoding = Encoding.UTF8
             With m
                 .From = strFromAddress
                 .To = strToAddress
@@ -749,7 +751,7 @@ Public Class ProcessCustomerEmail
                 .Subject = strSubject
                 .BodyFormat = MailFormat.Text
                 .Body = strEmailBody
-                .BodyEncoding = System.Text.Encoding.UTF8
+                .BodyEncoding = Encoding.UTF8
                 If sServiceOrder IsNot Nothing Then .Attachments.Add(maAttach)
             End With
 
@@ -784,13 +786,13 @@ Public Class ProcessSalvageCenterEmail
 
 #End Region
 
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
             NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
-            Dim ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = _
-                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+            Dim ServiceOrderBO As ServiceOrder = _
+                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), ServiceOrder)
 
             Dim ClaimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
             ProcessSalvageCenterEmail(ServiceOrderBO, ClaimBo)
@@ -799,14 +801,14 @@ Public Class ProcessSalvageCenterEmail
             NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
             '    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_BACK)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
         End Try
 
     End Sub
 
-    Private Sub ProcessSalvageCenterEmail(ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, oClaim As ClaimBase)
+    Private Sub ProcessSalvageCenterEmail(ServiceOrderBO As ServiceOrder, oClaim As ClaimBase)
         Dim oServiceCenter As ServiceCenter
         oServiceCenter = New ServiceCenter(oClaim.Dealer.DefaultSalvgeCenterId)
         Dim companyBO As Company = New Company(oClaim.CompanyId)
@@ -846,7 +848,7 @@ Public Class ProcessSalvageCenterEmail
                 Dim soController As New ServiceOrderController
                 Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
-                If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
+                If Not File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
                 Else
 
@@ -877,7 +879,7 @@ Public Class ProcessSalvageCenterEmail
                 Dim soController As New ServiceOrderController
                 Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
-                If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
+                If Not File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
                 Else
 
@@ -936,7 +938,7 @@ Public Class ProcessSalvageCenterEmail
                 Dim maAttach As MailAttachment
                 maAttach = New MailAttachment(pdfTempFileName)
 
-                Dim m As Web.Mail.MailMessage = New Web.Mail.MailMessage
+                Dim m As MailMessage = New MailMessage
                 With m
                     '.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", 2)
                     .From = strFromAddress
@@ -997,8 +999,8 @@ Public Class ProcessSalvageCenterEmail
                 maAttach = New MailAttachment(TempFileName)
             End If
 
-            Dim m As Web.Mail.MailMessage = New Web.Mail.MailMessage
-            m.BodyEncoding = System.Text.Encoding.UTF8
+            Dim m As MailMessage = New MailMessage
+            m.BodyEncoding = Encoding.UTF8
             With m
                 .From = strFromAddress
                 .To = strToAddress

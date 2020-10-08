@@ -20,7 +20,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
 
     '''<summary>
     '''lblinvgrpnumber control.
@@ -29,7 +29,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblinvgrpnumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblinvgrpnumber As Label
 
     '''<summary>
     '''txtinvgroupnumber control.
@@ -38,7 +38,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtinvgroupnumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtinvgroupnumber As TextBox
 
     '''<summary>
     '''lblclaimnumber control.
@@ -47,7 +47,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblclaimnumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblclaimnumber As Label
 
     '''<summary>
     '''txtclaimnumber control.
@@ -56,7 +56,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtclaimnumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtclaimnumber As TextBox
 
     '''<summary>
     '''lblCountry control.
@@ -65,7 +65,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCountry As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCountry As Label
 
     '''<summary>
     '''ddlcountry control.
@@ -74,7 +74,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlcountry As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlcountry As DropDownList
 
     '''<summary>
     '''lblgrpnumbfromdate control.
@@ -83,7 +83,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblgrpnumbfromdate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblgrpnumbfromdate As Label
 
     '''<summary>
     '''txtgrpnumbfromdate control.
@@ -92,7 +92,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtgrpnumbfromdate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtgrpnumbfromdate As TextBox
 
     '''<summary>
     '''ImageGroupnumfromDate control.
@@ -101,7 +101,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageGroupnumfromDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageGroupnumfromDate As ImageButton
 
     '''<summary>
     '''lblMobilenumber control.
@@ -110,7 +110,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMobilenumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblMobilenumber As Label
 
     '''<summary>
     '''txtMobilenumber control.
@@ -119,7 +119,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtMobilenumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtMobilenumber As TextBox
 
     '''<summary>
     '''lblDuedate control.
@@ -128,7 +128,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDuedate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDuedate As Label
 
     '''<summary>
     '''txtDuedate control.
@@ -137,7 +137,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDuedate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDuedate As TextBox
 
     '''<summary>
     '''ImageButtonDueDate control.
@@ -146,7 +146,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageButtonDueDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageButtonDueDate As ImageButton
 
     '''<summary>
     '''lblservicecntrname control.
@@ -155,7 +155,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblservicecntrname As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblservicecntrname As Label
 
     '''<summary>
     '''txtservicecentername control.
@@ -164,7 +164,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtservicecentername As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtservicecentername As TextBox
 
     '''<summary>
     '''lblgrpnumbertodate control.
@@ -173,7 +173,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblgrpnumbertodate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblgrpnumbertodate As Label
 
     '''<summary>
     '''txtgrpnumbertodate control.
@@ -182,7 +182,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtgrpnumbertodate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtgrpnumbertodate As TextBox
 
     '''<summary>
     '''ImageGroupnumtoDate control.
@@ -191,7 +191,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageGroupnumtoDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageGroupnumtoDate As ImageButton
 
     '''<summary>
     '''lblInvoiceNum control.
@@ -200,7 +200,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvoiceNum As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvoiceNum As Label
 
     '''<summary>
     '''txtInvoiceNum control.
@@ -209,7 +209,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtInvoiceNum As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtInvoiceNum As TextBox
 
     '''<summary>
     '''lblinvStatus control.
@@ -218,7 +218,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblinvStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblinvStatus As Label
 
     '''<summary>
     '''ddlStatus control.
@@ -227,7 +227,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlStatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlStatus As DropDownList
 
     '''<summary>
     '''lblMembershipnumber control.
@@ -236,7 +236,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMembershipnumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblMembershipnumber As Label
 
     '''<summary>
     '''txtbxmembershipnumb control.
@@ -245,7 +245,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtbxmembershipnumb As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtbxmembershipnumb As TextBox
 
     '''<summary>
     '''lblCertificate control.
@@ -254,7 +254,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCertificate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCertificate As Label
 
     '''<summary>
     '''txtCertificatenumb control.
@@ -263,7 +263,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCertificatenumb As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCertificatenumb As TextBox
 
     '''<summary>
     '''btnClearSearch control.
@@ -272,7 +272,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -281,7 +281,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''SearchResults control.
@@ -290,7 +290,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SearchResults As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents SearchResults As HtmlGenericControl
 
     '''<summary>
     '''trPageSize control.
@@ -299,7 +299,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -308,7 +308,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''colonSepertor control.
@@ -317,7 +317,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -326,7 +326,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -335,7 +335,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''Grid control.
@@ -344,7 +344,7 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents Grid As DataGrid
 
     '''<summary>
     '''btnNew control.
@@ -353,5 +353,5 @@ Partial Public Class InvoiceGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnNew As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnNew As Button
 End Class

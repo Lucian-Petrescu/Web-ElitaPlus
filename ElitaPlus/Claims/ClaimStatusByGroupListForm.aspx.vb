@@ -1,4 +1,6 @@
-﻿Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
+﻿Imports System.Threading
+Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 
 Partial Public Class ClaimStatusByGroupListForm
     Inherits ElitaPlusSearchPage
@@ -97,7 +99,7 @@ Partial Public Class ClaimStatusByGroupListForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         ErrControllerMaster.Clear_Hide()
         Try
             If Not IsPostBack Then
@@ -131,10 +133,10 @@ Partial Public Class ClaimStatusByGroupListForm
             State.HasDataChanged = retObj.HasDataChanged
 
             Select Case retObj.LastOperation
-                Case ElitaPlusPage.DetailPageCommand.Back
+                Case DetailPageCommand.Back
                     If retObj IsNot Nothing Then
                         State.dealerId = retObj.dealerId
-                        If retObj.ObjectType = retObj.TargetType.CompanyGroup Then
+                        If retObj.ObjectType = ClaimStatusByGroupForm.ReturnType.TargetType.CompanyGroup Then
                             rdoCompanyGroup.Checked = True
                             rdoDealer.Checked = False
                         Else
@@ -151,7 +153,7 @@ Partial Public Class ClaimStatusByGroupListForm
         End Try
     End Sub
 
-    Private Sub Page_LoadComplete(sender As System.Object, e As System.EventArgs) Handles MyBase.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As EventArgs) Handles MyBase.LoadComplete
         EnableDisableFields()
     End Sub
 #End Region
@@ -162,7 +164,7 @@ Partial Public Class ClaimStatusByGroupListForm
         Try
             Dim oDealerview As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             TheDealerControl.SetControl(False, _
-                                        TheDealerControl.MODES.NEW_MODE, _
+                                        MultipleColumnDDLabelControl.MODES.NEW_MODE, _
                                         True, _
                                         oDealerview, _
                                         NO_CAPTION, _
@@ -225,7 +227,7 @@ Partial Public Class ClaimStatusByGroupListForm
 #End Region
 
 #Region "Grid related"
-    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
                 IsNew = "N"
@@ -234,17 +236,17 @@ Partial Public Class ClaimStatusByGroupListForm
                 params.Add(IsNew)
                 callPage(ClaimStatusByGroup.URL, params)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
@@ -258,7 +260,7 @@ Partial Public Class ClaimStatusByGroupListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = e.NewPageIndex
             PopulateGrid()
@@ -267,7 +269,7 @@ Partial Public Class ClaimStatusByGroupListForm
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
@@ -280,11 +282,11 @@ Partial Public Class ClaimStatusByGroupListForm
 #End Region
 
 #Region "Button event handlers"
-    Protected Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         rdoCompanyGroup.Checked = True
     End Sub
 
-    Protected Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             State.PageIndex = 0
             State.IsGridVisible = True
@@ -299,32 +301,32 @@ Partial Public Class ClaimStatusByGroupListForm
         End Try
     End Sub
 
-    Private Function GetSearchBy() As Assurant.ElitaPlus.DALObjects.ClaimStatusByGroupDAL.SearchByType
-        Dim SearchBy As Assurant.ElitaPlus.DALObjects.ClaimStatusByGroupDAL.SearchByType
+    Private Function GetSearchBy() As ClaimStatusByGroupDAL.SearchByType
+        Dim SearchBy As ClaimStatusByGroupDAL.SearchByType
 
         If rdoDealer.Checked Then
-            SearchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.Dealer
+            SearchBy = ClaimStatusByGroupDAL.SearchByType.Dealer
         Else
-            SearchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.CompanyGroup
+            SearchBy = ClaimStatusByGroupDAL.SearchByType.CompanyGroup
         End If
 
         Return SearchBy
     End Function
 
-    Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
+    Private Sub BtnNew_WRITE_Click(sender As Object, e As EventArgs) Handles BtnNew_WRITE.Click
         Try
             IsNew = "Y"
             params.Add(GetSearchBy())                               ' SearchBy: 1=Dealer; 2=ComanpyGroup
             params.Add(Guid.Empty)
             params.Add(IsNew)
             callPage(ClaimStatusByGroup.URL, params)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub onchange_rdoDealer(sender As System.Object, e As System.EventArgs) Handles rdoDealer.CheckedChanged
+    Public Sub onchange_rdoDealer(sender As Object, e As EventArgs) Handles rdoDealer.CheckedChanged
         Try
             State.dealerId = Guid.Empty
             State.searchDV = Nothing
@@ -336,7 +338,7 @@ Partial Public Class ClaimStatusByGroupListForm
         End Try
     End Sub
 
-    Public Sub onchange_rdoCompanyGroup(sender As System.Object, e As System.EventArgs) Handles rdoCompanyGroup.CheckedChanged
+    Public Sub onchange_rdoCompanyGroup(sender As Object, e As EventArgs) Handles rdoCompanyGroup.CheckedChanged
         State.dealerId = Guid.Empty
         State.searchDV = Nothing
         PopulateDealer()

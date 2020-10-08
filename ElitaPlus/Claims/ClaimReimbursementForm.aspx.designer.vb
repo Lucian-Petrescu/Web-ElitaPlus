@@ -20,7 +20,7 @@ Partial Public Class ClaimReimbursementForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelPaymentType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelPaymentType As Label
     
     '''<summary>
     '''ddlPaymentList control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimReimbursementForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlPaymentList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlPaymentList As DropDownList
     
     '''<summary>
     '''moBankInfoController control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimReimbursementForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moBankInfoController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlBankInfo_New
+    Protected WithEvents moBankInfoController As UserControlBankInfo_New
     
     '''<summary>
     '''ProcessCancellationButton_WRITE control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimReimbursementForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave_WRITE As Button
     
    '''<summary>
     '''BackCancelCertButton control.
@@ -56,5 +56,5 @@ Partial Public Class ClaimReimbursementForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 End Class

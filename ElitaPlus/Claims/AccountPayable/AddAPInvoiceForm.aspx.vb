@@ -1,7 +1,10 @@
-﻿Imports System.Diagnostics
+﻿Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
 
 Namespace Claims.AccountPayable
@@ -141,7 +144,7 @@ Namespace Claims.AccountPayable
             End Try
             ShowMissingTranslations(MasterPage.MessageController)
         End Sub
-        Private Sub RewireUserControlHandler(userControl As Common.UserControlApInvoiceLinesSearch)
+        Private Sub RewireUserControlHandler(userControl As UserControlApInvoiceLinesSearch)
             userControl.TranslationFunc = Function(value As String)
                 Return TranslationBase.TranslateLabelOrMessage(value)
             End Function
@@ -305,9 +308,9 @@ Namespace Claims.AccountPayable
 
             Try
 
-                Dim serviceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
+                Dim serviceCenterList As New List(Of ListItem)
                 For Each countryId As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
-                    Dim serviceCenters As DataElements.ListItem() =
+                    Dim serviceCenters As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
                                                                     context:=New ListContext() With
                                                                     {
@@ -345,9 +348,9 @@ Namespace Claims.AccountPayable
                                })
 
 
-                Dim dealerList As New Collections.Generic.List(Of DataElements.ListItem)
+                Dim dealerList As New List(Of ListItem)
                 For Each companyId As Guid In ElitaPlusIdentity.Current.ActiveUser.Companies
-                    Dim dealers As DataElements.ListItem() =
+                    Dim dealers As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany",
                                                         context:=New ListContext() With
                                                         {
@@ -609,7 +612,7 @@ Namespace Claims.AccountPayable
                         State.IsAfterSave = True
                         State.SearchDv = Nothing
                         PopulateApLinesGrid(ActionCancelDelete)
-                        MasterPage.MessageController.AddSuccess(ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
+                        MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
                     Catch ex As Exception
                         State.ApInvoiceLinesBo.RejectChanges()
                         Throw
@@ -687,7 +690,7 @@ Namespace Claims.AccountPayable
                             CType(e.Row.Cells(PoNumberCol).FindControl(PoNumberControlName), TextBox).Text = dvRow(ApInvoiceLines.PO_NUMBER_COL).ToString
 
                             Dim moUomDropDown As DropDownList = CType(e.Row.Cells(UnitOfMeasurementCol).FindControl(UnitOfMeasurementControlName), DropDownList)
-                            Dim upgtermUnitOfMeasureLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("UNIT_OF_MEASURE", Thread.CurrentPrincipal.GetLanguageCode())
+                            Dim upgtermUnitOfMeasureLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("UNIT_OF_MEASURE", Thread.CurrentPrincipal.GetLanguageCode())
                             moUomDropDown.Populate(upgtermUnitOfMeasureLkl, New PopulateOptions() With
                                                  {
                                                    .AddBlankItem = True,
@@ -873,7 +876,7 @@ Namespace Claims.AccountPayable
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub BtnSearchLines_Click(sender As System.Object, e As EventArgs) Handles BtnSearchLines.Click
+        Private Sub BtnSearchLines_Click(sender As Object, e As EventArgs) Handles BtnSearchLines.Click
             Try
                 InitPoLinesSearch()
                 HiddenFieldPoLineSearch.Value = "Y"

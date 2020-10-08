@@ -219,7 +219,7 @@ Public Class UserControlConsequentialDamage
                                                                End Function)
         Catch ex As Exception
             blnsuccess = False
-            Page.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            Page.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 

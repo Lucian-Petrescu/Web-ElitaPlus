@@ -1,5 +1,5 @@
 ﻿Public Class UserControlClaimInfo
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 
 #Region "Properties"
@@ -36,7 +36,7 @@
         PopulateFormFromClaimCtrl(oClaim)
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
 

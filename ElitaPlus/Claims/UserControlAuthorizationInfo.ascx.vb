@@ -1,12 +1,13 @@
 ﻿Imports System
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ElitaPlusPage
 Imports Assurant.ElitaPlus.Security
 
 Public Class UserControlAuthorizationInfo
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 
 #Region "Constants"
@@ -119,7 +120,7 @@ Public Class UserControlAuthorizationInfo
         BtnNew_WRITE.Enabled = isEditable
 
     End Sub
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Page.ClearGridViewHeadersAndLabelsErrSign()
         If Page.IsPostBack Then
             CheckIfComingFromDeleteConfirm()
@@ -155,7 +156,7 @@ Public Class UserControlAuthorizationInfo
         End Try
     End Sub
 
-    Private Sub AuthorizationGrid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles AuthorizationGrid.RowCommand
+    Private Sub AuthorizationGrid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles AuthorizationGrid.RowCommand
         Try
             Dim nIndex As Integer
             nIndex = CInt(e.CommandArgument)
@@ -175,8 +176,8 @@ Public Class UserControlAuthorizationInfo
                 'Save the Id in the Session
                 State.DeletionIndex = New Guid(AuthorizationGrid.Rows(nIndex).Cells(GRID_COL_AUTHORIZATION_ITEM_ID_IDX).Text.ToString())
 
-                Page.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Page.MSG_BTN_YES_NO, Page.MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                Page.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                State.ActionInProgress = DetailPageCommand.Delete
 
             ElseIf e.CommandName = ElitaPlusSearchPage.SAVE_COMMAND_NAME Then
                 SaveChanges()
@@ -210,21 +211,21 @@ Public Class UserControlAuthorizationInfo
         Return bIsOk
     End Function
 
-    Public Sub ServiceClassSelectedIndexChanged(sender As Object, e As System.EventArgs)
+    Public Sub ServiceClassSelectedIndexChanged(sender As Object, e As EventArgs)
         Dim ddl As DropDownList
         Dim txt As TextBox
         Dim ServiceClassId As Guid = Guid.Empty
 
-        If Not (DBNull.Value.Equals(DirectCast(sender, System.Web.UI.WebControls.DropDownList).SelectedValue)) Then
-            ServiceClassId = Page.GetGuidFromString(DirectCast(sender, System.Web.UI.WebControls.DropDownList).SelectedValue)
+        If Not (DBNull.Value.Equals(DirectCast(sender, DropDownList).SelectedValue)) Then
+            ServiceClassId = GetGuidFromString(DirectCast(sender, DropDownList).SelectedValue)
             If (AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_SERVICE_TYPE_IDX).FindControl(GRID_CONTROL_SERVICE_TYPE_DDL) IsNot Nothing) Then
                 ddl = CType(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_SERVICE_TYPE_IDX).FindControl(GRID_CONTROL_SERVICE_TYPE_DDL), DropDownList)
                 'Me.Page.BindListControlToDataView(ddl, LookupListNew.GetNewServiceTypeByServiceClassLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, ServiceClassId))
 
-                Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+                Dim oListContext As New ListContext
                 oListContext.ServiceClassId = ServiceClassId
                 oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
-                Dim oServiceTypeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass", context:=oListContext)
+                Dim oServiceTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass", context:=oListContext)
                 ddl.Populate(oServiceTypeList, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = True
@@ -242,16 +243,16 @@ Public Class UserControlAuthorizationInfo
         End If
     End Sub
 
-    Public Sub ServiceTypeSelectedIndexChanged(sender As Object, e As System.EventArgs)
+    Public Sub ServiceTypeSelectedIndexChanged(sender As Object, e As EventArgs)
         Dim txt As TextBox
         Dim ServiceClassId As Guid = Guid.Empty
         Dim ServiceTypeId As Guid = Guid.Empty
         Dim dv As PriceListDetail.PriceListResultsDV
 
         Try
-            If Not (DBNull.Value.Equals(DirectCast(sender, System.Web.UI.WebControls.DropDownList).SelectedValue)) Then
-                ServiceClassId = Page.GetGuidFromString(CType(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_SERVICE_CLASS_IDX).FindControl(GRID_CONTROL_SERVICE_CLASS_DDL), DropDownList).SelectedValue)
-                ServiceTypeId = Page.GetGuidFromString(DirectCast(sender, System.Web.UI.WebControls.DropDownList).SelectedValue)
+            If Not (DBNull.Value.Equals(DirectCast(sender, DropDownList).SelectedValue)) Then
+                ServiceClassId = GetGuidFromString(CType(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_SERVICE_CLASS_IDX).FindControl(GRID_CONTROL_SERVICE_CLASS_DDL), DropDownList).SelectedValue)
+                ServiceTypeId = GetGuidFromString(DirectCast(sender, DropDownList).SelectedValue)
 
                 Dim equipmentId As Guid, equipmentclassId As Guid, conditionId As Guid
                 If (State.oCA.Claim.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
@@ -289,7 +290,7 @@ Public Class UserControlAuthorizationInfo
         End Try
     End Sub
 
-    Private Sub AuthorizationGrid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles AuthorizationGrid.RowDataBound
+    Private Sub AuthorizationGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles AuthorizationGrid.RowDataBound
         Dim CAItem As ClaimAuthItem = CType(e.Row.DataItem, ClaimAuthItem)
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim lbl As Label
@@ -301,11 +302,11 @@ Public Class UserControlAuthorizationInfo
                 If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                     If State.isEditMode AndAlso AuthorizationGrid.EditIndex = e.Row.RowIndex Then
 
-                        e.Row.Cells(GRID_COL_AUTHORIZATION_ITEM_ID_IDX).Text = Page.GetGuidStringFromByteArray(CAItem.Id.ToByteArray)
+                        e.Row.Cells(GRID_COL_AUTHORIZATION_ITEM_ID_IDX).Text = GetGuidStringFromByteArray(CAItem.Id.ToByteArray)
                         e.Row.Cells(GRID_COL_LINE_ITEM_NUMBER_IDX).Text = CAItem.LineItemNumber.ToString
                         If (e.Row.Cells(GRID_COL_AMOUNT_IDX).FindControl(GRID_CONTROL_AMOUNT_txt) IsNot Nothing) Then
                             txt = CType(e.Row.Cells(GRID_COL_AMOUNT_IDX).FindControl(GRID_CONTROL_AMOUNT_txt), TextBox)
-                            txt.Text = If(CAItem.Amount Is Nothing, String.Empty, Page.GetAmountFormattedString(CAItem.Amount.Value))
+                            txt.Text = If(CAItem.Amount Is Nothing, String.Empty, GetAmountFormattedString(CAItem.Amount.Value))
                         End If
                         If (e.Row.Cells(GRID_COL_VENDOR_SKU_IDX).FindControl(GRID_CONTROL_VENDOR_SKU_txt) IsNot Nothing) Then
                             txt = CType(e.Row.Cells(GRID_COL_VENDOR_SKU_IDX).FindControl(GRID_CONTROL_VENDOR_SKU_txt), TextBox)
@@ -332,17 +333,17 @@ Public Class UserControlAuthorizationInfo
                                     ddl = CType(e.Row.Cells(GRID_COL_SERVICE_TYPE_IDX).FindControl(GRID_CONTROL_SERVICE_TYPE_DDL), DropDownList)
                                     'Me.Page.BindListControlToDataView(ddl, LookupListNew.GetNewServiceTypeByServiceClassLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, CAItem.ServiceClassId))
 
-                                    Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+                                    Dim oListContext As New ListContext
                                     oListContext.ServiceClassId = CAItem.ServiceClassId
                                     oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
-                                    Dim oServiceTypeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass", context:=oListContext)
+                                    Dim oServiceTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass", context:=oListContext)
                                     ddl.Populate(oServiceTypeList, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = True
                                                        })
 
                                     If Not (DBNull.Value.Equals(CAItem.ServiceTypeId)) Then
-                                        Page.SetSelectedItem(ddl, CAItem.ServiceTypeId)
+                                        SetSelectedItem(ddl, CAItem.ServiceTypeId)
                                     End If
 
                                 End If
@@ -356,7 +357,7 @@ Public Class UserControlAuthorizationInfo
 
 
                     Else
-                        e.Row.Cells(GRID_COL_AUTHORIZATION_ITEM_ID_IDX).Text = Page.GetGuidStringFromByteArray(CAItem.Id.ToByteArray)
+                        e.Row.Cells(GRID_COL_AUTHORIZATION_ITEM_ID_IDX).Text = GetGuidStringFromByteArray(CAItem.Id.ToByteArray)
                         e.Row.Cells(GRID_COL_LINE_ITEM_NUMBER_IDX).Text = CAItem.LineItemNumber.ToString
                         If (e.Row.Cells(GRID_COL_VENDOR_SKU_IDX).FindControl(GRID_LABEL_VENDOR_SKU) IsNot Nothing) Then
                             lbl = CType(e.Row.Cells(GRID_COL_VENDOR_SKU_IDX).FindControl(GRID_LABEL_VENDOR_SKU), Label)
@@ -368,7 +369,7 @@ Public Class UserControlAuthorizationInfo
                         End If
                         If (e.Row.Cells(GRID_COL_AMOUNT_IDX).FindControl(GRID_Label_AMOUNT) IsNot Nothing) Then
                             lbl = CType(e.Row.Cells(GRID_COL_AMOUNT_IDX).FindControl(GRID_Label_AMOUNT), Label)
-                            lbl.Text = Page.GetAmountFormattedString(CAItem.Amount.Value)
+                            lbl.Text = GetAmountFormattedString(CAItem.Amount.Value)
                         End If
                         If (e.Row.Cells(GRID_COL_SERVICE_CLASS_IDX).FindControl(GRID_LABEL_SERVICE_CLASS) IsNot Nothing) Then
                             lbl = CType(e.Row.Cells(GRID_COL_SERVICE_CLASS_IDX).FindControl(GRID_LABEL_SERVICE_CLASS), Label)
@@ -399,8 +400,8 @@ Public Class UserControlAuthorizationInfo
     Private Sub ResetIndexes()
         State.isEditMode = False
         State.isNewItem = False
-        AuthorizationGrid.EditIndex = Page.NO_ITEM_SELECTED_INDEX
-        AuthorizationGrid.SelectedIndex = Page.NO_ITEM_SELECTED_INDEX
+        AuthorizationGrid.EditIndex = NO_ITEM_SELECTED_INDEX
+        AuthorizationGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
     End Sub
 
     Private Function SaveChanges() As Boolean
@@ -421,9 +422,9 @@ Public Class UserControlAuthorizationInfo
         If State.isNewItem Then
             claimAuthitem.ClaimAuthorizationId = State.oCA.Id
             ddl = CType(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_SERVICE_CLASS_IDX).FindControl(GRID_CONTROL_SERVICE_CLASS_DDL), DropDownList)
-            claimAuthitem.ServiceClassId = Page.GetGuidFromString(ddl.SelectedValue)
+            claimAuthitem.ServiceClassId = GetGuidFromString(ddl.SelectedValue)
             ddl = CType(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_SERVICE_TYPE_IDX).FindControl(GRID_CONTROL_SERVICE_TYPE_DDL), DropDownList)
-            claimAuthitem.ServiceTypeId = Page.GetGuidFromString(ddl.SelectedValue)
+            claimAuthitem.ServiceTypeId = GetGuidFromString(ddl.SelectedValue)
             claimAuthitem.LineItemNumber = CInt(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_LINE_ITEM_NUMBER_IDX).Text)
             claimAuthitem.VendorSku = CType(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_VENDOR_SKU_IDX).FindControl(GRID_CONTROL_VENDOR_SKU_txt), TextBox).Text
             claimAuthitem.VendorSkuDescription = CType(AuthorizationGrid.Rows(AuthorizationGrid.EditIndex).Cells(GRID_COL_VENDOR_SKU_DESCRIPTION_IDX).FindControl(GRID_CONTROL_VENDOR_SKU_DESCRIPTION_txt), TextBox).Text
@@ -467,7 +468,7 @@ Public Class UserControlAuthorizationInfo
 
     End Function
 
-    Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
+    Private Sub BtnNew_WRITE_Click(sender As Object, e As EventArgs) Handles BtnNew_WRITE.Click
         Dim NewLineItemNumber As Long
         Try
             State.isNewItem = True
@@ -556,8 +557,8 @@ Public Class UserControlAuthorizationInfo
 
     Protected Sub CheckIfComingFromDeleteConfirm()
         Dim confResponse As String = HiddenDeletePromptResponse.Value
-        If confResponse IsNot Nothing AndAlso confResponse = Page.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If Me.State.ActionInProgress = DetailPageCommand.Delete Then
                 If DeleteAuthItem(State.DeletionIndex) = True Then
                     ResetIndexes()
                     AuthorizationGrid.DataSource = State.oCA.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
@@ -565,12 +566,12 @@ Public Class UserControlAuthorizationInfo
                 End If
                 SetControls(ControlClicked.DeleteAuthItem)
                 'Clean after consuming the action
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                State.ActionInProgress = DetailPageCommand.Nothing_
                 HiddenDeletePromptResponse.Value = ""
             End If
-        ElseIf confResponse IsNot Nothing AndAlso confResponse = Page.MSG_VALUE_NO Then
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             'Clean after consuming the action
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            State.ActionInProgress = DetailPageCommand.Nothing_
             HiddenDeletePromptResponse.Value = ""
         End If
     End Sub

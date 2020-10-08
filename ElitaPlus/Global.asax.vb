@@ -56,7 +56,7 @@ Public Class [Global]
     ''' <summary>
     ''' Reads TimeZone information from web.config
     ''' </summary>
-    ''' <returns> returns Instance of <cref="TimezoneInfo"></returns>
+    ''' <returns> returns Instance of <cref="TimezoneInfo"/></returns>
 
     Private Function GetTimeZoneInfo() As TimeZoneInfo
         If (applicationTimeZoneInfo IsNot Nothing) Then
