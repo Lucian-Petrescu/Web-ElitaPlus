@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Net
 Imports System.Net.Http
 Imports System.Net.Http.Headers
+Imports System.Text
 Imports System.Threading
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
@@ -21,7 +22,6 @@ Imports Newtonsoft.Json.Linq
 Imports RestSharp
 Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
 Imports Codes = Assurant.ElitaPlus.BusinessObjectsNew.Codes
-
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
 
@@ -2066,8 +2066,8 @@ Partial Class ClaimForm
 
             Dim deniedReasonsString As String = Me.State.MyBO.DeniedReasons
             Dim dv As DataView = LookupListNew.GetDeniedReasonLookupList(Authentication.LangId)
-            Dim translationSplitString As String = Nothing
-            PopulateDeniedReasons(deniedReasonsString, translationSplitString, dv)
+            'Dim translationSplitString As String = Nothing
+            PopulateDeniedReasons(deniedReasonsString, dv)
 
             ControlMgr.SetVisibleControl(Me, Me.LabelDeniedReason, False)
             ControlMgr.SetVisibleControl(Me, Me.cboDeniedReason, False)
@@ -2086,7 +2086,7 @@ Partial Class ClaimForm
         End If
     End Sub
 
-    Private Sub PopulateDeniedReasons(deniedReasonsString As String, translationSplitString As String, dv As DataView)
+    Private Sub PopulateDeniedReasons(deniedReasonsString As String, dv As DataView)
 
         Dim deniedReasons = GetDeniedReason(deniedReasonsString, dv)
         Me.PopulateControlFromBOProperty(Me.TextboxDeniedReasons, deniedReasons)
@@ -2094,13 +2094,13 @@ Partial Class ClaimForm
 
     Private Function GetDeniedReason(deniedReasonsString As String, dv As DataView) As String
         Dim strDeniedReason As String = String.Empty
-
-        If (deniedReasonsString.IndexOf(";") > 0) Then
+        Dim stringDeniedReason  As StringBuilder= new StringBuilder()
+        If (deniedReasonsString.IndexOf(";", StringComparison.Ordinal) > 0) Then
             For Each extendedcode As String In deniedReasonsString.Split(";")
-                Try
-                    strDeniedReason = strDeniedReason + dv.ToTable().Select("extended_code ='" & extendedcode & "'").First()("description") + Environment.NewLine
-                Catch ex As Exception
-                End Try
+                
+                stringDeniedReason.Append(stringDeniedReason) _
+                    .Append(dv.ToTable().Select("extended_code ='" & extendedcode & "'").First()("description")) _
+                    .Append(Environment.NewLine)      
             Next
         Else
             strDeniedReason = dv.ToTable().Select("extended_code ='" & Me.State.MyBO.DeniedReasons & "'").First()("description")
