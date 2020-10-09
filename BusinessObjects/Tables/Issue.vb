@@ -89,8 +89,8 @@ Public Class Issue
     Dim _ActiveOn As DateType
     Private Const TABLE_ISSUE_COMMENT As String = "elp_issue_comment"
     Private Const ICTYP As String = "ICTYP"
-    Private Const _CODE As String = "CODE"
-    Private Const _TEXT As String = "TEXT"
+    Private Const CodeConstant As String = "CODE"
+    Private Const TextConstant As String = "TEXT"
     Private Const ISSUE_COMMENT_ID As String = "ISSUE_COMMENT_ID"
     Private Const ISSUE_COMMENT_TYPE_ID As String = "ISSUE_COMMENT_TYPE_ID"
 
@@ -355,22 +355,22 @@ Public Class Issue
             If MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
                 If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) IsNot Nothing Then
                     For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added).Rows
-                        retVal = dropdownBO.AddDropdownItem(TECrow(_CODE).ToString, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                        retVal = dropdownBO.AddDropdownItem(TECrow(CodeConstant).ToString, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, TECrow(TextConstant).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                     Next
                 End If
                 If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) IsNot Nothing Then
                     For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified).Rows
                         If Not GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID)) = String.Empty Then
                             retVal = dropdownBO.UpdateDropdownItem(QuestionList.GetDropdownItemId(DropdownId,
-                                     GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID))), TECrow(_CODE).ToString,
-                                     Codes.YESNO_Y, Codes.YESNO_Y, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                                     GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID))), TECrow(CodeConstant).ToString,
+                                     Codes.YESNO_Y, Codes.YESNO_Y, TECrow(TextConstant).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                         End If
                     Next
                 End If
                 If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted) IsNot Nothing Then
                     For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted).Rows
-                        'If Not QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString) = Guid.Empty Then
-                        '    retVal = dropdownBO.DeleteDropdownItem(QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString))
+                        'If Not QuestionList.GetDropdownItemId(DropdownId, TECrow(CodeConstant).ToString) = Guid.Empty Then
+                        '    retVal = dropdownBO.DeleteDropdownItem(QuestionList.GetDropdownItemId(DropdownId, TECrow(CodeConstant).ToString))
                         'End If
                     Next
                 End If
