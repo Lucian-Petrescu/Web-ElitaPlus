@@ -1,5 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (4/19/2007)  ********************
-
+    Imports System.Collections.Generic
 Public Class AcctCompany
     Inherits BusinessObjectBase
 
@@ -92,12 +92,13 @@ Public Class AcctCompany
     'Key Property
     Public ReadOnly Property Id() As Guid
         Get
-            If row(AcctCompanyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
+            If Row(AcctCompanyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(AcctCompanyDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
+                Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
+
     End Property
 
     <ValueMandatory(""), ValidStringLength(Nothing, max:=100)> _
@@ -346,7 +347,22 @@ Public Class AcctCompany
         End Try
 
     End Function
+    Public Function IsCompUsingNewAccounting(ByVal acctCompanyId As Guid) As Boolean
+        Dim companyId As Guid, objComp As Company
+        Try
+            Dim _AcctDAL As New AcctCompanyDAL
+            Dim ds As DataSet = _AcctDAL.GetCompUsingNewAccForAccCompany(acctCompanyId)
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return True
+            Else
+                Return False
+            End If
 
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+
+    End Function
 #End Region
 
 #Region "DataView Retrieveing Methods"

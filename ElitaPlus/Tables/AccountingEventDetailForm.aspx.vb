@@ -232,7 +232,7 @@ Partial Class AccountingEventDetailForm
 #Region "Controlling Logic"
 
     Private Sub PopulateAll()
-
+        Me.State.AcctCompanyBo = New AcctCompany(Me.State.ParentBO.AcctCompanyId)
         Me.State.YESNOList = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
         'Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
         'Me.State.YESNOdv = YESNOdv
@@ -279,12 +279,21 @@ Partial Class AccountingEventDetailForm
                            Where lst.ListItemId = Me.State.ParentBO.AcctEventTypeId
                            Select lst.Code).FirstOrDefault()
 
-        If (h = "UPR" Or h = "IBNR" Or h = "INV" Or h = "VEND") Then
-            AcctTSrList = (From lst In AcctTSrList
-                           Where lst.Code <> "PRDCODE"
-                           Select lst).ToArray()
-            'AcctTSrcdv.RowFilter = String.Format("{0}code <> 'PRDCODE'", If(AcctTSrcdv.RowFilter.Length > 0, String.Format("{0} AND ", AcctTSrcdv.RowFilter), "").ToString)
+        If Me.State.AcctCompanyBo.IsCompUsingNewAccounting(Me.State.AcctCompanyBo.Id) Then
+            If (h = "IBNR" Or h = "INV" Or h = "VEND") Then
+                AcctTSrList = (From lst In AcctTSrList
+                               Where lst.Code <> "PRDCODE"
+                               Select lst).ToArray()
+            End If
+        Else
+            If (h = "UPR" Or h = "IBNR" Or h = "INV" Or h = "VEND") Then
+                AcctTSrList = (From lst In AcctTSrList
+                               Where lst.Code <> "PRDCODE"
+                               Select lst).ToArray()
+                'AcctTSrcdv.RowFilter = String.Format("{0}code <> 'PRDCODE'", If(AcctTSrcdv.RowFilter.Length > 0, String.Format("{0} AND ", AcctTSrcdv.RowFilter), "").ToString)
+            End If
         End If
+
         'REQ-5733 END
 
         'Me.BindListControlToDataView(Me.moUsePayeeSettingsDROPDOWN, YESNOdv)
@@ -456,7 +465,7 @@ Partial Class AccountingEventDetailForm
             Me.PopulateControlFromBOProperty(Me.moAccountingCompanyDROPDOWN, Me.State.ParentBO.AcctCompanyId)
             Me.PopulateControlFromBOProperty(Me.moAccountingEventDROPDOWN, Me.State.ParentBO.AcctEventTypeId)
 
-            Me.State.AcctCompanyBo = New AcctCompany(Me.State.ParentBO.AcctCompanyId)
+            ' Me.State.AcctCompanyBo = New AcctCompany(Me.State.ParentBO.AcctCompanyId)
 
             If ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies.Count > 0 Then
                 Me.ACCT_SYSTEM = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.AcctCompanyBo.AcctSystemId)
