@@ -991,7 +991,7 @@ Public NotInheritable Class DBHelper
         Dim nextCharPos As Integer = parPosition + (":" & paramName).Trim().Length
         If nextCharPos < stmt.ToCharArray.Length - 1 Then
             Dim nextChar As Char = stmt.ToCharArray.GetValue(nextCharPos)
-            Dim tempRegEx As Regex = New Regex("^(_{1})|([0-9A-Za-z]{1})$", 
+            Dim tempRegEx As Regex = New Regex("^[0-9A-Za-z_]{1}$", 
                                                RegexOptions.None, 
                                                TimeSpan.FromMilliseconds(100))
             Dim m As Match = tempRegEx.Match(nextChar)

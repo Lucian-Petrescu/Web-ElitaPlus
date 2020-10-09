@@ -1,4 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (8/15/2017)  ********************
+Imports System.Globalization
 Imports System.Text.RegularExpressions
 
 Public Class OcTemplateRecipient
@@ -289,14 +290,33 @@ Public Class OcTemplateRecipient
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateRecipient = CType(objectToValidate, OcTemplateRecipient)
-            Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$", RegexOptions.None, TimeSpan.FromSeconds(.5))
+            
+            Return IsValidEmail(obj.RecipientAddress)
 
-            If Not String.IsNullOrEmpty(obj.RecipientAddress) AndAlso Not emailExpression.IsMatch(obj.RecipientAddress) Then
+        End Function
+
+        Private Shared Function DomainMapper(match As Match) As String
+            Dim idn = New IdnMapping()
+            Dim domainName As String = idn.GetAscii(match.Groups(2).Value)
+            Return match.Groups(1).Value & domainName
+        End Function
+
+        Private Shared Function IsValidEmail(email As String) As Boolean
+            If String.IsNullOrWhiteSpace(email) Then Return False
+
+            Try
+                email = Regex.Replace(email, "(@)(.+)$", AddressOf DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200))
+            Catch e As RegexMatchTimeoutException
                 Return False
-            End If
+            Catch e As ArgumentException
+                Return False
+            End Try
 
-            Return True
-
+            Try
+                Return Regex.IsMatch(email, "^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250))
+            Catch te As RegexMatchTimeoutException
+                Return False
+            End Try
         End Function
     End Class
 

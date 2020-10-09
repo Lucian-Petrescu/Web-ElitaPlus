@@ -273,18 +273,18 @@ Namespace Certificates
             Get
                 'Return CType(MyBase.State, MyState) 'arf commented out 12-20-04
                 'arf 12-20-04 begin
-                If NavController.State Is Nothing Then
-                    NavController.State = New MyState
-                    moCertItemCoverage = New CertItemCoverage(CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID), Guid))
+                If Me.NavController.State Is Nothing Then
+                    Me.NavController.State = New MyState
+                    moCertItemCoverage = New CertItemCoverage(CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID), Guid))
                     Me.State.certificateCoverageId = moCertItemCoverage.Id
 
                     Me.State.MyBO = New CertItem(moCertItemCoverage.CertItemId)
-                    Me.State.certificateItemId = State.MyBO.Id
+                    Me.State.certificateItemId = Me.State.MyBO.Id
 
                     moCertificate = Me.State.MyBO.GetCertificate(Me.State.MyBO.CertId)
                     Me.State.certificateId = moCertificate.Id
                     Me.State.certificateCompanyId = moCertificate.CompanyId
-                    Me.State.selDateOfLoss = CType(NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS), Date)
+                    Me.State.selDateOfLoss = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS), Date)
                     moDealer = New Dealer(moCertificate.DealerId)
                     If Not moCertificate.ModelId.Equals(Guid.Empty) Then
                         moVSCModel = New VSCModel(moCertificate.ModelId)
@@ -294,7 +294,7 @@ Namespace Certificates
                     End If
                     InitializeFromFlowSession()
                 End If
-                Return CType(NavController.State, MyState)
+                Return CType(Me.NavController.State, MyState)
                 'arf 12-20-04 end
             End Get
         End Property
